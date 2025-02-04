@@ -1,32 +1,63 @@
-# Prerequisites
-*.d
+# Ignore build directories
+/build/
+/out/
+/bin/
+/lib/
+/obj/
+/Testing
 
-# Compiled Object files
-*.slo
-*.lo
+# Ignore build tools and temporary files
+CMakeFiles/
+CMakeCache.txt
+Makefile
+CMakeLists.txt.user
+*.cmake
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
 *.so
-*.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
+*.dylib
+*.exe
 *.a
 *.lib
 
-# Executables
-*.exe
-*.out
-*.app
+# Ignore generated files
+*.class
+*.gen.cpp
+*.moc.cpp
+*.moc
+*.qrc
+*.rcc
+
+# Ignore log and debugging files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.pid
+
+# Ignore IDE/editor-specific files
+.idea/
+.vscode/
+*.code-workspace
+*.sln
+*.vcxproj*
+*.user
+*.DS_Store
+*.vscode/
+*.vs/
+Thumbs.db
+
+# Ignore system files
+*.gz
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar
+*.tgz
+*.tar.xz
+callgrind.out.*
+
+#Ignore doxygen generated files
+/docs/generated/

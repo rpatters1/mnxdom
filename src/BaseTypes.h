@@ -31,76 +31,104 @@ namespace mnx {
 
 using json = nlohmann::ordered_json;
 
-class Document; // Forward declaration
-/** @brief Shared `Document` pointer */
-using DocumentPtr = std::shared_ptr<Document>;
-/** @brief Shared weak `Document` pointer */
-using DocumentWeakPtr = std::weak_ptr<Document>;
+class Object;
+template <typename T> class Array;
 
 /**
- * @brief Base class for all MNX elements, ensuring a reference to its JSON node.
+ * @brief Base class wrapper for all MNX JSON nodes.
  */
 class Base
 {
 public:
     virtual ~Base() = default;
 
+protected:
     /**
      * @brief Convert this element for retrieval.
      * @return A reference to the JSON node.
      */
-    const json& to_json() const { return m_json; }
+    const json& ref() const { return m_json_ref.get(); }
 
     /**
      * @brief Access the JSON node for modification.
      * @return A reference to the JSON node.
      */
-    json& to_json() { return m_json; }
+    json& ref() { return m_json_ref.get(); }
 
     /**
-     * @brief Gets a pointer to the Document.
-     * @return A pointer to the Document instance.
+     * @brief Wrap a Base instance around a specific JSON reference.
+     * @param json_ref Reference to a JSON node.
      */
-    DocumentPtr getDocument() const
+    Base(json& json_ref) : m_json_ref(json_ref) {}
+
+    /**
+     * @brief Construct a Base reference as a child inside a parent node.
+     * @param json_ref Rvalue reference to a new JSON object or array.
+     * @param parent_ref Reference to the parent JSON node.
+     * @param key The key under which the new node is stored.
+     */
+    Base(json&& json_ref, json& parent_ref, const std::string_view& key)
+        : m_json_ref(parent_ref[key] = std::move(json_ref)) // Move json_ref and bind m_json_ref to the new value
+    {}
+
+    /**
+     * @brief Retrieves and validates a required child node.
+     * @tparam T The expected MNX type (`Object` or `Array<T>`).
+     * @param key The key of the child node.
+     * @return An instance of the requested type.
+     * @throws std::runtime_error if the key is missing or the type is incorrect.
+     */
+    template <typename T>
+    T get_child(const std::string_view& key)
     {
-        auto document = m_document.lock();
-        assert(document); // program bug if this pointer goes out of scope.
-        return document;
+        if (!checkKeyIsValid<T>(key)) {
+            throw std::runtime_error("Missing required child node: " + std::string(key));
+        }
+        return T(ref()[key]);
     }
 
-protected:
     /**
-     * @brief Construct a Base element tied to a specific JSON node.
-     * @param doc The containing Document.
-     * @param json_ref The JSON node representing this element.
+     * @brief Retrieves an optional child node.
+     * @tparam T The expected MNX type (`Object` or `Array<T>`).
+     * @param key The key of the child node.
+     * @return An `std::optional<T>`, or `std::nullopt` if the node does not exist or is invalid.
+     * @throws std::runtime_error if the the type is incorrect.
      */
-    Base(const DocumentWeakPtr& doc, json& json_ref)
-        : m_document(doc), m_json(json_ref) {}
+    template <typename T>
+    std::optional<T> get_optional_child(const std::string_view& key)
+    {
+        if (!checkKeyIsValid<T>(key)) {
+            return std::nullopt;
+        }
+        return T(ref()[key]);
+    }
 
 private:
-    DocumentWeakPtr m_document;
-    json& m_json;
+    template <typename T>
+    bool checkKeyIsValid(const std::string_view& key)
+    {
+        if (!ref().contains(key)) {
+            return false;
+        }
 
-    friend class Document;
+        constexpr bool isArray = std::is_base_of_v<Array<typename T::value_type>, T>;
+        constexpr bool isObject = std::is_base_of_v<Object, T>;
+
+        if constexpr (isArray) {
+            if (!ref()[key].is_array()) {
+                throw std::runtime_error("Expected an array for: " + std::string(key));
+            }
+        } else if constexpr (isObject) {
+            if (!ref()[key].is_object()) {
+                throw std::runtime_error("Expected an object for: " + std::string(key));
+            }
+        }
+
+        return true;
+    }
+    
+    std::reference_wrapper<json> m_json_ref;
 };
-
-/**
- * @brief Macro to define a required property.
- */
-#define MNX_REQUIRED_PROPERTY(Type, Name, JsonKey) \
-    Type Name() const { return to_json().at(JsonKey).get<Type>(); } \
-    void set_##Name(const Type& value) { to_json()[JsonKey] = value; }
-
-/**
- * @brief Macro to define an optional property.
- */
-#define MNX_OPTIONAL_PROPERTY(Type, Name, JsonKey) \
-    std::optional<Type> Name() const { \
-        if (to_json().contains(JsonKey)) return to_json().at(JsonKey).get<Type>(); \
-        return std::nullopt; \
-    } \
-    void set_##Name(const Type& value) { to_json()[JsonKey] = value; } \
-    void clear_##Name() { to_json().erase(JsonKey); }
 
 /**
  * @brief Represents an MNX object, encapsulating property access.
@@ -108,83 +136,140 @@ private:
 class Object : public Base
 {
 public:
-    Object(DocumentWeakPtr doc, json& json_ref)
-        : Base(doc, json_ref)
+    /// @brief Wraps an Object class around an existing JSON object element
+    /// @param json_ref Reference to the element
+    Object(json& json_ref) : Base(json_ref)
     {
         if (!json_ref.is_object()) {
-            throw std::invalid_argument("mnx::Object must wrap a JSON object.")
+            throw std::invalid_argument("mnx::Object must wrap a JSON object.");
         }
     }
+
+    /// @brief Creates a new Object class as a child of a JSON element
+    /// @param parent_ref The parent JSON element
+    /// @param key The JSON key to use for embedding the new array.
+    Object(json& parent_ref, const std::string_view& key)
+        : Base(json::object(), parent_ref, key) {}
 };
 
 /**
  * @brief Represents an MNX array, encapsulating property access.
  */
-template <class T>
+template <typename T>
 class Array : public Base
 {
+    static_assert(std::is_same_v<T, int> || std::is_same_v<T, double> ||
+                  std::is_same_v<T, bool> || std::is_same_v<T, std::string> ||
+                  std::is_base_of_v<Base, T>, "Invalid MNX array element type.");
+
 public:
-    Array(DocumentWeakPtr doc, json& json_ref)
-        : Base(doc, json_ref)
+    /// @brief The type for elements in this Array.
+    using value_type = T;
+
+    /// @brief Wraps an Array class around an existing JSON array element
+    /// @param json_ref Reference to the element
+    Array(json& json_ref) : Base(json_ref)
     {
         if (!json_ref.is_array()) {
-            throw std::invalid_argument("mnx::Array must wrap a JSON object.")
+            throw std::invalid_argument("mnx::Array must wrap a JSON object.");
         }
     }
 
+    /// @brief Creates a new Array class as a child of a JSON element
+    /// @param parent_ref The parent JSON element
+    /// @param key The JSON key to use for embedding the new array.
+    Array(json& parent_ref, const std::string_view& key)
+        : Base(json::array(), parent_ref, key) {}
+
     /** @brief Get the size of the array. */
-    size_t size() const { return to_json().size(); }
+    size_t size() const { return ref().size(); }
 
     /** @brief Check if the array is empty. */
-    bool empty() const { return to_json().empty(); }
+    bool empty() const { return ref().empty(); }
 
     /** @brief Clear all elements. */
-    void clear() { to_json().clear(); }
+    void clear() { ref().clear(); }
 
-    /** @brief Access element at a given index. */
-    const T& operator[](size_t index) const
+    /// @brief const operator[]
+    T operator[](size_t index) const
     {
-        assert(index < to_json().size());
-        return to_json().at(index).get<T>();
+        checkIndex(index);
+        if constexpr (std::is_base_of_v<Base, T>) {
+            return T(ref()[index]);
+        } else {
+            return ref().at(index).template get<T>();
+        }
     }
 
-    /** @brief Modify element at a given index. */
-    T& operator[](size_t index)
+    /// @brief non-const operator[]
+    auto operator[](size_t index)
     {
-        assert(index < to_json().size());
-        return to_json().at(index).get_ref<T&>();
+        checkIndex(index);
+        if constexpr (std::is_base_of_v<Base, T>) {
+            return T(ref()[index]);
+        } else {
+            return ref().at(index).template get_ref<T&>();
+        }
     }
 
     /** @brief Append a new value to the array. */
     void push_back(const T& value)
     {
-        to_json().push_back(value);
+        ref().push_back(value);
     }
 
     /** @brief Remove an element at a given index. */
-    void erase(size_t index) {
-        assert(index < to_json().size());
-        to_json().erase(to_json().begin() + index);
+    void erase(size_t index)
+    {
+        checkIndex(index);
+        ref().erase(ref().begin() + index);
     }
-};
 
-/**
- * @brief Represents the root of an MNX document.
- */
-class Document : public Object, public std::enable_shared_from_this<Document>
-{
-public:
-    static DocumentPtr create() {
-        return std::shared_ptr<Document>(new Document());
-    }
+    /// @brief Returns an iterator to the beginning of the array.
+    auto begin() { return ref().begin(); }
+
+    /// @brief Returns an iterator to the end of the array.
+    auto end() { return ref().end(); }
+
+    /// @brief Returns a const iterator to the beginning of the array.
+    auto begin() const { return ref().cbegin(); }
+
+    /// @brief Returns a const iterator to the end of the array.
+    auto end() const { return ref().cend(); }
 
 private:
-    Document() : Object(DocumentWeakPtr(), m_json_root)
+    void checkIndex(size_t index)
     {
-        m_document = shared_from_this();
+        assert(index < ref().size());
+        if (index >= ref().size()) {
+            throw std::out_of_range("Index out of range");
+        }
     }
-
-    json m_json_root;
 };
+
+#define MNX_REQUIRED_PROPERTY(TYPE, NAME, JSON_KEY) \
+    TYPE NAME() const { \
+        if (!ref().contains(JSON_KEY)) { \
+            throw std::runtime_error("Missing required property: " JSON_KEY); \
+        } \
+        return ref()[JSON_KEY].get<TYPE>(); \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value; }
+
+#define MNX_OPTIONAL_PROPERTY(TYPE, NAME, JSON_KEY) \
+    std::optional<TYPE> NAME() const { \
+        return ref().contains(JSON_KEY) ? std::optional<TYPE>(ref()[JSON_KEY].get<TYPE>()) : std::nullopt; \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value; } \
+    void clear_##NAME() { ref().erase(JSON_KEY); }
+
+#define MNX_REQUIRED_CHILD(TYPE, NAME, JSON_KEY) \
+    TYPE NAME() { return get_child<TYPE>(JSON_KEY); } \
+    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value.ref(); }
+
+#define MNX_OPTIONAL_CHILD(TYPE, NAME, JSON_KEY) \
+    std::optional<TYPE> NAME() { return get_optional_child<TYPE>(JSON_KEY); } \
+    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value.ref(); } \
+    void clear_##NAME() { ref().erase(JSON_KEY); }
 
 } // namespace mnx

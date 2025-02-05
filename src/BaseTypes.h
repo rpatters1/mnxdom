@@ -42,13 +42,16 @@ class Base
 public:
     virtual ~Base() = default;
 
-protected:
     /**
      * @brief Convert this element for retrieval.
+     *
+     * Generally, you should not call this directly, but it must be public for the child setter macros
+     *
      * @return A reference to the JSON node.
      */
     const json& ref() const { return m_json_ref.get(); }
 
+protected:
     /**
      * @brief Access the JSON node for modification.
      * @return A reference to the JSON node.
@@ -105,23 +108,20 @@ protected:
 
 private:
     template <typename T>
-    bool checkKeyIsValid(const std::string_view& key)
+    bool checkKeyIsValid(const std::string_view& key) const
     {
         if (!ref().contains(key)) {
             return false;
         }
 
-        constexpr bool isArray = std::is_base_of_v<Array<typename T::value_type>, T>;
-        constexpr bool isObject = std::is_base_of_v<Object, T>;
-
-        if constexpr (isArray) {
-            if (!ref()[key].is_array()) {
-                throw std::runtime_error("Expected an array for: " + std::string(key));
-            }
-        } else if constexpr (isObject) {
+        if constexpr (std::is_base_of_v<Object, T>) {
             if (!ref()[key].is_object()) {
                 throw std::runtime_error("Expected an object for: " + std::string(key));
             }
+        } else if constexpr (std::is_base_of_v<Array<typename T::value_type>, T>) {
+            if (!ref()[key].is_array()) {
+                throw std::runtime_error("Expected an array for: " + std::string(key));
+            }            
         }
 
         return true;
@@ -130,6 +130,7 @@ private:
     std::reference_wrapper<json> m_json_ref;
 };
 
+class Document;
 /**
  * @brief Represents an MNX object, encapsulating property access.
  */
@@ -150,6 +151,12 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     Object(json& parent_ref, const std::string_view& key)
         : Base(json::object(), parent_ref, key) {}
+
+private:
+    // Special constructor that defers validation for Document
+    struct DeferValidation {};
+    Object(json& jsonRef, DeferValidation) : Base(jsonRef) {}
+    friend class Document;
 };
 
 /**
@@ -247,29 +254,29 @@ private:
     }
 };
 
-#define MNX_REQUIRED_PROPERTY(TYPE, NAME, JSON_KEY) \
+#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
     TYPE NAME() const { \
-        if (!ref().contains(JSON_KEY)) { \
-            throw std::runtime_error("Missing required property: " JSON_KEY); \
+        if (!ref().contains(#NAME)) { \
+            throw std::runtime_error("Missing required property: " #NAME); \
         } \
-        return ref()[JSON_KEY].get<TYPE>(); \
+        return ref()[#NAME].get<TYPE>(); \
     } \
-    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value; }
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; }
 
-#define MNX_OPTIONAL_PROPERTY(TYPE, NAME, JSON_KEY) \
+#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
     std::optional<TYPE> NAME() const { \
-        return ref().contains(JSON_KEY) ? std::optional<TYPE>(ref()[JSON_KEY].get<TYPE>()) : std::nullopt; \
+        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
     } \
-    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value; } \
-    void clear_##NAME() { ref().erase(JSON_KEY); }
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); }
 
-#define MNX_REQUIRED_CHILD(TYPE, NAME, JSON_KEY) \
-    TYPE NAME() { return get_child<TYPE>(JSON_KEY); } \
-    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value.ref(); }
+#define MNX_REQUIRED_CHILD(TYPE, NAME) \
+    TYPE NAME() { return get_child<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); }
 
-#define MNX_OPTIONAL_CHILD(TYPE, NAME, JSON_KEY) \
-    std::optional<TYPE> NAME() { return get_optional_child<TYPE>(JSON_KEY); } \
-    void set_##NAME(const TYPE& value) { ref()[JSON_KEY] = value.ref(); } \
-    void clear_##NAME() { ref().erase(JSON_KEY); }
+#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
+    std::optional<TYPE> NAME() { return get_optional_child<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
+    void clear_##NAME() { ref().erase(#NAME); }
 
 } // namespace mnx

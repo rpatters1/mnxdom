@@ -11,6 +11,7 @@ FetchContent_MakeAvailable(googletest)
 
 # Add test executable
 add_executable(mnxdom_tests
+    test_document.cpp
     test_main.cpp
 )
 
@@ -33,7 +34,7 @@ target_link_libraries(mnxdom_tests PRIVATE
 include(GoogleTest)
 gtest_discover_tests(mnxdom_tests
     DISCOVERY_TIMEOUT 60 # Set timeout to 60 seconds
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     PROPERTIES
         ENVIRONMENT "GTEST_COLOR=1"
     EXTRA_ARGS --gtest_color=yes

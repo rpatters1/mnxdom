@@ -28,12 +28,31 @@
 
 namespace mnx {
 
+class MnxMetaData : public Object
+{
+public:
+    using Object::Object;
+
+    class Support : public Object
+    {
+    public:
+        using Object::Object;
+
+        MNX_OPTIONAL_PROPERTY(bool, useAccidentalDisplay)
+    };
+
+    MNX_REQUIRED_PROPERTY(int, version)
+    MNX_OPTIONAL_CHILD(Support, support)
+};
+
 class Document : public Object
 {    
 public:
-    Document() : Object(m_json_root) {}
+    Document() : Object(m_json_root, Object::DeferValidation{}) {}
 
-    static Document create(std::ifstream& inputStream)
+    MNX_REQUIRED_CHILD(MnxMetaData, mnx)
+
+    static Document create(std::istream& inputStream)
     {
         Document result;
         inputStream >> result.m_json_root;
@@ -61,7 +80,7 @@ public:
     }
 
 private:
-    json m_json_root;
+    json m_json_root = json::object();
 };
 
 } // namespace mnx

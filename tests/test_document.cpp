@@ -23,20 +23,28 @@
 
 #include "mnxdom.h"
 
-// Optional setup/teardown for test suite
-class TestEnvironment : public ::testing::Environment {
-public:
-    void SetUp() override {
-        // Code to run before all tests
-    }
+TEST(Document, Minimal)
+{
+    std::istringstream jsonString(R"(
+        {
+            "mnx": {
+                "version": 1,
+                "support": {
+                    "useAccidentalDisplay" : true
+                }
+            },
+            "global": {
+              "measures": []
+            },
+            "parts": []
+        }
+    )");
+    auto doc = mnx::Document::create(jsonString);
 
-    void TearDown() override {
-        // Code to run after all tests
-    }
-};
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    ::testing::AddGlobalTestEnvironment(new TestEnvironment);
-    return RUN_ALL_TESTS();
+    auto mnx = doc.mnx();
+    EXPECT_EQ(mnx.version(), 1);
+    ASSERT_TRUE(mnx.support().has_value());
+    auto support = *mnx.support();
+    ASSERT_TRUE(support.useAccidentalDisplay().has_value());
+    EXPECT_TRUE(*support.useAccidentalDisplay());
 }

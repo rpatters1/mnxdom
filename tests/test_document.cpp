@@ -46,7 +46,8 @@ TEST(Document, Minimal)
     ASSERT_TRUE(mnx.support().has_value());
     auto support = *mnx.support();
     ASSERT_TRUE(support.ref().is_object());
-    support.useAccidentalDisplay.set(false);
     ASSERT_TRUE(support.useAccidentalDisplay().has_value());
     EXPECT_TRUE(*support.useAccidentalDisplay());
+    support.set_useAccidentalDisplay(false);
+    EXPECT_FALSE(*support.useAccidentalDisplay());
 }

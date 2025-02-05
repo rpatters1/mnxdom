@@ -254,49 +254,33 @@ private:
     }
 };
 
-#define MNX_REQUIRED_PROPERTY(PARENT_TYPE, TYPE, NAME) \
-    struct __##NAME##_Wrapper__ { \
-        PARENT_TYPE& self; \
-        TYPE operator()() const { \
-            if (!self.ref().contains(#NAME)) { \
-                throw std::runtime_error("Missing required property: " #NAME); \
-            } \
-            return self.ref()[#NAME].get<TYPE>(); \
+#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
+    TYPE NAME() const { \
+        if (!ref().contains(#NAME)) { \
+            throw std::runtime_error("Missing required property: " #NAME); \
         } \
-        void set(const TYPE& value) { self.ref()[#NAME] = value; } \
-    }; \
-    friend struct __##NAME##_Wrapper__; \
-    __##NAME##_Wrapper__ NAME{ *this }
+        return ref()[#NAME].get<TYPE>(); \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    static_assert(true, "") // require semicolon after macro
 
-#define MNX_OPTIONAL_PROPERTY(PARENT_TYPE, TYPE, NAME) \
-    struct __##NAME##_Wrapper__ { \
-        PARENT_TYPE& self; \
-        std::optional<TYPE> operator()() const { \
-            return self.ref().contains(#NAME) ? std::optional<TYPE>(self.ref()[#NAME].get<TYPE>()) : std::nullopt; \
-        } \
-        void set(const TYPE& value) { self.ref()[#NAME] = value; } \
-        void clear() { self.ref().erase(#NAME); } \
-    }; \
-    friend struct __##NAME##_Wrapper__; \
-    __##NAME##_Wrapper__ NAME{ *this }
+#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
+    std::optional<TYPE> NAME() const { \
+        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "") // require semicolon after macro
 
-#define MNX_REQUIRED_CHILD(PARENT_TYPE, TYPE, NAME) \
-    struct __##NAME##_Wrapper__ { \
-        PARENT_TYPE& self; \
-        TYPE operator()() const { return self.get_child<TYPE>(#NAME); } \
-        void set(const TYPE& value) { self.ref()[#NAME] = value.ref(); } \
-    }; \
-    friend struct __##NAME##_Wrapper__; \
-    __##NAME##_Wrapper__ NAME{ *this }
+#define MNX_REQUIRED_CHILD(TYPE, NAME) \
+    TYPE NAME() const { return get_child<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
+    static_assert(true, "") // require semicolon after macro
 
-#define MNX_OPTIONAL_CHILD(PARENT_TYPE, TYPE, NAME) \
-    struct __##NAME##_Wrapper__ { \
-        PARENT_TYPE& self; \
-        std::optional<TYPE> operator()() const { return self.get_optional_child<TYPE>(#NAME); } \
-        void set(const TYPE& value) { self.ref()[#NAME] = value.ref(); } \
-        void clear() { self.ref().erase(#NAME); } \
-    }; \
-    friend struct __##NAME##_Wrapper__; \
-    __##NAME##_Wrapper__ NAME{ *this }
+#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
+    std::optional<TYPE> NAME() const { return get_optional_child<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "") // require semicolon after macro
 
 } // namespace mnx

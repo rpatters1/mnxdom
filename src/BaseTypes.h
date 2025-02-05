@@ -49,15 +49,15 @@ public:
      *
      * @return A reference to the JSON node.
      */
-    const json& ref() const { return m_json_ref.get(); }
+    json& ref() const { return m_json_ref.get(); }
 
-protected:
     /**
      * @brief Access the JSON node for modification.
      * @return A reference to the JSON node.
      */
     json& ref() { return m_json_ref.get(); }
 
+protected:
     /**
      * @brief Wrap a Base instance around a specific JSON reference.
      * @param json_ref Reference to a JSON node.
@@ -82,7 +82,7 @@ protected:
      * @throws std::runtime_error if the key is missing or the type is incorrect.
      */
     template <typename T>
-    T get_child(const std::string_view& key)
+    T get_child(const std::string_view& key) const
     {
         if (!checkKeyIsValid<T>(key)) {
             throw std::runtime_error("Missing required child node: " + std::string(key));
@@ -98,7 +98,7 @@ protected:
      * @throws std::runtime_error if the the type is incorrect.
      */
     template <typename T>
-    std::optional<T> get_optional_child(const std::string_view& key)
+    std::optional<T> get_optional_child(const std::string_view& key) const
     {
         if (!checkKeyIsValid<T>(key)) {
             return std::nullopt;
@@ -245,7 +245,7 @@ public:
     auto end() const { return ref().cend(); }
 
 private:
-    void checkIndex(size_t index)
+    void checkIndex(size_t index) const
     {
         assert(index < ref().size());
         if (index >= ref().size()) {
@@ -254,29 +254,49 @@ private:
     }
 };
 
-#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
-    TYPE NAME() const { \
-        if (!ref().contains(#NAME)) { \
-            throw std::runtime_error("Missing required property: " #NAME); \
+#define MNX_REQUIRED_PROPERTY(PARENT_TYPE, TYPE, NAME) \
+    struct __##NAME##_Wrapper__ { \
+        PARENT_TYPE& self; \
+        TYPE operator()() const { \
+            if (!self.ref().contains(#NAME)) { \
+                throw std::runtime_error("Missing required property: " #NAME); \
+            } \
+            return self.ref()[#NAME].get<TYPE>(); \
         } \
-        return ref()[#NAME].get<TYPE>(); \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; }
+        void set(const TYPE& value) { self.ref()[#NAME] = value; } \
+    }; \
+    friend struct __##NAME##_Wrapper__; \
+    __##NAME##_Wrapper__ NAME{ *this }
 
-#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { \
-        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    void clear_##NAME() { ref().erase(#NAME); }
+#define MNX_OPTIONAL_PROPERTY(PARENT_TYPE, TYPE, NAME) \
+    struct __##NAME##_Wrapper__ { \
+        PARENT_TYPE& self; \
+        std::optional<TYPE> operator()() const { \
+            return self.ref().contains(#NAME) ? std::optional<TYPE>(self.ref()[#NAME].get<TYPE>()) : std::nullopt; \
+        } \
+        void set(const TYPE& value) { self.ref()[#NAME] = value; } \
+        void clear() { self.ref().erase(#NAME); } \
+    }; \
+    friend struct __##NAME##_Wrapper__; \
+    __##NAME##_Wrapper__ NAME{ *this }
 
-#define MNX_REQUIRED_CHILD(TYPE, NAME) \
-    TYPE NAME() { return get_child<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); }
+#define MNX_REQUIRED_CHILD(PARENT_TYPE, TYPE, NAME) \
+    struct __##NAME##_Wrapper__ { \
+        PARENT_TYPE& self; \
+        TYPE operator()() const { return self.get_child<TYPE>(#NAME); } \
+        void set(const TYPE& value) { self.ref()[#NAME] = value.ref(); } \
+    }; \
+    friend struct __##NAME##_Wrapper__; \
+    __##NAME##_Wrapper__ NAME{ *this }
 
-#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
-    std::optional<TYPE> NAME() { return get_optional_child<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
-    void clear_##NAME() { ref().erase(#NAME); }
+#define MNX_OPTIONAL_CHILD(PARENT_TYPE, TYPE, NAME) \
+    struct __##NAME##_Wrapper__ { \
+        PARENT_TYPE& self; \
+        std::optional<TYPE> operator()() const { return self.get_optional_child<TYPE>(#NAME); } \
+        void set(const TYPE& value) { self.ref()[#NAME] = value.ref(); } \
+        void clear() { self.ref().erase(#NAME); } \
+    }; \
+    friend struct __##NAME##_Wrapper__; \
+    __##NAME##_Wrapper__ NAME{ *this }
 
 } // namespace mnx

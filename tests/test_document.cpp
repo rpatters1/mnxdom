@@ -41,10 +41,12 @@ TEST(Document, Minimal)
     )");
     auto doc = mnx::Document::create(jsonString);
 
-    auto mnx = doc.mnx();
+    const auto mnx = doc.mnx();
     EXPECT_EQ(mnx.version(), 1);
     ASSERT_TRUE(mnx.support().has_value());
     auto support = *mnx.support();
+    ASSERT_TRUE(support.ref().is_object());
+    support.useAccidentalDisplay.set(false);
     ASSERT_TRUE(support.useAccidentalDisplay().has_value());
     EXPECT_TRUE(*support.useAccidentalDisplay());
 }

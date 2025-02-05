@@ -38,11 +38,11 @@ public:
     public:
         using Object::Object;
 
-        MNX_OPTIONAL_PROPERTY(bool, useAccidentalDisplay)
+        MNX_OPTIONAL_PROPERTY(Support, bool, useAccidentalDisplay);
     };
 
-    MNX_REQUIRED_PROPERTY(int, version)
-    MNX_OPTIONAL_CHILD(Support, support)
+    MNX_REQUIRED_PROPERTY(MnxMetaData, int, version);
+    MNX_OPTIONAL_CHILD(MnxMetaData, Support, support);
 };
 
 class Document : public Object
@@ -50,7 +50,7 @@ class Document : public Object
 public:
     Document() : Object(m_json_root, Object::DeferValidation{}) {}
 
-    MNX_REQUIRED_CHILD(MnxMetaData, mnx)
+    MNX_REQUIRED_CHILD(Document, MnxMetaData, mnx);
 
     static Document create(std::istream& inputStream)
     {

@@ -51,6 +51,15 @@ public:
         return create(jsonFile);
     }
 
+    void save(const std::filesystem::path& outputPath, std::optional<int> indentSpaces) const
+    {
+        std::ofstream file;
+        file.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+        file.open(outputPath, std::ios::out | std::ios::binary);
+        file << m_json_root.dump(indentSpaces.value_or(-1));
+        file.close();
+    }
+
 private:
     json m_json_root;
 };

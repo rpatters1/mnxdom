@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024, Robert Patterson
+ * Copyright (C) 2025, Robert Patterson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,36 +19,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "gtest/gtest.h"
+#include <fstream>
+
+#include "nlohmann/json-schema.hpp"
+#include "mnx_schema.xxd"
 
 #include "mnxdom.h"
 
-TEST(Document, Minimal)
-{
-    std::istringstream jsonString(R"(
-        {
-            "mnx": {
-                "version": 1,
-                "support": {
-                    "useAccidentalDisplay" : true
-                }
-            },
-            "global": {
-              "measures": []
-            },
-            "parts": []
-        }
-    )");
-    auto doc = mnx::Document::create(jsonString);
+namespace mnx {
 
-    const auto mnx = doc.mnx();
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
-    EXPECT_EQ(mnx.version(), 1);
-    ASSERT_TRUE(mnx.support().has_value());
-    auto support = *mnx.support();
-    ASSERT_TRUE(support.ref().is_object());
-    ASSERT_TRUE(support.useAccidentalDisplay().has_value());
-    EXPECT_TRUE(*support.useAccidentalDisplay());
-    support.set_useAccidentalDisplay(false);
-    EXPECT_FALSE(*support.useAccidentalDisplay());
+static const std::string_view MNX_SCHEMA(reinterpret_cast<const char*>(mnx_schema_json), mnx_schema_json_len);
+
+// ********************
+// ***** Document *****
+// ********************
+
+std::optional<std::string> Document::validate(const std::optional<std::string>& jsonSchema) const
+{
+    try {
+        // Load JSON schema
+        json schemaJson = json::parse(jsonSchema.value_or(std::string(MNX_SCHEMA)));
+        nlohmann::json_schema::json_validator validator;
+        validator.set_root_schema(schemaJson);
+        validator.validate(m_json_root);
+    } catch (const std::invalid_argument& e) {
+        return e.what();
+    }
+    return std::nullopt;
 }
+
+} // namespace mnx

@@ -25,7 +25,7 @@
 #include <unordered_map>
 #include <cassert>
 
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 
 namespace mnx {
 

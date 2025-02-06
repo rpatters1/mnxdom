@@ -42,10 +42,9 @@ class Base
 public:
     virtual ~Base() = default;
 
+protected:
     /**
      * @brief Convert this element for retrieval.
-     *
-     * Generally, you should not call this directly, but it must be public for the child setter macros
      *
      * @return A reference to the JSON node.
      */
@@ -57,7 +56,6 @@ public:
      */
     json& ref() { return m_json_ref.get(); }
 
-protected:
     /**
      * @brief Wrap a Base instance around a specific JSON reference.
      * @param json_ref Reference to a JSON node.
@@ -67,11 +65,11 @@ protected:
     /**
      * @brief Construct a Base reference as a child inside a parent node.
      * @param json_ref Rvalue reference to a new JSON object or array.
-     * @param parent_ref Reference to the parent JSON node.
+     * @param parent Reference to the parent instance.
      * @param key The key under which the new node is stored.
      */
-    Base(json&& json_ref, json& parent_ref, const std::string_view& key)
-        : m_json_ref(parent_ref[key] = std::move(json_ref)) // Move json_ref and bind m_json_ref to the new value
+    Base(json&& json_ref, Base& parent, const std::string_view& key)
+        : m_json_ref(parent.ref()[key] = std::move(json_ref)) // Move json_ref and bind m_json_ref to the new value
     {}
 
     /**
@@ -84,9 +82,24 @@ protected:
     template <typename T>
     T get_child(const std::string_view& key) const
     {
+        static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
+
         if (!checkKeyIsValid<T>(key)) {
             throw std::runtime_error("Missing required child node: " + std::string(key));
         }
+        return T(ref()[key]);
+    }
+
+    /// @brief Sets a child node
+    /// @tparam T The expected MNX type (`Object` or `Array<T>`).
+    /// @param key The key of the child node.
+    /// @param value The value to set.
+    /// @return the newly created child.
+    template <typename T>
+    T set_child(const std::string_view& key, const T& value)
+    {
+        static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
+        ref()[key] = value.ref();
         return T(ref()[key]);
     }
 
@@ -100,6 +113,8 @@ protected:
     template <typename T>
     std::optional<T> get_optional_child(const std::string_view& key) const
     {
+        static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
+
         if (!checkKeyIsValid<T>(key)) {
             return std::nullopt;
         }
@@ -147,10 +162,10 @@ public:
     }
 
     /// @brief Creates a new Object class as a child of a JSON element
-    /// @param parent_ref The parent JSON element
+    /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    Object(json& parent_ref, const std::string_view& key)
-        : Base(json::object(), parent_ref, key) {}
+    Object(Base& parent, const std::string_view& key)
+        : Base(json::object(), parent, key) {}
 
 private:
     // Special constructor that defers validation for Document
@@ -183,10 +198,10 @@ public:
     }
 
     /// @brief Creates a new Array class as a child of a JSON element
-    /// @param parent_ref The parent JSON element
+    /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    Array(json& parent_ref, const std::string_view& key)
-        : Base(json::array(), parent_ref, key) {}
+    Array(Base& parent, const std::string_view& key)
+        : Base(json::array(), parent, key) {}
 
     /** @brief Get the size of the array. */
     size_t size() const { return ref().size(); }
@@ -219,10 +234,27 @@ public:
         }
     }
 
-    /** @brief Append a new value to the array. */
-    void push_back(const T& value)
+    /** @brief Append a new value to the array. (Available only for primitive types) */
+    template <typename U = T>
+    std::enable_if_t<!std::is_base_of_v<Base, U>, void>
+    push_back(const U& value)
     {
         ref().push_back(value);
+    }
+
+    /**
+     * @brief Create a new element at the end of the array. (Available only for Base types)
+     * @return The newly created element.
+    */
+    template <typename U = T, std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append()
+    {
+        if constexpr (std::is_base_of_v<Object, U>) {
+            ref().push_back(json::object());
+        } else {
+            ref().push_back(json::array());
+        }
+        return U(ref()[ref().size() - 1]);
     }
 
     /** @brief Remove an element at a given index. */
@@ -274,12 +306,14 @@ private:
 
 #define MNX_REQUIRED_CHILD(TYPE, NAME) \
     TYPE NAME() const { return get_child<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
+    void set_##NAME(const TYPE& value) { set_child(#NAME, value); } \
+    TYPE create_##NAME() { return set_child(#NAME, TYPE(*this, #NAME)); } \
     static_assert(true, "") // require semicolon after macro
 
 #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
     std::optional<TYPE> NAME() const { return get_optional_child<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
+    void set_##NAME(const TYPE& value) { set_child(#NAME, value); } \
+    TYPE create_##NAME() { return set_child(#NAME, TYPE(*this, #NAME)); } \
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 

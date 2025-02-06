@@ -19,34 +19,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/** @mainpage
- * Welcome to the <b>MNX Document Model</b>.
- *
- * Use the <b>navigation buttons</b> at the top of this page to browse through
- * the framework documentation.
- *
- * The MNX Document Model is a <b>C++ class framework</b>
- * around the MNX music interchange format, which uses JSON files.
- * It requires the C++17 standard.
- * 
- * Features include:
- * - Dependency-free class definitions.
- * - Factory classes separate from object model classes.
- *
- * The following macro definitions are available to modify behavior of the library.
- * - `MNX_THROW_ON_VALIDATION_ERROR`: Throws `mnx::dom::validation_error` if a class fails its integrity check.
- * Otherwise it it logs the message, which by default sends it to `std::cerr`.
- *
- * The recommended way to define these macros is from your make file or build project. They are primarily intended
- * for debugging.
- *
- * @author Robert Patterson
- */
-
 #pragma once
 
 #include "BaseTypes.h"
-#include "Global.h"
-#include "Part.h"
-#include "Document.h"
+
+namespace mnx {
+
+/**
+ * @class Part
+ * @brief Represents a single part in an MNX document. It contains the majority of the musical information in its sequences.
+ */
+class Part : public Object
+{
+public:
+    using Object::Object;
+
+};
+
+} // namespace mnx

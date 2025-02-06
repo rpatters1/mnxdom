@@ -56,8 +56,13 @@ TEST(Document, Minimal)
 
     auto measures = doc.global().measures();
     EXPECT_EQ(measures.size(), 0);
-    auto measure = measures.append();
-    EXPECT_EQ(doc.global().measures().size(), 1);
+    measures.append();
+    ASSERT_EQ(doc.global().measures().size(), 1);
+    measures[0].set_index(3);  // use non const operator[]
+    const auto measuresConst = doc.global().measures();
+    const auto measure = measuresConst[0]; // use const operator[]
+    EXPECT_EQ(measure.index(), 3);
+    EXPECT_EQ(doc.global().measures()[0].index(), 3);
 
     EXPECT_EQ(doc.parts().size(), 0);
 }
@@ -80,6 +85,16 @@ TEST(Document, MinimalFromScratch)
     EXPECT_THROW(support.useAccidentalDisplay(), json::out_of_range)
             << "document no longer has a support instance, so the support instance is stale";
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate without a support instance";
+
+    auto parts = doc.parts();
+    EXPECT_EQ(parts.size(), 0);
+    auto part = parts.append();
+    EXPECT_EQ(doc.parts().size(), 1);
+    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a part";
+    auto measures = part.create_measures();
+    measures.append();
+    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a measure to a part";
+    //std::cout << doc.dump(4) << std::endl;
 }
 
 TEST(Document, MissingRequiredFields)
@@ -109,4 +124,10 @@ TEST(Document, MissingRequiredFields)
     EXPECT_FALSE(doc.validate().has_value()) << "after adding global, schema should validate";
 
     EXPECT_EQ(doc.parts().size(), 0);
+    auto part = doc.parts().append();
+    EXPECT_FALSE(doc.validate().has_value()) << "after adding part, schema should validate";
+    EXPECT_EQ(part.staves(), 1);
+    ASSERT_EQ(doc.parts().size(), 1);
+    doc.parts()[0].set_staves(3);
+    EXPECT_EQ(part.staves(), 3) << "detached instance should reflect changed value from doc";
 }

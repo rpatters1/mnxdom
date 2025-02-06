@@ -45,6 +45,13 @@ class Base
 public:
     virtual ~Base() = default;
 
+    /// @brief Dumps the branch to a string. Useful in debugging.
+    /// @param indents Number of indents or -1 for no indents 
+    std::string dump(int indents = -1)
+    {
+        return ref().dump(indents);
+    }
+
 protected:
     /**
      * @brief Convert this element for retrieval.
@@ -178,9 +185,6 @@ private:
 
     std::reference_wrapper<json> m_root;    ///< Reference to the root JSON object.
     json_pointer m_pointer;                 ///< JSON pointer to the specific node.
-
-    template <typename T>
-    friend class Array;
 };
 
 class Document;
@@ -192,6 +196,7 @@ class Object : public Base
 public:
     /// @brief Wraps an Object class around an existing JSON object element
     /// @param root Reference to the document root
+    /// @param pointer The json_pointer value for the element
     Object(json& root, json_pointer pointer) : Base(root, pointer)
     {
         if (!ref().is_object()) {
@@ -226,7 +231,8 @@ public:
     using value_type = T;
 
     /// @brief Wraps an Array class around an existing JSON array element
-    /// @param jsonRef Reference to the element
+    /// @param root Reference to the document root
+    /// @param pointer The json_pointer value for the element
     Array(json& root, json_pointer pointer) : Base(root, pointer)
     {
         if (!ref().is_array()) {
@@ -254,7 +260,7 @@ public:
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {
-            return T(ref()[index]);
+            return getChild<T>(std::to_string(index));
         } else {
             return ref().at(index).template get<T>();
         }
@@ -265,7 +271,7 @@ public:
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {
-            return T(ref()[index]);
+            return getChild<T>(std::to_string(index));
         } else {
             return ref().at(index).template get_ref<T&>();
         }
@@ -291,8 +297,7 @@ public:
         } else {
             ref().push_back(json::array());
         }
-        json_pointer elementPointer = m_pointer / std::to_string(ref().size() - 1);
-        return U(m_root, elementPointer);
+        return U(*this, std::to_string(ref().size() - 1));
     }
 
     /** @brief Remove an element at a given index. */
@@ -341,6 +346,14 @@ private:
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
+    TYPE NAME() const { \
+        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "")
 
 #define MNX_REQUIRED_CHILD(TYPE, NAME) \
     TYPE NAME() const { return getChild<TYPE>(#NAME); } \

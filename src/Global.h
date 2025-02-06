@@ -34,7 +34,7 @@ class GlobalMeasure : public Object
 public:
     using Object::Object;
 
-    MNX_OPTIONAL_PROPERTY(int, index);
+    MNX_OPTIONAL_PROPERTY(int, index);      ///< the measure index
 };
 
 /**

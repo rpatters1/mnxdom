@@ -28,6 +28,45 @@
 
 #include "nlohmann/json.hpp"
 
+#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
+    TYPE NAME() const { \
+        if (!ref().contains(#NAME)) { \
+            throw std::runtime_error("Missing required property: " #NAME); \
+        } \
+        return ref()[#NAME].get<TYPE>(); \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
+    std::optional<TYPE> NAME() const { \
+        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
+    TYPE NAME() const { \
+        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "")
+
+#define MNX_REQUIRED_CHILD(TYPE, NAME) \
+    TYPE NAME() const { return getChild<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
+    TYPE create_##NAME() { return setChild(#NAME, TYPE(*this, #NAME)); } \
+    static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
+    std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
+    TYPE create_##NAME() { return setChild(#NAME, TYPE(*this, #NAME)); } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "") // require semicolon after macro
+
 namespace mnx {
 
 inline constexpr int MNX_VERSION = 1;
@@ -347,7 +386,7 @@ public:
     /// @brief Returns a const iterator to the end of the array.
     auto end() const { return ref().cend(); }
 
-private:
+protected:
     void checkIndex(size_t index) const
     {
         assert(index < ref().size());
@@ -357,43 +396,40 @@ private:
     }
 };
 
-#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
-    TYPE NAME() const { \
-        if (!ref().contains(#NAME)) { \
-            throw std::runtime_error("Missing required property: " #NAME); \
-        } \
-        return ref()[#NAME].get<TYPE>(); \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    static_assert(true, "") // require semicolon after macro
+class ContentObject : ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
 
-#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { \
-        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    static_assert(true, "") // require semicolon after macro
+    MNX_REQUIRED_PROPERTY(std::string, type);   ///< determines our type in the JSON
+};
 
-#define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
-    TYPE NAME() const { \
-        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    static_assert(true, "")
+class ContentArray : public Array<ContentObject> {
+public:
+    using BaseArray = Array<ContentObject>;
+    using BaseArray::BaseArray;  // Inherit constructors
 
-#define MNX_REQUIRED_CHILD(TYPE, NAME) \
-    TYPE NAME() const { return getChild<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
-    TYPE create_##NAME() { return setChild(#NAME, TYPE(*this, #NAME)); } \
-    static_assert(true, "") // require semicolon after macro
+    /// @brief Retrieve an element from the array as a specific type
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T get(size_t index) const
+    {
+        return getTypedObject<T>(index);
+    }
 
-#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
-    TYPE create_##NAME() { return setChild(#NAME, TYPE(*this, #NAME)); } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    static_assert(true, "") // require semicolon after macro
+private:
+    /// @brief Constructs an object of type `T` if its type matches the JSON type
+    /// @throws std::invalid_argument if there is a type mismatch
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T getTypedObject(size_t index)
+    {
+        this->checkIndex(index);
+        auto element = (*this)[index];
+        if (element.type() != T::ContentTypeValue) {
+            throw std::invalid_argument("Type mismatch: expected " + std::string(T::ContentTypeValue) +
+                                        ", got " + element.type());
+        }
+        return T(*this, std::to_string(index));
+    }
+};
 
 } // namespace mnx

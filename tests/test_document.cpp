@@ -23,6 +23,8 @@
 
 #include "mnxdom.h"
 
+using namespace mnx;
+
 TEST(Document, Minimal)
 {
     std::istringstream jsonString(R"(
@@ -39,7 +41,7 @@ TEST(Document, Minimal)
             "parts": []
         }
     )");
-    auto doc = mnx::Document::create(jsonString);
+    Document doc(jsonString);
 
     const auto mnx = doc.mnx();
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
@@ -56,28 +58,55 @@ TEST(Document, Minimal)
     EXPECT_EQ(measures.size(), 0);
     auto measure = measures.append();
     EXPECT_EQ(doc.global().measures().size(), 1);
+
+    EXPECT_EQ(doc.parts().size(), 0);
 }
 
 TEST(Document, MinimalFromScratch)
 {
-    mnx::Document doc;
+    Document doc;
+    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
 
-    auto mnx = doc.create_mnx();
-    mnx.set_version(1);
-    mnx.create_support().set_useAccidentalDisplay(false);
-    EXPECT_TRUE(mnx.support().has_value()) << "mnx has a support instance";
+    auto mnx = doc.mnx();
+    EXPECT_EQ(mnx.version(), MNX_VERSION);
+    mnx.set_version(MNX_VERSION + 1);
+    EXPECT_EQ(doc.mnx().version(), MNX_VERSION + 1);
 
-    doc.create_parts();
-    EXPECT_TRUE(doc.mnx().support().has_value()) << "mnx has a support instance";
+    auto support = mnx.create_support();
+    support.set_useAccidentalDisplay(false);
 
-    EXPECT_TRUE(doc.validate().has_value()) << "schema should not validate because it does not have globals";
-    doc.create_global();
-    EXPECT_TRUE(doc.validate().has_value()) << "schema should not validate because globals does not have measures";
-    doc.global().create_measures();
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate";
-
-    EXPECT_TRUE(doc.mnx().support().has_value()) << "mnx has a support instance";
+    EXPECT_TRUE(support.useAccidentalDisplay()) << "mnx has a support instance";
     doc.mnx().clear_support();
-    EXPECT_FALSE(doc.mnx().support().has_value()) << "mnx no longer has a support instance";
+    EXPECT_THROW(support.useAccidentalDisplay(), json::out_of_range)
+            << "document no longer has a support instance, so the support instance is stale";
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate without a support instance";
+}
+
+TEST(Document, MissingRequiredFields)
+{
+    std::istringstream jsonString(R"(
+        {
+            "mnx": {
+            },
+            "global": {
+            },
+            "parts": []
+        }
+    )");
+    Document doc(jsonString);
+    EXPECT_TRUE(doc.validate().has_value()) << "schema should not validate";
+
+    auto mnx = doc.mnx();
+    EXPECT_THROW(mnx.version(), std::runtime_error);
+    mnx.set_version(MNX_VERSION);
+    EXPECT_EQ(doc.mnx().version(), MNX_VERSION);
+    EXPECT_TRUE(doc.validate().has_value()) << "after adding version, schema should still not validate";
+
+    auto global = doc.global();
+    EXPECT_THROW(global.measures(), std::runtime_error);
+    global.create_measures();
+    EXPECT_EQ(doc.global().measures().size(), 0);
+    EXPECT_FALSE(doc.validate().has_value()) << "after adding global, schema should validate";
+
+    EXPECT_EQ(doc.parts().size(), 0);
 }

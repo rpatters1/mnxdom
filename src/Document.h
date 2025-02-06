@@ -39,6 +39,16 @@ class MnxMetaData : public Object
 public:
     using Object::Object;
 
+    /// @brief Creates a new MnxMetaData class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    MnxMetaData(Base& parent, const std::string_view& key)
+        : Object(parent, key)
+    {
+        // required children
+        set_version(MNX_VERSION);
+    }
+
     /**
      * @class Support
      * @brief Represents optional support metadata within an MNX document.
@@ -73,25 +83,29 @@ class Document : public Object
 {    
 public:
     /**
-     * @brief Constructs an empty MNX document.
+     * @brief Constructs an empty MNX document. The resulting instance contains all
+     * required fields and should validate against the schema.
      */
-    Document() : Object(m_json_root, Object::DeferValidation{}) {}
+    Document() : Object(m_json_root)
+    {
+        // create required children
+        create_mnx();
+        create_global();
+        create_parts();
+    }
+
+    /**
+     * @brief Constructs a Document from an input stream.
+     * @param inputStream The input stream containing the MNX JSON data.
+     */
+    Document(std::istream& inputStream) : Object(m_json_root)
+    {
+        inputStream >> m_json_root;
+    }
 
     MNX_REQUIRED_CHILD(Global, global); ///< Required child containing global data for the MNX document.
     MNX_REQUIRED_CHILD(MnxMetaData, mnx); ///< Required child containing metadata for the MNX document.
     MNX_REQUIRED_CHILD(Array<Part>, parts); ///< Required child containing an array of part data for the MNX document.
-
-    /**
-     * @brief Creates a Document from an input stream.
-     * @param inputStream The input stream containing the MNX JSON data.
-     * @return A Document instance populated with the parsed data.
-     */
-    static Document create(std::istream& inputStream)
-    {
-        Document result;
-        inputStream >> result.m_json_root;
-        return result;
-    }
 
     /**
      * @brief Creates a Document from a JSON file.
@@ -107,7 +121,7 @@ public:
         if (!jsonFile.is_open()) {
             throw std::runtime_error("Unable to open JSON file: " + inputPath.u8string());
         }
-        return create(jsonFile);
+        return Document(jsonFile);
     }
 
     /**

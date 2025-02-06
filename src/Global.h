@@ -33,6 +33,8 @@ class GlobalMeasure : public Object
 {
 public:
     using Object::Object;
+
+    MNX_OPTIONAL_PROPERTY(int, index);
 };
 
 /**
@@ -44,9 +46,20 @@ class Global : public Object
 public:
     using Object::Object;
 
+    /// @brief Creates a new Global class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    Global(Base& parent, const std::string_view& key)
+        : Object(parent, key)
+    {
+        // required children
+        create_measures();
+    }
+
     /**
      * @brief Required child containing an array of global measures.
      */
     MNX_REQUIRED_CHILD(Array<GlobalMeasure>, measures);
 };
+
 } // namespace mnx

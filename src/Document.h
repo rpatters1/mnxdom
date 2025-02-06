@@ -27,6 +27,7 @@
 #include "BaseTypes.h"
 #include "Global.h"
 #include "Part.h"
+#include "Score.h"
 
 namespace mnx {
 
@@ -103,9 +104,10 @@ public:
         inputStream >> m_json_root;
     }
 
-    MNX_REQUIRED_CHILD(Global, global); ///< Required child containing global data for the MNX document.
-    MNX_REQUIRED_CHILD(MnxMetaData, mnx); ///< Required child containing metadata for the MNX document.
-    MNX_REQUIRED_CHILD(Array<Part>, parts); ///< Required child containing an array of part data for the MNX document.
+    MNX_REQUIRED_CHILD(Global, global);         ///< Global data for the MNX document.
+    MNX_REQUIRED_CHILD(MnxMetaData, mnx);       ///< Metadata for the MNX document.
+    MNX_REQUIRED_CHILD(Array<Part>, parts);     ///< List of parts for the MNX document.
+    MNX_OPTIONAL_CHILD(Array<Score>, scores);   ///< List of scores for the MNX document.
 
     /**
      * @brief Creates a Document from a JSON file.

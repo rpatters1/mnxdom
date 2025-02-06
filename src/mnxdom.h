@@ -49,4 +49,5 @@
 #include "BaseTypes.h"
 #include "Global.h"
 #include "Part.h"
+#include "Score.h"
 #include "Document.h"

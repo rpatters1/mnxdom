@@ -24,6 +24,7 @@
 #include <memory>
 #include <unordered_map>
 #include <cassert>
+#include <iostream>
 
 #include "nlohmann/json.hpp"
 
@@ -65,6 +66,19 @@ protected:
      * @return A reference to the JSON node.
      */
     json& ref() { return resolve_pointer(); }
+
+    /// @brief Returns the json_pointer for this node.
+    json_pointer pointer() const { return m_pointer; }
+
+    /// @brief Returns the parent object for this node
+    /// @tparam T The type to create. Must correctly match whether it is an array or object.
+    /// @throws std::invalid_argument if the type of T does not match the type of the underlying pointer.
+    template <typename T>
+    T parent() const
+    {
+        static_assert(std::is_base_of_v<Base, T>, "Template type mush be derived from Base.");
+        return T(m_root, m_pointer.parent_pointer());
+    }
 
     /**
      * @brief Wrap a Base instance around a specific JSON reference using a json_pointer.
@@ -217,6 +231,20 @@ private:
 };
 
 /**
+ * @brief Represents an MNX object that is included as an array element.
+ */
+class ArrayElementObject : public Object
+{
+public:
+    using Object::Object;
+
+    size_t calcArrayIndex() const
+    {
+        return std::stoul(pointer().back());
+    }
+};
+
+/**
  * @brief Represents an MNX array, encapsulating property access.
  */
 template <typename T>
@@ -224,7 +252,7 @@ class Array : public Base
 {
     static_assert(std::is_same_v<T, int> || std::is_same_v<T, double> ||
                   std::is_same_v<T, bool> || std::is_same_v<T, std::string> ||
-                  std::is_base_of_v<Base, T>, "Invalid MNX array element type.");
+                  std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX array element type.");
 
 public:
     /// @brief The type for elements in this Array.
@@ -236,7 +264,7 @@ public:
     Array(json& root, json_pointer pointer) : Base(root, pointer)
     {
         if (!ref().is_array()) {
-            throw std::invalid_argument("mnx::Array must wrap a JSON object.");
+            throw std::invalid_argument("mnx::Array must wrap a JSON array.");
         }
     }
 

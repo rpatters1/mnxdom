@@ -29,22 +29,22 @@ namespace mnx {
  * @class PartMeasure
  * @brief Represents a single measuer in a part in an MNX document. It contains the majority of the musical information in its sequences.
  */
-class PartMeasure : public Object
+class PartMeasure : public ArrayElementObject
 {
 public:
-    using Object::Object;
+    using ArrayElementObject::ArrayElementObject;
 
     /// @brief Creates a new PartMeasure class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     PartMeasure(Base& parent, const std::string_view& key)
-        : Object(parent, key)
+        : ArrayElementObject(parent, key)
     {
         // required children
         create_sequences();
     }
 
-    MNX_REQUIRED_CHILD(Array<Object>, sequences);       ///< sequences that contain all the musical details in each measure
+    MNX_REQUIRED_CHILD(Array<ArrayElementObject>, sequences);       ///< sequences that contain all the musical details in each measure
                                                         ///< @todo type this array with a std::variant
 };
 
@@ -52,10 +52,10 @@ public:
  * @class Part
  * @brief Represents a single part in an MNX document.
  */
-class Part : public Object
+class Part : public ArrayElementObject
 {
 public:
-    using Object::Object;
+    using ArrayElementObject::ArrayElementObject;
 
     MNX_OPTIONAL_PROPERTY(std::string, id);             ///< Uniquely identifies the part
     MNX_OPTIONAL_CHILD(Array<PartMeasure>, measures);   ///< Contains all the musical data for this part

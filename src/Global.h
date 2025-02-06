@@ -29,12 +29,21 @@ namespace mnx {
  * @class GlobalMeasure
  * @brief Represents a single global measure instance within an MNX document.
  */
-class GlobalMeasure : public Object
+class GlobalMeasure : public ArrayElementObject
 {
 public:
-    using Object::Object;
+    using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_PROPERTY(int, index);      ///< the measure index
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, index, calcDefaultIndex());  ///< the measure index
+
+private:
+    int calcDefaultIndex() const
+    {
+        size_t arrayIndex = calcArrayIndex();
+        if (arrayIndex == 0) return 1;
+        auto parents = parent<Array<GlobalMeasure>>();
+        return parents[arrayIndex - 1].index();
+    }
 };
 
 /**

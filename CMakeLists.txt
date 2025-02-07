@@ -57,6 +57,7 @@ FetchContent_MakeAvailable(json_schema_validator)
 
 target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
 target_link_libraries(mnxdom PRIVATE nlohmann_json_schema_validator)
+target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 
 add_dependencies(mnxdom GenerateMnxSchemaXxd)
 target_include_directories(mnxdom PRIVATE ${GENERATED_DIR})

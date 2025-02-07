@@ -25,6 +25,7 @@
 #include <unordered_map>
 #include <cassert>
 #include <iostream>
+#include <optional>
 
 #include "nlohmann/json.hpp"
 

@@ -25,15 +25,19 @@
 #include "mnxdom.h"
 
 #define MNX_ENUM_MAPPING(EnumType, ...)                                       \
+namespace mnx {                                                               \
 template <>                                                                   \
 const std::unordered_map<std::string, EnumType>                               \
 EnumStringMapping<EnumType>::stringToEnum() {                                 \
     static const std::unordered_map<std::string, EnumType> map = __VA_ARGS__;  \
     return map;                                                               \
 }                                                                             \
+}                                                                             \
+namespace nlohmann {                                                          \
+    template struct adl_serializer<::mnx::EnumType, std::enable_if_t<std::is_enum_v<::mnx::EnumType>>>; \
+}                                                                             \
 static_assert(true, "") // forces semicolon after macro invocation
 
-namespace mnx {
 
 MNX_ENUM_MAPPING(LayoutSymbol, {
     { "noSymbol", LayoutSymbol::NoSymbol },
@@ -50,5 +54,3 @@ MNX_ENUM_MAPPING(LayoutStemDirection, {
     { "down",   LayoutStemDirection::Down },
     { "up",     LayoutStemDirection::Up }
 });
-
-} // namespace mnx

@@ -422,14 +422,14 @@ public:
  * @code{.cpp}
  * auto next = content[index]; // gets the base ContentObject instance.
  * if (next.type() == "group") {
- *     auto group = content.get<LayoutGroup>(index); // gets the instance as a LayoutGroup.
+ *     auto group = content.get<LayoutGroup>(index); // gets the instance typed as a LayoutGroup.
  *     // process group
  * } else if (next.type() == "staff") {
- *     auto staff = content.get<LayoutStaff>(index); // gets the instance as a LayoutStaff.
+ *     auto staff = content.get<LayoutStaff>(index); // gets the instance typed as a LayoutStaff.
  * }
  * @endcode
  *
- * To add instances to the array, use the template paramter to specify the type to add
+ * To add instances to the array, use the template paramter to specify the type to add.
  *
  * @code{.cpp}
  * auto newElement = content.append<LayoutStaff>();

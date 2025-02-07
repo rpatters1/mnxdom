@@ -281,6 +281,7 @@ class ArrayElementObject : public Object
 public:
     using Object::Object;
 
+    /// @brief Calculates the array index of the current instance within the array.
     size_t calcArrayIndex() const
     {
         return std::stoul(pointer().back());
@@ -391,6 +392,8 @@ public:
     auto end() const { return ref().cend(); }
 
 protected:
+    /// @brief validates that an index is not out of range
+    /// @throws std::out_of_range if the index is out of range
     void checkIndex(size_t index) const
     {
         assert(index < ref().size());
@@ -400,6 +403,7 @@ protected:
     }
 };
 
+/// @brief Base class for objects that are elements of content arrays
 class ContentObject : public ArrayElementObject
 {
 public:
@@ -408,9 +412,36 @@ public:
     MNX_REQUIRED_PROPERTY(std::string, type);   ///< determines our type in the JSON
 };
 
-class ContentArray : public Array<ContentObject> {
+/**
+ * @class ContentArray
+ * @brief Class for content arrays.
+ *
+ * Allows arrays of any type that derives from @ref ContentObject. An exampled of how
+ * to get type instances is:
+ * 
+ * @code{.cpp}
+ * auto next = content[index]; // gets the base ContentObject instance.
+ * if (next.type() == "group") {
+ *     auto group = content.get<LayoutGroup>(index); // gets the instance as a LayoutGroup.
+ *     // process group
+ * } else if (next.type() == "staff") {
+ *     auto staff = content.get<LayoutStaff>(index); // gets the instance as a LayoutStaff.
+ * }
+ * @endcode
+ *
+ * To add instances to the array, use the template paramter to specify the type to add
+ *
+ * @code{.cpp}
+ * auto newElement = content.append<LayoutStaff>();
+ * @endcode
+ *
+ * The `append` method automatically gives the instance the correct `type` value.
+ *
+*/
+class ContentArray : public Array<ContentObject>
+{
 public:
-    using BaseArray = Array<ContentObject>;
+    using BaseArray = Array<ContentObject>;     ///< The base array type
     using BaseArray::BaseArray;  // Inherit constructors
 
     /// @brief Retrieve an element from the array as a specific type
@@ -445,10 +476,16 @@ private:
     }
 };
 
+/**
+ * @class EnumStringMapping
+ * @brief Supplies enum string mappings to nlohmann json's serializer.
+ */
 template <typename E, typename = std::enable_if_t<std::is_enum_v<E>>>
 struct EnumStringMapping
 {
-    static const std::unordered_map<std::string, E> stringToEnum();
+    static const std::unordered_map<std::string, E> stringToEnum();     ///< @brief maps strings to enum values
+
+    /// @brief maps enum values to strings
     static const std::unordered_map<E, std::string> enumToString()
     {
         static const std::unordered_map<E, std::string> reverseMap = []() {
@@ -463,6 +500,8 @@ struct EnumStringMapping
 };
 
 } // namespace mnx
+
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 namespace nlohmann {
 
@@ -490,5 +529,7 @@ struct adl_serializer<E, std::enable_if_t<std::is_enum_v<E>>> {
         j = it->second;
     }
 };
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 } // namespace nlohmann

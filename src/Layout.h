@@ -99,7 +99,7 @@ public:
     MNX_REQUIRED_CHILD(Array<LayoutStaffSource>, sources);      ///< The sources for this staff.
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);                ///< The symbol down the left side.
 
-    static constexpr std::string_view ContentTypeValue = "staff";
+    static constexpr std::string_view ContentTypeValue = "staff"; ///< type value that identifies the type within the content array
 };
 
 /**
@@ -125,7 +125,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< Label to be rendered to the left of the group
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);    ///< The symbol down the left side.
 
-    static constexpr std::string_view ContentTypeValue = "group";
+    static constexpr std::string_view ContentTypeValue = "group"; ///< type value that identifies the type within the content array
 };
 
 /**

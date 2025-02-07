@@ -26,7 +26,6 @@
 #include <cassert>
 #include <iostream>
 
-#define JSON_DISABLE_ENUM_SERIALIZATION 1
 #include "nlohmann/json.hpp"
 
 #define MNX_REQUIRED_PROPERTY(TYPE, NAME) \

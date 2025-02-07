@@ -24,6 +24,7 @@ include("${CMAKE_SOURCE_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 
 # Add library
 add_library(mnxdom STATIC
+    src/EnumerationMaps.cpp
     src/Implementations.cpp
 )
 

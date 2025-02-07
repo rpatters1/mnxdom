@@ -45,7 +45,6 @@ public:
     }
 
     MNX_REQUIRED_CHILD(ContentArray, sequences);      ///< sequences that contain all the musical details in each measure
-                                                      ///< @todo type this array with a std::variant
 };
 
 /**

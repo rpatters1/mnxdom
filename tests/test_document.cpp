@@ -94,6 +94,17 @@ TEST(Document, MinimalFromScratch)
     auto measures = part.create_measures();
     measures.append();
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a measure to a part";
+
+    auto layouts = doc.create_layouts();
+    layouts.append();
+    auto layout = layouts[0];
+    EXPECT_TRUE(doc.validate().has_value()) << "schema should not validate after adding a layout, because no layout id";
+    layout.set_id("layout0"); // this is required for validation
+    auto content = layout.content();
+    auto staff = content.append<LayoutStaff>();
+    staff.set_symbol(LayoutSymbol::Bracket);
+    EXPECT_EQ(staff.symbol(), LayoutSymbol::Bracket);
+    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a layout";
     //std::cout << doc.dump(4) << std::endl;
 }
 

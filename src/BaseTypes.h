@@ -26,6 +26,7 @@
 #include <cassert>
 #include <iostream>
 
+#define JSON_DISABLE_ENUM_SERIALIZATION 1
 #include "nlohmann/json.hpp"
 
 #define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
@@ -105,6 +106,9 @@ protected:
      * @return A reference to the JSON node.
      */
     json& ref() { return resolve_pointer(); }
+
+    /// @brief Returns the root.
+    std::reference_wrapper<json> root() const { return m_root; }
 
     /// @brief Returns the json_pointer for this node.
     json_pointer pointer() const { return m_pointer; }
@@ -396,7 +400,7 @@ protected:
     }
 };
 
-class ContentObject : ArrayElementObject
+class ContentObject : public ArrayElementObject
 {
 public:
     using ArrayElementObject::ArrayElementObject;
@@ -416,11 +420,21 @@ public:
         return getTypedObject<T>(index);
     }
 
+    /// @brief Append an element of the specified type
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T append()
+    {
+        auto result = Array::append<T>();
+        result.set_type(std::string(T::ContentTypeValue));
+        return result;
+    }
+
+
 private:
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T getTypedObject(size_t index)
+    T getTypedObject(size_t index) const
     {
         this->checkIndex(index);
         auto element = (*this)[index];
@@ -428,8 +442,54 @@ private:
             throw std::invalid_argument("Type mismatch: expected " + std::string(T::ContentTypeValue) +
                                         ", got " + element.type());
         }
-        return T(*this, std::to_string(index));
+        return T(root(), pointer() / std::to_string(index));
+    }
+};
+
+template <typename E, typename = std::enable_if_t<std::is_enum_v<E>>>
+struct EnumStringMapping
+{
+    static const std::unordered_map<std::string, E> stringToEnum();
+    static const std::unordered_map<E, std::string> enumToString()
+    {
+        static const std::unordered_map<E, std::string> reverseMap = []() {
+            std::unordered_map<E, std::string> result;
+            for (const auto& element : EnumStringMapping<E>::stringToEnum()) {
+                result.emplace(element.second, element.first);
+            }
+            return result;
+        }();
+        return reverseMap;
     }
 };
 
 } // namespace mnx
+
+namespace nlohmann {
+
+// This general adl_serializer is enabled only for enum types.
+template <typename E>
+struct adl_serializer<E, std::enable_if_t<std::is_enum_v<E>>> {
+    static E from_json(const ::mnx::json &j) {
+        // Lookup the string in the specialized map.
+        const auto& map = ::mnx::EnumStringMapping<E>::stringToEnum();
+        auto it = map.find(j.get<std::string>());
+        if (it != map.end()) {
+            return it->second;
+        }
+        /// @todo throw or log unmapped string
+        return E{};
+    }
+    static void to_json(::mnx::json &j, const E &value) {
+        const auto& map = ::mnx::EnumStringMapping<E>::enumToString();
+        auto it = map.find(value);
+        if (it == map.end()) {
+            /// @todo log or throw unmapped enum.
+            j = json();
+            return;
+        }
+        j = it->second;
+    }
+};
+
+} // namespace nlohmann

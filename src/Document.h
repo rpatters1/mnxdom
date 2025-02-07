@@ -26,6 +26,7 @@
 
 #include "BaseTypes.h"
 #include "Global.h"
+#include "Layout.h"
 #include "Part.h"
 #include "Score.h"
 
@@ -106,6 +107,7 @@ public:
 
     MNX_REQUIRED_CHILD(Global, global);         ///< Global data for the MNX document.
     MNX_REQUIRED_CHILD(MnxMetaData, mnx);       ///< Metadata for the MNX document.
+    MNX_OPTIONAL_CHILD(Array<Layout>, layouts); ///< List of layouts for the MNX document.
     MNX_REQUIRED_CHILD(Array<Part>, parts);     ///< List of parts for the MNX document.
     MNX_OPTIONAL_CHILD(Array<Score>, scores);   ///< List of scores for the MNX document.
 

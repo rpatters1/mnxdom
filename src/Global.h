@@ -65,10 +65,7 @@ public:
         create_measures();
     }
 
-    /**
-     * @brief Required child containing an array of global measures.
-     */
-    MNX_REQUIRED_CHILD(Array<GlobalMeasure>, measures);
+    MNX_REQUIRED_CHILD(Array<GlobalMeasure>, measures);     ///< array of global measures.
 };
 
 } // namespace mnx

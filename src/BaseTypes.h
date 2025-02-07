@@ -424,11 +424,10 @@ public:
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
     T append()
     {
-        auto result = Array::append<T>();
+        auto result = BaseArray::append<T>();
         result.set_type(std::string(T::ContentTypeValue));
         return result;
     }
-
 
 private:
     /// @brief Constructs an object of type `T` if its type matches the JSON type

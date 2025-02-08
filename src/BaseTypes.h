@@ -535,36 +535,6 @@ inline void to_json(BasicJsonType& j, EnumType value) noexcept
     }
 }
 
-/*
-// This general adl_serializer is enabled only for enum types.
-template <typename E>
-struct adl_serializer<E, std::enable_if_t<std::is_enum_v<E>>>
-{
-    static E from_json(const ::mnx::json& j)
-    {
-        // Lookup the string in the specialized map.
-        const auto& map = ::mnx::EnumStringMapping<E>::stringToEnum();
-        auto it = map.find(j.get<std::string>());
-        if (it != map.end()) {
-            return it->second;
-        }
-        /// @todo throw or log unmapped string
-        return E{};
-    }
-    static void to_json(::mnx::json& j, const E& value)
-    {
-        const auto& map = ::mnx::EnumStringMapping<E>::enumToString();
-        auto it = map.find(value);
-        if (it == map.end()) {
-            /// @todo log or throw unmapped enum.
-            j = json();
-            return;
-        }
-        j = it->second;
-    }
-};
-*/
-
 } // namespace detail
 } // namespace nlohmann
 

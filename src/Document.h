@@ -25,40 +25,98 @@
 #include <fstream>
 
 #include "BaseTypes.h"
+#include "Global.h"
+#include "Layout.h"
+#include "Part.h"
+#include "Score.h"
 
 namespace mnx {
 
+/**
+ * @class MnxMetaData
+ * @brief Represents metadata for an MNX document.
+ */
 class MnxMetaData : public Object
 {
 public:
     using Object::Object;
 
+    /// @brief Creates a new MnxMetaData class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    MnxMetaData(Base& parent, const std::string_view& key)
+        : Object(parent, key)
+    {
+        // required children
+        set_version(MNX_VERSION);
+    }
+
+    /**
+     * @class Support
+     * @brief Represents optional support metadata within an MNX document.
+     */
     class Support : public Object
     {
     public:
         using Object::Object;
 
+        /**
+         * @brief Optional property indicating whether accidental display is used.
+         */
         MNX_OPTIONAL_PROPERTY(bool, useAccidentalDisplay);
     };
 
+    /**
+     * @brief Required property indicating the version of the MNX document.
+     */
     MNX_REQUIRED_PROPERTY(int, version);
+
+    /**
+     * @brief Optional child containing support metadata.
+     */
     MNX_OPTIONAL_CHILD(Support, support);
 };
 
+/**
+ * @class Document
+ * @brief Represents an MNX document and provides methods for loading and saving.
+ */
 class Document : public Object
 {    
 public:
-    Document() : Object(m_json_root, Object::DeferValidation{}) {}
-
-    MNX_REQUIRED_CHILD(MnxMetaData, mnx);
-
-    static Document create(std::istream& inputStream)
+    /**
+     * @brief Constructs an empty MNX document. The resulting instance contains all
+     * required fields and should validate against the schema.
+     */
+    Document() : Object(m_json_root)
     {
-        Document result;
-        inputStream >> result.m_json_root;
-        return result;
+        // create required children
+        create_mnx();
+        create_global();
+        create_parts();
     }
 
+    /**
+     * @brief Constructs a Document from an input stream.
+     * @param inputStream The input stream containing the MNX JSON data.
+     */
+    Document(std::istream& inputStream) : Object(m_json_root)
+    {
+        inputStream >> m_json_root;
+    }
+
+    MNX_REQUIRED_CHILD(Global, global);         ///< Global data for the MNX document.
+    MNX_REQUIRED_CHILD(MnxMetaData, mnx);       ///< Metadata for the MNX document.
+    MNX_OPTIONAL_CHILD(Array<Layout>, layouts); ///< List of layouts for the MNX document.
+    MNX_REQUIRED_CHILD(Array<Part>, parts);     ///< List of parts for the MNX document.
+    MNX_OPTIONAL_CHILD(Array<Score>, scores);   ///< List of scores for the MNX document.
+
+    /**
+     * @brief Creates a Document from a JSON file.
+     * @param inputPath The path to the JSON file.
+     * @return A Document instance populated with the parsed data.
+     * @throws std::runtime_error if the file cannot be opened.
+     */
     static Document create(const std::filesystem::path& inputPath)
     {
         std::ifstream jsonFile;
@@ -67,9 +125,15 @@ public:
         if (!jsonFile.is_open()) {
             throw std::runtime_error("Unable to open JSON file: " + inputPath.u8string());
         }
-        return create(jsonFile);
+        return Document(jsonFile);
     }
 
+    /**
+     * @brief Saves the MNX document to a file.
+     * @param outputPath The file path to save the document.
+     * @param indentSpaces Optional number of spaces for indentation; if not provided, no indentation is applied.
+     * @throws std::ios_base::failure if file operations fail.
+     */
     void save(const std::filesystem::path& outputPath, std::optional<int> indentSpaces) const
     {
         std::ofstream file;
@@ -79,7 +143,17 @@ public:
         file.close();
     }
 
+    /**
+     * @brief Validates the MNX document against a schema.
+     * @param jsonSchema A string containing the schema json.
+     * @returns std::nullopt if no error or an error message if there was one.
+     */
+    std::optional<std::string> validate(const std::optional<std::string>& jsonSchema = std::nullopt) const;
+
 private:
+    /**
+     * @brief The root JSON object storing the MNX document data.
+     */
     json m_json_root = json::object();
 };
 

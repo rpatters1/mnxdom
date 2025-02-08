@@ -19,36 +19,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#include <fstream>
 
-/** @mainpage
- * Welcome to the <b>MNX Document Model</b>.
- *
- * Use the <b>navigation buttons</b> at the top of this page to browse through
- * the framework documentation.
- *
- * The MNX Document Model is a <b>C++ class framework</b>
- * around the MNX music interchange format, which uses JSON files.
- * It requires the C++17 standard.
- * 
- * Features include:
- * - Dependency-free class definitions.
- * - Factory classes separate from object model classes.
- *
- * The following macro definitions are available to modify behavior of the library.
- * - `MNX_THROW_ON_VALIDATION_ERROR`: Throws `mnx::dom::validation_error` if a class fails its integrity check.
- * Otherwise it it logs the message, which by default sends it to `std::cerr`.
- *
- * The recommended way to define these macros is from your make file or build project. They are primarily intended
- * for debugging.
- *
- * @author Robert Patterson
- */
+#include "nlohmann/json-schema.hpp"
+#include "mnx_schema.xxd"
 
-#pragma once
+#include "mnxdom.h"
 
-#include "BaseTypes.h"
-#include "Global.h"
-#include "Layout.h"
-#include "Part.h"
-#include "Score.h"
-#include "Document.h"
+namespace mnx {
+
+static const std::string_view MNX_SCHEMA(reinterpret_cast<const char*>(mnx_schema_json), mnx_schema_json_len);
+
+// ********************
+// ***** Document *****
+// ********************
+
+std::optional<std::string> Document::validate(const std::optional<std::string>& jsonSchema) const
+{
+    try {
+        // Load JSON schema
+        json schemaJson = json::parse(jsonSchema.value_or(std::string(MNX_SCHEMA)));
+        nlohmann::json_schema::json_validator validator;
+        validator.set_root_schema(schemaJson);
+        validator.validate(m_json_root);
+    } catch (const std::invalid_argument& e) {
+        return e.what();
+    }
+    return std::nullopt;
+}
+
+} // namespace mnx

@@ -24,12 +24,57 @@
 #include <memory>
 #include <unordered_map>
 #include <cassert>
+#include <iostream>
+#include <optional>
+#include <type_traits>
 
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
+
+#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
+    TYPE NAME() const { \
+        if (!ref().contains(#NAME)) { \
+            throw std::runtime_error("Missing required property: " #NAME); \
+        } \
+        return ref()[#NAME].get<TYPE>(); \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
+    std::optional<TYPE> NAME() const { \
+        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
+    TYPE NAME() const { \
+        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
+    } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "")
+
+#define MNX_REQUIRED_CHILD(TYPE, NAME) \
+    TYPE NAME() const { return getChild<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
+    TYPE create_##NAME() { return setChild(#NAME, TYPE(*this, #NAME)); } \
+    static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
+    std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
+    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
+    TYPE create_##NAME() { return setChild(#NAME, TYPE(*this, #NAME)); } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "") // require semicolon after macro
 
 namespace mnx {
 
-using json = nlohmann::ordered_json;
+inline constexpr int MNX_VERSION = 1;
+
+using json = nlohmann::ordered_json;        ///< JSON class for MNX
+using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 
 class Object;
 template <typename T> class Array;
@@ -42,37 +87,62 @@ class Base
 public:
     virtual ~Base() = default;
 
+    /// @brief Dumps the branch to a string. Useful in debugging.
+    /// @param indents Number of indents or -1 for no indents 
+    std::string dump(int indents = -1)
+    {
+        return ref().dump(indents);
+    }
+
+protected:
     /**
      * @brief Convert this element for retrieval.
      *
-     * Generally, you should not call this directly, but it must be public for the child setter macros
-     *
      * @return A reference to the JSON node.
      */
-    json& ref() const { return m_json_ref.get(); }
+    json& ref() const { return resolve_pointer(); }
 
     /**
      * @brief Access the JSON node for modification.
      * @return A reference to the JSON node.
      */
-    json& ref() { return m_json_ref.get(); }
+    json& ref() { return resolve_pointer(); }
 
-protected:
+    /// @brief Returns the root.
+    std::reference_wrapper<json> root() const { return m_root; }
+
+    /// @brief Returns the json_pointer for this node.
+    json_pointer pointer() const { return m_pointer; }
+
+    /// @brief Returns the parent object for this node
+    /// @tparam T The type to create. Must correctly match whether it is an array or object.
+    /// @throws std::invalid_argument if the type of T does not match the type of the underlying pointer.
+    template <typename T>
+    T parent() const
+    {
+        static_assert(std::is_base_of_v<Base, T>, "Template type mush be derived from Base.");
+        return T(m_root, m_pointer.parent_pointer());
+    }
+
     /**
-     * @brief Wrap a Base instance around a specific JSON reference.
-     * @param json_ref Reference to a JSON node.
+     * @brief Wrap a Base instance around a specific JSON reference using a json_pointer.
+     * @param root Reference to the root JSON object.
+     * @param pointer JSON pointer to the specific node.
      */
-    Base(json& json_ref) : m_json_ref(json_ref) {}
+    Base(const std::reference_wrapper<json>& root, json_pointer pointer)
+        : m_root(root), m_pointer(std::move(pointer)) {}
 
     /**
      * @brief Construct a Base reference as a child inside a parent node.
-     * @param json_ref Rvalue reference to a new JSON object or array.
-     * @param parent_ref Reference to the parent JSON node.
+     * @param jsonRef Rvalue reference to a new JSON object or array.
+     * @param parent Reference to the parent instance.
      * @param key The key under which the new node is stored.
      */
-    Base(json&& json_ref, json& parent_ref, const std::string_view& key)
-        : m_json_ref(parent_ref[key] = std::move(json_ref)) // Move json_ref and bind m_json_ref to the new value
-    {}
+    Base(json&& jsonRef, Base& parent, const std::string_view& key)
+        : m_root(parent.m_root), m_pointer(parent.m_pointer / std::string(key))
+    {
+        m_root.get()[m_pointer] = std::move(jsonRef);
+    }
 
     /**
      * @brief Retrieves and validates a required child node.
@@ -82,12 +152,33 @@ protected:
      * @throws std::runtime_error if the key is missing or the type is incorrect.
      */
     template <typename T>
-    T get_child(const std::string_view& key) const
+    T getChild(const std::string_view& key) const
     {
-        if (!checkKeyIsValid<T>(key)) {
+        static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
+
+        json_pointer childPointer = m_pointer / std::string(key);
+        if (!checkKeyIsValid<T>(childPointer)) {
             throw std::runtime_error("Missing required child node: " + std::string(key));
         }
-        return T(ref()[key]);
+
+        return T(m_root, childPointer);
+    }
+
+    /**
+     * @brief Sets a child node.
+     * @tparam T The expected MNX type (`Object` or `Array<T>`).
+     * @param key The key of the child node.
+     * @param value The value to set.
+     * @return The newly created child.
+     */
+    template <typename T>
+    T setChild(const std::string_view& key, const T& value)
+    {
+        static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
+
+        json_pointer childPointer = m_pointer / std::string(key);
+        m_root.get()[childPointer] = value.ref();
+        return T(m_root, childPointer);
     }
 
     /**
@@ -95,39 +186,63 @@ protected:
      * @tparam T The expected MNX type (`Object` or `Array<T>`).
      * @param key The key of the child node.
      * @return An `std::optional<T>`, or `std::nullopt` if the node does not exist or is invalid.
-     * @throws std::runtime_error if the the type is incorrect.
+     * @throws std::runtime_error if the type is incorrect.
      */
     template <typename T>
-    std::optional<T> get_optional_child(const std::string_view& key) const
+    std::optional<T> getOptionalChild(const std::string_view& key) const
     {
-        if (!checkKeyIsValid<T>(key)) {
+        static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
+
+        json_pointer childPointer = m_pointer / std::string(key);
+        if (!checkKeyIsValid<T>(childPointer)) {
             return std::nullopt;
         }
-        return T(ref()[key]);
+
+        return T(m_root, childPointer);
     }
 
 private:
+    /**
+     * @brief Checks whether a key is valid for the given type.
+     * @tparam T The expected MNX type.
+     * @param pointer JSON pointer to the key.
+     * @return True if the key is valid, false otherwise.
+     * @throws std::runtime_error if the type is incorrect.
+     */
     template <typename T>
-    bool checkKeyIsValid(const std::string_view& key) const
+    bool checkKeyIsValid(const json_pointer& pointer) const
     {
-        if (!ref().contains(key)) {
+        if (!m_root.get().contains(pointer)) {
             return false;
         }
 
+        const json& node = m_root.get().at(pointer);
+
         if constexpr (std::is_base_of_v<Object, T>) {
-            if (!ref()[key].is_object()) {
-                throw std::runtime_error("Expected an object for: " + std::string(key));
+            if (!node.is_object()) {
+                throw std::runtime_error("Expected an object for: " + pointer.to_string());
             }
         } else if constexpr (std::is_base_of_v<Array<typename T::value_type>, T>) {
-            if (!ref()[key].is_array()) {
-                throw std::runtime_error("Expected an array for: " + std::string(key));
-            }            
+            if (!node.is_array()) {
+                throw std::runtime_error("Expected an array for: " + pointer.to_string());
+            }
         }
 
         return true;
     }
-    
-    std::reference_wrapper<json> m_json_ref;
+
+    /**
+     * @brief Resolves the JSON node using the stored pointer.
+     * @return Reference to the JSON node.
+     * @throws json::out_of_range if the node does not exist.
+     */
+    json& resolve_pointer() const
+    {
+        return m_root.get().at(m_pointer);  // Throws if invalid
+    }
+
+    std::reference_wrapper<json> m_root;    ///< Reference to the root JSON object.
+    json_pointer m_pointer;                 ///< JSON pointer to the specific node.
 };
 
 class Document;
@@ -138,25 +253,40 @@ class Object : public Base
 {
 public:
     /// @brief Wraps an Object class around an existing JSON object element
-    /// @param json_ref Reference to the element
-    Object(json& json_ref) : Base(json_ref)
+    /// @param root Reference to the document root
+    /// @param pointer The json_pointer value for the element
+    Object(json& root, json_pointer pointer) : Base(root, pointer)
     {
-        if (!json_ref.is_object()) {
+        if (!ref().is_object()) {
             throw std::invalid_argument("mnx::Object must wrap a JSON object.");
         }
     }
 
     /// @brief Creates a new Object class as a child of a JSON element
-    /// @param parent_ref The parent JSON element
+    /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    Object(json& parent_ref, const std::string_view& key)
-        : Base(json::object(), parent_ref, key) {}
+    Object(Base& parent, const std::string_view& key)
+        : Base(json::object(), parent, key) {}
 
 private:
     // Special constructor that defers validation for Document
-    struct DeferValidation {};
-    Object(json& jsonRef, DeferValidation) : Base(jsonRef) {}
+    Object(json& root) : Base(root, json_pointer{}) {}
     friend class Document;
+};
+
+/**
+ * @brief Represents an MNX object that is included as an array element.
+ */
+class ArrayElementObject : public Object
+{
+public:
+    using Object::Object;
+
+    /// @brief Calculates the array index of the current instance within the array.
+    size_t calcArrayIndex() const
+    {
+        return std::stoul(pointer().back());
+    }
 };
 
 /**
@@ -167,26 +297,27 @@ class Array : public Base
 {
     static_assert(std::is_same_v<T, int> || std::is_same_v<T, double> ||
                   std::is_same_v<T, bool> || std::is_same_v<T, std::string> ||
-                  std::is_base_of_v<Base, T>, "Invalid MNX array element type.");
+                  std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX array element type.");
 
 public:
     /// @brief The type for elements in this Array.
     using value_type = T;
 
     /// @brief Wraps an Array class around an existing JSON array element
-    /// @param json_ref Reference to the element
-    Array(json& json_ref) : Base(json_ref)
+    /// @param root Reference to the document root
+    /// @param pointer The json_pointer value for the element
+    Array(json& root, json_pointer pointer) : Base(root, pointer)
     {
-        if (!json_ref.is_array()) {
-            throw std::invalid_argument("mnx::Array must wrap a JSON object.");
+        if (!ref().is_array()) {
+            throw std::invalid_argument("mnx::Array must wrap a JSON array.");
         }
     }
 
     /// @brief Creates a new Array class as a child of a JSON element
-    /// @param parent_ref The parent JSON element
+    /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    Array(json& parent_ref, const std::string_view& key)
-        : Base(json::array(), parent_ref, key) {}
+    Array(Base& parent, const std::string_view& key)
+        : Base(json::array(), parent, key) {}
 
     /** @brief Get the size of the array. */
     size_t size() const { return ref().size(); }
@@ -202,7 +333,7 @@ public:
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {
-            return T(ref()[index]);
+            return getChild<T>(std::to_string(index));
         } else {
             return ref().at(index).template get<T>();
         }
@@ -213,16 +344,33 @@ public:
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {
-            return T(ref()[index]);
+            return getChild<T>(std::to_string(index));
         } else {
             return ref().at(index).template get_ref<T&>();
         }
     }
 
-    /** @brief Append a new value to the array. */
-    void push_back(const T& value)
+    /** @brief Append a new value to the array. (Available only for primitive types) */
+    template <typename U = T>
+    std::enable_if_t<!std::is_base_of_v<Base, U>, void>
+    push_back(const U& value)
     {
         ref().push_back(value);
+    }
+
+    /**
+     * @brief Create a new element at the end of the array. (Available only for Base types)
+     * @return The newly created element.
+    */
+    template <typename U = T, std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append()
+    {
+        if constexpr (std::is_base_of_v<Object, U>) {
+            ref().push_back(json::object());
+        } else {
+            ref().push_back(json::array());
+        }
+        return U(*this, std::to_string(ref().size() - 1));
     }
 
     /** @brief Remove an element at a given index. */
@@ -244,7 +392,9 @@ public:
     /// @brief Returns a const iterator to the end of the array.
     auto end() const { return ref().cend(); }
 
-private:
+protected:
+    /// @brief validates that an index is not out of range
+    /// @throws std::out_of_range if the index is out of range
     void checkIndex(size_t index) const
     {
         assert(index < ref().size());
@@ -254,33 +404,176 @@ private:
     }
 };
 
-#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
-    TYPE NAME() const { \
-        if (!ref().contains(#NAME)) { \
-            throw std::runtime_error("Missing required property: " #NAME); \
-        } \
-        return ref()[#NAME].get<TYPE>(); \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    static_assert(true, "") // require semicolon after macro
+/// @brief Base class for objects that are elements of content arrays
+class ContentObject : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
 
-#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { \
-        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    static_assert(true, "") // require semicolon after macro
+    MNX_REQUIRED_PROPERTY(std::string, type);   ///< determines our type in the JSON
+};
 
-#define MNX_REQUIRED_CHILD(TYPE, NAME) \
-    TYPE NAME() const { return get_child<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
-    static_assert(true, "") // require semicolon after macro
+/**
+ * @class ContentArray
+ * @brief Class for content arrays.
+ *
+ * Allows arrays of any type that derives from @ref ContentObject. An exampled of how
+ * to get type instances is:
+ * 
+ * @code{.cpp}
+ * auto next = content[index]; // gets the base ContentObject instance.
+ * if (next.type() == "group") {
+ *     auto group = content.get<LayoutGroup>(index); // gets the instance typed as a LayoutGroup.
+ *     // process group
+ * } else if (next.type() == "staff") {
+ *     auto staff = content.get<LayoutStaff>(index); // gets the instance typed as a LayoutStaff.
+ * }
+ * @endcode
+ *
+ * To add instances to the array, use the template paramter to specify the type to add.
+ *
+ * @code{.cpp}
+ * auto newElement = content.append<LayoutStaff>();
+ * @endcode
+ *
+ * The `append` method automatically gives the instance the correct `type` value.
+ *
+*/
+class ContentArray : public Array<ContentObject>
+{
+public:
+    using BaseArray = Array<ContentObject>;     ///< The base array type
+    using BaseArray::BaseArray;  // Inherit constructors
 
-#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { return get_optional_child<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value.ref(); } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    static_assert(true, "") // require semicolon after macro
+    /// @brief Retrieve an element from the array as a specific type
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T get(size_t index) const
+    {
+        return getTypedObject<T>(index);
+    }
+
+    /// @brief Append an element of the specified type
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T append()
+    {
+        auto result = BaseArray::append<T>();
+        result.set_type(std::string(T::ContentTypeValue));
+        return result;
+    }
+
+private:
+    /// @brief Constructs an object of type `T` if its type matches the JSON type
+    /// @throws std::invalid_argument if there is a type mismatch
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T getTypedObject(size_t index) const
+    {
+        this->checkIndex(index);
+        auto element = (*this)[index];
+        if (element.type() != T::ContentTypeValue) {
+            throw std::invalid_argument("Type mismatch: expected " + std::string(T::ContentTypeValue) +
+                                        ", got " + element.type());
+        }
+        return T(root(), pointer() / std::to_string(index));
+    }
+};
+
+/**
+ * @class EnumStringMapping
+ * @brief Supplies enum string mappings to nlohmann json's serializer.
+ */
+template <typename E, typename = std::enable_if_t<std::is_enum_v<E>>>
+struct EnumStringMapping
+{
+    static const std::unordered_map<std::string, E> stringToEnum();     ///< @brief maps strings to enum values
+
+    /// @brief maps enum values to strings
+    static const std::unordered_map<E, std::string> enumToString()
+    {
+        static const std::unordered_map<E, std::string> reverseMap = []() {
+            std::unordered_map<E, std::string> result;
+            for (const auto& element : EnumStringMapping<E>::stringToEnum()) {
+                result.emplace(element.second, element.first);
+            }
+            return result;
+        }();
+        return reverseMap;
+    }
+};
 
 } // namespace mnx
+
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
+namespace nlohmann {
+
+#if defined(_WIN32)
+// This general adl_serializer is enabled only for enum types.
+// For some reason MSC does not like the direct function defintions below.
+template<typename EnumType>
+struct adl_serializer<EnumType, std::enable_if_t<std::is_enum_v<EnumType>>>
+{
+    template<typename BasicJsonType>
+    static EnumType from_json(const BasicJsonType& j)
+    {
+        // Lookup the string in the specialized map.
+        const auto& map = ::mnx::EnumStringMapping<EnumType>::stringToEnum();
+        auto it = map.find(j.get<std::string>());
+        if (it != map.end()) {
+            return it->second;
+        }
+        /// @todo throw or log unmapped string
+        return EnumType{};
+    }
+
+    template<typename BasicJsonType>
+    static void to_json(BasicJsonType& j, const EnumType& value)
+    {
+        const auto& map = ::mnx::EnumStringMapping<EnumType>::enumToString();
+        auto it = map.find(value);
+        if (it == map.end()) {
+            /// @todo log or throw unmapped enum.
+            j = BasicJsonType();
+            return;
+        }
+        j = it->second;
+    }
+};
+#else
+// Clang works with the adl_specialization above, but GCC does not.
+namespace detail {
+
+template<typename BasicJsonType, typename EnumType,
+         std::enable_if_t<std::is_enum<EnumType>::value, int> = 0>
+inline void from_json(const BasicJsonType& j, EnumType& value)
+{
+    // Lookup the string in the specialized map.
+    const auto& map = ::mnx::EnumStringMapping<EnumType>::stringToEnum();
+    auto it = map.find(j.template get<std::string>());
+    if (it != map.end()) {
+        value = it->second;
+    } else {
+        /// @todo throw or log unmapped string
+        value = EnumType{};
+    }
+}
+
+template<typename BasicJsonType, typename EnumType,
+         std::enable_if_t<std::is_enum<EnumType>::value, int> = 0>
+inline void to_json(BasicJsonType& j, EnumType value) noexcept
+{
+    const auto& map = ::mnx::EnumStringMapping<EnumType>::enumToString();
+    auto it = map.find(value);
+    if (it != map.end()) {
+        j = it->second;
+    } else {
+        /// @todo log or throw unmapped enum.
+        j = BasicJsonType();
+    }
+}
+
+} // namespace detail
+#endif // defined(_WIN32)
+
+} // namespace nlohmann
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS

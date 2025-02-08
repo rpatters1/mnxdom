@@ -20,7 +20,7 @@ endif()
 #define other directories
 set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
 
-include("${CMAKE_SOURCE_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 
 # Add library
 add_library(mnxdom STATIC

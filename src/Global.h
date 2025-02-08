@@ -34,7 +34,7 @@ class GlobalMeasure : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, index, calcDefaultIndex());  ///< the measure index
+    MNX_OPTIONAL_PROPERTY(int, index);  ///< the measure index
 
 private:
     int calcDefaultIndex() const
@@ -42,7 +42,9 @@ private:
         size_t arrayIndex = calcArrayIndex();
         if (arrayIndex == 0) return 1;
         auto parents = parent<Array<GlobalMeasure>>();
-        return parents[arrayIndex - 1].index();
+        auto prev = parents[arrayIndex - 1];
+        auto prevIndex = prev.index();
+        return prevIndex.has_value() ? *prevIndex : prev.calcArrayIndex();
     }
 };
 

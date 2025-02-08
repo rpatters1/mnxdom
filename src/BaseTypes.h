@@ -44,7 +44,10 @@
     std::optional<TYPE> NAME() const { \
         return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
     } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    TYPE NAME##_or(const TYPE& defaultVal) const { \
+        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : defaultVal; \
+    } \
+void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 
@@ -299,9 +302,25 @@ class Array : public Base
                   std::is_same_v<T, bool> || std::is_same_v<T, std::string> ||
                   std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX array element type.");
 
+private:    
+    template<typename A>
+    struct iter
+    {
+        A* a;
+        mutable size_t i;
+
+        iter(A* a_, size_t i_) : a(a_), i(i_) {}
+        T operator*() const { return (*a)[i]; }
+        iter& operator++() const { ++i; return *this; }
+        bool operator!=(const iter& o) const { return i != o.i; }
+    };
+
 public:
     /// @brief The type for elements in this Array.
     using value_type = T;
+
+    using iterator = iter<Array>;               ///< non-const iterator type
+    using const_iterator = iter<const Array>;   ///< const iterator type
 
     /// @brief Wraps an Array class around an existing JSON array element
     /// @param root Reference to the document root
@@ -381,16 +400,16 @@ public:
     }
 
     /// @brief Returns an iterator to the beginning of the array.
-    auto begin() { return ref().begin(); }
+    auto begin() { return iterator(this, 0); }
 
     /// @brief Returns an iterator to the end of the array.
-    auto end() { return ref().end(); }
+    auto end() { return iterator(this, size()); }
 
     /// @brief Returns a const iterator to the beginning of the array.
-    auto begin() const { return ref().cbegin(); }
+    auto begin() const { return const_iterator(this, 0); }
 
     /// @brief Returns a const iterator to the end of the array.
-    auto end() const { return ref().cend(); }
+    auto end() const { const_iterator(this, size()); }
 
 protected:
     /// @brief validates that an index is not out of range
@@ -411,6 +430,26 @@ public:
     using ArrayElementObject::ArrayElementObject;
 
     MNX_REQUIRED_PROPERTY(std::string, type);   ///< determines our type in the JSON
+
+    /// @brief Retrieve an element as a specific type
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T get() const
+    {
+        return getTypedObject<T>();
+    }
+
+private:
+    /// @brief Constructs an object of type `T` if its type matches the JSON type
+    /// @throws std::invalid_argument if there is a type mismatch
+    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T getTypedObject() const
+    {
+        if (type() != T::ContentTypeValue) {
+            throw std::invalid_argument("Type mismatch: expected " + std::string(T::ContentTypeValue) +
+                                        ", got " + type());
+        }
+        return T(root(), pointer());
+    }
 };
 
 /**
@@ -422,11 +461,12 @@ public:
  * 
  * @code{.cpp}
  * auto next = content[index]; // gets the base ContentObject instance.
- * if (next.type() == "group") {
- *     auto group = content.get<LayoutGroup>(index); // gets the instance typed as a LayoutGroup.
+ * if (next.type() == LayoutGroup::ContentTypeValue) {
+ *     auto group = next.get<LayoutGroup>(); // gets the instance typed as a LayoutGroup.
  *     // process group
- * } else if (next.type() == "staff") {
- *     auto staff = content.get<LayoutStaff>(index); // gets the instance typed as a LayoutStaff.
+ * } else if (next.type() == LayoutStaff::ContentTypeValue) {
+ *     auto staff = next.get<LayoutStaff>(); // gets the instance typed as a LayoutStaff.
+ *     // process staff
  * }
  * @endcode
  *
@@ -449,7 +489,8 @@ public:
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
     T get(size_t index) const
     {
-        return getTypedObject<T>(index);
+        this->checkIndex(index);
+        return operator[](index).get<T>();
     }
 
     /// @brief Append an element of the specified type

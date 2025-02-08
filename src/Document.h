@@ -157,4 +157,6 @@ private:
     json m_json_root = json::object();
 };
 
+static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");
+
 } // namespace mnx

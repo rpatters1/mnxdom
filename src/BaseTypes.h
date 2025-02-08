@@ -26,6 +26,7 @@
 #include <cassert>
 #include <iostream>
 #include <optional>
+#include <type_traits>
 
 #include "nlohmann/json.hpp"
 
@@ -504,10 +505,45 @@ struct EnumStringMapping
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 namespace nlohmann {
+
+#if defined(_WIN32)
+// This general adl_serializer is enabled only for enum types.
+// For some reason MSC does not like the direct function defintions below.
+template<typename EnumType>
+struct adl_serializer<EnumType, std::enable_if_t<std::is_enum_v<EnumType>>>
+{
+    template<typename BasicJsonType>
+    static EnumType from_json(const BasicJsonType& j)
+    {
+        // Lookup the string in the specialized map.
+        const auto& map = ::mnx::EnumStringMapping<EnumType>::stringToEnum();
+        auto it = map.find(j.get<std::string>());
+        if (it != map.end()) {
+            return it->second;
+        }
+        /// @todo throw or log unmapped string
+        return EnumType{};
+    }
+
+    template<typename BasicJsonType>
+    static void to_json(BasicJsonType& j, const EnumType& value)
+    {
+        const auto& map = ::mnx::EnumStringMapping<EnumType>::enumToString();
+        auto it = map.find(value);
+        if (it == map.end()) {
+            /// @todo log or throw unmapped enum.
+            j = BasicJsonType();
+            return;
+        }
+        j = it->second;
+    }
+};
+#else
+// Clang works with the adl_specialization above, but GCC does not.
 namespace detail {
 
 template<typename BasicJsonType, typename EnumType,
-         enable_if_t<std::is_enum<EnumType>::value, int> = 0>
+         std::enable_if_t<std::is_enum<EnumType>::value, int> = 0>
 inline void from_json(const BasicJsonType& j, EnumType& value)
 {
     // Lookup the string in the specialized map.
@@ -522,7 +558,7 @@ inline void from_json(const BasicJsonType& j, EnumType& value)
 }
 
 template<typename BasicJsonType, typename EnumType,
-         enable_if_t<std::is_enum<EnumType>::value, int> = 0>
+         std::enable_if_t<std::is_enum<EnumType>::value, int> = 0>
 inline void to_json(BasicJsonType& j, EnumType value) noexcept
 {
     const auto& map = ::mnx::EnumStringMapping<EnumType>::enumToString();
@@ -536,6 +572,8 @@ inline void to_json(BasicJsonType& j, EnumType value) noexcept
 }
 
 } // namespace detail
+#endif // defined(_WIN32)
+
 } // namespace nlohmann
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS

@@ -63,11 +63,11 @@ add_dependencies(mnxdom GenerateMnxSchemaXxd)
 target_include_directories(mnxdom PRIVATE ${GENERATED_DIR})
 
 # Allow users to disable building tests
-option(mnxdom_BUILD_TESTING "Enable testing for your library" ON)
+option(mnxdom_BUILD_TESTING "Enable testing mnxdom" ON)
 if(mnxdom_BUILD_TESTING)
     message(STATUS "Testing enabled for mnxdom_BUILD_TESTING.")
     enable_testing()
-    add_subdirectory(tests)
+    add_subdirectory(tests ${CMAKE_BINARY_DIR}/tests)
 else()
     message(STATUS "Testing not enabled for mnxdom_BUILD_TESTING.")
 endif()

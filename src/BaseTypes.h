@@ -504,11 +504,44 @@ struct EnumStringMapping
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 namespace nlohmann {
+namespace detail {
 
+template<typename BasicJsonType, typename EnumType,
+         enable_if_t<std::is_enum<EnumType>::value, int> = 0>
+inline void from_json(const BasicJsonType& j, EnumType& value)
+{
+    // Lookup the string in the specialized map.
+    const auto& map = ::mnx::EnumStringMapping<EnumType>::stringToEnum();
+    auto it = map.find(j.template get<std::string>());
+    if (it != map.end()) {
+        value = it->second;
+    } else {
+        /// @todo throw or log unmapped string
+        value = EnumType{};
+    }
+}
+
+template<typename BasicJsonType, typename EnumType,
+         enable_if_t<std::is_enum<EnumType>::value, int> = 0>
+inline void to_json(BasicJsonType& j, EnumType value) noexcept
+{
+    const auto& map = ::mnx::EnumStringMapping<EnumType>::enumToString();
+    auto it = map.find(value);
+    if (it != map.end()) {
+        j = it->second;
+    } else {
+        /// @todo log or throw unmapped enum.
+        j = BasicJsonType();
+    }
+}
+
+/*
 // This general adl_serializer is enabled only for enum types.
 template <typename E>
-struct adl_serializer<E, std::enable_if_t<std::is_enum_v<E>>> {
-    static E from_json(const ::mnx::json &j) {
+struct adl_serializer<E, std::enable_if_t<std::is_enum_v<E>>>
+{
+    static E from_json(const ::mnx::json& j)
+    {
         // Lookup the string in the specialized map.
         const auto& map = ::mnx::EnumStringMapping<E>::stringToEnum();
         auto it = map.find(j.get<std::string>());
@@ -518,7 +551,8 @@ struct adl_serializer<E, std::enable_if_t<std::is_enum_v<E>>> {
         /// @todo throw or log unmapped string
         return E{};
     }
-    static void to_json(::mnx::json &j, const E &value) {
+    static void to_json(::mnx::json& j, const E& value)
+    {
         const auto& map = ::mnx::EnumStringMapping<E>::enumToString();
         auto it = map.find(value);
         if (it == map.end()) {
@@ -529,7 +563,9 @@ struct adl_serializer<E, std::enable_if_t<std::is_enum_v<E>>> {
         j = it->second;
     }
 };
+*/
+
+} // namespace detail
+} // namespace nlohmann
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
-
-} // namespace nlohmann

@@ -7,6 +7,10 @@ Document object model for the MNX music interchange format. It is compatible wit
 - allows structured access to MNX objects, without the need of quoted strings.
 - validates against the MNX schema using [json-schema-validator](https://github.com/pboettch/json-schema-validator).
 
+### Documentation
+
+[MNX Document Model for C++17](https://rpatters1.github.io/mnxdom/)
+
 ### Setup Instructions
 
 Include the top header in your source file.

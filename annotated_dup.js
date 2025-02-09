@@ -21,6 +21,7 @@ var annotated_dup =
       [ "PartMeasure", "classmnx_1_1PartMeasure.html", "classmnx_1_1PartMeasure" ],
       [ "Score", "classmnx_1_1Score.html", "classmnx_1_1Score" ],
       [ "ScorePage", "classmnx_1_1ScorePage.html", "classmnx_1_1ScorePage" ],
-      [ "ScoreSystem", "classmnx_1_1ScoreSystem.html", "classmnx_1_1ScoreSystem" ]
+      [ "ScoreSystem", "classmnx_1_1ScoreSystem.html", "classmnx_1_1ScoreSystem" ],
+      [ "SystemLayoutChange", "classmnx_1_1SystemLayoutChange.html", "classmnx_1_1SystemLayoutChange" ]
     ] ]
 ];

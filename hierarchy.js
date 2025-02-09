@@ -19,7 +19,8 @@ var hierarchy =
           [ "mnx::PartMeasure", "classmnx_1_1PartMeasure.html", null ],
           [ "mnx::Score", "classmnx_1_1Score.html", null ],
           [ "mnx::ScorePage", "classmnx_1_1ScorePage.html", null ],
-          [ "mnx::ScoreSystem", "classmnx_1_1ScoreSystem.html", null ]
+          [ "mnx::ScoreSystem", "classmnx_1_1ScoreSystem.html", null ],
+          [ "mnx::SystemLayoutChange", "classmnx_1_1SystemLayoutChange.html", null ]
         ] ],
         [ "mnx::Document", "classmnx_1_1Document.html", null ],
         [ "mnx::Global", "classmnx_1_1Global.html", null ],

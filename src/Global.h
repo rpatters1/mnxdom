@@ -37,14 +37,14 @@ public:
     MNX_OPTIONAL_PROPERTY(int, index);  ///< the measure index
 
 private:
-    int calcDefaultIndex() const
+    size_t calcDefaultMeasureIndex() const
     {
         size_t arrayIndex = calcArrayIndex();
         if (arrayIndex == 0) return 1;
         auto parents = parent<Array<GlobalMeasure>>();
         auto prev = parents[arrayIndex - 1];
         auto prevIndex = prev.index();
-        return prevIndex.has_value() ? *prevIndex : prev.calcArrayIndex();
+        return prevIndex.has_value() ? *prevIndex : prev.calcDefaultMeasureIndex();
     }
 };
 

@@ -90,6 +90,18 @@ class Base
 public:
     virtual ~Base() = default;
 
+    /// @brief Assignment operator
+    Base& operator=(const Base& src)
+    {
+        if (this != &src) {
+            if (m_root != src.m_root) {
+                throw std::logic_error("Assignment from a different JSON document is not allowed.");
+            }
+            m_pointer = src.m_pointer;
+        }
+        return *this;
+    }
+
     /// @brief Dumps the branch to a string. Useful in debugging.
     /// @param indents Number of indents or -1 for no indents 
     std::string dump(int indents = -1)
@@ -112,7 +124,7 @@ protected:
     json& ref() { return resolve_pointer(); }
 
     /// @brief Returns the root.
-    std::reference_wrapper<json> root() const { return m_root; }
+    const std::shared_ptr<json>& root() const { return m_root; }
 
     /// @brief Returns the json_pointer for this node.
     json_pointer pointer() const { return m_pointer; }
@@ -132,7 +144,7 @@ protected:
      * @param root Reference to the root JSON object.
      * @param pointer JSON pointer to the specific node.
      */
-    Base(const std::reference_wrapper<json>& root, json_pointer pointer)
+    Base(const std::shared_ptr<json>& root, json_pointer pointer)
         : m_root(root), m_pointer(std::move(pointer)) {}
 
     /**
@@ -144,7 +156,7 @@ protected:
     Base(json&& jsonRef, Base& parent, const std::string_view& key)
         : m_root(parent.m_root), m_pointer(parent.m_pointer / std::string(key))
     {
-        m_root.get()[m_pointer] = std::move(jsonRef);
+        (*m_root)[m_pointer] = std::move(jsonRef);
     }
 
     /**
@@ -180,7 +192,7 @@ protected:
         static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
 
         json_pointer childPointer = m_pointer / std::string(key);
-        m_root.get()[childPointer] = value.ref();
+        (*m_root)[childPointer] = value.ref();
         return T(m_root, childPointer);
     }
 
@@ -215,11 +227,11 @@ private:
     template <typename T>
     bool checkKeyIsValid(const json_pointer& pointer) const
     {
-        if (!m_root.get().contains(pointer)) {
+        if (!(*m_root).contains(pointer)) {
             return false;
         }
 
-        const json& node = m_root.get().at(pointer);
+        const json& node = (*m_root).at(pointer);
 
         if constexpr (std::is_base_of_v<Object, T>) {
             if (!node.is_object()) {
@@ -241,14 +253,13 @@ private:
      */
     json& resolve_pointer() const
     {
-        return m_root.get().at(m_pointer);  // Throws if invalid
+        return (*m_root).at(m_pointer);  // Throws if invalid
     }
 
-    std::reference_wrapper<json> m_root;    ///< Reference to the root JSON object.
-    json_pointer m_pointer;                 ///< JSON pointer to the specific node.
+    const std::shared_ptr<json> m_root;  ///< Shared pointer to the root JSON object.
+    json_pointer m_pointer;          ///< JSON pointer to the specific node.
 };
 
-class Document;
 /**
  * @brief Represents an MNX object, encapsulating property access.
  */
@@ -258,7 +269,7 @@ public:
     /// @brief Wraps an Object class around an existing JSON object element
     /// @param root Reference to the document root
     /// @param pointer The json_pointer value for the element
-    Object(json& root, json_pointer pointer) : Base(root, pointer)
+    Object(const std::shared_ptr<json>& root, json_pointer pointer) : Base(root, pointer)
     {
         if (!ref().is_object()) {
             throw std::invalid_argument("mnx::Object must wrap a JSON object.");
@@ -270,11 +281,6 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     Object(Base& parent, const std::string_view& key)
         : Base(json::object(), parent, key) {}
-
-private:
-    // Special constructor that defers validation for Document
-    Object(json& root) : Base(root, json_pointer{}) {}
-    friend class Document;
 };
 
 /**
@@ -311,7 +317,7 @@ private:
 
         iter(A* a_, size_t i_) : a(a_), i(i_) {}
         T operator*() const { return (*a)[i]; }
-        iter& operator++() const { ++i; return *this; }
+        iter& operator++() { ++i; return *this; }
         bool operator!=(const iter& o) const { return i != o.i; }
     };
 
@@ -325,7 +331,7 @@ public:
     /// @brief Wraps an Array class around an existing JSON array element
     /// @param root Reference to the document root
     /// @param pointer The json_pointer value for the element
-    Array(json& root, json_pointer pointer) : Base(root, pointer)
+    Array(const std::shared_ptr<json>& root, json_pointer pointer) : Base(root, pointer)
     {
         if (!ref().is_array()) {
             throw std::invalid_argument("mnx::Array must wrap a JSON array.");
@@ -409,7 +415,7 @@ public:
     auto begin() const { return const_iterator(this, 0); }
 
     /// @brief Returns a const iterator to the end of the array.
-    auto end() const { const_iterator(this, size()); }
+    auto end() const { return const_iterator(this, size()); }
 
 protected:
     /// @brief validates that an index is not out of range

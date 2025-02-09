@@ -41,6 +41,20 @@ public:
 };
 
 /**
+ * @class SystemLayoutChange
+ * @brief Represents a system layout change in a score
+ */
+class SystemLayoutChange : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
+    /// note that after adding a new MultimeasureRest, the caller *must* provide start & duration for it to validate
+
+    MNX_REQUIRED_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
+    /// @todo location
+};
+
+/**
  * @class ScoreSystem
  * @brief Represents a system on a page in a score.
  */
@@ -51,6 +65,7 @@ public:
     /// note that after adding a new ScorePage, the caller *must* provide a start measure value for it to validate
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
+    MNX_OPTIONAL_CHILD(Array<SystemLayoutChange>, layoutChanges); ///< layout changes in the system (e.g., for changes in stem direction)
     MNX_REQUIRED_PROPERTY(int, measure);            ///< The first measure in the system
 };
 

@@ -20,7 +20,7 @@ endif()
 #define other directories
 set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
 
-include("${CMAKE_SOURCE_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 
 # Add library
 add_library(mnxdom STATIC
@@ -56,14 +56,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json_schema_validator)
 
 target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
-target_link_libraries(mnxdom PRIVATE nlohmann_json_schema_validator)
+target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
 target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 
 add_dependencies(mnxdom GenerateMnxSchemaXxd)
 target_include_directories(mnxdom PRIVATE ${GENERATED_DIR})
 
 # Allow users to disable building tests
-option(mnxdom_BUILD_TESTING "Enable testing for your library" ON)
+option(mnxdom_BUILD_TESTING "Enable testing mnxdom" ON)
 if(mnxdom_BUILD_TESTING)
     message(STATUS "Testing enabled for mnxdom_BUILD_TESTING.")
     enable_testing()

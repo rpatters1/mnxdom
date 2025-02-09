@@ -88,7 +88,7 @@ public:
      * @brief Constructs an empty MNX document. The resulting instance contains all
      * required fields and should validate against the schema.
      */
-    Document() : Object(m_json_root)
+    Document() : Object(std::make_shared<json>(json::object()), json_pointer{})
     {
         // create required children
         create_mnx();
@@ -100,9 +100,9 @@ public:
      * @brief Constructs a Document from an input stream.
      * @param inputStream The input stream containing the MNX JSON data.
      */
-    Document(std::istream& inputStream) : Object(m_json_root)
+    Document(std::istream& inputStream) : Object(std::make_shared<json>(json::object()), json_pointer{})
     {
-        inputStream >> m_json_root;
+        inputStream >> *root();
     }
 
     MNX_REQUIRED_CHILD(Global, global);         ///< Global data for the MNX document.
@@ -139,7 +139,10 @@ public:
         std::ofstream file;
         file.exceptions(std::ofstream::failbit | std::ofstream::badbit);
         file.open(outputPath, std::ios::out | std::ios::binary);
-        file << m_json_root.dump(indentSpaces.value_or(-1));
+        if (!file.is_open()) {
+            throw std::runtime_error("Unable to write to JSON file: " + outputPath.u8string());
+        }
+        file << root()->dump(indentSpaces.value_or(-1));
         file.close();
     }
 
@@ -149,12 +152,8 @@ public:
      * @returns std::nullopt if no error or an error message if there was one.
      */
     std::optional<std::string> validate(const std::optional<std::string>& jsonSchema = std::nullopt) const;
-
-private:
-    /**
-     * @brief The root JSON object storing the MNX document data.
-     */
-    json m_json_root = json::object();
 };
+
+static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");
 
 } // namespace mnx

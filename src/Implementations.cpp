@@ -41,7 +41,7 @@ std::optional<std::string> Document::validate(const std::optional<std::string>& 
         json schemaJson = json::parse(jsonSchema.value_or(std::string(MNX_SCHEMA)));
         nlohmann::json_schema::json_validator validator;
         validator.set_root_schema(schemaJson);
-        validator.validate(m_json_root);
+        validator.validate(*root());
     } catch (const std::invalid_argument& e) {
         return e.what();
     }

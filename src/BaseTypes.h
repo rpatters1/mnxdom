@@ -90,7 +90,16 @@ class Base
 public:
     virtual ~Base() = default;
 
-    /// @brief Assignment operator
+    // Copy constructor
+    Base(const Base& src) : m_root(src.m_root), m_pointer(src.m_pointer)
+    {}
+
+    // Move constructor
+    Base(Base&& src) noexcept : m_root(src.m_root),    // m_root must be copied (not moved)
+        m_pointer(std::move(src.m_pointer))
+    {}
+
+    // Copy assignment operator
     Base& operator=(const Base& src)
     {
         if (this != &src) {
@@ -98,6 +107,18 @@ public:
                 throw std::logic_error("Assignment from a different JSON document is not allowed.");
             }
             m_pointer = src.m_pointer;
+        }
+        return *this;
+    }
+
+    // Move assignment operator
+    Base& operator=(Base&& src)
+    {
+        if (this != &src) {
+            if (m_root != src.m_root) {
+                throw std::logic_error("Assignment from a different JSON document is not allowed.");
+            }
+            m_pointer = std::move(src.m_pointer);
         }
         return *this;
     }

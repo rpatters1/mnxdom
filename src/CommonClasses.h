@@ -64,6 +64,37 @@ public:
     NumType denominator() const { return (*this)[DENOMINATOR_INDEX]; }
     /// @brief Sets the denominator of the Fraction
     void set_denominator(NumType value) { (*this)[DENOMINATOR_INDEX] = value; }
+
+    friend class Base;
+};
+
+/**
+ * @class RythmicPosition
+ * @brief Represents a system on a page in a score.
+ */
+class RythmicPosition : public Object
+{
+public:
+    /// @brief Constructor for existing rhythmic position instances
+    RythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new RythmicPosition class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param numerator The measure index of the first measure in the multimeasure rest
+    /// @param denominator The number of measures in the multimeasure rest
+    RythmicPosition(Base& parent, const std::string_view& key, unsigned int numerator, unsigned int denominator)
+        : Object(parent, key)
+    {
+        create_fraction(numerator, denominator);
+    }
+
+    MNX_REQUIRED_CHILD(Fraction, fraction);             ///< The metric position, where 1/4 is a quarter note.
+    MNX_OPTIONAL_PROPERTY(unsigned int, graceIndex);    ///< The grace note index of this position.
+                                                        ///< (0 is the primary, and then count to the left.)
 };
 
 } // namespace mnx

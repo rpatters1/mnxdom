@@ -47,7 +47,7 @@
     TYPE NAME##_or(const TYPE& defaultVal) const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : defaultVal; \
     } \
-void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 

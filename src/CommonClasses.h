@@ -55,15 +55,8 @@ public:
         push_back(denominator);
     }
 
-    /// @brief Gets the numerator of the Fraction
-    NumType numerator() const { return (*this)[NUMERATOR_INDEX]; }
-    /// @brief Sets the numerator of the Fraction
-    void set_numerator(NumType value) { (*this)[NUMERATOR_INDEX] = value; }
-
-    /// @brief Gets the denominator of the Fraction
-    NumType denominator() const { return (*this)[DENOMINATOR_INDEX]; }
-    /// @brief Sets the denominator of the Fraction
-    void set_denominator(NumType value) { (*this)[DENOMINATOR_INDEX] = value; }
+    MNX_ARRAY_ELEMENT_PROPERTY(NumType, numerator, NUMERATOR_INDEX);        ///< the numerator of the fraction
+    MNX_ARRAY_ELEMENT_PROPERTY(NumType, denominator, DENOMINATOR_INDEX);    ///< the denominator of the fraction
 
     friend class Base;
 };

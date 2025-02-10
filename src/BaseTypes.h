@@ -40,6 +40,12 @@
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     static_assert(true, "") // require semicolon after macro
 
+#define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
+    static_assert(std::is_integral_v<decltype(INDEX)>, "array index must be an integer type"); \
+    TYPE NAME() const { return (*this)[INDEX]; } \
+    void set_##NAME(const TYPE& value) { (*this)[INDEX] = value; } \
+    static_assert(true, "") // require semicolon after macro
+
 #define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
     std::optional<TYPE> NAME() const { \
         return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \

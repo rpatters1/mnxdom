@@ -22,7 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
-
+#include "CommonClasses.h"
 
 namespace mnx {
 

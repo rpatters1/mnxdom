@@ -304,6 +304,36 @@ public:
         : Base(json::object(), parent, key) {}
 };
 
+template <typename T, std::enable_if_t<!std::is_base_of_v<Base, T>, int> = 0>
+class SimpleType : public Base
+{
+    static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string>, "This template is for simple JSON classes");
+
+public:
+    using value_type = T; ///< value type of this SimpleType
+
+    /// @brief Wraps a SimpleType class around an existing JSON object element
+    /// @param root Reference to the document root
+    /// @param pointer The json_pointer value for the element
+    SimpleType(const std::shared_ptr<json>& root, json_pointer pointer) : Base(root, pointer)
+    {
+    }
+
+    /// @brief Convert to simple type
+    operator T() const
+    {
+        return ref().template get<T>();
+    }
+
+    /// @brief Allow assignment to underlying json reference
+    /// @param src The simple type to assign.
+    SimpleType& operator=(const T& src)
+    {
+        ref() = src;
+        return *this;
+    }
+};
+
 /**
  * @brief Represents an MNX object that is included as an array element.
  */
@@ -325,8 +355,7 @@ public:
 template <typename T>
 class Array : public Base
 {
-    static_assert(std::is_same_v<T, int> || std::is_same_v<T, double> ||
-                  std::is_same_v<T, bool> || std::is_same_v<T, std::string> ||
+    static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string> ||
                   std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX array element type.");
 
 private:    
@@ -381,7 +410,7 @@ public:
         if constexpr (std::is_base_of_v<Base, T>) {
             return getChild<T>(std::to_string(index));
         } else {
-            return ref().at(index).template get<T>();
+            return getChild<SimpleType<T>>(std::to_string(index));
         }
     }
 
@@ -392,7 +421,7 @@ public:
         if constexpr (std::is_base_of_v<Base, T>) {
             return getChild<T>(std::to_string(index));
         } else {
-            return ref().at(index).template get_ref<T&>();
+            return getChild<SimpleType<T>>(std::to_string(index));
         }
     }
 

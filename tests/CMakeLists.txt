@@ -13,6 +13,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(mnxdom_tests
     test_document.cpp
     test_main.cpp
+    test_scores.cpp
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "AppleClang|Clang|GNU")

@@ -22,6 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
+#include "CommonClasses.h"
 
 namespace mnx {
 
@@ -73,14 +74,16 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param startMeasure The measure index of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
-    SystemLayoutChange(Base& parent, const std::string_view& key, std::string& layoutId)
+    SystemLayoutChange(Base& parent, const std::string_view& key, const std::string& layoutId,
+            int measureId, unsigned int numerator, unsigned int denominator)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);
+        create_location(measureId, numerator, denominator);
     }
 
-    MNX_REQUIRED_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
-    /// @todo location
+    MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
+    MNX_REQUIRED_CHILD(MeasureRythmicPosition, location);
 };
 
 /**
@@ -141,9 +144,21 @@ public:
 class Score : public ArrayElementObject
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
-
-    /// note that after adding a new Score, the caller *must* provide a name for it to validate
+    /// @brief Constructor for existing system layouts
+    Score(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new SystemLayoutChange class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param scoreName The name of the score to be created
+    Score(Base& parent, const std::string_view& key, const std::string& scoreName)
+        : ArrayElementObject(parent, key)
+    {
+        set_name(scoreName);
+    }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);                         ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<MultimeasureRest>, multimeasureRests);     ///< List of multimeasure rests in the score.

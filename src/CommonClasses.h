@@ -84,8 +84,8 @@ public:
     /// @brief Creates a new RythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    /// @param numerator The measure index of the first measure in the multimeasure rest
-    /// @param denominator The number of measures in the multimeasure rest
+    /// @param numerator The numerator (number on top) of the fraction.
+    /// @param denominator The denominator (number on bottom) of the fraction.
     RythmicPosition(Base& parent, const std::string_view& key, unsigned int numerator, unsigned int denominator)
         : Object(parent, key)
     {
@@ -97,4 +97,33 @@ public:
                                                         ///< (0 is the primary, and then count to the left.)
 };
 
+/**
+ * @class MeasureRythmicPosition
+ * @brief Represents a system on a page in a score.
+ */
+class MeasureRythmicPosition : public Object
+{
+public:
+    /// @brief Constructor for existing rhythmic position instances
+    MeasureRythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new MeasureRythmicPosition class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param measureId The measure index of the measure of the position.
+    /// @param numerator The numerator (number on top) of the fraction.
+    /// @param denominator The denominator (number on bottom) of the fraction.
+    MeasureRythmicPosition(Base& parent, const std::string_view& key, int measureId, unsigned int numerator, unsigned int denominator)
+        : Object(parent, key)
+    {
+        set_bar(measureId);
+        create_position(numerator, denominator);
+    }
+
+    MNX_REQUIRED_PROPERTY(int, bar);                ///< The measure id of the measure of this MeasureRythmicPosition.
+    MNX_REQUIRED_CHILD(RythmicPosition, position);  ///< The metric position, where 1/4 is a quarter note.
+};
 } // namespace mnx

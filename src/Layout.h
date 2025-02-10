@@ -64,8 +64,22 @@ enum class LayoutStemDirection
 class LayoutStaffSource : public ArrayElementObject
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
-    /// note that after adding a new ScorePage, the caller *must* provide a part id for it to validate
+    /// @brief Constructor for existing staff sources
+    LayoutStaffSource(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new SystemLayoutChange class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param startMeasure The measure index of the first measure in the multimeasure rest
+    /// @param numMeasures The number of measures in the multimeasure rest
+    LayoutStaffSource(Base& parent, const std::string_view& key, std::string& partId)
+        : ArrayElementObject(parent, key)
+    {
+        set_part(partId);
+    }
 
     MNX_OPTIONAL_PROPERTY(std::string, label);          ///< Text to appear to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)

@@ -32,8 +32,23 @@ namespace mnx {
 class MultimeasureRest : public ArrayElementObject
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
-    /// note that after adding a new MultimeasureRest, the caller *must* provide start & duration for it to validate
+    /// @brief Constructor for existing mm rests
+    MultimeasureRest(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new MultimeasureRest class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param startMeasure The measure index of the first measure in the multimeasure rest
+    /// @param numMeasures The number of measures in the multimeasure rest
+    MultimeasureRest(Base& parent, const std::string_view& key, int startMeasure, int numMeasures)
+        : ArrayElementObject(parent, key)
+    {
+        set_start(startMeasure);
+        set_duration(numMeasures);
+    }
 
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the number of measures in the multimeasure rest
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< the label to place on the multimeasure rest, if provided.
@@ -47,8 +62,22 @@ public:
 class SystemLayoutChange : public ArrayElementObject
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
-    /// note that after adding a new MultimeasureRest, the caller *must* provide start & duration for it to validate
+    /// @brief Constructor for existing system layouts
+    SystemLayoutChange(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new SystemLayoutChange class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param startMeasure The measure index of the first measure in the multimeasure rest
+    /// @param numMeasures The number of measures in the multimeasure rest
+    SystemLayoutChange(Base& parent, const std::string_view& key, std::string& layoutId)
+        : ArrayElementObject(parent, key)
+    {
+        set_layout(layoutId);
+    }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
     /// @todo location
@@ -61,8 +90,21 @@ public:
 class ScoreSystem : public ArrayElementObject
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
-    /// note that after adding a new ScorePage, the caller *must* provide a start measure value for it to validate
+    /// @brief Constructor for existing system layouts
+    ScoreSystem(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new SystemLayoutChange class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param startMeasure The measure index of the first measure in the system
+    ScoreSystem(Base& parent, const std::string_view& key, int startMeasure)
+        : ArrayElementObject(parent, key)
+    {
+        set_measure(startMeasure);
+    }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<SystemLayoutChange>, layoutChanges); ///< layout changes in the system (e.g., for changes in stem direction)

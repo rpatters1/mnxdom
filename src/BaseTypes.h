@@ -408,15 +408,16 @@ public:
      * @brief Create a new element at the end of the array. (Available only for Base types)
      * @return The newly created element.
     */
-    template <typename U = T, std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
-    U append()
+    template <typename U = T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append(Args&&... args)
     {
         if constexpr (std::is_base_of_v<Object, U>) {
             ref().push_back(json::object());
         } else {
             ref().push_back(json::array());
         }
-        return U(*this, std::to_string(ref().size() - 1));
+        return U(*this, std::to_string(ref().size() - 1), std::forward<Args>(args)...);
     }
 
     /** @brief Remove an element at a given index. */
@@ -521,10 +522,11 @@ public:
     }
 
     /// @brief Append an element of the specified type
-    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T append()
+    template <typename T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+    T append(Args&&... args)
     {
-        auto result = BaseArray::append<T>();
+        auto result = BaseArray::append<T>(std::forward<Args>(args)...);
         result.set_type(std::string(T::ContentTypeValue));
         return result;
     }

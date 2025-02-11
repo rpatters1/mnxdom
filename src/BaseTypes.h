@@ -57,6 +57,17 @@
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 
+#define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, PROPERTY, NAME) \
+    std::optional<TYPE> PROPERTY() const { \
+        return ref().contains(NAME) ? std::optional<TYPE>(ref()[NAME].get<TYPE>()) : std::nullopt; \
+    } \
+    TYPE PROPERTY##_or(const TYPE& defaultVal) const { \
+        return ref().contains(NAME) ? ref()[NAME].get<TYPE>() : defaultVal; \
+    } \
+    void set_##PROPERTY(const TYPE& value) { ref()[NAME] = value; } \
+    void clear_##PROPERTY() { ref().erase(NAME); } \
+    static_assert(true, "") // require semicolon after macro
+
 #define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
     TYPE NAME() const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
@@ -530,11 +541,11 @@ private:
  * 
  * @code{.cpp}
  * auto next = content[index]; // gets the base ContentObject instance.
- * if (next.type() == LayoutGroup::ContentTypeValue) {
- *     auto group = next.get<LayoutGroup>(); // gets the instance typed as a LayoutGroup.
+ * if (next.type() == layout::Group::ContentTypeValue) {
+ *     auto group = next.get<layout::Group>(); // gets the instance typed as a layout::Group.
  *     // process group
- * } else if (next.type() == LayoutStaff::ContentTypeValue) {
- *     auto staff = next.get<LayoutStaff>(); // gets the instance typed as a LayoutStaff.
+ * } else if (next.type() == layout::Staff::ContentTypeValue) {
+ *     auto staff = next.get<layout::Staff>(); // gets the instance typed as a layout::Staff.
  *     // process staff
  * }
  * @endcode
@@ -542,7 +553,7 @@ private:
  * To add instances to the array, use the template paramter to specify the type to add.
  *
  * @code{.cpp}
- * auto newElement = content.append<LayoutStaff>();
+ * auto newElement = content.append<layout::Staff>();
  * @endcode
  *
  * The `append` method automatically gives the instance the correct `type` value.

@@ -21,50 +21,21 @@
  */
 #pragma once
 
+#include "Enumerations.h"
 #include "BaseTypes.h"
 
 namespace mnx {
+namespace layout {
 
 /**
- * @enum LayoutSymbol
- * @brief The symbols available to bracket a staff group
- */
-enum class LayoutSymbol
-{
-    NoSymbol,       ///< the default (none)
-    Brace,          ///< piano brace
-    Bracket         ///< bracket
-};
-
-/**
- * @enum LabelRef
- * @brief The values available in a labelref
- */
-enum class LabelRef
-{
-    Name,           ///< the full name from the part (the default)
-    ShortName       ///< the abbreviated name from the part
-};
-
-/**
- * @enum LayoutStemDirection
- * @brief The values available in a labelref
- */
-enum class LayoutStemDirection
-{
-    Down,           ///< stems down (default)
-    Up              ///< stems up
-};
-
-/**
- * @class LayoutStaffSource
+* @class StaffSource
  * @brief Represents a system on a page in a score.
  */
-class LayoutStaffSource : public ArrayElementObject
+class StaffSource : public ArrayElementObject
 {
 public:
     /// @brief Constructor for existing staff sources
-    LayoutStaffSource(const std::shared_ptr<json>& root, json_pointer pointer)
+    StaffSource(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
     {
     }
@@ -74,7 +45,7 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param startMeasure The measure index of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
-    LayoutStaffSource(Base& parent, const std::string_view& key, std::string& partId)
+    StaffSource(Base& parent, const std::string_view& key, std::string& partId)
         : ArrayElementObject(parent, key)
     {
         set_part(partId);
@@ -89,10 +60,10 @@ public:
 };
 
 /**
- * @class LayoutStaff
+ * @class Staff
  * @brief Represents a single global measure instance within an MNX document.
  */
-class LayoutStaff : public ContentObject
+class Staff : public ContentObject
 {
 public:
     using ContentObject::ContentObject;
@@ -100,7 +71,7 @@ public:
     /// @brief Creates a new Global class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    LayoutStaff(Base& parent, const std::string_view& key)
+    Staff(Base& parent, const std::string_view& key)
         : ContentObject(parent, key)
     {
         // required children
@@ -109,17 +80,17 @@ public:
 
     MNX_OPTIONAL_PROPERTY(std::string, label);                  ///< Label to be rendered to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);                  ///< The labelref to use (rather than label)
-    MNX_REQUIRED_CHILD(Array<LayoutStaffSource>, sources);      ///< The sources for this staff.
+    MNX_REQUIRED_CHILD(Array<StaffSource>, sources);      ///< The sources for this staff.
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);                ///< The symbol down the left side.
 
     static constexpr std::string_view ContentTypeValue = "staff"; ///< type value that identifies the type within the content array
 };
 
 /**
- * @class LayoutGroup
+ * @class Group
  * @brief Represents a single global measure instance within an MNX document.
  */
-class LayoutGroup : public ContentObject
+class Group : public ContentObject
 {
 public:
     using ContentObject::ContentObject;
@@ -127,7 +98,7 @@ public:
     /// @brief Creates a new Global class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    LayoutGroup(Base& parent, const std::string_view& key)
+    Group(Base& parent, const std::string_view& key)
         : ContentObject(parent, key)
     {
         // required children
@@ -140,6 +111,8 @@ public:
 
     static constexpr std::string_view ContentTypeValue = "group"; ///< type value that identifies the type within the content array
 };
+
+} // namespace layout
 
 /**
  * @class Layout

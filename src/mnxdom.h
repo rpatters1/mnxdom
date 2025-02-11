@@ -46,6 +46,7 @@
 
 #pragma once
 
+#include "Enumerations.h"
 #include "BaseTypes.h"
 #include "Global.h"
 #include "Layout.h"

@@ -35,6 +35,20 @@ static_assert(true, "") // forces semicolon after macro invocation
 
 namespace mnx {
 
+MNX_ENUM_MAPPING(BarlineType, {
+    { "regular",     BarlineType::Regular },
+    { "dashed",      BarlineType::Dashed },
+    { "dotted",      BarlineType::Dotted },
+    { "double",      BarlineType::Double },
+    { "final",       BarlineType::Final },
+    { "heavy",       BarlineType::Heavy },
+    { "heavyHeavy",  BarlineType::HeavyHeavy },
+    { "heavyLight",  BarlineType::HeavyLight },
+    { "noBarline",   BarlineType::NoBarline },
+    { "short",       BarlineType::Short },
+    { "tick",        BarlineType::Tick }
+});
+
 MNX_ENUM_MAPPING(LayoutSymbol, {
     { "noSymbol", LayoutSymbol::NoSymbol },
     { "brace",    LayoutSymbol::Brace },

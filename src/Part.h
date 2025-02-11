@@ -24,20 +24,21 @@
 #include "BaseTypes.h"
 
 namespace mnx {
+namespace part {
 
 /**
- * @class PartMeasure
+ * @class Measure
  * @brief Represents a single measuer in a part in an MNX document. It contains the majority of the musical information in its sequences.
  */
-class PartMeasure : public ArrayElementObject
+class Measure : public ArrayElementObject
 {
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    /// @brief Creates a new PartMeasure class as a child of a JSON element
+    /// @brief Creates a new Measure class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    PartMeasure(Base& parent, const std::string_view& key)
+    Measure(Base& parent, const std::string_view& key)
         : ArrayElementObject(parent, key)
     {
         // required children
@@ -46,6 +47,8 @@ public:
 
     MNX_REQUIRED_CHILD(ContentArray, sequences);      ///< sequences that contain all the musical details in each measure
 };
+
+} // namespace Part
 
 /**
  * @class Part
@@ -57,7 +60,7 @@ public:
     using ArrayElementObject::ArrayElementObject;
 
     MNX_OPTIONAL_PROPERTY(std::string, id);             ///< Uniquely identifies the part
-    MNX_OPTIONAL_CHILD(Array<PartMeasure>, measures);   ///< Contains all the musical data for this part
+    MNX_OPTIONAL_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
     MNX_OPTIONAL_PROPERTY(std::string, name);           ///< Specifies the user-facing full name of this part
     MNX_OPTIONAL_PROPERTY(std::string, shortName);      ///< Specifies the user-facing abbreviated name of this part
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);      ///< Name of SMuFL-font for notation elements in the part (can be overridden by children)

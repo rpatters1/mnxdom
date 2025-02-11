@@ -96,8 +96,9 @@ class Measure : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_CHILD(Barline, barline);     ///< the barline for this measure
-    MNX_OPTIONAL_PROPERTY(int, index);              ///< the measure index
+    MNX_OPTIONAL_CHILD(Barline, barline);       ///< the barline for this measure
+    MNX_OPTIONAL_CHILD(Ending, ending);         ///< the ending ("volta bracket") for this measure
+    MNX_OPTIONAL_PROPERTY(int, index);          ///< the measure index
 
     /// @brief Calculates the barline type for this measure.
     /// @return barline().type() if barline() has a value. Otherwise the default (as defined in the MNX specification.)

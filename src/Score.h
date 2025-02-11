@@ -78,8 +78,10 @@ public:
     /// @brief Creates a new LayoutChange class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    /// @param startMeasure The measure index of the first measure in the multimeasure rest
-    /// @param numMeasures The number of measures in the multimeasure rest
+    /// @param layoutId The id of the layout to use for the layout change
+    /// @param measureId The measure index of the measure of the position.
+    /// @param numerator The numerator (number on top) of the fraction.
+    /// @param denominator The denominator (number on bottom) of the fraction.
     LayoutChange(Base& parent, const std::string_view& key, const std::string& layoutId,
             int measureId, unsigned int numerator, unsigned int denominator)
         : ArrayElementObject(parent, key)
@@ -89,7 +91,7 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
-    MNX_REQUIRED_CHILD(MeasureRythmicPosition, location);
+    MNX_REQUIRED_CHILD(MeasureRythmicPosition, location);   ///< location where the new layout takes effect.
 };
 
 /**
@@ -105,7 +107,7 @@ public:
     {
     }
     
-    /// @brief Creates a new LayoutChange class as a child of a JSON element
+    /// @brief Creates a new System class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param startMeasure The measure index of the first measure in the system
@@ -129,7 +131,7 @@ class Page : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    /// @brief Creates a new Global class as a child of a JSON element
+    /// @brief Creates a new Page class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     Page(Base& parent, const std::string_view& key)
@@ -158,7 +160,7 @@ public:
     {
     }
     
-    /// @brief Creates a new LayoutChange class as a child of a JSON element
+    /// @brief Creates a new Score class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param scoreName The name of the score to be created

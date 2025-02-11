@@ -48,8 +48,7 @@ public:
     /// @brief Creates a new SystemLayoutChange class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    /// @param startMeasure The measure index of the first measure in the multimeasure rest
-    /// @param numMeasures The number of measures in the multimeasure rest
+    /// @param partId The part to use as a source
     StaffSource(Base& parent, const std::string_view& key, std::string& partId)
         : ArrayElementObject(parent, key)
     {
@@ -128,7 +127,7 @@ class Layout : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    /// @brief Creates a new Global class as a child of a JSON element
+    /// @brief Creates a new Layout class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     Layout(Base& parent, const std::string_view& key)

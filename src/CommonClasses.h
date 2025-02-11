@@ -25,6 +25,8 @@
 
 namespace mnx {
 
+/// @class Fraction
+/// @brief Represents a fraction of a whole note, for measuring musical time.
 class Fraction : private Array<unsigned int>
 {
 private:
@@ -35,6 +37,7 @@ private:
     static constexpr size_t DENOMINATOR_INDEX = 1;
 
 public:
+    /// @brief Constructor to wrap a Fraction instance around existing JSON
     Fraction(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayType(root, pointer)
     {

@@ -35,6 +35,8 @@ static_assert(true, "") // forces semicolon after macro invocation
 
 namespace mnx {
 
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
 MNX_ENUM_MAPPING(BarlineType, {
     { "regular",     BarlineType::Regular },
     { "dashed",      BarlineType::Dashed },
@@ -64,5 +66,7 @@ MNX_ENUM_MAPPING(LayoutStemDirection, {
     { "down",   LayoutStemDirection::Down },
     { "up",     LayoutStemDirection::Up }
 });
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 } // namespace mnx

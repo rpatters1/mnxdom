@@ -95,6 +95,11 @@
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 
+/**
+ * @namespace mnx
+ * @brief object model for MNX format
+ * @link https://w3c.github.io/mnx/docs/
+ */
 namespace mnx {
 
 inline constexpr int MNX_VERSION = 1;

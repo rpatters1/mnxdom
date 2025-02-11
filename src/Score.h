@@ -25,6 +25,11 @@
 #include "CommonClasses.h"
 
 namespace mnx {
+
+/**
+ * @namespace mnx::score
+ * @brief classes related to the root scores array
+ */
 namespace score {
 
 /**

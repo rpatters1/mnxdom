@@ -73,4 +73,4 @@ enum class LayoutStemDirection
     Up              ///< stems up
 };
 
-} // namespace
+} // namespace mnx

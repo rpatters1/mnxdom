@@ -24,6 +24,11 @@
 #include "BaseTypes.h"
 
 namespace mnx {
+
+/**
+ * @namespace mnx::part
+ * @brief classes related to the root parts array
+ */
 namespace part {
 
 /**

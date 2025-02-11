@@ -24,6 +24,11 @@
 #include "BaseTypes.h"
 
 namespace mnx {
+
+/**
+ * @namespace mnx::global
+ * @brief classes related to the root global object
+ */
 namespace global {
 
 /**

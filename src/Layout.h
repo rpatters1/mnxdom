@@ -25,6 +25,11 @@
 #include "BaseTypes.h"
 
 namespace mnx {
+
+/**
+ * @namespace mnx::layout
+ * @brief classes related to the root layouts array
+ */
 namespace layout {
 
 /**

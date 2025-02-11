@@ -78,6 +78,22 @@ enum class NoteValueBase
 };
 
 /**
+ * @enum TimeSignatureUnit
+ * @brief Valid units for the lower numbers of time signatures
+ */
+enum class TimeSignatureUnit : int
+{
+    Whole = 1,
+    Half = 2,
+    Quarter = 4,
+    Eighth = 8,
+    Value16th = 16,
+    Value32nd = 32,
+    Value64th = 64,
+    Value128th = 128
+};
+
+/**
  * @enum LayoutSymbol
  * @brief The symbols available to bracket a staff group
  */
@@ -109,3 +125,21 @@ enum class LayoutStemDirection
 };
 
 } // namespace mnx
+
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
+namespace nlohmann {
+namespace detail {
+
+template<typename BasicJsonType>
+inline void from_json(const BasicJsonType& j, mnx::TimeSignatureUnit& value)
+{ value = mnx::TimeSignatureUnit(j.template get<int>()); }
+
+template<typename BasicJsonType>
+inline void to_json(BasicJsonType& j, mnx::TimeSignatureUnit value) noexcept
+{ j = int(value); }
+
+} // namespace detail
+} // namespace nlohmann
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS

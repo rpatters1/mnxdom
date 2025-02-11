@@ -188,11 +188,14 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param bpm The number of beats per minutes
     /// @param noteValueBase The note value base for this Barline
-    Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase)
+    Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase, std::optional<unsigned int> numDots = std::nullopt)
         : ArrayElementObject(parent, key)
     {
         set_bpm(bpm);
         create_value(noteValueBase);
+        if (numDots.has_value()) {
+            value().set_dots(numDots.value());
+        }
     }
 
     MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking
@@ -220,6 +223,7 @@ public:
     MNX_OPTIONAL_CHILD(RepeatEnd, repeatEnd);       ///< if present, indicates that there is backwards repeat
     MNX_OPTIONAL_CHILD(RepeatStart, repeatStart);   ///< if present, indicates that a repeated section starts here
     MNX_OPTIONAL_CHILD(Array<Tempo>, tempos);       ///< the tempo changes within the measure, if any
+    MNX_OPTIONAL_CHILD(TimeSignature, time);        ///< if present, indicates a meter change
 
     /// @brief Calculates the barline type for this measure.
     /// @return barline().type() if barline() has a value. Otherwise the default (as defined in the MNX specification.)

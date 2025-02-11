@@ -178,4 +178,33 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned int, dots, 0);  ///< the number of dots
 };
 
+/**
+ * @class TimeSignature
+ * @brief Represents the tempo for a global measure.
+ */
+class TimeSignature : public Object
+{
+public:
+    /// @brief Constructor for existing NoteValue instances
+    TimeSignature(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Barline class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param count The number of beats per minutes
+    /// @param unit The note value base for this Barline
+    TimeSignature(Base& parent, const std::string_view& key, int count, TimeSignatureUnit unit)
+        : Object(parent, key)
+    {
+        set_count(count);
+        set_unit(unit);
+    }
+
+    MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
+    MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
+};
+
 } // namespace mnx

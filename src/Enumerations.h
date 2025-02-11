@@ -43,6 +43,41 @@ enum class BarlineType
 };
 
 /**
+ * @enum JumpType
+ * @brief The types of jumps.
+ */
+enum class JumpType
+{
+    DsAlFine,       ///< D.S. al Fine
+    Segno           ///< Dal Segno
+};
+
+/**
+ * @enum NoteValueBase
+ * @brief The note values allowed in MNX
+ */
+enum class NoteValueBase
+{
+    Note4096th,
+    Note2048th,
+    Note1024th,
+    Note512th,
+    Note256th,
+    Note128th,
+    Note64th,
+    Note32nd,
+    Note16th,
+    Eighth,
+    Quarter,
+    Half,
+    Whole,
+    Breve,
+    Longa,
+    Maxima,
+    DuplexMaxima
+};
+
+/**
  * @enum LayoutSymbol
  * @brief The symbols available to bracket a staff group
  */

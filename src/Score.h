@@ -91,7 +91,7 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
-    MNX_REQUIRED_CHILD(MeasureRythmicPosition, location);   ///< location where the new layout takes effect.
+    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, location);   ///< location where the new layout takes effect.
 };
 
 /**

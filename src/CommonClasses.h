@@ -65,24 +65,24 @@ public:
 };
 
 /**
- * @class RythmicPosition
+ * @class RhythmicPosition
  * @brief Represents a system on a page in a score.
  */
-class RythmicPosition : public Object
+class RhythmicPosition : public Object
 {
 public:
     /// @brief Constructor for existing rhythmic position instances
-    RythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
+    RhythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
     }
     
-    /// @brief Creates a new RythmicPosition class as a child of a JSON element
+    /// @brief Creates a new RhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param numerator The numerator (number on top) of the fraction.
     /// @param denominator The denominator (number on bottom) of the fraction.
-    RythmicPosition(Base& parent, const std::string_view& key, unsigned int numerator, unsigned int denominator)
+    RhythmicPosition(Base& parent, const std::string_view& key, unsigned int numerator, unsigned int denominator)
         : Object(parent, key)
     {
         create_fraction(numerator, denominator);
@@ -94,33 +94,33 @@ public:
 };
 
 /**
- * @class MeasureRythmicPosition
+ * @class MeasureRhythmicPosition
  * @brief Represents a system on a page in a score.
  */
-class MeasureRythmicPosition : public Object
+class MeasureRhythmicPosition : public Object
 {
 public:
     /// @brief Constructor for existing rhythmic position instances
-    MeasureRythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
+    MeasureRhythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
     }
     
-    /// @brief Creates a new MeasureRythmicPosition class as a child of a JSON element
+    /// @brief Creates a new MeasureRhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param measureId The measure index of the measure of the position.
     /// @param numerator The numerator (number on top) of the fraction.
     /// @param denominator The denominator (number on bottom) of the fraction.
-    MeasureRythmicPosition(Base& parent, const std::string_view& key, int measureId, unsigned int numerator, unsigned int denominator)
+    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, unsigned int numerator, unsigned int denominator)
         : Object(parent, key)
     {
         set_bar(measureId);
         create_position(numerator, denominator);
     }
 
-    MNX_REQUIRED_PROPERTY(int, bar);                ///< The measure id of the measure of this MeasureRythmicPosition.
-    MNX_REQUIRED_CHILD(RythmicPosition, position);  ///< The metric position, where 1/4 is a quarter note.
+    MNX_REQUIRED_PROPERTY(int, bar);                ///< The measure id of the measure of this MeasureRhythmicPosition.
+    MNX_REQUIRED_CHILD(RhythmicPosition, position); ///< The metric position, where 1/4 is a quarter note.
 };
 
 /**

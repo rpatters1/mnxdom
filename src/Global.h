@@ -114,7 +114,7 @@ public:
 
     MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the fine direction
-    MNX_REQUIRED_CHILD(RythmicPosition, location);              ///< the location of the fine direction
+    MNX_REQUIRED_CHILD(RhythmicPosition, location);              ///< the location of the fine direction
 };
 
 /**
@@ -144,7 +144,7 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(JumpType, type);                      ///< the JumpType
-    MNX_REQUIRED_CHILD(RythmicPosition, location);              ///< the location of the jump
+    MNX_REQUIRED_CHILD(RhythmicPosition, location);              ///< the location of the jump
 };
 
 /**
@@ -188,6 +188,7 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param bpm The number of beats per minutes
     /// @param noteValueBase The note value base for this Barline
+    /// @param numDots The number of dots (may be omitted)
     Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase, std::optional<unsigned int> numDots = std::nullopt)
         : ArrayElementObject(parent, key)
     {
@@ -199,8 +200,7 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking
-    MNX_OPTIONAL_CHILD(MeasureRythmicPosition, location);  ///< location within the measure of the tempo marking
-                                                    ///< (This should probably be RhythmicPosition, but currently the spec says MeasureRythmicPosition.)
+    MNX_OPTIONAL_CHILD(RhythmicPosition, location); ///< location within the measure of the tempo marking
     MNX_REQUIRED_CHILD(NoteValue, value);           ///< the note value for the tempo.
 };
 
@@ -234,6 +234,60 @@ public:
     int calcMeasureIndex() const;
 };
 
+/**
+ * @class LyricLineMetadata
+ * @brief Represents a single part in an MNX document.
+ */
+class LyricLineMetadata : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
+
+    MNX_OPTIONAL_PROPERTY(std::string, label);              ///< The Id
+    MNX_OPTIONAL_CHILD(Array<std::string>, lineOrder);      ///< Lyric line IDs used in the document (e.g. verse numbers)
+};
+
+/**
+ * @class LyricsGlobal
+ * @brief Metadata for lyrics in this MNX document
+ * @todo Implement string-valued indices for lineMetadata
+ */
+class LyricsGlobal : public Object
+{
+public:
+    using Object::Object;
+
+    MNX_OPTIONAL_CHILD(Array<LyricLineMetadata>, lineMetadata); ///< Defines lyric line IDs and their metadata.
+    MNX_OPTIONAL_CHILD(Array<std::string>, lineOrder);          ///< Lyric line IDs used in the document (e.g. verse numbers)
+};
+
+/**
+ * @class StyleGlobal
+ * @brief Visual styling selectors for this MNX document
+ */
+class StyleGlobal : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing StyleGlobal objects
+    StyleGlobal(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Jump class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param selector The CSS-style selector that specifies which MNX object(s) this style applies to.
+    StyleGlobal(Base& parent, const std::string_view& key, const std::string& selector)
+        : ArrayElementObject(parent, key)
+    {
+        set_selector(selector);
+    }
+
+    MNX_OPTIONAL_PROPERTY(std::string, color);      ///< the JumpType
+    MNX_REQUIRED_PROPERTY(std::string, selector);   ///< the location of the jump
+};
+
 } // namespace global
 
 /**
@@ -251,11 +305,12 @@ public:
     Global(Base& parent, const std::string_view& key)
         : Object(parent, key)
     {
-        // required children
         create_measures();
     }
 
-    MNX_REQUIRED_CHILD(Array<global::Measure>, measures);     ///< array of global measures.
+    MNX_OPTIONAL_CHILD(global::LyricsGlobal, lyrics);       ///< lyrics metadata
+    MNX_REQUIRED_CHILD(Array<global::Measure>, measures);   ///< array of global measures.
+    MNX_OPTIONAL_CHILD(Array<global::StyleGlobal>, styles); ///< array of styles
 };
 
 } // namespace mnx

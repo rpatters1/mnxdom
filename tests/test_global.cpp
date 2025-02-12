@@ -75,14 +75,19 @@ TEST(Global, LyricLineMetadata)
     EXPECT_EQ(lineMetaData.value()["2"].lang(), "de");
     EXPECT_EQ(lineMetaData.value()["3"].label(), "日本語");
 
-    for (const auto it : lineMetaData.value()) {
-        if (it.first == "1") {
+    size_t index = 0;
+    for (const auto& it : lineMetaData.value()) {
+        if (index == 2) {
+            EXPECT_EQ(it.first, "1");
             EXPECT_EQ(it.second.lang().value(), "en");
             EXPECT_EQ(it.second.label().value(), "English");
-        } else if (it.first == "4") {
+        } else if (index == 3) {
+            EXPECT_EQ(it.first, "4");
             EXPECT_EQ(it.second.lang().value(), "es");
             EXPECT_EQ(it.second.label().value(), "Español");
         }
+        index++;
+        ASSERT_TRUE(index <= 4) << "iteration loop is not stopping";        
         //std::cout << "\"" << it.first << "\": " << *it.second.lang() << " " << *it.second.label() << std::endl;
     }
 
@@ -101,6 +106,29 @@ TEST(Global, LyricLineMetadata)
     }
     EXPECT_EQ(lineMetaData.value()["3"].label(), "Nederlands");
     EXPECT_EQ(lineMetaData.value()["3"].lang(), "nl");
+
+    {
+        const auto it = lineMetaData.value().find("222");
+        EXPECT_EQ(it, lineMetaData.value().end()) << "find invalid key";
+    }
+    {
+        const auto it = lineMetaData.value().find("2");
+        EXPECT_NE(it, lineMetaData.value().end()) << "find valid key";
+        EXPECT_EQ(it->second.label(), "Deutsch");
+        EXPECT_EQ(it->second.lang(), "de");
+    }
+    {
+        auto it = lineMetaData.value().find("222");
+        EXPECT_EQ(it, lineMetaData.value().end()) << "find invalid key";
+    }
+    {
+        auto it = lineMetaData.value().find("15");
+        EXPECT_NE(it, lineMetaData.value().end()) << "find valid key";
+        it->second.set_label("Français");
+        it->second.set_lang("fr");
+    }
+    EXPECT_EQ(lineMetaData.value()["15"].label(), "Français");
+    EXPECT_EQ(lineMetaData.value()["15"].lang(), "fr");
 
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
     //std::cout << doc.dump(4) << std::endl;

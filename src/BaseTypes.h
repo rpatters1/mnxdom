@@ -394,9 +394,11 @@ private:
     template<typename ArrayType>
     struct iter
     {
+    private:
         ArrayType* m_ptr;
         mutable size_t m_idx;
 
+    public:
         iter(ArrayType* ptr, size_t idx) : m_ptr(ptr), m_idx(idx) {}
         T operator*() const { return (*m_ptr)[m_idx]; }
         iter& operator++() { ++m_idx; return *this; }
@@ -645,19 +647,31 @@ private:
     struct iter
     {
         using value_type = std::pair<const std::string, T>;
-        
+        using difference_type = std::ptrdiff_t;
+        using iterator_category = std::forward_iterator_tag;
+        using pointer = value_type*;
+        using reference = value_type&;
+
+    private:
         DictionaryType* m_ptr;
         IteratorType m_it;
+        mutable std::unique_ptr<value_type> m_pair;  // Cached key-value pair for operator*() and operator->()
 
-        iter(DictionaryType* ptr, IteratorType it) : m_ptr(ptr), m_it(it) {}
-
-        // Dereference operator to return a key-value pair
-        value_type operator*() const
-        {
-            return { m_it.key(), m_ptr->operator[](m_it.key()) };
+        void update_pair() const {
+            m_pair.reset();
+            if (m_it != m_ptr->ref().end()) {
+                m_pair = std::make_unique<value_type>(m_it.key(), m_ptr->operator[](m_it.key()));
+            }
         }
+    
+    public:
+        iter(DictionaryType* ptr, IteratorType it) : m_ptr(ptr), m_it(it)
+        { update_pair(); }
 
-        iter& operator++() { ++m_it; return *this; }
+        reference operator*() const { return *m_pair.get(); }
+        pointer operator->() const { return m_pair.get(); }
+
+        iter& operator++() { ++m_it; update_pair(); return *this; }
         iter operator++(int) { iter tmp = *this; ++(*this); return tmp; }
 
         bool operator!=(const iter& o) const { return m_it != o.m_it; }
@@ -742,6 +756,24 @@ public:
     void erase(const std::string& key)
     {
         ref().erase(key);
+    }
+
+    /// @brief Finds an element by key and returns an iterator.
+    /// @param key The key to search for.
+    /// @return Iterator to the found element or end() if not found.
+    auto find(const std::string& key)
+    {
+        auto it = ref().find(key);
+        return (it != ref().end()) ? iterator(this, it) : end();
+    }
+
+    /// @brief Finds an element by key and returns a const iterator.
+    /// @param key The key to search for.
+    /// @return Const iterator to the found element or end() if not found.
+    auto find(const std::string& key) const
+    {
+        auto it = ref().find(key);
+        return (it != ref().end()) ? const_iterator(this, it) : end();
     }
 
     /// @brief Returns an iterator to the beginning of the dictionary.

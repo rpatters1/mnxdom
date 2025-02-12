@@ -162,7 +162,7 @@ public:
 
 protected:
     /**
-     * @brief Convert this element for retrieval.
+     * @brief Convert this node for retrieval.
      *
      * @return A reference to the JSON node.
      */
@@ -317,9 +317,9 @@ private:
 class Object : public Base
 {
 public:
-    /// @brief Wraps an Object class around an existing JSON object element
+    /// @brief Wraps an Object class around an existing JSON object node
     /// @param root Reference to the document root
-    /// @param pointer The json_pointer value for the element
+    /// @param pointer The json_pointer value for the node
     Object(const std::shared_ptr<json>& root, json_pointer pointer) : Base(root, pointer)
     {
         if (!ref().is_object()) {
@@ -327,7 +327,7 @@ public:
         }
     }
 
-    /// @brief Creates a new Object class as a child of a JSON element
+    /// @brief Creates a new Object class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     Object(Base& parent, const std::string_view& key)
@@ -344,9 +344,9 @@ class SimpleType : public Base
 public:
     using value_type = T; ///< value type of this SimpleType
 
-    /// @brief Wraps a SimpleType class around an existing JSON object element
+    /// @brief Wraps a SimpleType class around an existing JSON object node
     /// @param root Reference to the document root
-    /// @param pointer The json_pointer value for the element
+    /// @param pointer The json_pointer value for the node
     SimpleType(const std::shared_ptr<json>& root, json_pointer pointer) : Base(root, pointer)
     {
     }
@@ -391,16 +391,16 @@ class Array : public Base
                   std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX array element type.");
 
 private:    
-    template<typename A>
+    template<typename ArrayType>
     struct iter
     {
-        A* a;
-        mutable size_t i;
+        ArrayType* m_ptr;
+        mutable size_t m_idx;
 
-        iter(A* a_, size_t i_) : a(a_), i(i_) {}
-        T operator*() const { return (*a)[i]; }
-        iter& operator++() { ++i; return *this; }
-        bool operator!=(const iter& o) const { return i != o.i; }
+        iter(ArrayType* ptr, size_t idx) : m_ptr(ptr), m_idx(idx) {}
+        T operator*() const { return (*m_ptr)[m_idx]; }
+        iter& operator++() { ++m_idx; return *this; }
+        bool operator!=(const iter& o) const { return m_idx != o.m_idx; }
     };
 
 public:
@@ -410,9 +410,9 @@ public:
     using iterator = iter<Array>;               ///< non-const iterator type
     using const_iterator = iter<const Array>;   ///< const iterator type
 
-    /// @brief Wraps an Array class around an existing JSON array element
+    /// @brief Wraps an Array class around an existing JSON array node
     /// @param root Reference to the document root
-    /// @param pointer The json_pointer value for the element
+    /// @param pointer The json_pointer value for the node
     Array(const std::shared_ptr<json>& root, json_pointer pointer) : Base(root, pointer)
     {
         if (!ref().is_array()) {
@@ -420,7 +420,7 @@ public:
         }
     }
 
-    /// @brief Creates a new Array class as a child of a JSON element
+    /// @brief Creates a new Array class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     Array(Base& parent, const std::string_view& key)
@@ -629,6 +629,132 @@ struct EnumStringMapping
         }();
         return reverseMap;
     }
+};
+
+/**
+ * @brief Represents an MNX dictionary, where each key is a user-defined string.
+ */
+template <typename T>
+class Dictionary : public Object
+{
+    static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string> ||
+                  std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX dictionary element type.");
+
+private:    
+    template <typename DictionaryType, typename IteratorType>
+    struct iter
+    {
+        using value_type = std::pair<const std::string, T>;
+        
+        DictionaryType* m_ptr;
+        IteratorType m_it;
+
+        iter(DictionaryType* ptr, IteratorType it) : m_ptr(ptr), m_it(it) {}
+
+        // Dereference operator to return a key-value pair
+        value_type operator*() const
+        {
+            return { m_it.key(), m_ptr->operator[](m_it.key()) };
+        }
+
+        iter& operator++() { ++m_it; return *this; }
+        iter operator++(int) { iter tmp = *this; ++(*this); return tmp; }
+
+        bool operator!=(const iter& o) const { return m_it != o.m_it; }
+        bool operator==(const iter& o) const { return m_it == o.m_it; }
+    };
+
+public:
+    /// @brief The type for elements in this Array.
+    using value_type = T;
+
+    using iterator = iter<Dictionary, json::iterator>;  ///< non-const iterator type
+    using const_iterator = iter<const Dictionary, json::const_iterator>; ///< const iterator type
+
+    /// @brief Wraps an Dictionary class around an existing JSON node
+    /// @param root Reference to the document root
+    /// @param pointer The json_pointer value for the node
+    Dictionary(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Dictionary class as a child of a JSON node
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    Dictionary(Base& parent, const std::string_view& key)
+        : Object(parent, key) {}
+
+    /** @brief Get the size of the array. */
+    size_t size() const { return ref().size(); }
+
+    /** @brief Check if the array is empty. */
+    bool empty() const { return ref().empty(); }
+
+    /** @brief Clear all elements. */
+    void clear() { ref().clear(); }
+
+    /// @brief const operator[]
+    T operator[](const std::string& key) const
+    {
+        if constexpr (std::is_base_of_v<Base, T>) {
+            return getChild<T>(key);
+        } else {
+            return getChild<SimpleType<T>>(key);
+        }
+    }
+
+    /// @brief non-const operator[]
+    auto operator[](const std::string& key)
+    {
+        if constexpr (std::is_base_of_v<Base, T>) {
+            return getChild<T>(key);
+        } else {
+            return getChild<SimpleType<T>>(key);
+        }
+    }
+
+    /** @brief Append a new value to the array. (Available only for primitive types) */
+    template <typename U = T>
+    std::enable_if_t<!std::is_base_of_v<Base, U>, void>
+    emplace(const std::string& key, const U& value)
+    {
+        ref()[key] = value;
+    }
+
+    /**
+     * @brief Create a new element using the input key. (Available only for Base types)
+     * @return The newly created element.
+    */
+    template <typename U = T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append(const std::string& key, Args&&... args)
+    {
+        if constexpr (std::is_base_of_v<Object, U>) {
+            ref()[key] = json::object();
+        } else {
+            ref()[key] = json::array();
+        }
+        return U(*this, key, std::forward<Args>(args)...);
+    }
+
+    /** @brief Remove an element at a given key. */
+    void erase(const std::string& key)
+    {
+        ref().erase(key);
+    }
+
+    /// @brief Returns an iterator to the beginning of the dictionary.
+    auto begin() { return iterator(this, ref().begin()); }
+
+    /// @brief Returns an iterator to the end of the dictionary.
+    auto end() { return iterator(this, ref().end()); }
+
+    /// @brief Returns a const iterator to the beginning of the dictionary.
+    auto begin() const { return const_iterator(this, ref().begin()); }
+
+    /// @brief Returns a const iterator to the end of the dictionary.
+    auto end() const { return const_iterator(this, ref().end()); }
 };
 
 } // namespace mnx

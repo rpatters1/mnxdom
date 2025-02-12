@@ -236,29 +236,28 @@ public:
 
 /**
  * @class LyricLineMetadata
- * @brief Represents a single part in an MNX document.
+ * @brief Represents a single item of lyric metadata. The user-defined key is the lyric line ID.
  */
 class LyricLineMetadata : public ArrayElementObject
 {
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_PROPERTY(std::string, label);              ///< The Id
-    MNX_OPTIONAL_CHILD(Array<std::string>, lineOrder);      ///< Lyric line IDs used in the document (e.g. verse numbers)
+    MNX_OPTIONAL_PROPERTY(std::string, label);  ///< Human readable lable for this lyric line. This could be used in a software UI, for example.
+    MNX_OPTIONAL_PROPERTY(std::string, lang);   ///< RFC5646 language code identifying the language of this line of lyrics.
 };
 
 /**
  * @class LyricsGlobal
  * @brief Metadata for lyrics in this MNX document
- * @todo Implement string-valued indices for lineMetadata
  */
 class LyricsGlobal : public Object
 {
 public:
     using Object::Object;
 
-    MNX_OPTIONAL_CHILD(Array<LyricLineMetadata>, lineMetadata); ///< Defines lyric line IDs and their metadata.
-    MNX_OPTIONAL_CHILD(Array<std::string>, lineOrder);          ///< Lyric line IDs used in the document (e.g. verse numbers)
+    MNX_OPTIONAL_CHILD(Dictionary<LyricLineMetadata>, lineMetadata); ///< Defines lyric line IDs and their metadata.
+    MNX_OPTIONAL_CHILD(Array<std::string>, lineOrder);              ///< Lyric line IDs used in the document (e.g. verse numbers)
 };
 
 /**

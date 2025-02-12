@@ -42,10 +42,9 @@ TEST(Document, Minimal)
         }
     )");
     Document doc(jsonString);
-
-    const auto mnx = doc.mnx();
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
 
+    const auto mnx = doc.mnx();
     EXPECT_EQ(mnx.version(), 1);
     ASSERT_TRUE(mnx.support().has_value());
     auto support = *mnx.support();

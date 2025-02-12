@@ -57,5 +57,5 @@ TEST(Scores, FromScratch)
     EXPECT_EQ(frac.numerator(), 5);
 
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a score";
-    std::cout << doc.dump(4) << std::endl;
+    //std::cout << doc.dump(4) << std::endl;
 }

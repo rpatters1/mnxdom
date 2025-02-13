@@ -130,10 +130,6 @@ enum class LayoutStemDirection
 
 namespace nlohmann {
 
-#if defined(_WIN32)
-
-// This general adl_serializer is enabled only for enum types.
-// For some reason MSC does not like the direct function defintions below.
 template<>
 struct adl_serializer<mnx::TimeSignatureUnit>
 {
@@ -145,19 +141,6 @@ struct adl_serializer<mnx::TimeSignatureUnit>
     static void to_json(BasicJsonType& j, const mnx::TimeSignatureUnit& value)
     { j = int(value); }
 };
-#else
-namespace detail {
-
-template<typename BasicJsonType>
-inline void from_json(const BasicJsonType& j, mnx::TimeSignatureUnit& value)
-{ value = mnx::TimeSignatureUnit(j.template get<int>()); }
-
-template<typename BasicJsonType>
-inline void to_json(BasicJsonType& j, mnx::TimeSignatureUnit value) noexcept
-{ j = int(value); }
-
-} // namespace detail
-#endif
 
 } // namespace nlohmann
 

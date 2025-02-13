@@ -129,6 +129,23 @@ enum class LayoutStemDirection
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 namespace nlohmann {
+
+#if defined(_WIN32)
+
+// This general adl_serializer is enabled only for enum types.
+// For some reason MSC does not like the direct function defintions below.
+template<>
+struct adl_serializer<mnx::TimeSignatureUnit>
+{
+    template<typename BasicJsonType>
+    static mnx::TimeSignatureUnit from_json(const BasicJsonType& j)
+    { return mnx::TimeSignatureUnit(j.template get<int>()); }
+
+    template<typename BasicJsonType>
+    static void to_json(BasicJsonType& j, const mnx::TimeSignatureUnit& value)
+    { j = int(value); }
+};
+#else
 namespace detail {
 
 template<typename BasicJsonType>
@@ -140,6 +157,8 @@ inline void to_json(BasicJsonType& j, mnx::TimeSignatureUnit value) noexcept
 { j = int(value); }
 
 } // namespace detail
+#endif
+
 } // namespace nlohmann
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS

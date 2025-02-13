@@ -1,7 +1,6 @@
 # GenerateMnxSchemaXxd.cmake
 
 # Define the paths
-set(MNX_SCHEMA_DIR "${CMAKE_SOURCE_DIR}/schema")
 set(MNX_SCHEMA_JSON "${MNX_SCHEMA_DIR}/mnx-schema.json")
 set(GENERATED_MNX_XXD "${GENERATED_DIR}/mnx_schema.xxd")
 

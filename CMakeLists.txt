@@ -19,6 +19,7 @@ endif()
 
 #define other directories
 set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
+set(MNX_SCHEMA_DIR "${CMAKE_CURRENT_LIST_DIR}/schema")
 
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 

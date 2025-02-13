@@ -115,11 +115,11 @@ public:
     MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, unsigned int numerator, unsigned int denominator)
         : Object(parent, key)
     {
-        set_bar(measureId);
+        set_measure(measureId);
         create_position(numerator, denominator);
     }
 
-    MNX_REQUIRED_PROPERTY(int, bar);                ///< The measure id of the measure of this MeasureRhythmicPosition.
+    MNX_REQUIRED_PROPERTY(int, measure);            ///< The measure id of the measure of this MeasureRhythmicPosition.
     MNX_REQUIRED_CHILD(RhythmicPosition, position); ///< The metric position, where 1/4 is a quarter note.
 };
 

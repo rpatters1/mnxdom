@@ -47,7 +47,7 @@ TEST(Scores, FromScratch)
     auto layoutChanges = system.create_layoutChanges();
     auto layoutChange = layoutChanges.append("layout1", 2, 3, 8);
     EXPECT_EQ(layoutChange.layout(), "layout1");
-    EXPECT_EQ(layoutChange.location().bar(), 2);
+    EXPECT_EQ(layoutChange.location().measure(), 2);
 
     auto frac = layoutChange.location().position().fraction();
     EXPECT_EQ(frac.numerator(), 3);

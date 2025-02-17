@@ -85,7 +85,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the type of barline
     MNX_OPTIONAL_CHILD(Array<int>, numbers);        ///< ending numbers
-    MNX_OPTIONAL_PROPERTY(bool, open);              ///< if this is an open (i.e., final) ending
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, open, false);  ///< if this is an open (i.e., final) ending
 };
 
 /**

@@ -72,8 +72,10 @@
     TYPE NAME() const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
     } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    void clear_##NAME() { ref().erase(#NAME); } \
+    void set_##NAME(const TYPE& value) { \
+        if (value == DEFAULT) ref().erase(#NAME); \
+        else ref()[#NAME] = value; \
+    } \
     static_assert(true, "")
 
 #define MNX_REQUIRED_CHILD(TYPE, NAME) \

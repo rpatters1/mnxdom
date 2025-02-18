@@ -345,7 +345,7 @@
     "measure-rhythmic-position": {
       "additionalProperties": false,
       "properties": {
-        "bar": {
+        "measure": {
           "$ref": "#/$defs/measure-number"
         },
         "position": {
@@ -353,7 +353,7 @@
         }
       },
       "required": [
-        "bar",
+        "measure",
         "position"
       ],
       "type": "object"
@@ -782,7 +782,7 @@
                       "type": "integer"
                     },
                     "location": {
-                      "$ref": "#/$defs/measure-rhythmic-position"
+                      "$ref": "#/$defs/rhythmic-position"
                     },
                     "value": {
                       "$ref": "#/$defs/note-value"

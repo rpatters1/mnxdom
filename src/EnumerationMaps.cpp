@@ -35,20 +35,63 @@ static_assert(true, "") // forces semicolon after macro invocation
 
 namespace mnx {
 
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
+MNX_ENUM_MAPPING(BarlineType, {
+    { "regular",     BarlineType::Regular },
+    { "dashed",      BarlineType::Dashed },
+    { "dotted",      BarlineType::Dotted },
+    { "double",      BarlineType::Double },
+    { "final",       BarlineType::Final },
+    { "heavy",       BarlineType::Heavy },
+    { "heavyHeavy",  BarlineType::HeavyHeavy },
+    { "heavyLight",  BarlineType::HeavyLight },
+    { "noBarline",   BarlineType::NoBarline },
+    { "short",       BarlineType::Short },
+    { "tick",        BarlineType::Tick }
+});
+
+MNX_ENUM_MAPPING(NoteValueBase, {
+    { "4096th",       NoteValueBase::Note4096th },
+    { "2048th",       NoteValueBase::Note2048th },
+    { "1024th",       NoteValueBase::Note1024th },
+    { "512th",        NoteValueBase::Note512th },
+    { "256th",        NoteValueBase::Note256th },
+    { "128th",        NoteValueBase::Note128th },
+    { "64th",         NoteValueBase::Note64th },
+    { "32nd",         NoteValueBase::Note32nd },
+    { "16th",         NoteValueBase::Note16th },
+    { "eighth",       NoteValueBase::Eighth },
+    { "quarter",      NoteValueBase::Quarter },
+    { "half",         NoteValueBase::Half },
+    { "whole",        NoteValueBase::Whole },
+    { "breve",        NoteValueBase::Breve },
+    { "longa",        NoteValueBase::Longa },
+    { "maxima",       NoteValueBase::Maxima },
+    { "duplexMaxima", NoteValueBase::DuplexMaxima }
+});
+
+MNX_ENUM_MAPPING(JumpType, {
+    { "dsalfine",   JumpType::DsAlFine },
+    { "segno",      JumpType::Segno }
+});
+
 MNX_ENUM_MAPPING(LayoutSymbol, {
-    { "noSymbol", LayoutSymbol::NoSymbol },
-    { "brace",    LayoutSymbol::Brace },
-    { "bracket",  LayoutSymbol::Bracket }
+    { "noSymbol",   LayoutSymbol::NoSymbol },
+    { "brace",      LayoutSymbol::Brace },
+    { "bracket",    LayoutSymbol::Bracket }
 });
 
 MNX_ENUM_MAPPING(LabelRef, {
-    { "name",      LabelRef::Name },
-    { "shortName", LabelRef::ShortName }
+    { "name",       LabelRef::Name },
+    { "shortName",  LabelRef::ShortName }
 });
 
 MNX_ENUM_MAPPING(LayoutStemDirection, {
-    { "down",   LayoutStemDirection::Down },
-    { "up",     LayoutStemDirection::Up }
+    { "down",       LayoutStemDirection::Down },
+    { "up",         LayoutStemDirection::Up }
 });
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 } // namespace mnx

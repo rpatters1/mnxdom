@@ -21,65 +21,53 @@
  */
 #pragma once
 
+#include "Enumerations.h"
 #include "BaseTypes.h"
-
 
 namespace mnx {
 
 /**
- * @enum LayoutSymbol
- * @brief The symbols available to bracket a staff group
+ * @namespace mnx::layout
+ * @brief classes related to the root layouts array
  */
-enum class LayoutSymbol
-{
-    NoSymbol,       ///< the default (none)
-    Brace,          ///< piano brace
-    Bracket         ///< bracket
-};
+namespace layout {
 
 /**
- * @enum LabelRef
- * @brief The values available in a labelref
- */
-enum class LabelRef
-{
-    Name,           ///< the full name from the part (the default)
-    ShortName       ///< the abbreviated name from the part
-};
-
-/**
- * @enum LayoutStemDirection
- * @brief The values available in a labelref
- */
-enum class LayoutStemDirection
-{
-    Down,           ///< stems down (default)
-    Up              ///< stems up
-};
-
-/**
- * @class LayoutStaffSource
+* @class StaffSource
  * @brief Represents a system on a page in a score.
  */
-class LayoutStaffSource : public ArrayElementObject
+class StaffSource : public ArrayElementObject
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
-    /// note that after adding a new ScorePage, the caller *must* provide a part id for it to validate
+    /// @brief Constructor for existing staff sources
+    StaffSource(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new SystemLayoutChange class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param partId The part to use as a source
+    StaffSource(Base& parent, const std::string_view& key, std::string& partId)
+        : ArrayElementObject(parent, key)
+    {
+        set_part(partId);
+    }
 
     MNX_OPTIONAL_PROPERTY(std::string, label);          ///< Text to appear to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)
     MNX_REQUIRED_PROPERTY(std::string, part);           ///< Id of the part to draw from
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< The staff number within the part.
+    MNX_OPTIONAL_PROPERTY(int, staff);                  ///< The staff number within the part.
     MNX_OPTIONAL_PROPERTY(LayoutStemDirection, stem);   ///< The stem direction for this staff source.
     MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< The voice id to draw from.
 };
 
 /**
- * @class LayoutStaff
+ * @class Staff
  * @brief Represents a single global measure instance within an MNX document.
  */
-class LayoutStaff : public ContentObject
+class Staff : public ContentObject
 {
 public:
     using ContentObject::ContentObject;
@@ -87,7 +75,7 @@ public:
     /// @brief Creates a new Global class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    LayoutStaff(Base& parent, const std::string_view& key)
+    Staff(Base& parent, const std::string_view& key)
         : ContentObject(parent, key)
     {
         // required children
@@ -96,17 +84,17 @@ public:
 
     MNX_OPTIONAL_PROPERTY(std::string, label);                  ///< Label to be rendered to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);                  ///< The labelref to use (rather than label)
-    MNX_REQUIRED_CHILD(Array<LayoutStaffSource>, sources);      ///< The sources for this staff.
+    MNX_REQUIRED_CHILD(Array<StaffSource>, sources);      ///< The sources for this staff.
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);                ///< The symbol down the left side.
 
     static constexpr std::string_view ContentTypeValue = "staff"; ///< type value that identifies the type within the content array
 };
 
 /**
- * @class LayoutGroup
+ * @class Group
  * @brief Represents a single global measure instance within an MNX document.
  */
-class LayoutGroup : public ContentObject
+class Group : public ContentObject
 {
 public:
     using ContentObject::ContentObject;
@@ -114,7 +102,7 @@ public:
     /// @brief Creates a new Global class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    LayoutGroup(Base& parent, const std::string_view& key)
+    Group(Base& parent, const std::string_view& key)
         : ContentObject(parent, key)
     {
         // required children
@@ -128,6 +116,8 @@ public:
     static constexpr std::string_view ContentTypeValue = "group"; ///< type value that identifies the type within the content array
 };
 
+} // namespace layout
+
 /**
  * @class Layout
  * @brief Represents the element of the layout array in an MNX document.
@@ -137,7 +127,7 @@ class Layout : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    /// @brief Creates a new Global class as a child of a JSON element
+    /// @brief Creates a new Layout class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     Layout(Base& parent, const std::string_view& key)

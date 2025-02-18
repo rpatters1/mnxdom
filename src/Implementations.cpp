@@ -48,4 +48,33 @@ std::optional<std::string> Document::validate(const std::optional<std::string>& 
     return std::nullopt;
 }
 
+// *************************
+// ***** global::Measure *****
+// *************************
+
+BarlineType global::Measure::calcBarlineType() const
+{
+    if (const auto thisBarline = barline()) {
+        return thisBarline.value().type();
+    }
+    const auto parentArray = parent<Array<global::Measure>>();
+    size_t arrayIndex = calcArrayIndex();
+    return (arrayIndex + 1) == parentArray.size() ? BarlineType::Final : BarlineType::Regular;
+}
+
+/// @brief Calculates the meausure index for this measure.
+/// @return index() if it has a value or the default value (defined in the MNX specification) if it does not.
+int global::Measure::calcMeasureIndex() const
+{
+    if (auto thisIndex = index()) {
+        return thisIndex.value();
+    }
+    size_t arrayIndex = calcArrayIndex();
+    if (arrayIndex == 0) return 1;
+    const auto parentArray = parent<Array<global::Measure>>();
+    const auto prev = parentArray[arrayIndex - 1];
+    const auto prevIndex = prev.index();
+    return prevIndex.has_value() ? *prevIndex : prev.calcMeasureIndex();
+}
+
 } // namespace mnx

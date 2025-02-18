@@ -42,10 +42,9 @@ TEST(Document, Minimal)
         }
     )");
     Document doc(jsonString);
-
-    const auto mnx = doc.mnx();
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
 
+    const auto mnx = doc.mnx();
     EXPECT_EQ(mnx.version(), 1);
     ASSERT_TRUE(mnx.support().has_value());
     auto support = *mnx.support();
@@ -101,7 +100,7 @@ TEST(Document, MinimalFromScratch)
     EXPECT_TRUE(doc.validate().has_value()) << "schema should not validate after adding a layout, because no layout id";
     layout.set_id("layout0"); // this is required for validation
     auto content = layout.content();
-    auto staff = content.append<LayoutStaff>();
+    auto staff = content.append<layout::Staff>();
     staff.set_symbol(LayoutSymbol::Bracket);
     EXPECT_EQ(staff.symbol(), LayoutSymbol::Bracket);
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a layout";

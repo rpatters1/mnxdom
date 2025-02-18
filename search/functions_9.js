@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['parent_0',['parent',['../classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335',1,'mnx::Base']]],
-  ['partmeasure_1',['PartMeasure',['../classmnx_1_1PartMeasure.html#a577a6eb29834d014339837f065b14fea',1,'mnx::PartMeasure']]],
-  ['pointer_2',['pointer',['../classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406',1,'mnx::Base']]],
-  ['push_5fback_3',['push_back',['../classmnx_1_1Array.html#ac5b1b4f6b60b7a8aae628dda400dbfe8',1,'mnx::Array']]]
+  ['layout_0',['Layout',['../classmnx_1_1Layout.html#abe2305fff71b39e8cbbda787f0fba83f',1,'mnx::Layout']]],
+  ['layoutchange_1',['layoutchange',['../classmnx_1_1score_1_1LayoutChange.html#aea8b2ee2d6771a7fd48efe2e254f47b5',1,'mnx::score::LayoutChange::LayoutChange(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1score_1_1LayoutChange.html#aa05047f88d3689a49f6e25e0870107af',1,'mnx::score::LayoutChange::LayoutChange(Base &amp;parent, const std::string_view &amp;key, const std::string &amp;layoutId, int measureId, unsigned int numerator, unsigned int denominator)']]]
 ];

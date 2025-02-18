@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['global_0',['Global',['../classmnx_1_1Global.html',1,'mnx']]],
-  ['globalmeasure_1',['GlobalMeasure',['../classmnx_1_1GlobalMeasure.html',1,'mnx']]]
+  ['fine_0',['Fine',['../classmnx_1_1global_1_1Fine.html',1,'mnx::global']]],
+  ['fraction_1',['Fraction',['../classmnx_1_1Fraction.html',1,'mnx']]]
 ];

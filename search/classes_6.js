@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['layout_0',['Layout',['../classmnx_1_1Layout.html',1,'mnx']]],
-  ['layoutgroup_1',['LayoutGroup',['../classmnx_1_1LayoutGroup.html',1,'mnx']]],
-  ['layoutstaff_2',['LayoutStaff',['../classmnx_1_1LayoutStaff.html',1,'mnx']]],
-  ['layoutstaffsource_3',['LayoutStaffSource',['../classmnx_1_1LayoutStaffSource.html',1,'mnx']]]
+  ['global_0',['Global',['../classmnx_1_1Global.html',1,'mnx']]],
+  ['group_1',['Group',['../classmnx_1_1layout_1_1Group.html',1,'mnx::layout']]]
 ];

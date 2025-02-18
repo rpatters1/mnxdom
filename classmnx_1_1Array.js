@@ -5,7 +5,7 @@ var classmnx_1_1Array =
     [ "value_type", "classmnx_1_1Array.html#a370cd11de6dd31c99c2042d94f36a03f", null ],
     [ "Array", "classmnx_1_1Array.html#abe20cb3f95cee1491a0fe46a11cb1bfd", null ],
     [ "Array", "classmnx_1_1Array.html#af1dde6259bec35d63697b2a6f36b5179", null ],
-    [ "append", "classmnx_1_1Array.html#a55e59e0c2b378a11ee7fcc402d666b29", null ],
+    [ "append", "classmnx_1_1Array.html#acd647a4134be81ddd63f99ae82f1baa5", null ],
     [ "begin", "classmnx_1_1Array.html#a086b39fbc63d4cd4a9793ee617f7a16c", null ],
     [ "begin", "classmnx_1_1Array.html#a59a27a0197178a228f3be50e85619d13", null ],
     [ "checkIndex", "classmnx_1_1Array.html#a05a20cc19658a6cae21da5ed73d07f7c", null ],

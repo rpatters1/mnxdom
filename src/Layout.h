@@ -58,7 +58,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, label);          ///< Text to appear to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)
     MNX_REQUIRED_PROPERTY(std::string, part);           ///< Id of the part to draw from
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< The staff number within the part.
+    MNX_OPTIONAL_PROPERTY(int, staff);                  ///< The staff number within the part.
     MNX_OPTIONAL_PROPERTY(LayoutStemDirection, stem);   ///< The stem direction for this staff source.
     MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< The voice id to draw from.
 };

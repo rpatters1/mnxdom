@@ -46,17 +46,6 @@
     void set_##NAME(const TYPE& value) { (*this)[INDEX] = value; } \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { \
-        return ref().contains(#NAME) ? std::optional<TYPE>(ref()[#NAME].get<TYPE>()) : std::nullopt; \
-    } \
-    TYPE NAME##_or(const TYPE& defaultVal) const { \
-        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : defaultVal; \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    static_assert(true, "") // require semicolon after macro
-
 #define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, PROPERTY, NAME) \
     std::optional<TYPE> PROPERTY() const { \
         return ref().contains(NAME) ? std::optional<TYPE>(ref()[NAME].get<TYPE>()) : std::nullopt; \
@@ -67,6 +56,8 @@
     void set_##PROPERTY(const TYPE& value) { ref()[NAME] = value; } \
     void clear_##PROPERTY() { ref().erase(NAME); } \
     static_assert(true, "") // require semicolon after macro
+
+#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, #NAME)
 
 #define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
     TYPE NAME() const { \

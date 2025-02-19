@@ -27,10 +27,10 @@ namespace mnx {
 
 /// @class Fraction
 /// @brief Represents a fraction of a whole note, for measuring musical time.
-class Fraction : private Array<unsigned int>
+class Fraction : private Array<unsigned>
 {
 private:
-    using NumType = unsigned int;
+    using NumType = unsigned;
     using ArrayType = Array<NumType>;
 
     static constexpr size_t NUMERATOR_INDEX = 0;
@@ -82,14 +82,14 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param numerator The numerator (number on top) of the fraction.
     /// @param denominator The denominator (number on bottom) of the fraction.
-    RhythmicPosition(Base& parent, const std::string_view& key, unsigned int numerator, unsigned int denominator)
+    RhythmicPosition(Base& parent, const std::string_view& key, unsigned numerator, unsigned denominator)
         : Object(parent, key)
     {
         create_fraction(numerator, denominator);
     }
 
     MNX_REQUIRED_CHILD(Fraction, fraction);             ///< The metric position, where 1/4 is a quarter note.
-    MNX_OPTIONAL_PROPERTY(unsigned int, graceIndex);    ///< The grace note index of this position.
+    MNX_OPTIONAL_PROPERTY(unsigned, graceIndex);    ///< The grace note index of this position.
                                                         ///< (0 is the primary, and then count to the left.)
 };
 
@@ -112,7 +112,7 @@ public:
     /// @param measureId The measure index of the measure of the position.
     /// @param numerator The numerator (number on top) of the fraction.
     /// @param denominator The denominator (number on bottom) of the fraction.
-    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, unsigned int numerator, unsigned int denominator)
+    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, unsigned numerator, unsigned denominator)
         : Object(parent, key)
     {
         set_measure(measureId);
@@ -175,7 +175,7 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(NoteValueBase, base);                 ///< the type ("base") of note
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned int, dots, 0);  ///< the number of dots
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
 };
 
 /**

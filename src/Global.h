@@ -189,7 +189,7 @@ public:
     /// @param bpm The number of beats per minutes
     /// @param noteValueBase The note value base for this Barline
     /// @param numDots The number of dots (may be omitted)
-    Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase, std::optional<unsigned int> numDots = std::nullopt)
+    Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase, std::optional<unsigned> numDots = std::nullopt)
         : ArrayElementObject(parent, key)
     {
         set_bpm(bpm);

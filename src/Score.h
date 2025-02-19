@@ -83,7 +83,7 @@ public:
     /// @param numerator The numerator (number on top) of the fraction.
     /// @param denominator The denominator (number on bottom) of the fraction.
     LayoutChange(Base& parent, const std::string_view& key, const std::string& layoutId,
-            int measureId, unsigned int numerator, unsigned int denominator)
+            int measureId, unsigned numerator, unsigned denominator)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);

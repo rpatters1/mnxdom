@@ -63,11 +63,9 @@
     TYPE NAME() const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
     } \
-    void set_##NAME(const TYPE& value) { \
-        if (value == DEFAULT) ref().erase(#NAME); \
-        else ref()[#NAME] = value; \
-    } \
-    static_assert(true, "")
+    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
+    void clear_##NAME() { ref().erase(#NAME); } \
+    static_assert(true, "") // require semicolon after macro
 
 #define MNX_REQUIRED_CHILD(TYPE, NAME) \
     TYPE NAME() const { return getChild<TYPE>(#NAME); } \

@@ -39,7 +39,7 @@ namespace global {
 class Barline : public Object
 {
 public:
-    /// @brief Constructor for existing global barlines
+    /// @brief Constructor for existing Barline objects
     Barline(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
@@ -65,7 +65,7 @@ public:
 class Ending : public Object
 {
 public:
-    /// @brief Constructor for existing global barlines
+    /// @brief Constructor for existing Ending objects
     Ending(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
@@ -95,7 +95,7 @@ public:
 class Fine : public Object
 {
 public:
-    /// @brief Constructor for existing fine objects
+    /// @brief Constructor for existing Fine objects
     Fine(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
@@ -106,7 +106,7 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param numerator The numerator (number on top) of the fraction.
     /// @param denominator The denominator (number on bottom) of the fraction.
-    Fine(Base& parent, const std::string_view& key, int numerator, int denominator)
+    Fine(Base& parent, const std::string_view& key, unsigned numerator, unsigned denominator)
         : Object(parent, key)
     {
         create_location(numerator, denominator);
@@ -124,7 +124,7 @@ public:
 class Jump : public Object
 {
 public:
-    /// @brief Constructor for existing fine objects
+    /// @brief Constructor for existing Jump objects
     Jump(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
@@ -136,7 +136,7 @@ public:
     /// @param jumpType The @ref JumpType of this jump.
     /// @param numerator The numerator (number on top) of the fraction.
     /// @param denominator The denominator (number on bottom) of the fraction.
-    Jump(Base& parent, const std::string_view& key, JumpType jumpType, int numerator, int denominator)
+    Jump(Base& parent, const std::string_view& key, JumpType jumpType, unsigned numerator, unsigned denominator)
         : Object(parent, key)
     {
         set_type(jumpType);
@@ -171,19 +171,48 @@ public:
 };
 
 /**
+ * @class Segno
+ * @brief Represents a segno marker
+ */
+class Segno : public Object
+{
+public:
+    /// @brief Constructor for existing Segno objects
+    Segno(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Segno class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param numerator The numerator (number on top) of the fraction.
+    /// @param denominator The denominator (number on bottom) of the fraction.
+    Segno(Base& parent, const std::string_view& key, unsigned numerator, unsigned denominator)
+        : Object(parent, key)
+    {
+        create_location(numerator, denominator);
+    }
+
+    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
+    MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
+    MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the SMuFL glyph name to be used when rendering this segno.
+    MNX_REQUIRED_CHILD(RhythmicPosition, location); ///< location
+};
+/**
  * @class Tempo
  * @brief Represents the tempo for a global measure.
  */
 class Tempo : public ArrayElementObject
 {
 public:
-    /// @brief Constructor for existing NoteValue instances
+    /// @brief Constructor for existing Tempo instances
     Tempo(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
     {
     }
 
-    /// @brief Creates a new Barline class as a child of a JSON element
+    /// @brief Creates a new Tempo class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param bpm The number of beats per minutes
@@ -222,6 +251,7 @@ public:
     MNX_OPTIONAL_PROPERTY(int, number);             ///< visible measure number. Use #calcMeasureIndex to get the default value.
     MNX_OPTIONAL_CHILD(RepeatEnd, repeatEnd);       ///< if present, indicates that there is backwards repeat
     MNX_OPTIONAL_CHILD(RepeatStart, repeatStart);   ///< if present, indicates that a repeated section starts here
+    MNX_OPTIONAL_CHILD(Segno, segno);               ///< if present, indicates that a segno marker is here
     MNX_OPTIONAL_CHILD(Array<Tempo>, tempos);       ///< the tempo changes within the measure, if any
     MNX_OPTIONAL_CHILD(TimeSignature, time);        ///< if present, indicates a meter change
 

@@ -124,6 +124,17 @@ enum class LayoutStemDirection
     Up              ///< stems up
 };
 
+/**
+ * @enum ClefSign
+ * @brief The values available in a clef sign object
+ */
+enum class ClefSign
+{
+    CClef,          ///< C Clef
+    FClef,          ///< F Clef
+    GClef           ///< G Clef
+};
+
 } // namespace mnx
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS

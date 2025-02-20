@@ -92,6 +92,12 @@ MNX_ENUM_MAPPING(LayoutStemDirection, {
     { "up",         LayoutStemDirection::Up }
 });
 
+MNX_ENUM_MAPPING(ClefSign, {
+    { "C",          ClefSign::CClef },
+    { "F",          ClefSign::FClef },
+    { "G",          ClefSign::GClef }
+});
+
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 } // namespace mnx

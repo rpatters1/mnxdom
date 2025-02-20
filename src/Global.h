@@ -199,6 +199,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the SMuFL glyph name to be used when rendering this segno.
     MNX_REQUIRED_CHILD(RhythmicPosition, location); ///< location
 };
+
 /**
  * @class Tempo
  * @brief Represents the tempo for a global measure.

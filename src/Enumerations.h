@@ -115,10 +115,10 @@ enum class LabelRef
 };
 
 /**
- * @enum LayoutStemDirection
+ * @enum StemDirection
  * @brief The values available in a labelref
  */
-enum class LayoutStemDirection
+enum class StemDirection
 {
     Down,           ///< stems down (default)
     Up              ///< stems up
@@ -133,6 +133,34 @@ enum class ClefSign
     CClef,          ///< C Clef
     FClef,          ///< F Clef
     GClef           ///< G Clef
+};
+
+/**
+ * @enum NoteStep
+ * @brief The diatonic note step values.
+ *
+ * These are maintained in order from [C..B] == [0..6] to allow correct math on them.
+ */
+enum class NoteStep : int
+{
+    C = 0,
+    D = 1,
+    E = 2,
+    F = 3,
+    G = 4,
+    A = 5,
+    B = 6
+};
+
+/**
+ * @enum AutoYesNo
+ * @brief 3-state choice enum
+ */
+enum class AutoYesNo
+{
+    Auto,
+    Yes,
+    No
 };
 
 } // namespace mnx

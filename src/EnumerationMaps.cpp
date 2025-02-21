@@ -87,15 +87,31 @@ MNX_ENUM_MAPPING(LabelRef, {
     { "shortName",  LabelRef::ShortName }
 });
 
-MNX_ENUM_MAPPING(LayoutStemDirection, {
-    { "down",       LayoutStemDirection::Down },
-    { "up",         LayoutStemDirection::Up }
+MNX_ENUM_MAPPING(StemDirection, {
+    { "down",       StemDirection::Down },
+    { "up",         StemDirection::Up }
 });
 
 MNX_ENUM_MAPPING(ClefSign, {
     { "C",          ClefSign::CClef },
     { "F",          ClefSign::FClef },
     { "G",          ClefSign::GClef }
+});
+
+MNX_ENUM_MAPPING(NoteStep, {
+    { "C", NoteStep::C },
+    { "D", NoteStep::D },
+    { "E", NoteStep::E },
+    { "F", NoteStep::F },
+    { "G", NoteStep::G },
+    { "A", NoteStep::A },
+    { "B", NoteStep::B }
+});
+
+MNX_ENUM_MAPPING(AutoYesNo, {
+    { "auto", AutoYesNo::Auto },
+    { "yes",  AutoYesNo::Yes },
+    { "no",   AutoYesNo::No }
 });
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS

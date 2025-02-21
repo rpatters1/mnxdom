@@ -22,6 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
+#include "Sequence.h"
 
 namespace mnx {
 
@@ -44,7 +45,7 @@ public:
     {
     }
 
-    /// @brief Creates a new PositionedClef class as a child of a JSON element
+    /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param staffPosition The note value base for this Barline
@@ -117,8 +118,9 @@ public:
         create_sequences();
     }
 
+    /// @todo `beams` array
     MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);   ///< the clef changes in this bar
-    MNX_REQUIRED_CHILD(ContentArray, sequences);        ///< sequences that contain all the musical details in each measure
+    MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
 };
 
 } // namespace Part

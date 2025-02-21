@@ -168,14 +168,48 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param noteValueBase The note value base for this Barline
-    NoteValue(Base& parent, const std::string_view& key, NoteValueBase noteValueBase)
+    /// @param inpDots The number of dots, if any 
+    NoteValue(Base& parent, const std::string_view& key, NoteValueBase noteValueBase, unsigned inpDots = 0)
         : Object(parent, key)
     {
         set_base(noteValueBase);
+        if (inpDots) {
+            set_dots(inpDots);
+        }
     }
 
     MNX_REQUIRED_PROPERTY(NoteValueBase, base);                 ///< the type ("base") of note
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
+};
+
+/**
+ * @class NoteValueQuantity
+ * @brief Represents a quantity of symbolic note values=
+ */
+class NoteValueQuantity : public Object
+{
+public:
+    /// @brief Constructor for existing NoteValue instances
+    NoteValueQuantity(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Barline class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param count The quantity of note value units
+    /// @param noteValueBase The note value units
+    /// @param inpDots The number of dots, if any 
+    NoteValueQuantity(Base& parent, const std::string_view& key, unsigned count, NoteValueBase noteValueBase, unsigned dots = 0)
+        : Object(parent, key)
+    {
+        set_multiple(count);
+        create_duration(noteValueBase, dots);
+    }
+
+    MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
+    MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
 };
 
 /**

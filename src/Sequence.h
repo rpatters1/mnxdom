@@ -1,0 +1,293 @@
+/*
+ * Copyright (C) 2025, Robert Patterson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+#pragma once
+
+#include "BaseTypes.h"
+#include "CommonClasses.h"
+
+namespace mnx {
+
+/**
+ * @namespace mnx::sequence
+ * @brief classes related to sequences in the part measure
+ */
+namespace sequence {
+
+/**
+ * @class Rest
+ * @brief Represents a rest within a musical event within a sequence.
+ */
+class Rest : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
+
+    MNX_OPTIONAL_PROPERTY(int, staffPosition);              ///< The staff position of non-floating rests.
+};
+
+/**
+ * @class Pitch
+ * @brief Represents the pitch of a note
+ */
+class Pitch : public Object
+{
+public:
+    /// @brief Constructor for existing Pitch objects
+    Pitch(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Pitch class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param inpStep The letter spelling of the note.
+    /// @param inpOctave The octave number of the note (where C4 is middle C).
+    /// @param inpAlter The chromatic alteration of the note (positive for sharp, negative for flat)
+    Pitch(Base& parent, const std::string_view& key, NoteStep inpStep, int inpOctave, std::optional<int> inpAlter = std::nullopt)
+        : Object(parent, key)
+    {
+        set_step(inpStep);
+        set_octave(inpOctave);
+        if (inpAlter) {
+            set_alter(inpAlter.value());
+        }
+    }
+
+    MNX_OPTIONAL_PROPERTY(int, alter);          ///< chromatic alteration
+    MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
+    MNX_REQUIRED_PROPERTY(NoteStep, step);      ///< the note step, (i.e., "A".."G")
+};
+
+/**
+ * @class Note
+ * @brief Represents a single note (i.e., within a chord) within a musical event within a sequence.
+ */
+class Note : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing Note objects
+    Note(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Note class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param step The letter spelling of the note.
+    /// @param octave The octave number of the note (where C4 is middle C).
+    /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat)
+    Note(Base& parent, const std::string_view& key, NoteStep step, int octave, std::optional<int> alter = std::nullopt)
+        : ArrayElementObject(parent, key)
+    {
+        create_pitch(step, octave, alter);
+    }
+
+    /// @todo `accidentalDisplay`
+    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
+    MNX_OPTIONAL_PROPERTY(std::string, id);                         ///< note Id
+    /// @todo `perform`
+    MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
+    MNX_OPTIONAL_PROPERTY(std::string, smuflFont);                  ///< The SMuFL-complaint font to use for rendering the note.
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
+    /// @todo `tie`
+};
+
+/**
+ * @class Event
+ * @brief Represents a musical event within a sequence.
+ */
+class Event : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Event objects
+    Event(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Event class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param noteValue The note value of this event. If omitted, the event is set to a full-measure event.
+    /// @param dots The number of dots to add to the note value (or zero if omitted).
+    Event(Base& parent, const std::string_view& key, std::optional<NoteValueBase> noteValue = std::nullopt, unsigned dots = 0)
+        : ContentObject(parent, key)
+    {
+        // per the specification, either noteValue or the full-measure boolean *must* be supplied.
+        if (noteValue) {
+            create_duration(noteValue.value(), dots);
+        } else {
+            set_measure(true);
+        }
+    }
+
+    MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
+    MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
+    /// @todo `lyrics`
+    /// @todo `markings`
+    MNX_OPTIONAL_PROPERTY(bool, measure);                   ///< Whether this event is a whole-measure event.
+    MNX_OPTIONAL_CHILD(Array<Note>, notes);                 ///< Note array
+    /// @todo `orient`
+    MNX_OPTIONAL_CHILD(Rest, rest);                         ///< indicates this event is a rest.
+    /// @todo `slurs` array
+    MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff notes.)
+    MNX_OPTIONAL_PROPERTY(StemDirection, stemDirection);    ///< Forced stem direction.
+
+    static constexpr std::string_view ContentTypeValue = "event"; ///< type value that identifies the type within the content array
+};
+
+/**
+ * @class Space
+ * @brief Occupies metric space without showing anything.
+ */
+class Space : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Space objects
+    Space(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Space class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param noteValue The note value of this event.
+    /// @param dots The number of dots to add to the note value (or zero if omitted).
+    Space(Base& parent, const std::string_view& key, NoteValueBase noteValue, unsigned dots = 0)
+        : ContentObject(parent, key)
+    {
+        create_duration(noteValue, dots);
+    }
+
+    MNX_REQUIRED_CHILD(NoteValue, duration);                        ///< Symbolic duration of space to occupy.
+
+    static constexpr std::string_view ContentTypeValue = "space";   ///< type value that identifies the type within the content array
+};
+
+/**
+ * @class Grace
+ * @brief Represents a grace note sequence within a sequence.
+ */
+class Grace : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Grace objects
+    Grace(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Grace class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    Grace(Base& parent, const std::string_view& key)
+        : ContentObject(parent, key)
+    {
+        create_content();
+    }
+
+    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
+    MNX_OPTIONAL_PROPERTY(std::string, color);                      ///< color to use when rendering the grace note sequence
+    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
+    /// @todo `graceType`
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, slash, true);          ///< whether to show a slash on the grace note
+
+    static constexpr std::string_view ContentTypeValue = "grace";   ///< type value that identifies the type within the content array
+};
+
+/**
+ * @class Tuplet
+ * @brief Represents a tuplet sequence within a sequence.
+ */
+class Tuplet : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Tuplet objects
+    Tuplet(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Tuplet class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    /// @param innerCount The inner count: **3** quarters in the time of 2 quarters
+    /// @param innerNoteValue The inner amount: 3 **quarters** in the time of 2 quarters
+    /// @param innerDots The inner note value's augmentation dots (0 if none)
+    /// @param outerCount The outer count: 3 quarters in the time of **2** quarters
+    /// @param outerNoteValue The outer amount: 3 quarters in the time of 2 **quarters**
+    /// @param outerDots The outer note value's augmentation dots (0 if none)
+    Tuplet(Base& parent, const std::string_view& key,
+        unsigned innerCount, NoteValueBase innerNoteValue, unsigned innerDots,
+        unsigned outerCount, NoteValueBase outerNoteValue, unsigned outerDots)
+        : ContentObject(parent, key)
+    {
+        create_inner(innerCount, innerNoteValue, innerDots);
+        create_outer(outerCount, outerNoteValue, outerDots);
+    }
+
+    MNX_OPTIONAL_PROPERTY(AutoYesNo, bracket);                      ///< color to use when rendering the grace note sequence
+    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
+    MNX_REQUIRED_CHILD(NoteValueQuantity, inner);                   ///< Inner quantity: **3 quarters in the time** of 2 quarters
+    MNX_REQUIRED_CHILD(NoteValueQuantity, outer);                   ///< Outer quantity: 3 quarters in the time **of 2 quarters**
+    /// @todo `orient`
+    /// @todo `showNumber`
+    /// @todo `showValue`
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
+
+    static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array
+};
+
+} // namespace sequence
+
+/**
+ * @class Sequence
+ * @brief A sequence of events and other items in this measure for a voice in a part
+ */
+class Sequence : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing Sequence objects
+    Sequence(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Sequence class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding the new array.
+    Sequence(Base& parent, const std::string_view& key)
+        : ArrayElementObject(parent, key)
+    {
+        create_content();
+    }
+
+    MNX_REQUIRED_CHILD(ContentArray, content);      ///< the content of the sequence
+    /// @todo `orient` property
+    MNX_OPTIONAL_PROPERTY(int, staff);              ///< the staff number for this sequence
+    MNX_OPTIONAL_PROPERTY(std::string, voice);      ///< the unique (per measure) voice label for this sequence.
+};
+
+} // namespace mnx

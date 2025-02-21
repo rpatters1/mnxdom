@@ -219,14 +219,11 @@ public:
     /// @param bpm The number of beats per minutes
     /// @param noteValueBase The note value base for this Barline
     /// @param numDots The number of dots (may be omitted)
-    Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase, std::optional<unsigned> numDots = std::nullopt)
+    Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase, unsigned numDots = 0)
         : ArrayElementObject(parent, key)
     {
         set_bpm(bpm);
-        create_value(noteValueBase);
-        if (numDots.has_value()) {
-            value().set_dots(numDots.value());
-        }
+        create_value(noteValueBase, numDots);
     }
 
     MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking

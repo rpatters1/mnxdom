@@ -34,7 +34,7 @@ namespace layout {
 
 /**
 * @class StaffSource
- * @brief Represents a system on a page in a score.
+ * @brief Represents a staff source for a staff in a layout in a score.
  */
 class StaffSource : public ArrayElementObject
 {
@@ -45,7 +45,7 @@ public:
     {
     }
     
-    /// @brief Creates a new SystemLayoutChange class as a child of a JSON element
+    /// @brief Creates a new StaffSource class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param partId The part to use as a source
@@ -59,20 +59,20 @@ public:
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)
     MNX_REQUIRED_PROPERTY(std::string, part);           ///< Id of the part to draw from
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< The staff number within the part.
-    MNX_OPTIONAL_PROPERTY(LayoutStemDirection, stem);   ///< The stem direction for this staff source.
+    MNX_OPTIONAL_PROPERTY(StemDirection, stem);   ///< The stem direction for this staff source.
     MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< The voice id to draw from.
 };
 
 /**
  * @class Staff
- * @brief Represents a single global measure instance within an MNX document.
+ * @brief Represents a single staff instance within an MNX layout.
  */
 class Staff : public ContentObject
 {
 public:
     using ContentObject::ContentObject;
 
-    /// @brief Creates a new Global class as a child of a JSON element
+    /// @brief Creates a new Staff class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     Staff(Base& parent, const std::string_view& key)
@@ -92,14 +92,14 @@ public:
 
 /**
  * @class Group
- * @brief Represents a single global measure instance within an MNX document.
+ * @brief Represents a groups of staves within an MNX layout.
  */
 class Group : public ContentObject
 {
 public:
     using ContentObject::ContentObject;
 
-    /// @brief Creates a new Global class as a child of a JSON element
+    /// @brief Creates a new Group class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     Group(Base& parent, const std::string_view& key)

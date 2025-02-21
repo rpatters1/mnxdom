@@ -69,7 +69,6 @@
 
 #define MNX_REQUIRED_CHILD(TYPE, NAME) \
     TYPE NAME() const { return getChild<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
         return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
@@ -78,7 +77,6 @@
 
 #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
     std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
-    void set_##NAME(const TYPE& value) { setChild(#NAME, value); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
         return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \

@@ -248,13 +248,13 @@ public:
         create_outer(outerCount, outerNoteValue, outerDots);
     }
 
-    MNX_OPTIONAL_PROPERTY(AutoYesNo, bracket);                      ///< color to use when rendering the grace note sequence
-    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style
+    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events (and tuplets, at least for now)
     MNX_REQUIRED_CHILD(NoteValueQuantity, inner);                   ///< Inner quantity: **3 quarters in the time** of 2 quarters
     MNX_REQUIRED_CHILD(NoteValueQuantity, outer);                   ///< Outer quantity: 3 quarters in the time **of 2 quarters**
     /// @todo `orient`
-    /// @todo `showNumber`
-    /// @todo `showValue`
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showNumber, TupletDisplaySetting::Inner); ///< How and whether to show the tuplet number(s)
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showValue, TupletDisplaySetting::NoNumber); ///< How and whether to show the tuplet note value(s)
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
 
     static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array

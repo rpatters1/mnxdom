@@ -30,6 +30,17 @@
 
 #include "nlohmann/json.hpp"
 
+ /**
+  * @brief creates a required property
+  *
+  * It creates the following class methods.
+  *
+  * - `NAME()` returns the value of the property.
+  * - `set_NAME(value) sets the value of the property.
+  *
+  * @param TYPE the type of the property
+  * @param NAME the name of the property (no quotes)
+  */
 #define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
     TYPE NAME() const { \
         if (!ref().contains(#NAME)) { \
@@ -40,34 +51,104 @@
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
+ /**
+  * @brief creates a property that occupies a fixed position in an array
+  *
+  * It creates the following class methods.
+  *
+  * - `NAME()` returns the value of the property.
+  * - `set_NAME(value) sets the value of the property.
+  *
+  * @param TYPE the type of the property
+  * @param NAME the name of the property (no quotes)
+  * @param INDEX the index in the array for the property
+  */
+ #define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
     static_assert(std::is_integral_v<decltype(INDEX)>, "array index must be an integer type"); \
     TYPE NAME() const { return (*this)[INDEX]; } \
     void set_##NAME(const TYPE& value) { (*this)[INDEX] = value; } \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, PROPERTY, NAME) \
-    std::optional<TYPE> PROPERTY() const { \
-        return ref().contains(NAME) ? std::optional<TYPE>(ref()[NAME].get<TYPE>()) : std::nullopt; \
+ /**
+  * @brief creates an optional named property. This is a property whose name is different than
+  * its JSON key.
+  *
+  * It creates the following class methods.
+  *
+  * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
+  * - `NAME_or(value)` returns the property value if it exists or the input value if not.
+  * - `set_NAME(value) sets the value of the property.
+  * - `clear_NAME() clears the property from the JSON document.
+  *
+  * @param TYPE the type of the property
+  * @param NAME the name of the property (no quotes)
+  * @param KEY the JSON key of the property (with quotes)
+  */
+ #define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, KEY) \
+    std::optional<TYPE> NAME() const { \
+        return ref().contains(KEY) ? std::optional<TYPE>(ref()[KEY].get<TYPE>()) : std::nullopt; \
     } \
-    TYPE PROPERTY##_or(const TYPE& defaultVal) const { \
-        return ref().contains(NAME) ? ref()[NAME].get<TYPE>() : defaultVal; \
+    TYPE NAME##_or(const TYPE& defaultVal) const { \
+        return ref().contains(KEY) ? ref()[KEY].get<TYPE>() : defaultVal; \
     } \
-    void set_##PROPERTY(const TYPE& value) { ref()[NAME] = value; } \
-    void clear_##PROPERTY() { ref().erase(NAME); } \
+    void set_##NAME(const TYPE& value) { ref()[KEY] = value; } \
+    void clear_##NAME() { ref().erase(KEY); } \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, #NAME)
+ /**
+  * @brief creates an optional property.
+  *
+  * It creates the following class methods.
+  *
+  * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
+  * - `NAME_or(value)` returns the property value if it exists or the input value if not.
+  * - `set_NAME(value) sets the value of the property.
+  * - `clear_NAME() clears the property from the JSON document.
+  *
+  * @param TYPE the type of the property
+  * @param NAME the name of the property (no quotes)
+  */
+ #define MNX_OPTIONAL_PROPERTY(TYPE, NAME) MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, #NAME)
 
+ /**
+  * @brief creates an optional property with a default value.
+  *
+  * It has the following class methods.
+  *
+  * - `NAME()` returns the value of the property.
+  * - `set_NAME(value) sets the value of the property.
+  * - `clear_NAME() clears the property from the JSON document.
+  * - `set_or_clear_NAME(value) sets the value of the property if it the input value is not the default.
+  * Otherwise it clears the property.
+  *
+  * @param TYPE the type of the property
+  * @param NAME the name of the property (no quotes)
+  * @param DEFAULT the default value of the property.
+  */
 #define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
     TYPE NAME() const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
     } \
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     void clear_##NAME() { ref().erase(#NAME); } \
+    void set_or_clear_##NAME(const TYPE& value) { \
+        if (value == DEFAULT) clear_##NAME(); \
+        else set_##NAME(value); \
+    } \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_REQUIRED_CHILD(TYPE, NAME) \
+ /**
+  * @brief creates a required child object or array
+  *
+  * It creates the following class methods.
+  *
+  * - `NAME()` returns the child.
+  * - `create_NAME(args...) creates the child from the input constructor arguments
+  *
+  * @param TYPE the type of the child object or array
+  * @param NAME the name of the child object or array (no quotes)
+  */
+ #define MNX_REQUIRED_CHILD(TYPE, NAME) \
     TYPE NAME() const { return getChild<TYPE>(#NAME); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
@@ -75,7 +156,19 @@
     } \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
+ /**
+  * @brief creates an optional child object or array
+  *
+  * It creates the following class methods.
+  *
+  * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
+  * - `create_NAME(args...) creates the child from the input constructor arguments.
+  * - `clear_NAME(args...) clears the child from JSON document.
+  *
+  * @param TYPE the type of the child object or array
+  * @param NAME the name of the child object or array (no quotes)
+  */
+ #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
     std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \

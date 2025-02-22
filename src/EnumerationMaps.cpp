@@ -114,6 +114,12 @@ MNX_ENUM_MAPPING(AutoYesNo, {
     { "no",   AutoYesNo::No }
 });
 
+MNX_ENUM_MAPPING(TupletDisplaySetting, {
+    { "inner",      TupletDisplaySetting::Inner },
+    { "noNumber",   TupletDisplaySetting::NoNumber },
+    { "both",       TupletDisplaySetting::Both }
+});
+
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 } // namespace mnx

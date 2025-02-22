@@ -200,7 +200,7 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param count The quantity of note value units
     /// @param noteValueBase The note value units
-    /// @param inpDots The number of dots, if any 
+    /// @param dots The number of dots, if any 
     NoteValueQuantity(Base& parent, const std::string_view& key, unsigned count, NoteValueBase noteValueBase, unsigned dots = 0)
         : Object(parent, key)
     {

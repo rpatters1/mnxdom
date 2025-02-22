@@ -163,6 +163,17 @@ enum class AutoYesNo
     No
 };
 
+/**
+ * @enum TupletDisplaySetting
+ * @brief Controls display of a tuplet's number or note value
+ */
+enum class TupletDisplaySetting
+{
+    Inner,
+    NoNumber,
+    Both
+};
+
 } // namespace mnx
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS

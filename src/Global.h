@@ -104,12 +104,11 @@ public:
     /// @brief Creates a new Fine class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
-    Fine(Base& parent, const std::string_view& key, unsigned numerator, unsigned denominator)
+    /// @param position The position of the Fine within the measure.
+    Fine(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
         : Object(parent, key)
     {
-        create_location(numerator, denominator);
+        create_location(position);
     }
 
     MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
@@ -134,13 +133,12 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param jumpType The @ref JumpType of this jump.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
-    Jump(Base& parent, const std::string_view& key, JumpType jumpType, unsigned numerator, unsigned denominator)
+    /// @param position The position of the Jump within the measure.
+    Jump(Base& parent, const std::string_view& key, JumpType jumpType, const Fraction::Initializer& position)
         : Object(parent, key)
     {
         set_type(jumpType);
-        create_location(numerator, denominator);
+        create_location(position);
     }
 
     MNX_REQUIRED_PROPERTY(JumpType, type);                      ///< the JumpType
@@ -186,12 +184,11 @@ public:
     /// @brief Creates a new Segno class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
-    Segno(Base& parent, const std::string_view& key, unsigned numerator, unsigned denominator)
+    /// @param position The position of the Segno within the measure.
+    Segno(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
         : Object(parent, key)
     {
-        create_location(numerator, denominator);
+        create_location(position);
     }
 
     MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
@@ -217,13 +214,12 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param bpm The number of beats per minutes
-    /// @param noteValueBase The note value base for this Barline
-    /// @param numDots The number of dots (may be omitted)
-    Tempo(Base& parent, const std::string_view& key, int bpm, NoteValueBase noteValueBase, unsigned numDots = 0)
+    /// @param noteValue The note value
+    Tempo(Base& parent, const std::string_view& key, int bpm, const NoteValue::Initializer& noteValue)
         : ArrayElementObject(parent, key)
     {
         set_bpm(bpm);
-        create_value(noteValueBase, numDots);
+        create_value(noteValue);
     }
 
     MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking

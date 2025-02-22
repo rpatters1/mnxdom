@@ -80,14 +80,13 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param layoutId The id of the layout to use for the layout change
     /// @param measureId The measure index of the measure of the position.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
+    /// @param position The position of the LayoutChange within the measure.
     LayoutChange(Base& parent, const std::string_view& key, const std::string& layoutId,
-            int measureId, unsigned numerator, unsigned denominator)
+            int measureId, const Fraction::Initializer& position)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);
-        create_location(measureId, numerator, denominator);
+        create_location(measureId, position);
     }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.

@@ -129,14 +129,13 @@ public:
     /// @brief Creates a new Event class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    /// @param noteValue The note value of this event. If omitted, the event is set to a full-measure event.
-    /// @param dots The number of dots to add to the note value (or zero if omitted).
-    Event(Base& parent, const std::string_view& key, std::optional<NoteValueBase> noteValue = std::nullopt, unsigned dots = 0)
+    /// @param noteValue The note value
+    Event(Base& parent, const std::string_view& key, std::optional<NoteValue::Initializer> noteValue = std::nullopt)
         : ContentObject(parent, key)
     {
         // per the specification, either noteValue or the full-measure boolean *must* be supplied.
         if (noteValue) {
-            create_duration(noteValue.value(), dots);
+            create_duration(noteValue.value());
         } else {
             set_measure(true);
         }
@@ -173,12 +172,11 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
-    /// @param noteValue The note value of this event.
-    /// @param dots The number of dots to add to the note value (or zero if omitted).
-    Space(Base& parent, const std::string_view& key, NoteValueBase noteValue, unsigned dots = 0)
+    /// @param noteValue The note value
+    Space(Base& parent, const std::string_view& key, const NoteValue::Initializer& noteValue)
         : ContentObject(parent, key)
     {
-        create_duration(noteValue, dots);
+        create_duration(noteValue);
     }
 
     MNX_REQUIRED_CHILD(NoteValue, duration);                        ///< Symbolic duration of space to occupy.
@@ -235,17 +233,15 @@ public:
     /// @param key The JSON key to use for embedding the new array.
     /// @param innerCount The inner count: **3** quarters in the time of 2 quarters
     /// @param innerNoteValue The inner amount: 3 **quarters** in the time of 2 quarters
-    /// @param innerDots The inner note value's augmentation dots (0 if none)
     /// @param outerCount The outer count: 3 quarters in the time of **2** quarters
     /// @param outerNoteValue The outer amount: 3 quarters in the time of 2 **quarters**
-    /// @param outerDots The outer note value's augmentation dots (0 if none)
     Tuplet(Base& parent, const std::string_view& key,
-        unsigned innerCount, NoteValueBase innerNoteValue, unsigned innerDots,
-        unsigned outerCount, NoteValueBase outerNoteValue, unsigned outerDots)
+        unsigned innerCount, const NoteValue::Initializer& innerNoteValue,
+        unsigned outerCount, const NoteValue::Initializer& outerNoteValue)
         : ContentObject(parent, key)
     {
-        create_inner(innerCount, innerNoteValue, innerDots);
-        create_outer(outerCount, outerNoteValue, outerDots);
+        create_inner(innerCount, innerNoteValue);
+        create_outer(outerCount, outerNoteValue);
     }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style

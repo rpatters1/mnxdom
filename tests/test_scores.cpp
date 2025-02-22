@@ -45,7 +45,7 @@ TEST(Scores, FromScratch)
     EXPECT_EQ(system.measure(), 1);
     EXPECT_EQ(page.systems().append(4).measure(), 4);
     auto layoutChanges = system.create_layoutChanges();
-    auto layoutChange = layoutChanges.append("layout1", 2, 3, 8);
+    auto layoutChange = layoutChanges.append("layout1", 2, Fraction::Initializer(3, 8));
     EXPECT_EQ(layoutChange.layout(), "layout1");
     EXPECT_EQ(layoutChange.location().measure(), 2);
 

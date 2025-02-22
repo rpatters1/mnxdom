@@ -242,6 +242,16 @@ public:
         return ref().dump(indents);
     }
 
+    /// @brief Returns the parent object for this node
+    /// @tparam T The type to create. Must correctly match whether it is an array or object.
+    /// @throws std::invalid_argument if the type of T does not match the type of the underlying pointer.
+    template <typename T>
+    T parent() const
+    {
+        static_assert(std::is_base_of_v<Base, T>, "Template type mush be derived from Base.");
+        return T(m_root, m_pointer.parent_pointer());
+    }
+
 protected:
     /**
      * @brief Convert this node for retrieval.
@@ -261,16 +271,6 @@ protected:
 
     /// @brief Returns the json_pointer for this node.
     json_pointer pointer() const { return m_pointer; }
-
-    /// @brief Returns the parent object for this node
-    /// @tparam T The type to create. Must correctly match whether it is an array or object.
-    /// @throws std::invalid_argument if the type of T does not match the type of the underlying pointer.
-    template <typename T>
-    T parent() const
-    {
-        static_assert(std::is_base_of_v<Base, T>, "Template type mush be derived from Base.");
-        return T(m_root, m_pointer.parent_pointer());
-    }
 
     /**
      * @brief Wrap a Base instance around a specific JSON reference using a json_pointer.

@@ -242,6 +242,7 @@ public:
     {
         create_inner(innerCount, innerNoteValue);
         create_outer(outerCount, outerNoteValue);
+        create_content();
     }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style

@@ -173,13 +173,13 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding the new array.
     /// @param noteValue The note value
-    Space(Base& parent, const std::string_view& key, const NoteValue::Initializer& noteValue)
+    Space(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
         : ContentObject(parent, key)
     {
-        create_duration(noteValue);
+        create_duration(count, noteValue);
     }
 
-    MNX_REQUIRED_CHILD(NoteValue, duration);                        ///< Symbolic duration of space to occupy.
+    MNX_REQUIRED_CHILD(NoteValueQuantity, duration);                ///< Symbolic duration of space to occupy.
 
     static constexpr std::string_view ContentTypeValue = "space";   ///< type value that identifies the type within the content array
 };

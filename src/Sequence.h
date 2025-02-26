@@ -79,6 +79,20 @@ public:
 };
 
 /**
+ * @class Tie
+ * @brief Contains information about a tie on a note.
+ */
+class Tie : public Object
+{
+public:
+    using Object::Object;
+
+    MNX_OPTIONAL_PROPERTY(SlurTieEndLocation, location);    ///< mainly useful for l.v. type ties that are not connected
+    MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force tie direction (if present)
+    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the octave number
+};
+
+/**
  * @class Note
  * @brief Represents a single note (i.e., within a chord) within a musical event within a sequence.
  */
@@ -110,7 +124,7 @@ public:
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);                  ///< The SMuFL-complaint font to use for rendering the note.
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
-    /// @todo `tie`
+    MNX_OPTIONAL_CHILD(Tie, tie);                                   ///< The (forward) tie, if any.
 };
 
 /**

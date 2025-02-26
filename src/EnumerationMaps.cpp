@@ -120,6 +120,16 @@ MNX_ENUM_MAPPING(TupletDisplaySetting, {
     { "both",       TupletDisplaySetting::Both }
 });
 
+MNX_ENUM_MAPPING(SlurTieEndLocation, {
+    { "outgoing",   SlurTieEndLocation::Outgoing },
+    { "incoming",   SlurTieEndLocation::Incoming }
+});
+
+MNX_ENUM_MAPPING(SlurTieSide, {
+    { "down",   SlurTieSide::Down },
+    { "up",   SlurTieSide::Up }
+});
+
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 } // namespace mnx

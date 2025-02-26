@@ -174,6 +174,26 @@ enum class TupletDisplaySetting
     Both
 };
 
+/**
+ * @enum SlurTieEndLocation
+ * @brief Specifies the location of the end of a slur or tie, if it doesn't have a target
+ */
+enum class SlurTieEndLocation
+{
+    Outgoing,
+    Incoming,
+};
+
+/**
+ * @enum SlurTieSide
+ * @brief Specifies the direction of a slur or tie.
+ */
+enum class SlurTieSide
+{
+    Down,   ///< curved down, the tips face up
+    Up,     ///< curved up, the tips face down
+};
+
 } // namespace mnx
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS

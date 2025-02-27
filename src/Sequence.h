@@ -236,10 +236,11 @@ public:
     {
     }
 
-    /// @brief Creates a new Space class as a child of a JSON element
-    /// @param parent The parent class instance
+    /// @brief Creates a new Space class as a child of a JSON element.
+    /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param noteValue The note value
+    /// @param count the quantity of note values.
+    /// @param noteValue The note value.
     Space(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
         : ContentObject(parent, key)
     {

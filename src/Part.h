@@ -47,7 +47,7 @@ public:
 
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
@@ -84,7 +84,7 @@ public:
 
     /// @brief Creates a new PositionedClef class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
@@ -110,7 +110,7 @@ public:
 
     /// @brief Creates a new Measure class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Measure(Base& parent, const std::string_view& key)
         : ArrayElementObject(parent, key)
     {

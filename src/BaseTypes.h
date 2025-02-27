@@ -411,7 +411,7 @@ public:
 
     /// @brief Creates a new Object class as a child of a JSON node
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Object(Base& parent, const std::string_view& key)
         : Base(json::object(), parent, key) {}
 };
@@ -506,7 +506,7 @@ public:
 
     /// @brief Creates a new Array class as a child of a JSON node
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Array(Base& parent, const std::string_view& key)
         : Base(json::array(), parent, key) {}
 
@@ -777,7 +777,7 @@ public:
 
     /// @brief Creates a new Dictionary class as a child of a JSON node
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Dictionary(Base& parent, const std::string_view& key)
         : Object(parent, key) {}
 

@@ -37,6 +37,17 @@ namespace mnx {
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
+MNX_ENUM_MAPPING(AccidentalEnclosureSymbol, {
+    { "brackets",       AccidentalEnclosureSymbol:: Brackets },
+    { "parentheses",    AccidentalEnclosureSymbol::Parenthesis }
+});
+
+MNX_ENUM_MAPPING(AutoYesNo, {
+    { "auto", AutoYesNo::Auto },
+    { "yes",  AutoYesNo::Yes },
+    { "no",   AutoYesNo::No }
+});
+
 MNX_ENUM_MAPPING(BarlineType, {
     { "regular",     BarlineType::Regular },
     { "dashed",      BarlineType::Dashed },
@@ -49,6 +60,22 @@ MNX_ENUM_MAPPING(BarlineType, {
     { "noBarline",   BarlineType::NoBarline },
     { "short",       BarlineType::Short },
     { "tick",        BarlineType::Tick }
+});
+
+MNX_ENUM_MAPPING(ClefSign, {
+    { "C",          ClefSign::CClef },
+    { "F",          ClefSign::FClef },
+    { "G",          ClefSign::GClef }
+});
+
+MNX_ENUM_MAPPING(NoteStep, {
+    { "C", NoteStep::C },
+    { "D", NoteStep::D },
+    { "E", NoteStep::E },
+    { "F", NoteStep::F },
+    { "G", NoteStep::G },
+    { "A", NoteStep::A },
+    { "B", NoteStep::B }
 });
 
 MNX_ENUM_MAPPING(NoteValueBase, {
@@ -76,48 +103,20 @@ MNX_ENUM_MAPPING(JumpType, {
     { "segno",      JumpType::Segno }
 });
 
+MNX_ENUM_MAPPING(LabelRef, {
+    { "name",       LabelRef::Name },
+    { "shortName",  LabelRef::ShortName }
+});
+
 MNX_ENUM_MAPPING(LayoutSymbol, {
     { "noSymbol",   LayoutSymbol::NoSymbol },
     { "brace",      LayoutSymbol::Brace },
     { "bracket",    LayoutSymbol::Bracket }
 });
 
-MNX_ENUM_MAPPING(LabelRef, {
-    { "name",       LabelRef::Name },
-    { "shortName",  LabelRef::ShortName }
-});
-
 MNX_ENUM_MAPPING(StemDirection, {
     { "down",       StemDirection::Down },
     { "up",         StemDirection::Up }
-});
-
-MNX_ENUM_MAPPING(ClefSign, {
-    { "C",          ClefSign::CClef },
-    { "F",          ClefSign::FClef },
-    { "G",          ClefSign::GClef }
-});
-
-MNX_ENUM_MAPPING(NoteStep, {
-    { "C", NoteStep::C },
-    { "D", NoteStep::D },
-    { "E", NoteStep::E },
-    { "F", NoteStep::F },
-    { "G", NoteStep::G },
-    { "A", NoteStep::A },
-    { "B", NoteStep::B }
-});
-
-MNX_ENUM_MAPPING(AutoYesNo, {
-    { "auto", AutoYesNo::Auto },
-    { "yes",  AutoYesNo::Yes },
-    { "no",   AutoYesNo::No }
-});
-
-MNX_ENUM_MAPPING(TupletDisplaySetting, {
-    { "inner",      TupletDisplaySetting::Inner },
-    { "noNumber",   TupletDisplaySetting::NoNumber },
-    { "both",       TupletDisplaySetting::Both }
 });
 
 MNX_ENUM_MAPPING(SlurTieEndLocation, {
@@ -126,8 +125,14 @@ MNX_ENUM_MAPPING(SlurTieEndLocation, {
 });
 
 MNX_ENUM_MAPPING(SlurTieSide, {
-    { "down",   SlurTieSide::Down },
-    { "up",   SlurTieSide::Up }
+    { "down",       SlurTieSide::Down },
+    { "up",         SlurTieSide::Up }
+});
+
+MNX_ENUM_MAPPING(TupletDisplaySetting, {
+    { "inner",      TupletDisplaySetting::Inner },
+    { "noNumber",   TupletDisplaySetting::NoNumber },
+    { "both",       TupletDisplaySetting::Both }
 });
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS

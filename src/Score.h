@@ -47,7 +47,7 @@ public:
     
     /// @brief Creates a new MultimeasureRest class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
     MultimeasureRest(Base& parent, const std::string_view& key, int startMeasure, int numMeasures)
@@ -77,7 +77,7 @@ public:
     
     /// @brief Creates a new LayoutChange class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param layoutId The id of the layout to use for the layout change
     /// @param measureId The measure index of the measure of the position.
     /// @param position The position of the LayoutChange within the measure.
@@ -108,7 +108,7 @@ public:
     
     /// @brief Creates a new System class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the system
     System(Base& parent, const std::string_view& key, int startMeasure)
         : ArrayElementObject(parent, key)
@@ -132,7 +132,7 @@ public:
 
     /// @brief Creates a new Page class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Page(Base& parent, const std::string_view& key)
         : ArrayElementObject(parent, key)
     {
@@ -161,7 +161,7 @@ public:
     
     /// @brief Creates a new Score class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param scoreName The name of the score to be created
     Score(Base& parent, const std::string_view& key, const std::string& scoreName)
         : ArrayElementObject(parent, key)

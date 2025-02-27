@@ -33,6 +33,59 @@ namespace mnx {
 namespace sequence {
 
 /**
+ * @class AccidentalEnclosure
+ * @brief Represents the enclosure on an accidental.
+ */
+class AccidentalEnclosure : public Object
+{
+public:
+    /// @brief Constructor for existing AccidentalEnclosure objects
+    AccidentalEnclosure(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Pitch class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in the parent.
+    /// @param inSymbol The enclosure symbol to use.
+    AccidentalEnclosure(Base& parent, const std::string_view& key, AccidentalEnclosureSymbol inSymbol)
+        : Object(parent, key)
+    {
+        set_symbol(inSymbol);
+    }
+
+    MNX_REQUIRED_PROPERTY(AccidentalEnclosureSymbol, symbol);      ///< The symbol to use for the enclosure
+};
+
+/**
+ * @class AccidentalDisplay
+ * @brief Represents an explicit directive to show or hide an accidental.
+ */
+class AccidentalDisplay : public Object
+{
+public:
+    /// @brief Constructor for existing AccidentalEnclosure objects
+    AccidentalDisplay(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Pitch class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in the parent.
+    /// @param showAcci Show or hide the accidental.
+    AccidentalDisplay(Base& parent, const std::string_view& key, bool showAcci)
+        : Object(parent, key)
+    {
+        set_show(showAcci);
+    }
+
+    MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure); ///< The enclosure type (brackets or parentheses). Omit if none.
+    MNX_REQUIRED_PROPERTY(bool, show);                  ///< Whether to show or hide the accidental
+};
+
+/**
  * @class Rest
  * @brief Represents a rest within a musical event within a sequence.
  */
@@ -59,7 +112,7 @@ public:
 
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param inpStep The letter spelling of the note.
     /// @param inpOctave The octave number of the note (where C4 is middle C).
     /// @param inpAlter The chromatic alteration of the note (positive for sharp, negative for flat)
@@ -107,7 +160,7 @@ public:
 
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param step The letter spelling of the note.
     /// @param octave The octave number of the note (where C4 is middle C).
     /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat)
@@ -117,7 +170,7 @@ public:
         create_pitch(step, octave, alter);
     }
 
-    /// @todo `accidentalDisplay`
+    MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental
     MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, id);                         ///< note Id
     /// @todo `perform`
@@ -142,7 +195,7 @@ public:
 
     /// @brief Creates a new Event class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value
     Event(Base& parent, const std::string_view& key, std::optional<NoteValue::Initializer> noteValue = std::nullopt)
         : ContentObject(parent, key)
@@ -185,7 +238,7 @@ public:
 
     /// @brief Creates a new Space class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value
     Space(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
         : ContentObject(parent, key)
@@ -213,7 +266,7 @@ public:
 
     /// @brief Creates a new Grace class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Grace(Base& parent, const std::string_view& key)
         : ContentObject(parent, key)
     {
@@ -244,7 +297,7 @@ public:
 
     /// @brief Creates a new Tuplet class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param innerCount The inner count: **3** quarters in the time of 2 quarters
     /// @param innerNoteValue The inner amount: 3 **quarters** in the time of 2 quarters
     /// @param outerCount The outer count: 3 quarters in the time of **2** quarters
@@ -288,7 +341,7 @@ public:
 
     /// @brief Creates a new Sequence class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Sequence(Base& parent, const std::string_view& key)
         : ArrayElementObject(parent, key)
     {

@@ -52,7 +52,7 @@ public:
 
     /// @brief Creates a new Array class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param value The numerator (number on top) and denominator (number on bottom) of the fraction.
     Fraction(Base& parent, const std::string_view& key, const Initializer& value)
         : ArrayType(parent, key)
@@ -82,7 +82,7 @@ public:
     
     /// @brief Creates a new RhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param position Position within a measure (as a fraction of whole notes)
     RhythmicPosition(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
         : Object(parent, key)
@@ -110,7 +110,7 @@ public:
     
     /// @brief Creates a new MeasureRhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param measureId The measure index of the measure of the position.
     /// @param position Position within the measure (as a fraction of whole notes)
     MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, const Fraction::Initializer& position)
@@ -139,7 +139,7 @@ public:
 
     /// @brief Creates a new KeySignature class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param fifths The number of fifths distance from a signature with no accidentals.
     KeySignature(Base& parent, const std::string_view& key, int fifths)
         : Object(parent, key)
@@ -169,7 +169,7 @@ public:
 
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value
     NoteValue(Base& parent, const std::string_view& key, const Initializer& noteValue)
         : Object(parent, key)
@@ -199,7 +199,7 @@ public:
 
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param count The quantity of note value units
     /// @param noteValue The note value
     NoteValueQuantity(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
@@ -228,7 +228,7 @@ public:
 
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param count The number of beats per minutes
     /// @param unit The note value base for this Barline
     TimeSignature(Base& parent, const std::string_view& key, int count, TimeSignatureUnit unit)

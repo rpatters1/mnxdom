@@ -47,7 +47,7 @@ public:
 
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param barlineType The barline type for this Barline
     Barline(Base& parent, const std::string_view& key, BarlineType barlineType)
         : Object(parent, key)
@@ -73,7 +73,7 @@ public:
 
     /// @brief Creates a new Ending class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param duration The duration of th ending
     Ending(Base& parent, const std::string_view& key, int duration)
         : Object(parent, key)
@@ -103,7 +103,7 @@ public:
 
     /// @brief Creates a new Fine class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param position The position of the Fine within the measure.
     Fine(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
         : Object(parent, key)
@@ -131,7 +131,7 @@ public:
 
     /// @brief Creates a new Jump class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param jumpType The @ref JumpType of this jump.
     /// @param position The position of the Jump within the measure.
     Jump(Base& parent, const std::string_view& key, JumpType jumpType, const Fraction::Initializer& position)
@@ -183,7 +183,7 @@ public:
 
     /// @brief Creates a new Segno class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param position The position of the Segno within the measure.
     Segno(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
         : Object(parent, key)
@@ -212,7 +212,7 @@ public:
 
     /// @brief Creates a new Tempo class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param bpm The number of beats per minutes
     /// @param noteValue The note value
     Tempo(Base& parent, const std::string_view& key, int bpm, const NoteValue::Initializer& noteValue)
@@ -299,7 +299,7 @@ public:
 
     /// @brief Creates a new Jump class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param selector The CSS-style selector that specifies which MNX object(s) this style applies to.
     StyleGlobal(Base& parent, const std::string_view& key, const std::string& selector)
         : ArrayElementObject(parent, key)
@@ -324,7 +324,7 @@ public:
 
     /// @brief Creates a new Global class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Global(Base& parent, const std::string_view& key)
         : Object(parent, key)
     {

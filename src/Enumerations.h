@@ -24,6 +24,27 @@
 namespace mnx {
 
 /**
+ * @enum AccidentalEnclosureSymbol
+ * @brief The types of accidental enclosure symbols
+ */
+enum class AccidentalEnclosureSymbol
+{
+    Brackets,           ///< stems down (default)
+    Parenthesis         ///< stems up
+};
+
+/**
+ * @enum AutoYesNo
+ * @brief 3-state choice enum
+ */
+enum class AutoYesNo
+{
+    Auto,
+    Yes,
+    No
+};
+
+/**
  * @enum BarlineType
  * @brief The types of barlines supported.
  */
@@ -43,6 +64,28 @@ enum class BarlineType
 };
 
 /**
+ * @enum ClefSign
+ * @brief The values available in a clef sign object
+ */
+enum class ClefSign
+{
+    CClef,          ///< C Clef
+    FClef,          ///< F Clef
+    GClef           ///< G Clef
+};
+
+/**
+ * @enum LayoutSymbol
+ * @brief The symbols available to bracket a staff group
+ */
+enum class LayoutSymbol
+{
+    NoSymbol,       ///< the default (none)
+    Brace,          ///< piano brace
+    Bracket         ///< bracket
+};
+
+/**
  * @enum JumpType
  * @brief The types of jumps.
  */
@@ -50,6 +93,33 @@ enum class JumpType
 {
     DsAlFine,       ///< D.S. al Fine
     Segno           ///< Dal Segno
+};
+
+/**
+ * @enum LabelRef
+ * @brief The values available in a labelref
+ */
+enum class LabelRef
+{
+    Name,           ///< the full name from the part (the default)
+    ShortName       ///< the abbreviated name from the part
+};
+
+/**
+ * @enum NoteStep
+ * @brief The diatonic note step values.
+ *
+ * These are maintained in order from [C..B] == [0..6] to allow correct math on them.
+ */
+enum class NoteStep : int
+{
+    C = 0,
+    D = 1,
+    E = 2,
+    F = 3,
+    G = 4,
+    A = 5,
+    B = 6
 };
 
 /**
@@ -78,103 +148,6 @@ enum class NoteValueBase
 };
 
 /**
- * @enum TimeSignatureUnit
- * @brief Valid units for the lower numbers of time signatures
- */
-enum class TimeSignatureUnit : int
-{
-    Whole = 1,
-    Half = 2,
-    Quarter = 4,
-    Eighth = 8,
-    Value16th = 16,
-    Value32nd = 32,
-    Value64th = 64,
-    Value128th = 128
-};
-
-/**
- * @enum LayoutSymbol
- * @brief The symbols available to bracket a staff group
- */
-enum class LayoutSymbol
-{
-    NoSymbol,       ///< the default (none)
-    Brace,          ///< piano brace
-    Bracket         ///< bracket
-};
-
-/**
- * @enum LabelRef
- * @brief The values available in a labelref
- */
-enum class LabelRef
-{
-    Name,           ///< the full name from the part (the default)
-    ShortName       ///< the abbreviated name from the part
-};
-
-/**
- * @enum StemDirection
- * @brief The values available in a labelref
- */
-enum class StemDirection
-{
-    Down,           ///< stems down (default)
-    Up              ///< stems up
-};
-
-/**
- * @enum ClefSign
- * @brief The values available in a clef sign object
- */
-enum class ClefSign
-{
-    CClef,          ///< C Clef
-    FClef,          ///< F Clef
-    GClef           ///< G Clef
-};
-
-/**
- * @enum NoteStep
- * @brief The diatonic note step values.
- *
- * These are maintained in order from [C..B] == [0..6] to allow correct math on them.
- */
-enum class NoteStep : int
-{
-    C = 0,
-    D = 1,
-    E = 2,
-    F = 3,
-    G = 4,
-    A = 5,
-    B = 6
-};
-
-/**
- * @enum AutoYesNo
- * @brief 3-state choice enum
- */
-enum class AutoYesNo
-{
-    Auto,
-    Yes,
-    No
-};
-
-/**
- * @enum TupletDisplaySetting
- * @brief Controls display of a tuplet's number or note value
- */
-enum class TupletDisplaySetting
-{
-    Inner,
-    NoNumber,
-    Both
-};
-
-/**
  * @enum SlurTieEndLocation
  * @brief Specifies the location of the end of a slur or tie, if it doesn't have a target
  */
@@ -192,6 +165,43 @@ enum class SlurTieSide
 {
     Down,   ///< curved down, the tips face up
     Up,     ///< curved up, the tips face down
+};
+
+/**
+ * @enum StemDirection
+ * @brief The values available in a labelref
+ */
+enum class StemDirection
+{
+    Down,           ///< stems down (default)
+    Up              ///< stems up
+};
+
+/**
+ * @enum TimeSignatureUnit
+ * @brief Valid units for the lower numbers of time signatures
+ */
+enum class TimeSignatureUnit : int
+{
+    Whole = 1,
+    Half = 2,
+    Quarter = 4,
+    Eighth = 8,
+    Value16th = 16,
+    Value32nd = 32,
+    Value64th = 64,
+    Value128th = 128
+};
+
+/**
+ * @enum TupletDisplaySetting
+ * @brief Controls display of a tuplet's number or note value
+ */
+enum class TupletDisplaySetting
+{
+    Inner,
+    NoNumber,
+    Both
 };
 
 } // namespace mnx

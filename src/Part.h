@@ -22,6 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
+#include "Sequence.h"
 
 namespace mnx {
 
@@ -30,6 +31,73 @@ namespace mnx {
  * @brief classes related to the root parts array
  */
 namespace part {
+
+/**
+ * @class Clef
+ * @brief Represents a visible clef in the measure
+ */
+class Clef : public Object
+{
+public:
+    /// @brief Constructor for existing Clef instances
+    Clef(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Clef class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param staffPosition The note value base for this Barline
+    /// @param clefSign The type of clef symbold
+    /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
+    Clef(Base& parent, const std::string_view& key, int staffPosition, ClefSign clefSign, std::optional<int> octaveAdjustment = std::nullopt)
+        : Object(parent, key)
+    {
+        set_staffPosition(staffPosition);
+        set_sign(clefSign);
+        if (octaveAdjustment.has_value()) {
+            set_octave(octaveAdjustment.value());
+        }
+    }
+
+    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
+    MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
+    MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the specific SMuFL glyph to use for rendering the clef
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, octave, 0);  ///< the number of octaves by which the clef transposes
+    MNX_REQUIRED_PROPERTY(ClefSign, sign);          ///< the clef sign
+    MNX_REQUIRED_PROPERTY(int, staffPosition);      ///< staff position offset from center of staff (in half-spaces)
+};
+
+/**
+ * @class PositionedClef
+ * @brief Represents a positioned clef for the measure
+ */
+class PositionedClef : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing PositionedClef instances
+    PositionedClef(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new PositionedClef class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param staffPosition The note value base for this Barline
+    /// @param clefSign The type of clef symbold
+    /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
+    PositionedClef(Base& parent, const std::string_view& key, int staffPosition, ClefSign clefSign, std::optional<int> octaveAdjustment = std::nullopt)
+        : ArrayElementObject(parent, key)
+    {
+        create_clef(staffPosition, clefSign, octaveAdjustment);
+    }
+
+    MNX_REQUIRED_CHILD(Clef, clef);                     ///< the beats per minute of this tempo marking
+    MNX_OPTIONAL_CHILD(RhythmicPosition, position);     ///< location within the measure of the tempo marking
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number (for multistaff parts)
+};
 
 /**
  * @class Measure
@@ -42,7 +110,7 @@ public:
 
     /// @brief Creates a new Measure class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Measure(Base& parent, const std::string_view& key)
         : ArrayElementObject(parent, key)
     {
@@ -50,7 +118,9 @@ public:
         create_sequences();
     }
 
-    MNX_REQUIRED_CHILD(ContentArray, sequences);      ///< sequences that contain all the musical details in each measure
+    /// @todo `beams` array
+    MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);   ///< the clef changes in this bar
+    MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
 };
 
 } // namespace Part

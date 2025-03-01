@@ -47,7 +47,7 @@ public:
     
     /// @brief Creates a new MultimeasureRest class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
     MultimeasureRest(Base& parent, const std::string_view& key, int startMeasure, int numMeasures)
@@ -77,17 +77,16 @@ public:
     
     /// @brief Creates a new LayoutChange class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param layoutId The id of the layout to use for the layout change
     /// @param measureId The measure index of the measure of the position.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
+    /// @param position The position of the LayoutChange within the measure.
     LayoutChange(Base& parent, const std::string_view& key, const std::string& layoutId,
-            int measureId, unsigned int numerator, unsigned int denominator)
+            int measureId, const Fraction::Initializer& position)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);
-        create_location(measureId, numerator, denominator);
+        create_location(measureId, position);
     }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
@@ -109,7 +108,7 @@ public:
     
     /// @brief Creates a new System class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the system
     System(Base& parent, const std::string_view& key, int startMeasure)
         : ArrayElementObject(parent, key)
@@ -133,7 +132,7 @@ public:
 
     /// @brief Creates a new Page class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     Page(Base& parent, const std::string_view& key)
         : ArrayElementObject(parent, key)
     {
@@ -162,7 +161,7 @@ public:
     
     /// @brief Creates a new Score class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param scoreName The name of the score to be created
     Score(Base& parent, const std::string_view& key, const std::string& scoreName)
         : ArrayElementObject(parent, key)

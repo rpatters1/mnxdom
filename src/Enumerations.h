@@ -24,6 +24,27 @@
 namespace mnx {
 
 /**
+ * @enum AccidentalEnclosureSymbol
+ * @brief The types of accidental enclosure symbols
+ */
+enum class AccidentalEnclosureSymbol
+{
+    Brackets,           ///< stems down (default)
+    Parenthesis         ///< stems up
+};
+
+/**
+ * @enum AutoYesNo
+ * @brief 3-state choice enum
+ */
+enum class AutoYesNo
+{
+    Auto,
+    Yes,
+    No
+};
+
+/**
  * @enum BarlineType
  * @brief The types of barlines supported.
  */
@@ -43,6 +64,28 @@ enum class BarlineType
 };
 
 /**
+ * @enum ClefSign
+ * @brief The values available in a clef sign object
+ */
+enum class ClefSign
+{
+    CClef,          ///< C Clef
+    FClef,          ///< F Clef
+    GClef           ///< G Clef
+};
+
+/**
+ * @enum LayoutSymbol
+ * @brief The symbols available to bracket a staff group
+ */
+enum class LayoutSymbol
+{
+    NoSymbol,       ///< the default (none)
+    Brace,          ///< piano brace
+    Bracket         ///< bracket
+};
+
+/**
  * @enum JumpType
  * @brief The types of jumps.
  */
@@ -50,6 +93,33 @@ enum class JumpType
 {
     DsAlFine,       ///< D.S. al Fine
     Segno           ///< Dal Segno
+};
+
+/**
+ * @enum LabelRef
+ * @brief The values available in a labelref
+ */
+enum class LabelRef
+{
+    Name,           ///< the full name from the part (the default)
+    ShortName       ///< the abbreviated name from the part
+};
+
+/**
+ * @enum NoteStep
+ * @brief The diatonic note step values.
+ *
+ * These are maintained in order from [C..B] == [0..6] to allow correct math on them.
+ */
+enum class NoteStep : int
+{
+    C = 0,
+    D = 1,
+    E = 2,
+    F = 3,
+    G = 4,
+    A = 5,
+    B = 6
 };
 
 /**
@@ -78,6 +148,36 @@ enum class NoteValueBase
 };
 
 /**
+ * @enum SlurTieEndLocation
+ * @brief Specifies the location of the end of a slur or tie, if it doesn't have a target
+ */
+enum class SlurTieEndLocation
+{
+    Outgoing,
+    Incoming,
+};
+
+/**
+ * @enum SlurTieSide
+ * @brief Specifies the direction of a slur or tie.
+ */
+enum class SlurTieSide
+{
+    Down,   ///< curved down, the tips face up
+    Up,     ///< curved up, the tips face down
+};
+
+/**
+ * @enum StemDirection
+ * @brief The values available in a labelref
+ */
+enum class StemDirection
+{
+    Down,           ///< stems down (default)
+    Up              ///< stems up
+};
+
+/**
  * @enum TimeSignatureUnit
  * @brief Valid units for the lower numbers of time signatures
  */
@@ -94,34 +194,14 @@ enum class TimeSignatureUnit : int
 };
 
 /**
- * @enum LayoutSymbol
- * @brief The symbols available to bracket a staff group
+ * @enum TupletDisplaySetting
+ * @brief Controls display of a tuplet's number or note value
  */
-enum class LayoutSymbol
+enum class TupletDisplaySetting
 {
-    NoSymbol,       ///< the default (none)
-    Brace,          ///< piano brace
-    Bracket         ///< bracket
-};
-
-/**
- * @enum LabelRef
- * @brief The values available in a labelref
- */
-enum class LabelRef
-{
-    Name,           ///< the full name from the part (the default)
-    ShortName       ///< the abbreviated name from the part
-};
-
-/**
- * @enum LayoutStemDirection
- * @brief The values available in a labelref
- */
-enum class LayoutStemDirection
-{
-    Down,           ///< stems down (default)
-    Up              ///< stems up
+    Inner,
+    NoNumber,
+    Both
 };
 
 } // namespace mnx

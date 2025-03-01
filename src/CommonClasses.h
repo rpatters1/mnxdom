@@ -21,22 +21,26 @@
  */
 #pragma once
 
+#include <utility>
+
 #include "BaseTypes.h"
 
 namespace mnx {
 
 /// @class Fraction
 /// @brief Represents a fraction of a whole note, for measuring musical time.
-class Fraction : private Array<unsigned int>
+class Fraction : private Array<unsigned>
 {
 private:
-    using NumType = unsigned int;
+    using NumType = unsigned;
     using ArrayType = Array<NumType>;
 
     static constexpr size_t NUMERATOR_INDEX = 0;
     static constexpr size_t DENOMINATOR_INDEX = 1;
 
 public:
+    using Initializer = std::pair<NumType, NumType>;    ///< initializer for Fraction class (numerator, denominator)
+    
     /// @brief Constructor to wrap a Fraction instance around existing JSON
     Fraction(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayType(root, pointer)
@@ -48,14 +52,13 @@ public:
 
     /// @brief Creates a new Array class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
-    Fraction(Base& parent, const std::string_view& key, NumType numerator, NumType denominator)
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param value The numerator (number on top) and denominator (number on bottom) of the fraction.
+    Fraction(Base& parent, const std::string_view& key, const Initializer& value)
         : ArrayType(parent, key)
     {
-        push_back(numerator);
-        push_back(denominator);
+        push_back(value.first);
+        push_back(value.second);
     }
 
     MNX_ARRAY_ELEMENT_PROPERTY(NumType, numerator, NUMERATOR_INDEX);        ///< the numerator of the fraction
@@ -79,17 +82,16 @@ public:
     
     /// @brief Creates a new RhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
-    RhythmicPosition(Base& parent, const std::string_view& key, unsigned int numerator, unsigned int denominator)
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param position Position within a measure (as a fraction of whole notes)
+    RhythmicPosition(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
         : Object(parent, key)
     {
-        create_fraction(numerator, denominator);
+        create_fraction(position);
     }
 
     MNX_REQUIRED_CHILD(Fraction, fraction);             ///< The metric position, where 1/4 is a quarter note.
-    MNX_OPTIONAL_PROPERTY(unsigned int, graceIndex);    ///< The grace note index of this position.
+    MNX_OPTIONAL_PROPERTY(unsigned, graceIndex);    ///< The grace note index of this position.
                                                         ///< (0 is the primary, and then count to the left.)
 };
 
@@ -108,15 +110,14 @@ public:
     
     /// @brief Creates a new MeasureRhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param measureId The measure index of the measure of the position.
-    /// @param numerator The numerator (number on top) of the fraction.
-    /// @param denominator The denominator (number on bottom) of the fraction.
-    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, unsigned int numerator, unsigned int denominator)
+    /// @param position Position within the measure (as a fraction of whole notes)
+    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, const Fraction::Initializer& position)
         : Object(parent, key)
     {
         set_measure(measureId);
-        create_position(numerator, denominator);
+        create_position(position);
     }
 
     MNX_REQUIRED_PROPERTY(int, measure);            ///< The measure id of the measure of this MeasureRhythmicPosition.
@@ -138,7 +139,7 @@ public:
 
     /// @brief Creates a new KeySignature class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param fifths The number of fifths distance from a signature with no accidentals.
     KeySignature(Base& parent, const std::string_view& key, int fifths)
         : Object(parent, key)
@@ -158,6 +159,8 @@ public:
 class NoteValue : public Object
 {
 public:
+    using Initializer = std::pair<NoteValueBase, unsigned>; ///< used to initialize a NoteValue instance.
+
     /// @brief Constructor for existing NoteValue instances
     NoteValue(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -166,16 +169,48 @@ public:
 
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
-    /// @param noteValueBase The note value base for this Barline
-    NoteValue(Base& parent, const std::string_view& key, NoteValueBase noteValueBase)
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param noteValue The note value
+    NoteValue(Base& parent, const std::string_view& key, const Initializer& noteValue)
         : Object(parent, key)
     {
-        set_base(noteValueBase);
+        set_base(noteValue.first);
+        if (noteValue.second) {
+            set_dots(noteValue.second);
+        }
     }
 
     MNX_REQUIRED_PROPERTY(NoteValueBase, base);                 ///< the type ("base") of note
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned int, dots, 0);  ///< the number of dots
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
+};
+
+/**
+ * @class NoteValueQuantity
+ * @brief Represents a quantity of symbolic note values=
+ */
+class NoteValueQuantity : public Object
+{
+public:
+    /// @brief Constructor for existing NoteValue instances
+    NoteValueQuantity(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Barline class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param count The quantity of note value units
+    /// @param noteValue The note value
+    NoteValueQuantity(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
+        : Object(parent, key)
+    {
+        set_multiple(count);
+        create_duration(noteValue);
+    }
+
+    MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
+    MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
 };
 
 /**
@@ -193,7 +228,7 @@ public:
 
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding the new array.
+    /// @param key The JSON key to use for embedding in parent.
     /// @param count The number of beats per minutes
     /// @param unit The note value base for this Barline
     TimeSignature(Base& parent, const std::string_view& key, int count, TimeSignatureUnit unit)

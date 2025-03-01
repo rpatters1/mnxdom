@@ -111,11 +111,15 @@ $(document).ready(function(){initNavTree('classmnx_1_1ContentObject.html',''); i
  <div class="center">
   <img src="classmnx_1_1ContentObject.png" usemap="#mnx::ContentObject_map" alt=""/>
   <map id="mnx::ContentObject_map" name="mnx::ContentObject_map">
-<area href="classmnx_1_1ArrayElementObject.html" title="Represents an MNX object that is included as an array element." alt="mnx::ArrayElementObject" shape="rect" coords="82,112,236,136"/>
-<area href="classmnx_1_1Object.html" title="Represents an MNX object, encapsulating property access." alt="mnx::Object" shape="rect" coords="82,56,236,80"/>
-<area href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes." alt="mnx::Base" shape="rect" coords="82,0,236,24"/>
-<area href="classmnx_1_1layout_1_1Group.html" title="Represents a single global measure instance within an MNX document." alt="mnx::layout::Group" shape="rect" coords="0,224,154,248"/>
-<area href="classmnx_1_1layout_1_1Staff.html" title="Represents a single global measure instance within an MNX document." alt="mnx::layout::Staff" shape="rect" coords="164,224,318,248"/>
+<area href="classmnx_1_1ArrayElementObject.html" title="Represents an MNX object that is included as an array element." alt="mnx::ArrayElementObject" shape="rect" coords="410,112,564,136"/>
+<area href="classmnx_1_1Object.html" title="Represents an MNX object, encapsulating property access." alt="mnx::Object" shape="rect" coords="410,56,564,80"/>
+<area href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes." alt="mnx::Base" shape="rect" coords="410,0,564,24"/>
+<area href="classmnx_1_1layout_1_1Group.html" title="Represents a groups of staves within an MNX layout." alt="mnx::layout::Group" shape="rect" coords="0,224,154,248"/>
+<area href="classmnx_1_1layout_1_1Staff.html" title="Represents a single staff instance within an MNX layout." alt="mnx::layout::Staff" shape="rect" coords="164,224,318,248"/>
+<area href="classmnx_1_1sequence_1_1Event.html" title="Represents a musical event within a sequence." alt="mnx::sequence::Event" shape="rect" coords="328,224,482,248"/>
+<area href="classmnx_1_1sequence_1_1Grace.html" title="Represents a grace note sequence within a sequence." alt="mnx::sequence::Grace" shape="rect" coords="492,224,646,248"/>
+<area href="classmnx_1_1sequence_1_1Space.html" title="Occupies metric space without showing anything." alt="mnx::sequence::Space" shape="rect" coords="656,224,810,248"/>
+<area href="classmnx_1_1sequence_1_1Tuplet.html" title="Represents a tuplet sequence within a sequence." alt="mnx::sequence::Tuplet" shape="rect" coords="820,224,974,248"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -168,6 +172,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 <tr class="memitem:a0e3021a83dab2aeb89dcb1d1c5149d23 inherit pub_methods_classmnx_1_1Base" id="r_a0e3021a83dab2aeb89dcb1d1c5149d23"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a0e3021a83dab2aeb89dcb1d1c5149d23">dump</a> (int indents=-1)</td></tr>
 <tr class="memdesc:a0e3021a83dab2aeb89dcb1d1c5149d23 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the branch to a string. Useful in debugging.  <br /></td></tr>
 <tr class="separator:a0e3021a83dab2aeb89dcb1d1c5149d23 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base" id="r_a4bbd397a39dc2f5db959ac639d954335"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a> () const</td></tr>
+<tr class="memdesc:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the parent object for this node.  <br /></td></tr>
+<tr class="separator:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -186,10 +194,6 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> () const</td></tr>
 <tr class="memdesc:a1ef198706551096c7bbd023a3fae3406 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the json_pointer for this node. <br /></td></tr>
 <tr class="separator:a1ef198706551096c7bbd023a3fae3406 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bbd397a39dc2f5db959ac639d954335 inherit pro_methods_classmnx_1_1Base" id="r_a4bbd397a39dc2f5db959ac639d954335"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a4bbd397a39dc2f5db959ac639d954335 inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a> () const</td></tr>
-<tr class="memdesc:a4bbd397a39dc2f5db959ac639d954335 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the parent object for this node.  <br /></td></tr>
-<tr class="separator:a4bbd397a39dc2f5db959ac639d954335 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a473f70457687cdc1f46af66f4368e79b inherit pro_methods_classmnx_1_1Base" id="r_a473f70457687cdc1f46af66f4368e79b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a473f70457687cdc1f46af66f4368e79b">Base</a> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:a473f70457687cdc1f46af66f4368e79b inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap a <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> instance around a specific JSON reference using a json_pointer.  <br /></td></tr>
 <tr class="separator:a473f70457687cdc1f46af66f4368e79b inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>

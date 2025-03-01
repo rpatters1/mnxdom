@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tick_0',['Tick',['../namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a0b3516a5bbb77566f904f9d3877f4710',1,'mnx']]]
+  ['parenthesis_0',['Parenthesis',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da304d34e3694c1f6c446cede23add1b98',1,'mnx']]]
 ];

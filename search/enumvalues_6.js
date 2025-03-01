@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['segno_0',['Segno',['../namespacemnx.html#a20eecc3eed798a3f30f6c488465deca8a6fc84132823756493e629bc57d118535',1,'mnx']]],
-  ['short_1',['Short',['../namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a30bb747c98bccdd11b3f89e644c4d0ad',1,'mnx']]],
-  ['shortname_2',['ShortName',['../namespacemnx.html#aa6490743c39363c827cdf32264ea5b62ad26b007baa81cc3cd38d8d6c93e6df42',1,'mnx']]]
+  ['name_0',['Name',['../namespacemnx.html#aa6490743c39363c827cdf32264ea5b62a49ee3087348e8d44e1feda1917443987',1,'mnx']]],
+  ['nobarline_1',['NoBarline',['../namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a0576bb41c8036600a810cf711f9316d6',1,'mnx']]],
+  ['nosymbol_2',['NoSymbol',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485a7d1aa7eb23d311fee8051a1d74bc3c8d',1,'mnx']]]
 ];

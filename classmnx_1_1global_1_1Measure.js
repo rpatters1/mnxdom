@@ -10,6 +10,7 @@ var classmnx_1_1global_1_1Measure =
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#ac56d5d0b5d3eb54b7f701b7f7b0a0024", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#ad386316efec6c7e675d4f692f210911c", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#a6fe22c70999ad375cc1267119333f863", null ],
+    [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#a00352342f7945b5bea0cf645da1e6704", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#affe4caddf652635faff06c91cd3860ee", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1global_1_1Measure.html#a1e68a3663fc72fca5f774e3049289cc4", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1global_1_1Measure.html#aa9b3167b25c9b646405b7a9f7e4e72d5", null ]

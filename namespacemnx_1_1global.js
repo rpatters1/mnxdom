@@ -9,6 +9,7 @@ var namespacemnx_1_1global =
     [ "Measure", "classmnx_1_1global_1_1Measure.html", "classmnx_1_1global_1_1Measure" ],
     [ "RepeatEnd", "classmnx_1_1global_1_1RepeatEnd.html", "classmnx_1_1global_1_1RepeatEnd" ],
     [ "RepeatStart", "classmnx_1_1global_1_1RepeatStart.html", "classmnx_1_1global_1_1RepeatStart" ],
+    [ "Segno", "classmnx_1_1global_1_1Segno.html", "classmnx_1_1global_1_1Segno" ],
     [ "StyleGlobal", "classmnx_1_1global_1_1StyleGlobal.html", "classmnx_1_1global_1_1StyleGlobal" ],
     [ "Tempo", "classmnx_1_1global_1_1Tempo.html", "classmnx_1_1global_1_1Tempo" ]
 ];

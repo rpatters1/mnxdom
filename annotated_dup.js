@@ -11,6 +11,7 @@ var annotated_dup =
         [ "Measure", "classmnx_1_1global_1_1Measure.html", "classmnx_1_1global_1_1Measure" ],
         [ "RepeatEnd", "classmnx_1_1global_1_1RepeatEnd.html", "classmnx_1_1global_1_1RepeatEnd" ],
         [ "RepeatStart", "classmnx_1_1global_1_1RepeatStart.html", "classmnx_1_1global_1_1RepeatStart" ],
+        [ "Segno", "classmnx_1_1global_1_1Segno.html", "classmnx_1_1global_1_1Segno" ],
         [ "StyleGlobal", "classmnx_1_1global_1_1StyleGlobal.html", "classmnx_1_1global_1_1StyleGlobal" ],
         [ "Tempo", "classmnx_1_1global_1_1Tempo.html", "classmnx_1_1global_1_1Tempo" ]
       ] ],
@@ -20,13 +21,27 @@ var annotated_dup =
         [ "StaffSource", "classmnx_1_1layout_1_1StaffSource.html", "classmnx_1_1layout_1_1StaffSource" ]
       ] ],
       [ "part", "namespacemnx_1_1part.html", [
-        [ "Measure", "classmnx_1_1part_1_1Measure.html", "classmnx_1_1part_1_1Measure" ]
+        [ "Clef", "classmnx_1_1part_1_1Clef.html", "classmnx_1_1part_1_1Clef" ],
+        [ "Measure", "classmnx_1_1part_1_1Measure.html", "classmnx_1_1part_1_1Measure" ],
+        [ "PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", "classmnx_1_1part_1_1PositionedClef" ]
       ] ],
       [ "score", "namespacemnx_1_1score.html", [
         [ "LayoutChange", "classmnx_1_1score_1_1LayoutChange.html", "classmnx_1_1score_1_1LayoutChange" ],
         [ "MultimeasureRest", "classmnx_1_1score_1_1MultimeasureRest.html", "classmnx_1_1score_1_1MultimeasureRest" ],
         [ "Page", "classmnx_1_1score_1_1Page.html", "classmnx_1_1score_1_1Page" ],
         [ "System", "classmnx_1_1score_1_1System.html", "classmnx_1_1score_1_1System" ]
+      ] ],
+      [ "sequence", "namespacemnx_1_1sequence.html", [
+        [ "AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", "classmnx_1_1sequence_1_1AccidentalDisplay" ],
+        [ "AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", "classmnx_1_1sequence_1_1AccidentalEnclosure" ],
+        [ "Event", "classmnx_1_1sequence_1_1Event.html", "classmnx_1_1sequence_1_1Event" ],
+        [ "Grace", "classmnx_1_1sequence_1_1Grace.html", "classmnx_1_1sequence_1_1Grace" ],
+        [ "Note", "classmnx_1_1sequence_1_1Note.html", "classmnx_1_1sequence_1_1Note" ],
+        [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
+        [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
+        [ "Space", "classmnx_1_1sequence_1_1Space.html", "classmnx_1_1sequence_1_1Space" ],
+        [ "Tie", "classmnx_1_1sequence_1_1Tie.html", "classmnx_1_1sequence_1_1Tie" ],
+        [ "Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", "classmnx_1_1sequence_1_1Tuplet" ]
       ] ],
       [ "Array", "classmnx_1_1Array.html", "classmnx_1_1Array" ],
       [ "ArrayElementObject", "classmnx_1_1ArrayElementObject.html", "classmnx_1_1ArrayElementObject" ],
@@ -43,10 +58,12 @@ var annotated_dup =
       [ "MeasureRhythmicPosition", "classmnx_1_1MeasureRhythmicPosition.html", "classmnx_1_1MeasureRhythmicPosition" ],
       [ "MnxMetaData", "classmnx_1_1MnxMetaData.html", "classmnx_1_1MnxMetaData" ],
       [ "NoteValue", "classmnx_1_1NoteValue.html", "classmnx_1_1NoteValue" ],
+      [ "NoteValueQuantity", "classmnx_1_1NoteValueQuantity.html", "classmnx_1_1NoteValueQuantity" ],
       [ "Object", "classmnx_1_1Object.html", "classmnx_1_1Object" ],
       [ "Part", "classmnx_1_1Part.html", "classmnx_1_1Part" ],
       [ "RhythmicPosition", "classmnx_1_1RhythmicPosition.html", "classmnx_1_1RhythmicPosition" ],
       [ "Score", "classmnx_1_1Score.html", "classmnx_1_1Score" ],
+      [ "Sequence", "classmnx_1_1Sequence.html", "classmnx_1_1Sequence" ],
       [ "SimpleType", "classmnx_1_1SimpleType.html", "classmnx_1_1SimpleType" ],
       [ "TimeSignature", "classmnx_1_1TimeSignature.html", "classmnx_1_1TimeSignature" ]
     ] ]

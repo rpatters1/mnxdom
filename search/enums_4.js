@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['timesignatureunit_0',['TimeSignatureUnit',['../namespacemnx.html#aa17c3a6f2b681e4c8e401dd6691dc8b3',1,'mnx']]]
+  ['labelref_0',['LabelRef',['../namespacemnx.html#aa6490743c39363c827cdf32264ea5b62',1,'mnx']]],
+  ['layoutsymbol_1',['LayoutSymbol',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485',1,'mnx']]]
 ];

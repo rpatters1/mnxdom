@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "MUSX Document Model", "index.html", [
+    [ "Todo List", "todo.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -54,8 +55,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
-"classmnx_1_1Object.html#ab64600aa2ad48735dd01e0c7d177a3cf",
-"classmnx_1_1score_1_1MultimeasureRest.html#a93abf6c619329dc48d5334c209834183"
+"classmnx_1_1NoteValue.html#ad4bcd0942f77b4ef8da3b41c63cb1959",
+"classmnx_1_1layout_1_1Staff.html#af784ca7af9aff6a82e8b0baff144557e",
+"functions_func_p.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

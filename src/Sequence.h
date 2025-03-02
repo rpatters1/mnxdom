@@ -142,7 +142,7 @@ public:
 
     MNX_OPTIONAL_PROPERTY(SlurTieEndLocation, location);    ///< mainly useful for l.v. type ties that are not connected
     MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force tie direction (if present)
-    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the octave number
+    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the note id of the tied-to note
 };
 
 /**

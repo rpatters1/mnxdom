@@ -75,17 +75,6 @@ enum class ClefSign
 };
 
 /**
- * @enum LayoutSymbol
- * @brief The symbols available to bracket a staff group
- */
-enum class LayoutSymbol
-{
-    NoSymbol,       ///< the default (none)
-    Brace,          ///< piano brace
-    Bracket         ///< bracket
-};
-
-/**
  * @enum JumpType
  * @brief The types of jumps.
  */
@@ -103,6 +92,29 @@ enum class LabelRef
 {
     Name,           ///< the full name from the part (the default)
     ShortName       ///< the abbreviated name from the part
+};
+
+/**
+ * @enum LayoutSymbol
+ * @brief The symbols available to bracket a staff group
+ */
+enum class LayoutSymbol
+{
+    NoSymbol,       ///< the default (none)
+    Brace,          ///< piano brace
+    Bracket         ///< bracket
+};
+
+/**
+ * @enum LyricLineType
+ * @brief The symbols available to bracket a staff group
+ */
+enum class LyricLineType
+{
+    End,            ///< the end of a word
+    Middle,         ///< the middle of a word
+    Start,          ///< the start of a word
+    Whole           ///< this lyric is a whole word
 };
 
 /**

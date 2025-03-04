@@ -181,6 +181,45 @@ public:
 };
 
 /**
+ * @class EventLyricLine
+ * @brief Contains information about a lyric syllable from one lyric line on a note.
+ */
+class EventLyricLine : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing EventLyricLine objects
+    EventLyricLine(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new EventLyricLine class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param syllableText The syllable text for this instance.
+    EventLyricLine(Base& parent, const std::string_view& key, const std::string& syllableText)
+        : ArrayElementObject(parent, key)
+    {
+        set_text(syllableText);
+    }
+
+    MNX_REQUIRED_PROPERTY(std::string, text);           ///< the syllable text
+    MNX_OPTIONAL_PROPERTY(LyricLineType, type);         ///< the type of syllable (in relation to the complete word)
+};
+
+/**
+ * @class EventLyrics
+ * @brief Contains information about the lyric syllables on the event.
+ */
+class EventLyrics : public Object
+{
+public:
+    using Object::Object;
+
+    MNX_OPTIONAL_CHILD(Dictionary<EventLyricLine>, lines);      ///< the syllables per lyric line
+};
+
+/**
  * @class Event
  * @brief Represents a musical event within a sequence.
  */
@@ -210,7 +249,7 @@ public:
 
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
     MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
-    /// @todo `lyrics`
+    MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     /// @todo `markings`
     MNX_OPTIONAL_PROPERTY(bool, measure);                   ///< Whether this event is a whole-measure event.
     MNX_OPTIONAL_CHILD(Array<Note>, notes);                 ///< Note array

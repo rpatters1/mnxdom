@@ -132,6 +132,24 @@ public:
 };
 
 /**
+ * @class Slur
+ * @brief Contains information about a tie on a note.
+ */
+class Slur : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
+
+    MNX_OPTIONAL_PROPERTY(std::string, endNote);            ///< the specific note ID this slur ends on
+    /// @todo lineType
+    MNX_OPTIONAL_PROPERTY(SlurTieEndLocation, location);    ///< location (incoming/outgoing) if there is no target
+    MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force slur direction (if present)
+    MNX_OPTIONAL_PROPERTY(SlurTieSide, sideEnd);            ///< used to force slur's endpoint direction (if different than `side`)
+    MNX_OPTIONAL_PROPERTY(std::string, startNote);          ///< the specific note ID this slur starts on
+    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the event ID this slur ends on (if present)
+};
+
+/**
  * @class Tie
  * @brief Contains information about a tie on a note.
  */
@@ -255,7 +273,7 @@ public:
     MNX_OPTIONAL_CHILD(Array<Note>, notes);                 ///< Note array
     /// @todo `orient`
     MNX_OPTIONAL_CHILD(Rest, rest);                         ///< indicates this event is a rest.
-    /// @todo `slurs` array
+    MNX_OPTIONAL_CHILD(Array<Slur>, slurs);                 ///< The slurs that start on this event.
     MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff notes.)
     MNX_OPTIONAL_PROPERTY(StemDirection, stemDirection);    ///< Forced stem direction.
 

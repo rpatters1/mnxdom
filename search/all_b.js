@@ -6,5 +6,6 @@ var searchData=
   ['layoutsymbol_3',['LayoutSymbol',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485',1,'mnx']]],
   ['list_4',['Todo List',['../todo.html',1,'']]],
   ['lyriclinemetadata_5',['LyricLineMetadata',['../classmnx_1_1global_1_1LyricLineMetadata.html',1,'mnx::global']]],
-  ['lyricsglobal_6',['LyricsGlobal',['../classmnx_1_1global_1_1LyricsGlobal.html',1,'mnx::global']]]
+  ['lyriclinetype_6',['LyricLineType',['../namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afc',1,'mnx']]],
+  ['lyricsglobal_7',['LyricsGlobal',['../classmnx_1_1global_1_1LyricsGlobal.html',1,'mnx::global']]]
 ];

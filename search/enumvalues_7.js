@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parenthesis_0',['Parenthesis',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da304d34e3694c1f6c446cede23add1b98',1,'mnx']]]
+  ['middle_0',['Middle',['../namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcab1ca34f82e83c52b010f86955f264e05',1,'mnx']]]
 ];

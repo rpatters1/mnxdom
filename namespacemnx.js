@@ -70,6 +70,12 @@ var namespacemnx =
       [ "Brace", "namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485a7d55ac077f11ad55a67924103d450612", null ],
       [ "Bracket", "namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485ab5c644787d66a37b2d0e7eefaf11506b", null ]
     ] ],
+    [ "LyricLineType", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afc", [
+      [ "End", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afca87557f11575c0ad78e4e28abedc13b6e", null ],
+      [ "Middle", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcab1ca34f82e83c52b010f86955f264e05", null ],
+      [ "Start", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcaa6122a65eaa676f700ae68d393054a37", null ],
+      [ "Whole", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcac8d2fc8ed10b21e647d7f58d4436b050", null ]
+    ] ],
     [ "NoteStep", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63", [
       [ "C", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63a0d61f8370cad1d412f80b84d143e1257", null ],
       [ "D", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63af623e75af30e62bbd73d6df5b50bb7b5", null ],

@@ -114,6 +114,13 @@ MNX_ENUM_MAPPING(LayoutSymbol, {
     { "bracket",    LayoutSymbol::Bracket }
 });
 
+MNX_ENUM_MAPPING(LyricLineType, {
+    { "end",    LyricLineType::End },
+    { "middle", LyricLineType::Middle },
+    { "start",  LyricLineType::Start },
+    { "whole",  LyricLineType::Whole }
+});
+
 MNX_ENUM_MAPPING(StemDirection, {
     { "down",       StemDirection::Down },
     { "up",         StemDirection::Up }

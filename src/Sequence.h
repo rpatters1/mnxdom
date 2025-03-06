@@ -132,6 +132,24 @@ public:
 };
 
 /**
+ * @class Slur
+ * @brief Contains information about a tie on a note.
+ */
+class Slur : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
+
+    MNX_OPTIONAL_PROPERTY(std::string, endNote);            ///< the specific note ID this slur ends on
+    /// @todo lineType
+    MNX_OPTIONAL_PROPERTY(SlurTieEndLocation, location);    ///< location (incoming/outgoing) if there is no target
+    MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force slur direction (if present)
+    MNX_OPTIONAL_PROPERTY(SlurTieSide, sideEnd);            ///< used to force slur's endpoint direction (if different than `side`)
+    MNX_OPTIONAL_PROPERTY(std::string, startNote);          ///< the specific note ID this slur starts on
+    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the event ID this slur ends on (if present)
+};
+
+/**
  * @class Tie
  * @brief Contains information about a tie on a note.
  */
@@ -142,7 +160,7 @@ public:
 
     MNX_OPTIONAL_PROPERTY(SlurTieEndLocation, location);    ///< mainly useful for l.v. type ties that are not connected
     MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force tie direction (if present)
-    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the octave number
+    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the note id of the tied-to note
 };
 
 /**
@@ -181,6 +199,45 @@ public:
 };
 
 /**
+ * @class EventLyricLine
+ * @brief Contains information about a lyric syllable from one lyric line on a note.
+ */
+class EventLyricLine : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing EventLyricLine objects
+    EventLyricLine(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new EventLyricLine class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param syllableText The syllable text for this instance.
+    EventLyricLine(Base& parent, const std::string_view& key, const std::string& syllableText)
+        : ArrayElementObject(parent, key)
+    {
+        set_text(syllableText);
+    }
+
+    MNX_REQUIRED_PROPERTY(std::string, text);           ///< the syllable text
+    MNX_OPTIONAL_PROPERTY(LyricLineType, type);         ///< the type of syllable (in relation to the complete word)
+};
+
+/**
+ * @class EventLyrics
+ * @brief Contains information about the lyric syllables on the event.
+ */
+class EventLyrics : public Object
+{
+public:
+    using Object::Object;
+
+    MNX_OPTIONAL_CHILD(Dictionary<EventLyricLine>, lines);      ///< the syllables per lyric line
+};
+
+/**
  * @class Event
  * @brief Represents a musical event within a sequence.
  */
@@ -210,13 +267,13 @@ public:
 
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
     MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
-    /// @todo `lyrics`
+    MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     /// @todo `markings`
     MNX_OPTIONAL_PROPERTY(bool, measure);                   ///< Whether this event is a whole-measure event.
     MNX_OPTIONAL_CHILD(Array<Note>, notes);                 ///< Note array
     /// @todo `orient`
     MNX_OPTIONAL_CHILD(Rest, rest);                         ///< indicates this event is a rest.
-    /// @todo `slurs` array
+    MNX_OPTIONAL_CHILD(Array<Slur>, slurs);                 ///< The slurs that start on this event.
     MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff notes.)
     MNX_OPTIONAL_PROPERTY(StemDirection, stemDirection);    ///< Forced stem direction.
 

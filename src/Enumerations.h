@@ -64,6 +64,16 @@ enum class BarlineType
 };
 
 /**
+ * @enum  v
+ * @brief The types of jumps.
+ */
+enum class BeamHookDirection
+{
+    Left,           ///< Hook left
+    Right           ///< Hook right
+};
+
+/**
  * @enum ClefSign
  * @brief The values available in a clef sign object
  */

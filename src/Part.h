@@ -33,6 +33,65 @@ namespace mnx {
 namespace part {
 
 /**
+ * @class BeamHook
+ * @brief Represents a hooked beam. (A beam on a single note, broken on the hightest beam numbers.)
+ */
+class BeamHook : public ArrayElementObject
+{
+public:
+    using Initializer = std::pair<std::string, BeamHookDirection>;  ///< used to initialize a BeamHook instance.
+                                                                    ///< The values are the event ID and the hook direction.
+
+    /// @brief Constructor for existing BeamHook objects
+    BeamHook(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new BeamHook class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param hookInfo The event ID and direction of the hook.
+    BeamHook(Base& parent, const std::string_view& key, const Initializer& hookInfo)
+        : ArrayElementObject(parent, key)
+    {
+        set_event(hookInfo.first);
+        set_direction(hookInfo.second);
+    }
+
+    MNX_REQUIRED_PROPERTY(BeamHookDirection, direction);        ///< the direction of the hook.
+    MNX_REQUIRED_PROPERTY(std::string, event);                  ///< The event with the hook.
+};
+
+/**
+ * @class Beam
+ * @brief Contains information about each level of bea
+ */
+class Beam : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing Beam objects
+    Beam(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+        //create_events();
+    }
+
+    /// @brief Creates a new Beam class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.¥
+    Beam(Base& parent, const std::string_view& key)
+        : ArrayElementObject(parent, key)
+    {
+        
+    }
+
+    MNX_REQUIRED_CHILD(Array<std::string>, events);     ///< the events that comprise this beam level
+    MNX_OPTIONAL_CHILD(Array<BeamHook>, hooks);         ///< the beam hooks at this level
+    MNX_OPTIONAL_CHILD(Array<Beam>, inner);             ///< the beams that comprise the next beam level
+};
+
+/**
  * @class Clef
  * @brief Represents a visible clef in the measure
  */
@@ -118,7 +177,7 @@ public:
         create_sequences();
     }
 
-    /// @todo `beams` array
+    MNX_OPTIONAL_CHILD(Array<Beam>, beams);             ///< the beams in this measure
     MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);   ///< the clef changes in this bar
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
 };

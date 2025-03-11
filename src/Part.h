@@ -83,7 +83,7 @@ public:
     Beam(Base& parent, const std::string_view& key)
         : ArrayElementObject(parent, key)
     {
-        
+        create_events();
     }
 
     MNX_REQUIRED_CHILD(Array<std::string>, events);     ///< the events that comprise this beam level

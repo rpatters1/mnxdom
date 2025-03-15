@@ -360,6 +360,40 @@ public:
 };
 
 /**
+ * @class Ottava
+ * @brief Represents an ottava starting with the next event in the sequence
+ */
+class Ottava : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Space objects
+    Ottava(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Space class as a child of a JSON element.
+    /// @param parent The parent class instance.
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param value the value (type) of ottava.
+    /// @param endMeasureId The end measure of the ottava.
+    /// @param endPosition The position within the end measure of the ottava. (The ottava includes events that start at this position.)
+    Ottava(Base& parent, const std::string_view& key, OttavaAmount value, int endMeasureId, const Fraction::Initializer& endPosition)
+        : ContentObject(parent, key)
+    {
+        create_end(endMeasureId, endPosition);
+        set_value(value);
+    }
+
+    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
+    /// @todo orient
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
+    MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
+
+    static constexpr std::string_view ContentTypeValue = "ottava";  ///< type value that identifies the type within the content array
+};
+
+/**
  * @class Tuplet
  * @brief Represents a tuplet sequence within a sequence.
  */

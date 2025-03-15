@@ -170,6 +170,18 @@ enum class NoteValueBase
 };
 
 /**
+ * @enum OttavaAmount
+ * @brief Valid values for ottava amount
+ */
+enum class OttavaAmount : int
+{
+    OctaveDown = -1,            ///< 8vb
+    TwoOctaveDown = -2,         ///< 15mb
+    OctaveUp = 1,               ///< 8va
+    TwoOctaveUp = 2              ///< 15ma
+};
+
+/**
  * @enum SlurTieEndLocation
  * @brief Specifies the location of the end of a slur or tie, if it doesn't have a target
  */
@@ -241,6 +253,18 @@ struct adl_serializer<mnx::TimeSignatureUnit>
 
     template<typename BasicJsonType>
     static void to_json(BasicJsonType& j, const mnx::TimeSignatureUnit& value)
+    { j = int(value); }
+};
+
+template<>
+struct adl_serializer<mnx::OttavaAmount>
+{
+    template<typename BasicJsonType>
+    static mnx::OttavaAmount from_json(const BasicJsonType& j)
+    { return mnx::OttavaAmount(j.template get<int>()); }
+
+    template<typename BasicJsonType>
+    static void to_json(BasicJsonType& j, const mnx::OttavaAmount& value)
     { j = int(value); }
 };
 

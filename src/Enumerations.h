@@ -64,7 +64,7 @@ enum class BarlineType
 };
 
 /**
- * @enum  v
+ * @enum  BeamHookDirection
  * @brief The types of jumps.
  */
 enum class BeamHookDirection

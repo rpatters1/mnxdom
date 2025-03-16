@@ -62,6 +62,11 @@ MNX_ENUM_MAPPING(BarlineType, {
     { "tick",        BarlineType::Tick }
 });
 
+MNX_ENUM_MAPPING(BeamHookDirection, {
+    { "left",       BeamHookDirection::Left },
+    { "right",      BeamHookDirection::Right }
+});
+
 MNX_ENUM_MAPPING(ClefSign, {
     { "C",          ClefSign::CClef },
     { "F",          ClefSign::FClef },

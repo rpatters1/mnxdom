@@ -23,6 +23,7 @@
 
 #include "BaseTypes.h"
 #include "CommonClasses.h"
+#include "Enumerations.h"
 
 namespace mnx {
 
@@ -153,12 +154,30 @@ public:
  * @class Tie
  * @brief Contains information about a tie on a note.
  */
-class Tie : public Object
+class Tie : public ArrayElementObject
 {
 public:
-    using Object::Object;
+    /// @brief Constructor for existing Tie objects
+    Tie(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
 
-    MNX_OPTIONAL_PROPERTY(SlurTieEndLocation, location);    ///< mainly useful for l.v. type ties that are not connected
+    /// @brief Creates a new Tie class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param target The target note id of the tie. If omitted, the the tie is created as an l.v. tie.
+    Tie(Base& parent, const std::string_view& key, std::optional<std::string> target = std::nullopt)
+        : ArrayElementObject(parent, key)
+    {
+        if (target) {
+            set_target(target.value());
+        } else {
+            set_lv(true);
+        }
+    }
+
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, lv, false);    ///< Indicates the presence of an l.v. tie (instead of target)
     MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force tie direction (if present)
     MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the note id of the tied-to note
 };
@@ -195,7 +214,7 @@ public:
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);                  ///< The SMuFL-complaint font to use for rendering the note.
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
-    MNX_OPTIONAL_CHILD(Tie, tie);                                   ///< The (forward) tie, if any.
+    MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
 };
 
 /**
@@ -338,6 +357,40 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, slash, true);          ///< whether to show a slash on the grace note
 
     static constexpr std::string_view ContentTypeValue = "grace";   ///< type value that identifies the type within the content array
+};
+
+/**
+ * @class Ottava
+ * @brief Represents an ottava starting with the next event in the sequence
+ */
+class Ottava : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Space objects
+    Ottava(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Space class as a child of a JSON element.
+    /// @param parent The parent class instance.
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param value the value (type) of ottava.
+    /// @param endMeasureId The end measure of the ottava.
+    /// @param endPosition The position within the end measure of the ottava. (The ottava includes events that start at this position.)
+    Ottava(Base& parent, const std::string_view& key, OttavaAmount value, int endMeasureId, const Fraction::Initializer& endPosition)
+        : ContentObject(parent, key)
+    {
+        create_end(endMeasureId, endPosition);
+        set_value(value);
+    }
+
+    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
+    /// @todo orient
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
+    MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
+
+    static constexpr std::string_view ContentTypeValue = "ottava";  ///< type value that identifies the type within the content array
 };
 
 /**

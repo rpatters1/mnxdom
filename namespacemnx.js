@@ -52,6 +52,10 @@ var namespacemnx =
       [ "Short", "namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a30bb747c98bccdd11b3f89e644c4d0ad", null ],
       [ "Tick", "namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a0b3516a5bbb77566f904f9d3877f4710", null ]
     ] ],
+    [ "BeamHookDirection", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391", [
+      [ "Left", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a945d5e233cf7d6240f6b783b36a374ff", null ],
+      [ "Right", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a92b09c7c48c520c3c55e497875da437c", null ]
+    ] ],
     [ "ClefSign", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72", [
       [ "CClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a9a8b74d33d96a2daa9375a22d68ce09f", null ],
       [ "FClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a0945e63d7277b87a5b01102815984c5e", null ],
@@ -103,6 +107,12 @@ var namespacemnx =
       [ "Longa", "namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79a30cba0c98833cb8bf807c5d2280b17be", null ],
       [ "Maxima", "namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79abc3292567552688d69e5ddc95781245b", null ],
       [ "DuplexMaxima", "namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79a2635498b180d3b852b2837d34c5f21c1", null ]
+    ] ],
+    [ "OttavaAmount", "namespacemnx.html#a361b2c550a67bec829901cf59aec117e", [
+      [ "OctaveDown", "namespacemnx.html#a361b2c550a67bec829901cf59aec117eab41646df7c887cc0e3647ba5f8b26afe", null ],
+      [ "TwoOctaveDown", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ead767ee99c57acbd528fc3cbdc558ab87", null ],
+      [ "OctaveUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea1713d26780742b9524fdc6e40c6ef6cd", null ],
+      [ "TwoOctaveUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea082f1d3db8ea79c5afd41d236029ad1c", null ]
     ] ],
     [ "SlurTieEndLocation", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858d", [
       [ "Outgoing", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858dae60340c5328bd1bdc50cd8f3efd83c88", null ],

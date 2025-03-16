@@ -21,6 +21,8 @@ var annotated_dup =
         [ "StaffSource", "classmnx_1_1layout_1_1StaffSource.html", "classmnx_1_1layout_1_1StaffSource" ]
       ] ],
       [ "part", "namespacemnx_1_1part.html", [
+        [ "Beam", "classmnx_1_1part_1_1Beam.html", "classmnx_1_1part_1_1Beam" ],
+        [ "BeamHook", "classmnx_1_1part_1_1BeamHook.html", "classmnx_1_1part_1_1BeamHook" ],
         [ "Clef", "classmnx_1_1part_1_1Clef.html", "classmnx_1_1part_1_1Clef" ],
         [ "Measure", "classmnx_1_1part_1_1Measure.html", "classmnx_1_1part_1_1Measure" ],
         [ "PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", "classmnx_1_1part_1_1PositionedClef" ]
@@ -39,6 +41,7 @@ var annotated_dup =
         [ "EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", "classmnx_1_1sequence_1_1EventLyrics" ],
         [ "Grace", "classmnx_1_1sequence_1_1Grace.html", "classmnx_1_1sequence_1_1Grace" ],
         [ "Note", "classmnx_1_1sequence_1_1Note.html", "classmnx_1_1sequence_1_1Note" ],
+        [ "Ottava", "classmnx_1_1sequence_1_1Ottava.html", "classmnx_1_1sequence_1_1Ottava" ],
         [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
         [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
         [ "Slur", "classmnx_1_1sequence_1_1Slur.html", "classmnx_1_1sequence_1_1Slur" ],

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['regular_0',['Regular',['../namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9ad2203cb1237cb6460cbad94564e39345',1,'mnx']]]
+  ['octavedown_0',['OctaveDown',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117eab41646df7c887cc0e3647ba5f8b26afe',1,'mnx']]],
+  ['octaveup_1',['OctaveUp',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea1713d26780742b9524fdc6e40c6ef6cd',1,'mnx']]]
 ];

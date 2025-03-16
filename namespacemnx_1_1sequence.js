@@ -7,6 +7,7 @@ var namespacemnx_1_1sequence =
     [ "EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", "classmnx_1_1sequence_1_1EventLyrics" ],
     [ "Grace", "classmnx_1_1sequence_1_1Grace.html", "classmnx_1_1sequence_1_1Grace" ],
     [ "Note", "classmnx_1_1sequence_1_1Note.html", "classmnx_1_1sequence_1_1Note" ],
+    [ "Ottava", "classmnx_1_1sequence_1_1Ottava.html", "classmnx_1_1sequence_1_1Ottava" ],
     [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
     [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
     [ "Slur", "classmnx_1_1sequence_1_1Slur.html", "classmnx_1_1sequence_1_1Slur" ],

@@ -56,8 +56,8 @@ var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
 "classmnx_1_1NoteValue.html#ad4bcd0942f77b4ef8da3b41c63cb1959",
-"classmnx_1_1layout_1_1Staff.html#af784ca7af9aff6a82e8b0baff144557e",
-"classmnx_1_1sequence_1_1Tuplet.html#a61f06a9a3e85675504c25ad79a50365b"
+"classmnx_1_1layout_1_1Staff.html#ab5268728610521d15c3245c1838f5aec",
+"classmnx_1_1sequence_1_1Slur.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

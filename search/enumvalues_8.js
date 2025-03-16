@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['name_0',['Name',['../namespacemnx.html#aa6490743c39363c827cdf32264ea5b62a49ee3087348e8d44e1feda1917443987',1,'mnx']]],
-  ['nobarline_1',['NoBarline',['../namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a0576bb41c8036600a810cf711f9316d6',1,'mnx']]],
-  ['nosymbol_2',['NoSymbol',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485a7d1aa7eb23d311fee8051a1d74bc3c8d',1,'mnx']]]
+  ['middle_0',['Middle',['../namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcab1ca34f82e83c52b010f86955f264e05',1,'mnx']]]
 ];

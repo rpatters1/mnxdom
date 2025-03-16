@@ -15,6 +15,7 @@ var hierarchy =
             [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ],
             [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
             [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
+            [ "mnx::sequence::Ottava", "classmnx_1_1sequence_1_1Ottava.html", null ],
             [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
             [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ]
           ] ],
@@ -27,6 +28,8 @@ var hierarchy =
           [ "mnx::global::StyleGlobal", "classmnx_1_1global_1_1StyleGlobal.html", null ],
           [ "mnx::global::Tempo", "classmnx_1_1global_1_1Tempo.html", null ],
           [ "mnx::layout::StaffSource", "classmnx_1_1layout_1_1StaffSource.html", null ],
+          [ "mnx::part::Beam", "classmnx_1_1part_1_1Beam.html", null ],
+          [ "mnx::part::BeamHook", "classmnx_1_1part_1_1BeamHook.html", null ],
           [ "mnx::part::Measure", "classmnx_1_1part_1_1Measure.html", null ],
           [ "mnx::part::PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", null ],
           [ "mnx::score::LayoutChange", "classmnx_1_1score_1_1LayoutChange.html", null ],
@@ -36,7 +39,8 @@ var hierarchy =
           [ "mnx::sequence::EventLyricLine", "classmnx_1_1sequence_1_1EventLyricLine.html", null ],
           [ "mnx::sequence::Note", "classmnx_1_1sequence_1_1Note.html", null ],
           [ "mnx::sequence::Rest", "classmnx_1_1sequence_1_1Rest.html", null ],
-          [ "mnx::sequence::Slur", "classmnx_1_1sequence_1_1Slur.html", null ]
+          [ "mnx::sequence::Slur", "classmnx_1_1sequence_1_1Slur.html", null ],
+          [ "mnx::sequence::Tie", "classmnx_1_1sequence_1_1Tie.html", null ]
         ] ],
         [ "mnx::Dictionary< T >", "classmnx_1_1Dictionary.html", null ],
         [ "mnx::Document", "classmnx_1_1Document.html", null ],
@@ -61,8 +65,7 @@ var hierarchy =
         [ "mnx::sequence::AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", null ],
         [ "mnx::sequence::AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", null ],
         [ "mnx::sequence::EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", null ],
-        [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ],
-        [ "mnx::sequence::Tie", "classmnx_1_1sequence_1_1Tie.html", null ]
+        [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ]
       ] ],
       [ "mnx::SimpleType< T, >", "classmnx_1_1SimpleType.html", null ]
     ] ],

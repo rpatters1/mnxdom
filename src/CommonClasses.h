@@ -24,6 +24,7 @@
 #include <utility>
 
 #include "BaseTypes.h"
+#include "Enumerations.h"
 
 namespace mnx {
 

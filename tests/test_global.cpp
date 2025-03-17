@@ -94,7 +94,7 @@ TEST(Global, LyricLineMetadata)
     auto newLine = lineMetaData.value().append("15");
     newLine.set_label("Italiano");
     newLine.set_lang("it");
-    EXPECT_EQ(lineMetaData.value().size(), 5);
+    EXPECT_EQ(lineMetaData.value().size(), 5u);
     EXPECT_EQ(lineMetaData.value()["15"].label(), "Italiano");
     EXPECT_EQ(lineMetaData.value()["15"].lang(), "it");
 

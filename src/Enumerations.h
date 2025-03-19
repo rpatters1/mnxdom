@@ -74,6 +74,18 @@ enum class BeamHookDirection
 };
 
 /**
+ * @enum BreathMarkSymbol
+ * @brief The symbols available for a breath mark
+ */
+enum class BreathMarkSymbol
+{
+    Comma,   ///< comma symbol
+    Tick,    ///< tick symbol
+    Upbow,   ///< upbow symbol
+    Salzedo  ///< salzedo symbol
+};
+
+/**
  * @enum ClefSign
  * @brief The values available in a clef sign object
  */
@@ -125,6 +137,16 @@ enum class LyricLineType
     Middle,         ///< the middle of a word
     Start,          ///< the start of a word
     Whole           ///< this lyric is a whole word
+};
+
+/**
+ * @enum MarkingUpDown
+ * @brief The values available in an event marking "pointing" property
+ */
+enum class MarkingUpDown
+{
+    Down,           ///< down (default)
+    Up              ///< up
 };
 
 /**

@@ -66,11 +66,45 @@ MNX_ENUM_MAPPING(BeamHookDirection, {
     { "left",       BeamHookDirection::Left },
     { "right",      BeamHookDirection::Right }
 });
+MNX_ENUM_MAPPING(BreathMarkSymbol, {
+    { "comma",      BreathMarkSymbol::Comma },
+    { "tick",       BreathMarkSymbol::Tick },
+    { "upbow",      BreathMarkSymbol::Upbow },
+    { "salzedo",    BreathMarkSymbol::Salzedo }
+});
 
 MNX_ENUM_MAPPING(ClefSign, {
     { "C",          ClefSign::CClef },
     { "F",          ClefSign::FClef },
     { "G",          ClefSign::GClef }
+});
+
+MNX_ENUM_MAPPING(JumpType, {
+    { "dsalfine",   JumpType::DsAlFine },
+    { "segno",      JumpType::Segno }
+});
+
+MNX_ENUM_MAPPING(LabelRef, {
+    { "name",       LabelRef::Name },
+    { "shortName",  LabelRef::ShortName }
+});
+
+MNX_ENUM_MAPPING(LayoutSymbol, {
+    { "noSymbol",   LayoutSymbol::NoSymbol },
+    { "brace",      LayoutSymbol::Brace },
+    { "bracket",    LayoutSymbol::Bracket }
+});
+
+MNX_ENUM_MAPPING(LyricLineType, {
+    { "end",        LyricLineType::End },
+    { "middle",     LyricLineType::Middle },
+    { "start",      LyricLineType::Start },
+    { "whole",      LyricLineType::Whole }
+});
+
+MNX_ENUM_MAPPING(MarkingUpDown, {
+    { "down",       MarkingUpDown::Down },
+    { "up",         MarkingUpDown::Up }
 });
 
 MNX_ENUM_MAPPING(NoteStep, {
@@ -101,29 +135,6 @@ MNX_ENUM_MAPPING(NoteValueBase, {
     { "longa",        NoteValueBase::Longa },
     { "maxima",       NoteValueBase::Maxima },
     { "duplexMaxima", NoteValueBase::DuplexMaxima }
-});
-
-MNX_ENUM_MAPPING(JumpType, {
-    { "dsalfine",   JumpType::DsAlFine },
-    { "segno",      JumpType::Segno }
-});
-
-MNX_ENUM_MAPPING(LabelRef, {
-    { "name",       LabelRef::Name },
-    { "shortName",  LabelRef::ShortName }
-});
-
-MNX_ENUM_MAPPING(LayoutSymbol, {
-    { "noSymbol",   LayoutSymbol::NoSymbol },
-    { "brace",      LayoutSymbol::Brace },
-    { "bracket",    LayoutSymbol::Bracket }
-});
-
-MNX_ENUM_MAPPING(LyricLineType, {
-    { "end",    LyricLineType::End },
-    { "middle", LyricLineType::Middle },
-    { "start",  LyricLineType::Start },
-    { "whole",  LyricLineType::Whole }
 });
 
 MNX_ENUM_MAPPING(StemDirection, {

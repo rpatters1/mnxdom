@@ -24,6 +24,7 @@
 #include "BaseTypes.h"
 #include "CommonClasses.h"
 #include "Enumerations.h"
+#include "EventMarkings.h"
 
 namespace mnx {
 
@@ -287,13 +288,13 @@ public:
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
     MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
-    /// @todo `markings`
+    MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
     MNX_OPTIONAL_PROPERTY(bool, measure);                   ///< Whether this event is a whole-measure event.
     MNX_OPTIONAL_CHILD(Array<Note>, notes);                 ///< Note array
     /// @todo `orient`
     MNX_OPTIONAL_CHILD(Rest, rest);                         ///< indicates this event is a rest.
     MNX_OPTIONAL_CHILD(Array<Slur>, slurs);                 ///< The slurs that start on this event.
-    MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff notes.)
+    MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff events.)
     MNX_OPTIONAL_PROPERTY(StemDirection, stemDirection);    ///< Forced stem direction.
 
     static constexpr std::string_view ContentTypeValue = "event"; ///< type value that identifies the type within the content array

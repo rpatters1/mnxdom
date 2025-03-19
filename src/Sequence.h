@@ -329,6 +329,36 @@ public:
 };
 
 /**
+ * @class Dynamic
+ * @brief Represents a dynamic positioned with the next event in the sequence.
+ */
+class Dynamic : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Space objects
+    Dynamic(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Space class as a child of a JSON element.
+    /// @param parent The parent class instance.
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param value the value of the dynamic. Currently the spec allows any string here.
+    Dynamic(Base& parent, const std::string_view& key, const std::string& value)
+        : ContentObject(parent, key)
+    {
+        set_value(value);
+    }
+
+    MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
+    MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
+
+    static constexpr std::string_view ContentTypeValue = "dynamic"; ///< type value that identifies the type within the content array
+};
+
+/**
  * @class Grace
  * @brief Represents a grace note sequence within a sequence.
  */

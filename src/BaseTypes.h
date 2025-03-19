@@ -816,7 +816,7 @@ public:
         }
     }
 
-    /** @brief Append a new value to the array. (Available only for primitive types) */
+    /** @brief Add a new value to the dictonary. (Available only for primitive types) */
     template <typename U = T>
     std::enable_if_t<!std::is_base_of_v<Base, U>, void>
     emplace(const std::string& key, const U& value)
@@ -885,7 +885,7 @@ namespace nlohmann {
 
 #if defined(_WIN32)
 // This general adl_serializer is enabled only for enum types.
-// For some reason MSC does not like the direct function defintions below.
+// For some reason MSC does not like the direct function definitions below.
 template<typename EnumType>
 struct adl_serializer<EnumType, std::enable_if_t<std::is_enum_v<EnumType>>>
 {

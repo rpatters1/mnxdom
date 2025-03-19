@@ -48,9 +48,9 @@ std::optional<std::string> Document::validate(const std::optional<std::string>& 
     return std::nullopt;
 }
 
-// *************************
+// ***************************
 // ***** global::Measure *****
-// *************************
+// ***************************
 
 BarlineType global::Measure::calcBarlineType() const
 {
@@ -62,8 +62,6 @@ BarlineType global::Measure::calcBarlineType() const
     return (arrayIndex + 1) == parentArray.size() ? BarlineType::Final : BarlineType::Regular;
 }
 
-/// @brief Calculates the meausure index for this measure.
-/// @return index() if it has a value or the default value (defined in the MNX specification) if it does not.
 int global::Measure::calcMeasureIndex() const
 {
     if (auto thisIndex = index()) {

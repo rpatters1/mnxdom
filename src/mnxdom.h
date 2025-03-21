@@ -31,12 +31,12 @@
  * It requires the C++17 standard.
  * 
  * Features include:
- * - Dependency-free class definitions.
- * - Factory classes separate from object model classes.
+ * - Implemented with an underlying nlohmann JSON document. No class-level streaming to/from JSON is required.
+ * - Lightweight class definitions contain only the shared JSON document and a json_pointer to the object. (See @ref mnx::Base.)
  *
- * Member functions for each MNX entity are defined using macros that create the definitions.
+ * Member functions for each MNX entity are defined using macros that create the boilerplate for the definitions.
  * For example, `MNX_REQUIRED_PROPERTY` creates a getter (equal to the property name) and a setter (`set_` followed
- * by the property name). The macros are defined in `BaseTypes.h` and have extensive documentation in the comments.
+ * by the property name). The boilerplate macros are defined in `BaseTypes.h` and have extensive documentation in the comments.
  *
  * A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed
  * from scratch. They can be subsequently changed if need be. Many classes have `Initializer` types to facilitate passing

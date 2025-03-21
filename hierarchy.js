@@ -13,6 +13,7 @@ var hierarchy =
           [ "mnx::ContentObject", "classmnx_1_1ContentObject.html", [
             [ "mnx::layout::Group", "classmnx_1_1layout_1_1Group.html", null ],
             [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ],
+            [ "mnx::sequence::Dynamic", "classmnx_1_1sequence_1_1Dynamic.html", null ],
             [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
             [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
             [ "mnx::sequence::Ottava", "classmnx_1_1sequence_1_1Ottava.html", null ],
@@ -65,6 +66,20 @@ var hierarchy =
         [ "mnx::sequence::AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", null ],
         [ "mnx::sequence::AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", null ],
         [ "mnx::sequence::EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", null ],
+        [ "mnx::sequence::EventMarkingBase", "classmnx_1_1sequence_1_1EventMarkingBase.html", [
+          [ "mnx::sequence::Accent", "classmnx_1_1sequence_1_1Accent.html", null ],
+          [ "mnx::sequence::BreathMark", "classmnx_1_1sequence_1_1BreathMark.html", null ],
+          [ "mnx::sequence::SingleNoteTremolo", "classmnx_1_1sequence_1_1SingleNoteTremolo.html", null ],
+          [ "mnx::sequence::SoftAccent", "classmnx_1_1sequence_1_1SoftAccent.html", null ],
+          [ "mnx::sequence::Spiccato", "classmnx_1_1sequence_1_1Spiccato.html", null ],
+          [ "mnx::sequence::Staccatissimo", "classmnx_1_1sequence_1_1Staccatissimo.html", null ],
+          [ "mnx::sequence::Staccato", "classmnx_1_1sequence_1_1Staccato.html", null ],
+          [ "mnx::sequence::Stress", "classmnx_1_1sequence_1_1Stress.html", null ],
+          [ "mnx::sequence::StrongAccent", "classmnx_1_1sequence_1_1StrongAccent.html", null ],
+          [ "mnx::sequence::Tenuto", "classmnx_1_1sequence_1_1Tenuto.html", null ],
+          [ "mnx::sequence::Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
+        ] ],
+        [ "mnx::sequence::EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", null ],
         [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ]
       ] ],
       [ "mnx::SimpleType< T, >", "classmnx_1_1SimpleType.html", null ]

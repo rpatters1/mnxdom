@@ -56,6 +56,12 @@ var namespacemnx =
       [ "Left", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a945d5e233cf7d6240f6b783b36a374ff", null ],
       [ "Right", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a92b09c7c48c520c3c55e497875da437c", null ]
     ] ],
+    [ "BreathMarkSymbol", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26", [
+      [ "Comma", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6", null ],
+      [ "Tick", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a0b3516a5bbb77566f904f9d3877f4710", null ],
+      [ "Upbow", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26ac1a7ead3faffd1eafe2791fddca0dcd2", null ],
+      [ "Salzedo", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a750acd2375abfdf959a7a368e0727285", null ]
+    ] ],
     [ "ClefSign", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72", [
       [ "CClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a9a8b74d33d96a2daa9375a22d68ce09f", null ],
       [ "FClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a0945e63d7277b87a5b01102815984c5e", null ],
@@ -79,6 +85,10 @@ var namespacemnx =
       [ "Middle", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcab1ca34f82e83c52b010f86955f264e05", null ],
       [ "Start", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcaa6122a65eaa676f700ae68d393054a37", null ],
       [ "Whole", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcac8d2fc8ed10b21e647d7f58d4436b050", null ]
+    ] ],
+    [ "MarkingUpDown", "namespacemnx.html#aef9fb8ab9a62640138018b7387b578aa", [
+      [ "Down", "namespacemnx.html#aef9fb8ab9a62640138018b7387b578aaa08a38277b0309070706f6652eeae9a53", null ],
+      [ "Up", "namespacemnx.html#aef9fb8ab9a62640138018b7387b578aaa258f49887ef8d14ac268c92b02503aaa", null ]
     ] ],
     [ "NoteStep", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63", [
       [ "C", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63a0d61f8370cad1d412f80b84d143e1257", null ],

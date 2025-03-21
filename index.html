@@ -102,10 +102,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li>Dependency-free class definitions.</li>
 <li>Factory classes separate from object model classes.</li>
 </ul>
-<p>The following macro definitions are available to modify behavior of the library.</p><ul>
-<li><code>MNX_THROW_ON_VALIDATION_ERROR</code>: Throws <code>mnx::dom::validation_error</code> if a class fails its integrity check. Otherwise it it logs the message, which by default sends it to <code>std::cerr</code>.</li>
-</ul>
-<p>The recommended way to define these macros is from your make file or build project. They are primarily intended for debugging.</p>
+<p>Member functions for each MNX entity are defined using macros that create the definitions. For example, <code>MNX_REQUIRED_PROPERTY</code> creates a getter (equal to the property name) and a setter (<code>set_</code> followed by the property name). The macros are defined in <code><a class="el" href="BaseTypes_8h_source.html">BaseTypes.h</a></code> and have extensive documentation in the comments.</p>
+<p>A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed from scratch. They can be subsequently changed if need be. Many classes have <code>Initializer</code> types to facilitate passing all the required data for a child object.</p>
 <dl class="section author"><dt>Author</dt><dd>Robert Patterson </dd></dl>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->

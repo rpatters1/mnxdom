@@ -10,5 +10,7 @@ var searchData=
   ['begin_7',['begin',['../classmnx_1_1Array.html#a086b39fbc63d4cd4a9793ee617f7a16c',1,'mnx::Array::begin()'],['../classmnx_1_1Array.html#a59a27a0197178a228f3be50e85619d13',1,'mnx::Array::begin() const'],['../classmnx_1_1Dictionary.html#a9b69c927beebcd644bff737205b30866',1,'mnx::Dictionary::begin()'],['../classmnx_1_1Dictionary.html#a415f5a61b54e6be16f7b64ad6a40abee',1,'mnx::Dictionary::begin() const']]],
   ['brace_8',['Brace',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485a7d55ac077f11ad55a67924103d450612',1,'mnx']]],
   ['bracket_9',['Bracket',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485ab5c644787d66a37b2d0e7eefaf11506b',1,'mnx']]],
-  ['brackets_10',['Brackets',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da16e127072878e35f572b8f19bdb4b686',1,'mnx']]]
+  ['brackets_10',['Brackets',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da16e127072878e35f572b8f19bdb4b686',1,'mnx']]],
+  ['breathmark_11',['BreathMark',['../classmnx_1_1sequence_1_1BreathMark.html',1,'mnx::sequence']]],
+  ['breathmarksymbol_12',['BreathMarkSymbol',['../namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26',1,'mnx']]]
 ];

@@ -31,7 +31,7 @@
 #include "nlohmann/json.hpp"
 
  /**
-  * @brief creates a required property
+  * @brief creates a required property with a simple type
   *
   * It creates the following class methods.
   *
@@ -52,7 +52,7 @@
     static_assert(true, "") // require semicolon after macro
 
  /**
-  * @brief creates a property that occupies a fixed position in an array
+  * @brief creates a property (with a simple type) that occupies a fixed position in an array
   *
   * It creates the following class methods.
   *
@@ -70,8 +70,9 @@
     static_assert(true, "") // require semicolon after macro
 
  /**
-  * @brief creates an optional named property. This is a property whose name is different than
-  * its JSON key.
+  * @brief creates an optional named property with a simple type. This is a property whose name is different than
+  * its JSON key. This is used when the JSON property name is a C++ keyword. An example is `class` that becomes a
+  * property called `styleClass`.
   *
   * It creates the following class methods.
   *
@@ -96,7 +97,7 @@
     static_assert(true, "") // require semicolon after macro
 
  /**
-  * @brief creates an optional property.
+  * @brief creates an optional property with a simple type.
   *
   * It creates the following class methods.
   *
@@ -816,7 +817,7 @@ public:
         }
     }
 
-    /** @brief Append a new value to the array. (Available only for primitive types) */
+    /** @brief Add a new value to the dictonary. (Available only for primitive types) */
     template <typename U = T>
     std::enable_if_t<!std::is_base_of_v<Base, U>, void>
     emplace(const std::string& key, const U& value)
@@ -885,7 +886,7 @@ namespace nlohmann {
 
 #if defined(_WIN32)
 // This general adl_serializer is enabled only for enum types.
-// For some reason MSC does not like the direct function defintions below.
+// For some reason MSC does not like the direct function definitions below.
 template<typename EnumType>
 struct adl_serializer<EnumType, std::enable_if_t<std::is_enum_v<EnumType>>>
 {

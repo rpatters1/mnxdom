@@ -54,16 +54,16 @@ TEST(Document, Minimal)
     EXPECT_FALSE(*support.useAccidentalDisplay());
 
     auto measures = doc.global().measures();
-    EXPECT_EQ(measures.size(), 0);
+    EXPECT_EQ(measures.size(), 0u);
     measures.append();
-    ASSERT_EQ(doc.global().measures().size(), 1);
+    ASSERT_EQ(doc.global().measures().size(), 1u);
     measures[0].set_index(3);  // use non const operator[]
     const auto measuresConst = doc.global().measures();
     const auto measure = measuresConst[0]; // use const operator[]
     EXPECT_EQ(measure.index(), 3);
     EXPECT_EQ(doc.global().measures()[0].index(), 3);
 
-    EXPECT_EQ(doc.parts().size(), 0);
+    EXPECT_EQ(doc.parts().size(), 0u);
 }
 
 TEST(Document, MinimalFromScratch)
@@ -86,9 +86,9 @@ TEST(Document, MinimalFromScratch)
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate without a support instance";
 
     auto parts = doc.parts();
-    EXPECT_EQ(parts.size(), 0);
+    EXPECT_EQ(parts.size(), 0u);
     auto part = parts.append();
-    EXPECT_EQ(doc.parts().size(), 1);
+    EXPECT_EQ(doc.parts().size(), 1u);
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a part";
     auto measures = part.create_measures();
     measures.append();
@@ -130,14 +130,14 @@ TEST(Document, MissingRequiredFields)
     auto global = doc.global();
     EXPECT_THROW(global.measures(), std::runtime_error);
     global.create_measures();
-    EXPECT_EQ(doc.global().measures().size(), 0);
+    EXPECT_EQ(doc.global().measures().size(), 0u);
     EXPECT_FALSE(doc.validate().has_value()) << "after adding global, schema should validate";
 
-    EXPECT_EQ(doc.parts().size(), 0);
+    EXPECT_EQ(doc.parts().size(), 0u);
     auto part = doc.parts().append();
     EXPECT_FALSE(doc.validate().has_value()) << "after adding part, schema should validate";
     EXPECT_EQ(part.staves(), 1);
-    ASSERT_EQ(doc.parts().size(), 1);
+    ASSERT_EQ(doc.parts().size(), 1u);
     doc.parts()[0].set_staves(3);
     EXPECT_EQ(part.staves(), 3) << "detached instance should reflect changed value from doc";
 }

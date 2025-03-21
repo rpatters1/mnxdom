@@ -34,7 +34,7 @@ TEST(Scores, FromScratch)
     for (int x = 0; x < numBars; x++) {
         doc.global().measures().append();
     }
-    EXPECT_EQ(doc.global().measures().size(), numBars);
+    EXPECT_EQ(doc.global().measures().size(), size_t(numBars));
 
     auto scores = doc.create_scores();
 
@@ -50,11 +50,11 @@ TEST(Scores, FromScratch)
     EXPECT_EQ(layoutChange.location().measure(), 2);
 
     auto frac = layoutChange.location().position().fraction();
-    EXPECT_EQ(frac.numerator(), 3);
-    EXPECT_EQ(frac.denominator(), 8);
+    EXPECT_EQ(frac.numerator(), 3u);
+    EXPECT_EQ(frac.denominator(), 8u);
 
     frac.set_numerator(5);
-    EXPECT_EQ(frac.numerator(), 5);
+    EXPECT_EQ(frac.numerator(), 5u);
 
     EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a score";
     //std::cout << doc.dump(4) << std::endl;

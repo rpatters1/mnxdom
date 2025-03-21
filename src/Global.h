@@ -253,7 +253,7 @@ public:
     /// @return barline().type() if barline() has a value. Otherwise the default (as defined in the MNX specification.)
     BarlineType calcBarlineType() const;
 
-    /// @brief Calculates the meausure index for this measure.
+    /// @brief Calculates the measure index for this measure.
     /// @return index() if it has a value or the default value (defined in the MNX specification) if it does not.
     int calcMeasureIndex() const;
 };

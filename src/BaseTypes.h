@@ -31,7 +31,7 @@
 #include "nlohmann/json.hpp"
 
  /**
-  * @brief creates a required property
+  * @brief creates a required property with a simple type
   *
   * It creates the following class methods.
   *
@@ -52,7 +52,7 @@
     static_assert(true, "") // require semicolon after macro
 
  /**
-  * @brief creates a property that occupies a fixed position in an array
+  * @brief creates a property (with a simple type) that occupies a fixed position in an array
   *
   * It creates the following class methods.
   *
@@ -70,8 +70,9 @@
     static_assert(true, "") // require semicolon after macro
 
  /**
-  * @brief creates an optional named property. This is a property whose name is different than
-  * its JSON key.
+  * @brief creates an optional named property with a simple type. This is a property whose name is different than
+  * its JSON key. This is used when the JSON property name is a C++ keyword. An example is `class` that becomes a
+  * property called `styleClass`.
   *
   * It creates the following class methods.
   *
@@ -96,7 +97,7 @@
     static_assert(true, "") // require semicolon after macro
 
  /**
-  * @brief creates an optional property.
+  * @brief creates an optional property with a simple type.
   *
   * It creates the following class methods.
   *

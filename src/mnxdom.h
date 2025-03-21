@@ -34,12 +34,13 @@
  * - Dependency-free class definitions.
  * - Factory classes separate from object model classes.
  *
- * The following macro definitions are available to modify behavior of the library.
- * - `MNX_THROW_ON_VALIDATION_ERROR`: Throws `mnx::dom::validation_error` if a class fails its integrity check.
- * Otherwise it it logs the message, which by default sends it to `std::cerr`.
+ * Member functions for each MNX entity are defined using macros that create the definitions.
+ * For example, `MNX_REQUIRED_PROPERTY` creates a getter (equal to the property name) and a setter (`set_` followed
+ * by the property name). The macros are defined in `BaseTypes.h` and have extensive documentation in the comments.
  *
- * The recommended way to define these macros is from your make file or build project. They are primarily intended
- * for debugging.
+ * A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed
+ * from scratch. They can be subsequently changed if need be. Many classes have `Initializer` types to facilitate passing
+ * all the required data for a child object.
  *
  * @author Robert Patterson
  */

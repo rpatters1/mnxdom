@@ -29,6 +29,7 @@
 #include "Layout.h"
 #include "Part.h"
 #include "Score.h"
+#include "validation/Validation.h"
 
 namespace mnx {
 
@@ -146,12 +147,8 @@ public:
         file.close();
     }
 
-    /**
-     * @brief Validates the MNX document against a schema.
-     * @param jsonSchema A string containing the schema json.
-     * @returns std::nullopt if no error or an error message if there was one.
-     */
-    std::optional<std::string> validate(const std::optional<std::string>& jsonSchema = std::nullopt) const;
+    /// @brief validation::schemaValidate has private access
+    friend validation::SchemaValidationResult validation::schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema);
 };
 
 static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");

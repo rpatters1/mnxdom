@@ -1,0 +1,75 @@
+/*
+ * Copyright (C) 2025, Robert Patterson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+#pragma once
+
+#include <string>
+#include <vector>
+
+#include "BaseTypes.h"
+
+namespace mnx {
+
+class Document;
+
+/**
+ * @namespace mnx::validation
+ * @brief provides schema- and semantic-level validation functions for MNX documents
+ */
+namespace validation {
+
+/// @struct SchemaValidationResult
+/// @brief Encapsulates a schema validation result
+struct SchemaValidationResult
+{
+    /// @struct Error
+    /// @brief All the information about a specific error
+    struct Error
+    {
+        /// @brief constructor
+        Error(const json_pointer& ptr, const json& inst, const std::string& msg)
+            : instance(inst), pointer(ptr), message(msg) {}
+            
+        json instance;          ///< instance containing the error
+        json_pointer pointer;   ///< the location of the instance in the top level
+        std::string message;    ///< a message describing the error
+
+        /// @brief Converts the error to a string. (Matches the schema validator's default message.)
+        /// @param indent The number of indents in the output message. Omit for none.
+        std::string to_string(int indent = -1) const
+        {
+            return "At " + pointer.to_string() + " of " + instance.dump(indent) + " - " + message;
+        }
+    };
+    std::vector<Error> errors;  ///< errors encountered
+
+    /// @brief Allows a simple if check to see if the schema validated
+    explicit operator bool() const { return errors.empty(); }
+};
+
+/// @brief Validates a document against a JSON schema
+/// @param document The mnx::Document to validate
+/// @param jsonSchema The JSON schema to validate against, or std::nullopt for the embedded schema
+/// @return validation result
+SchemaValidationResult schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema = std::nullopt);
+
+} // namespace validation
+} // namespace mnx

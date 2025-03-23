@@ -19,34 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <fstream>
-
-#include "nlohmann/json-schema.hpp"
-#include "mnx_schema.xxd"
-
 #include "mnxdom.h"
 
 namespace mnx {
-
-static const std::string_view MNX_SCHEMA(reinterpret_cast<const char*>(mnx_schema_json), mnx_schema_json_len);
-
-// ********************
-// ***** Document *****
-// ********************
-
-std::optional<std::string> Document::validate(const std::optional<std::string>& jsonSchema) const
-{
-    try {
-        // Load JSON schema
-        json schemaJson = json::parse(jsonSchema.value_or(std::string(MNX_SCHEMA)));
-        nlohmann::json_schema::json_validator validator;
-        validator.set_root_schema(schemaJson);
-        validator.validate(*root());
-    } catch (const std::invalid_argument& e) {
-        return e.what();
-    }
-    return std::nullopt;
-}
 
 // ***************************
 // ***** global::Measure *****

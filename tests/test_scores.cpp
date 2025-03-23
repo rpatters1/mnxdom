@@ -28,7 +28,7 @@ using namespace mnx;
 TEST(Scores, FromScratch)
 {
     Document doc;
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
 
     static constexpr int numBars = 5;
     for (int x = 0; x < numBars; x++) {
@@ -56,6 +56,6 @@ TEST(Scores, FromScratch)
     frac.set_numerator(5);
     EXPECT_EQ(frac.numerator(), 5u);
 
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a score";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a score";
     //std::cout << doc.dump(4) << std::endl;
 }

@@ -353,7 +353,6 @@ public:
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
-    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
     MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
 
     static constexpr std::string_view ContentTypeValue = "dynamic"; ///< type value that identifies the type within the content array

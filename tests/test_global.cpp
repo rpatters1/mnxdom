@@ -65,7 +65,7 @@ TEST(Global, LyricLineMetadata)
         }
     )");
     Document doc(jsonString);
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
 
     auto lyrics = doc.global().lyrics();
     ASSERT_TRUE(lyrics.has_value()) << "lyrics should have a value";
@@ -76,13 +76,15 @@ TEST(Global, LyricLineMetadata)
     EXPECT_EQ(lineMetaData.value()["3"].label(), "日本語");
 
     size_t index = 0;
+    bool got1 = false;
+    bool got4 = false;
     for (const auto& it : lineMetaData.value()) {
-        if (index == 2) {
-            EXPECT_EQ(it.first, "1");
+        if (it.first == "1") {
+            got1 = true;
             EXPECT_EQ(it.second.lang().value(), "en");
             EXPECT_EQ(it.second.label().value(), "English");
-        } else if (index == 3) {
-            EXPECT_EQ(it.first, "4");
+        } else if (it.first == "4") {
+            got4 = true;
             EXPECT_EQ(it.second.lang().value(), "es");
             EXPECT_EQ(it.second.label().value(), "Español");
         }
@@ -90,6 +92,7 @@ TEST(Global, LyricLineMetadata)
         ASSERT_TRUE(index <= 4) << "iteration loop is not stopping";        
         //std::cout << "\"" << it.first << "\": " << *it.second.lang() << " " << *it.second.label() << std::endl;
     }
+    EXPECT_TRUE(got1 && got4) << "missing either item 1 or item 4";
 
     auto newLine = lineMetaData.value().append("15");
     newLine.set_label("Italiano");
@@ -130,6 +133,6 @@ TEST(Global, LyricLineMetadata)
     EXPECT_EQ(lineMetaData.value()["15"].label(), "Français");
     EXPECT_EQ(lineMetaData.value()["15"].lang(), "fr");
 
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
     //std::cout << doc.dump(4) << std::endl;
 }

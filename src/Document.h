@@ -148,7 +148,7 @@ public:
     }
 
     /// @brief validation::schemaValidate has private access
-    friend validation::SchemaValidationResult validation::schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema);
+    friend validation::ValidationResult validation::schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema);
 };
 
 static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");

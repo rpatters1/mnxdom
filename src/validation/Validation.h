@@ -36,9 +36,9 @@ class Document;
  */
 namespace validation {
 
-/// @struct SchemaValidationResult
+/// @struct ValidationResult
 /// @brief Encapsulates a schema validation result
-struct SchemaValidationResult
+struct ValidationResult
 {
     /// @struct Error
     /// @brief All the information about a specific error
@@ -69,7 +69,12 @@ struct SchemaValidationResult
 /// @param document The mnx::Document to validate
 /// @param jsonSchema The JSON schema to validate against, or std::nullopt for the embedded schema
 /// @return validation result
-SchemaValidationResult schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema = std::nullopt);
+ValidationResult schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema = std::nullopt);
+
+/// @brief Validates the semantics of the input MNX document
+/// @param document The document to validate
+/// @return validation result
+ValidationResult semanticValidate(const Document& document);
 
 } // namespace validation
 } // namespace mnx

@@ -27,19 +27,15 @@
 namespace mnx {
 namespace validation {
 
-// ********************
-// ***** Document *****
-// ********************
-
-SchemaValidationResult schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema)
+ValidationResult schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema)
 {
     static const std::string_view MNX_SCHEMA(reinterpret_cast<const char*>(mnx_schema_json), mnx_schema_json_len);
 
-    SchemaValidationResult result;
+    ValidationResult result;
 
     class errorHandler : public nlohmann::json_schema::error_handler
     {
-        SchemaValidationResult* m_result;
+        ValidationResult* m_result;
         std::vector<json::json_pointer> top_level_errors;
 
         // Utility: returns true if `candidate` is a descendant of any path in `top_level_errors`
@@ -57,7 +53,7 @@ SchemaValidationResult schemaValidate(const Document& document, const std::optio
         }
         
     public:
-        errorHandler(SchemaValidationResult& rslt) : m_result(&rslt) {}
+        errorHandler(ValidationResult& rslt) : m_result(&rslt) {}
 
         void error(const json::json_pointer& ptr, const nlohmann::json& instance, const std::string& message) override
         {
@@ -65,7 +61,7 @@ SchemaValidationResult schemaValidate(const Document& document, const std::optio
                 return; // Skip descendant errors.
             }
             top_level_errors.push_back(ptr);
-            m_result->errors.emplace_back(SchemaValidationResult::Error(ptr, instance, message));
+            m_result->errors.emplace_back(ValidationResult::Error(ptr, instance, message));
         }
     };
     

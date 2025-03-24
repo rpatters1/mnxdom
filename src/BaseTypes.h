@@ -195,6 +195,10 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 class Object;
 template <typename T> class Array;
 
+namespace validation {
+class SemanticValidator;
+}; // namespace validation
+
 /**
  * @brief Base class wrapper for all MNX JSON nodes.
  */
@@ -392,6 +396,8 @@ private:
 
     const std::shared_ptr<json> m_root;  ///< Shared pointer to the root JSON object.
     json_pointer m_pointer;          ///< JSON pointer to the specific node.
+
+    friend class validation::SemanticValidator;
 };
 
 /**

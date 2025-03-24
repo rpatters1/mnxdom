@@ -147,7 +147,7 @@ public:
         file.close();
     }
 
-    /// @brief validation::schemaValidate has private access
+private:
     friend validation::ValidationResult validation::schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema);
 };
 

@@ -65,6 +65,18 @@ struct ValidationResult
     explicit operator bool() const { return errors.empty(); }
 };
 
+/// @struct SemanticValidationResult
+/// @brief Returns the results of semantic validation
+struct SemanticValidationResult : public ValidationResult
+{
+    using ValidationResult::ValidationResult;
+
+    std::unordered_map<int, size_t> measureList;        ///< key: measId; value: index of measure in `global.measures()` array
+    size_t measureCount{};                              ///< count can be different than `measureList.size()` if there is a duplicate key error
+    std::unordered_map<std::string, size_t> partList;   ///< list of part ID values and their indices in the `parts()` array.
+    std::unordered_map<std::string, size_t> layoutList; ///< list of layout ID values and their indices in the `layouts()` array.
+};
+
 /// @brief Validates a document against a JSON schema
 /// @param document The mnx::Document to validate
 /// @param jsonSchema The JSON schema to validate against, or std::nullopt for the embedded schema
@@ -74,7 +86,7 @@ ValidationResult schemaValidate(const Document& document, const std::optional<st
 /// @brief Validates the semantics of the input MNX document
 /// @param document The document to validate
 /// @return validation result
-ValidationResult semanticValidate(const Document& document);
+SemanticValidationResult semanticValidate(const Document& document);
 
 } // namespace validation
 } // namespace mnx

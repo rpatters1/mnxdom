@@ -76,6 +76,8 @@ struct SemanticValidationResult : public ValidationResult
     std::unordered_map<std::string, size_t> partList;   ///< list of part ID values and their indices in the `parts()` array.
     std::unordered_map<std::string, size_t> layoutList; ///< list of layout ID values and their indices in the `layouts()` array.
     std::unordered_map<std::string, size_t> lyricLines; ///< list of lyric line ID values and their indices in the `global.lyrics().lineOrder()` array.
+    std::unordered_map<std::string, mnx::sequence::Event> eventList; ///< list of events in the document.
+    std::unordered_map<std::string, mnx::sequence::Note> noteList; ///< list of notes in the document.
 };
 
 /// @brief Validates a document against a JSON schema

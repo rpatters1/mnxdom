@@ -45,19 +45,21 @@ public:
     void validateScores();
 
 private:
-    template <typename KeyType>
-    bool addKey(const KeyType& key, std::unordered_map<KeyType, size_t>& keyMap, size_t index, const Base& instance);
+    void validateMeasure(const mnx::part::Measure& measure);
 
-    template <typename KeyType>
-    std::optional<size_t> getIndex(const KeyType& key, const std::unordered_map<KeyType, size_t>& keyMap, const Base& instance);
+    template <typename KeyType, typename ElementType>
+    bool addKey(const KeyType& key, std::unordered_map<KeyType, ElementType>& keyMap, const ElementType& value, const Base& instance);
+
+    template <typename KeyType, typename ElementType>
+    std::optional<ElementType> getValue(const KeyType& key, const std::unordered_map<KeyType, ElementType>& keyMap, const Base& instance);
 };
 
-template <typename KeyType>
-bool SemanticValidator::addKey(const KeyType& key, std::unordered_map<KeyType, size_t>& keyMap, size_t index, const Base& instance)
+template <typename KeyType, typename ElementType>
+bool SemanticValidator::addKey(const KeyType& key, std::unordered_map<KeyType, ElementType>& keyMap, const ElementType& value, const Base& instance)
 {
     auto it = keyMap.find(key);
     if (it == keyMap.end()) {
-        keyMap.emplace(key, index);
+        keyMap.emplace(key, value);
     } else {
         std::string keyString = [key]() {
             if constexpr (std::is_same_v<KeyType, std::string>) {
@@ -66,14 +68,18 @@ bool SemanticValidator::addKey(const KeyType& key, std::unordered_map<KeyType, s
                 return std::to_string(key);
             }   
         }();
-        result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at index " + std::to_string(it->second));
+        if constexpr (std::is_base_of_v<mnx::Base, ElementType>) {
+            result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at " + it->second.pointer().to_string());
+        } else {
+            result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at index " + std::to_string(it->second));
+        }
         return false;
     }
     return true;
 }
 
-template <typename KeyType>
-std::optional<size_t> SemanticValidator::getIndex(const KeyType& key, const std::unordered_map<KeyType, size_t>& keyMap, const Base& instance)
+template <typename KeyType, typename ElementType>
+std::optional<ElementType> SemanticValidator::getValue(const KeyType& key, const std::unordered_map<KeyType, ElementType>& keyMap, const Base& instance)
 {
     auto it = keyMap.find(key);
     if (it != keyMap.end()) {
@@ -86,7 +92,7 @@ std::optional<size_t> SemanticValidator::getIndex(const KeyType& key, const std:
             return std::to_string(key);
         }   
     }();
-    result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " not found in key index list.");
+    result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " not found in key value list.");
     return std::nullopt;
 }
 
@@ -102,17 +108,78 @@ void SemanticValidator::validateGlobal()
     }
     result.lyricLines.clear();
     if (document.global().lyrics().has_value()) {
-        auto lyricsGlobal = document.global().lyrics().value();
-        if (auto lineOrder = lyricsGlobal.lineOrder(); lineOrder) {
+        const auto lyricsGlobal = document.global().lyrics().value();
+        const auto lineOrder = lyricsGlobal.lineOrder();
+        const auto lineMetadata = lyricsGlobal.lineMetadata();    
+        // If both are present, validate that they match
+        if (lineOrder) {
             size_t x = 0;
-            for (const auto lineId : lineOrder.value()) {
-                addKey(lineId, result.lyricLines, x, lyricsGlobal.lineOrder().value()[x]);
+            for (const auto& lineId : *lineOrder) {
+                addKey(lineId, result.lyricLines, x, lineOrder.value()[x]);
+                x++;
+            }
+            if (lineMetadata) {
+                if (result.lyricLines.size() != lineMetadata.value().size()) {
+                    result.errors.emplace_back(lineMetadata.value().pointer(), lineMetadata.value().ref(), "Size of line metadata does not match size of line order.");
+                }
+                for (const auto& [lineId, instance] : *lineMetadata) {
+                    getValue(lineId, result.lyricLines, instance); // reports error if not found
+                }
+            }
+        } else if (lineMetadata) {
+            size_t x = 0;
+            for (const auto& [lineId, instance] : *lineMetadata) {
+                addKey(lineId, result.lyricLines, x, instance);
                 x++;
             }
         }
-        if (auto lineMetaData = lyricsGlobal.lineMetadata(); lineMetaData) {
-            for (const auto lineData : lineMetaData.value()) {
-                getIndex(lineData.first, result.lyricLines, lineData.second); // generates an error if not found
+    }
+}
+
+void SemanticValidator::validateMeasure(const mnx::part::Measure& measure)
+{
+    for (const auto sequence : measure.sequences()) {
+        /// @todo check voice uniqueness
+        for (const auto content : sequence.content()) {
+            if (content.type() == mnx::sequence::Event::ContentTypeValue) {
+                auto event = content.get<mnx::sequence::Event>();
+                if (event.id().has_value()) {
+                    addKey(event.id().value(), result.eventList, event, event);
+                }
+                if (event.measure()) {
+                    if (event.duration().has_value()) {
+                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" has both full measure indicator and duration.");
+                    }
+                } else {
+                    if (!event.duration().has_value()) {
+                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" has neither full measure indicator nor duration.");
+                    }
+                }
+                if (event.rest().has_value()) {
+                    if (event.notes() && !event.notes().value().empty()) {
+                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" is a rest but also has notes.");
+                    }
+                } else {
+                    if (!event.notes() || event.notes().value().empty()) {
+                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" is neither a rest nor has notes.");
+                    }
+                }
+                if (const auto notes = event.notes()) {
+                    for (const auto note : notes.value()) {
+                        if (note.id().has_value()) {
+                            addKey(note.id().value(), result.noteList, note, note);
+                        }
+                    }
+                }
+                if (!result.lyricLines.empty()) { // only check lyric lines if the line ids were provided in global.lyrics()
+                    if (auto lyrics = event.lyrics()) {
+                        if (auto lines = lyrics.value().lines()) {
+                            for (const auto line : lines.value()) {
+                                getValue(line.first, result.lyricLines, line.second); // validates the line id.
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -121,6 +188,8 @@ void SemanticValidator::validateGlobal()
 void SemanticValidator::validateParts()
 {
     result.partList.clear();
+    result.eventList.clear();
+    result.noteList.clear();
     for (const auto part : document.parts()) {
         size_t x = part.calcArrayIndex();
         std::string partName = "[" + std::to_string(x) + "]";
@@ -133,7 +202,11 @@ void SemanticValidator::validateParts()
             result.errors.emplace_back(part.pointer(), part.ref(), "Part" + partName + " contains a different number of measures ("
                 + std::to_string(numMeasures) + ") than are defined globally (" + std::to_string(result.measureCount) + ")");
         }
-        /// @todo sequences
+        if (auto measures = part.measures(); measures) {
+            for (const auto measure : measures.value()) {
+                validateMeasure(measure);
+            }
+        }
     }
 }
 
@@ -152,7 +225,7 @@ void SemanticValidator::validateLayouts()
                         auto staff = element.get<mnx::layout::Staff>();
                         /// @todo validate "labelref"?
                         for (const auto source : staff.sources()) {
-                            if (auto index = getIndex(source.part(), result.partList, source)) {
+                            if (auto index = getValue(source.part(), result.partList, source)) {
                                 int staffNum = source.staff();
                                 const auto part = document.parts()[index.value()];
                                 int numStaves = part.staves();
@@ -177,11 +250,11 @@ void SemanticValidator::validateScores()
     if (const auto scores = document.scores()) {  // scores are *not* required in MNX
         for (const auto score : scores.value()) {
             if (const auto layout = score.layout()) {
-                getIndex(layout.value(), result.layoutList, score); // adds error if index not found.
+                getValue(layout.value(), result.layoutList, score); // adds error if index not found.
             }
             if (const auto multimeasureRests = score.multimeasureRests()) {
                 for (const auto mmRest : multimeasureRests.value()) {
-                    if (auto index = getIndex(mmRest.start(), result.measureList, mmRest)) {
+                    if (auto index = getValue(mmRest.start(), result.measureList, mmRest)) {
                         if (index.value() + mmRest.duration() > result.measureCount) {
                             result.errors.emplace_back(mmRest.pointer(), mmRest.ref(), "Multimeasure rest at measure "
                                 + std::to_string(mmRest.start()) + " in score \""
@@ -195,13 +268,13 @@ void SemanticValidator::validateScores()
             if (auto pages = score.pages()) {
                 for (const auto page : pages.value()) {
                     if (const auto layout = page.layout()) {
-                        getIndex(layout.value(), result.layoutList, page); // adds error if index not found.
+                        getValue(layout.value(), result.layoutList, page); // adds error if index not found.
                     }
                     for (const auto system : page.systems()) {
                         if (const auto layout = system.layout()) {
-                            getIndex(layout.value(), result.layoutList, system); // adds error if index not found.
+                            getValue(layout.value(), result.layoutList, system); // adds error if index not found.
                         }
-                        auto currentSystemMeasure = getIndex(system.measure(), result.measureList, system);
+                        auto currentSystemMeasure = getValue(system.measure(), result.measureList, system);
                         if (currentSystemMeasure) {
                             if (isFirstSystem && currentSystemMeasure.value() > 0) {
                                 result.errors.emplace_back(system.pointer(), system.ref(), "The first system in score \"" + score.name()
@@ -219,8 +292,8 @@ void SemanticValidator::validateScores()
                         lastSystemMeasure = currentSystemMeasure;
                         if (const auto layoutChanges = system.layoutChanges()) {
                             for (const auto layoutChange : layoutChanges.value()) {
-                                getIndex(layoutChange.layout(), result.layoutList, layoutChange); // adds error if index not found.
-                                getIndex(layoutChange.location().measure(), result.measureList, layoutChange); // adds error if index not found.
+                                getValue(layoutChange.layout(), result.layoutList, layoutChange); // adds error if index not found.
+                                getValue(layoutChange.location().measure(), result.measureList, layoutChange); // adds error if index not found.
                                 /// @todo perhaps eventually flag location.position.fraction if it is too large for the measure
                             }
                         }

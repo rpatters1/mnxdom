@@ -533,7 +533,7 @@ public:
     void clear() { ref().clear(); }
 
     /// @brief const operator[]
-    T operator[](size_t index) const
+    auto operator[](size_t index) const
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {

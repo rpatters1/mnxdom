@@ -61,6 +61,11 @@ ValidationResult schemaValidate(const Document& document, const std::optional<st
                 return; // Skip descendant errors.
             }
             top_level_errors.push_back(ptr);
+            /// @todo This if statement must be removed when MNX adds full support for tuplet content
+            if (instance.contains("type") && instance["type"] == "tuplet" && message.rfind("no subschema has succeeded", 0) == 0) {
+                // for now, suppress validation errors on tuplets, because the current schema does not allow non-events in tuplet content
+                return;
+            }
             m_result->errors.emplace_back(ValidationResult::Error(ptr, instance, message));
         }
     };

@@ -27,7 +27,7 @@ namespace mnx {
 // ***** Base *****
 // ****************
 
-std::optional<Part> Base::part()
+std::optional<Part> Base::getPart()
 {
     const std::string prefix = "/parts/";
     const std::string ptrStr = m_pointer.to_string();
@@ -72,7 +72,7 @@ int global::Measure::calcMeasureIndex() const
     const auto parentArray = parent<Array<global::Measure>>();
     const auto prev = parentArray[arrayIndex - 1];
     const auto prevIndex = prev.index();
-    return prevIndex.has_value() ? *prevIndex : prev.calcMeasureIndex();
+    return prevIndex.value_or(prev.calcMeasureIndex());
 }
 
 } // namespace mnx

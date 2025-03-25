@@ -259,7 +259,7 @@ public:
     }
 
     /// @brief Returns the part for this instance, or std::nullopt if the instance is not a subelement of a part.
-    std::optional<Part> part();
+    std::optional<Part> getPart();
 
 protected:
     /**

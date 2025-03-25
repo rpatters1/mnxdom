@@ -147,12 +147,23 @@ void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path&
     for (const auto& err : semanticResult.errors)
         actualMessages.push_back(err.message);
 
+    bool showMessages = false;
     for (const auto& expected : errors) {
         bool found = std::any_of(actualMessages.begin(), actualMessages.end(),
                                  [&](const std::string& msg) {
                                      return msg.find(expected) != std::string::npos;
                                  });
         EXPECT_TRUE(found) << "Expected error string not found: \"" << expected << "\" in file " << filePath.filename();
+        if (!found) {
+            showMessages = true;
+        }
+    }
+
+    if (showMessages) {
+        for (const auto& err : semanticResult.errors) {
+            std::cout << "SEMANTIC ERROR " << filePath.filename() << ": " << std::endl;
+            std::cout << err.to_string(4) << std::endl;
+        }
     }
 }
 

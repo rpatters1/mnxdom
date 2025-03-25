@@ -75,6 +75,7 @@ struct SemanticValidationResult : public ValidationResult
     size_t measureCount{};                              ///< count can be different than `measureList.size()` if there is a duplicate key error
     std::unordered_map<std::string, size_t> partList;   ///< list of part ID values and their indices in the `parts()` array.
     std::unordered_map<std::string, size_t> layoutList; ///< list of layout ID values and their indices in the `layouts()` array.
+    std::unordered_map<std::string, size_t> lyricLines; ///< list of lyric line ID values and their indices in the `global.lyrics().lineOrder()` array.
 };
 
 /// @brief Validates a document against a JSON schema

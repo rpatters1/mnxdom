@@ -100,6 +100,22 @@ void SemanticValidator::validateGlobal()
         measureId = meas.index_or(measureId + 1);
         addKey(measureId, result.measureList, meas.calcArrayIndex(), meas);
     }
+    result.lyricLines.clear();
+    if (document.global().lyrics().has_value()) {
+        auto lyricsGlobal = document.global().lyrics().value();
+        if (auto lineOrder = lyricsGlobal.lineOrder(); lineOrder) {
+            size_t x = 0;
+            for (const auto lineId : lineOrder.value()) {
+                addKey(lineId, result.lyricLines, x, lyricsGlobal.lineOrder().value()[x]);
+                x++;
+            }
+        }
+        if (auto lineMetaData = lyricsGlobal.lineMetadata(); lineMetaData) {
+            for (const auto lineData : lineMetaData.value()) {
+                getIndex(lineData.first, result.lyricLines, lineData.second); // generates an error if not found
+            }
+        }
+    }
 }
 
 void SemanticValidator::validateParts()

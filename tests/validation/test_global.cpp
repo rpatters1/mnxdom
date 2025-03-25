@@ -34,3 +34,11 @@ TEST(Global, DuplicateMeasures)
     auto doc = mnx::Document::create(inputPath);
     expectSemanticError(doc, inputPath, "ID 1 already exists at index 0");
 }
+
+TEST(Global, InvalidLyricLineIds)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "nonexistent_lyric_line_id.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, { "ID \"line1\" not found in key index list", "ID \"line2\" not found in key index list", });
+}

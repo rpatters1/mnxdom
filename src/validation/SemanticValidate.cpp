@@ -35,7 +35,7 @@ class SemanticValidator
 {
 public:
     SemanticValidator(const Document& doc) : document(doc) {}
-    
+
     SemanticValidationResult result;
     Document document;
 
@@ -46,6 +46,7 @@ public:
 
 private:
     void validateMeasure(const mnx::part::Measure& measure);
+    void validateSequenceContent(const mnx::ContentArray& contentArray);
 
     template <typename KeyType, typename ElementType>
     bool addKey(const KeyType& key, std::unordered_map<KeyType, ElementType>& keyMap, const ElementType& value, const Base& instance);
@@ -60,17 +61,20 @@ bool SemanticValidator::addKey(const KeyType& key, std::unordered_map<KeyType, E
     auto it = keyMap.find(key);
     if (it == keyMap.end()) {
         keyMap.emplace(key, value);
-    } else {
+    }
+    else {
         std::string keyString = [key]() {
             if constexpr (std::is_same_v<KeyType, std::string>) {
                 return "\"" + key + "\"";
-            } else {
+            }
+            else {
                 return std::to_string(key);
-            }   
-        }();
+            }
+            }();
         if constexpr (std::is_base_of_v<mnx::Base, ElementType>) {
             result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at " + it->second.pointer().to_string());
-        } else {
+        }
+        else {
             result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at index " + std::to_string(it->second));
         }
         return false;
@@ -88,10 +92,11 @@ std::optional<ElementType> SemanticValidator::getValue(const KeyType& key, const
     std::string keyString = [key]() {
         if constexpr (std::is_same_v<KeyType, std::string>) {
             return "\"" + key + "\"";
-        } else {
+        }
+        else {
             return std::to_string(key);
-        }   
-    }();
+        }
+        }();
     result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " not found in key value list.");
     return std::nullopt;
 }
@@ -110,7 +115,7 @@ void SemanticValidator::validateGlobal()
     if (document.global().lyrics().has_value()) {
         const auto lyricsGlobal = document.global().lyrics().value();
         const auto lineOrder = lyricsGlobal.lineOrder();
-        const auto lineMetadata = lyricsGlobal.lineMetadata();    
+        const auto lineMetadata = lyricsGlobal.lineMetadata();
         // If both are present, validate that they match
         if (lineOrder) {
             size_t x = 0;
@@ -135,53 +140,63 @@ void SemanticValidator::validateGlobal()
         }
     }
 }
+void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray)
+{
+    for (const auto content : contentArray) {
+        if (content.type() == mnx::sequence::Event::ContentTypeValue) {
+            auto event = content.get<mnx::sequence::Event>();
+            if (event.id().has_value()) {
+                addKey(event.id().value(), result.eventList, event, event);
+            }
+            if (event.measure()) {
+                if (event.duration().has_value()) {
+                    result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" has both full measure indicator and duration.");
+                }
+            } else {
+                if (!event.duration().has_value()) {
+                    result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" has neither full measure indicator nor duration.");
+                }
+            }
+            if (event.rest().has_value()) {
+                if (event.notes() && !event.notes().value().empty()) {
+                    result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" is a rest but also has notes.");
+                }
+            } else {
+                if (!event.notes() || event.notes().value().empty()) {
+                    result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" is neither a rest nor has notes.");
+                }
+            }
+            if (const auto notes = event.notes()) {
+                for (const auto note : notes.value()) {
+                    if (note.id().has_value()) {
+                        addKey(note.id().value(), result.noteList, note, note);
+                    }
+                }
+            }
+            if (!result.lyricLines.empty()) { // only check lyric lines if the line ids were provided in global.lyrics()
+                if (auto lyrics = event.lyrics()) {
+                    if (auto lines = lyrics.value().lines()) {
+                        for (const auto line : lines.value()) {
+                            getValue(line.first, result.lyricLines, line.second); // validates the line id.
+                        }
+                    }
+                }
+            }
+        } else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
+            auto grace = content.get<mnx::sequence::Grace>();
+            validateSequenceContent(grace.content());
+        } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {
+            auto tuplet = content.get<mnx::sequence::Tuplet>();
+            validateSequenceContent(tuplet.content());
+        }
+    }
+}
 
 void SemanticValidator::validateMeasure(const mnx::part::Measure& measure)
 {
     for (const auto sequence : measure.sequences()) {
         /// @todo check voice uniqueness
-        for (const auto content : sequence.content()) {
-            if (content.type() == mnx::sequence::Event::ContentTypeValue) {
-                auto event = content.get<mnx::sequence::Event>();
-                if (event.id().has_value()) {
-                    addKey(event.id().value(), result.eventList, event, event);
-                }
-                if (event.measure()) {
-                    if (event.duration().has_value()) {
-                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" has both full measure indicator and duration.");
-                    }
-                } else {
-                    if (!event.duration().has_value()) {
-                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" has neither full measure indicator nor duration.");
-                    }
-                }
-                if (event.rest().has_value()) {
-                    if (event.notes() && !event.notes().value().empty()) {
-                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" is a rest but also has notes.");
-                    }
-                } else {
-                    if (!event.notes() || event.notes().value().empty()) {
-                        result.errors.emplace_back(event.pointer(), event.ref(), "Event \"" + event.id().value_or("<no-id>") + "\" is neither a rest nor has notes.");
-                    }
-                }
-                if (const auto notes = event.notes()) {
-                    for (const auto note : notes.value()) {
-                        if (note.id().has_value()) {
-                            addKey(note.id().value(), result.noteList, note, note);
-                        }
-                    }
-                }
-                if (!result.lyricLines.empty()) { // only check lyric lines if the line ids were provided in global.lyrics()
-                    if (auto lyrics = event.lyrics()) {
-                        if (auto lines = lyrics.value().lines()) {
-                            for (const auto line : lines.value()) {
-                                getValue(line.first, result.lyricLines, line.second); // validates the line id.
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        validateSequenceContent(sequence.content());
     }
 }
 

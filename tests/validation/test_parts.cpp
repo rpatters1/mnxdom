@@ -50,3 +50,16 @@ TEST(Parts, InvalidLyricsLineIds)
     auto doc = mnx::Document::create(inputPath);
     expectSemanticErrors(doc, inputPath, { "ID \"1\" not found in key value list", "ID \"2\" not found in key value list" });
 }
+
+TEST(Parts, EventErrors)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "event_errors.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "ID \"ev5n1\" already exists at",
+        "ID \"ev6\" already exists at",
+        "Event \"ev7\" is a rest but also has notes",
+        "Event \"ev8\" has both full measure indicator and duration"
+    });
+}

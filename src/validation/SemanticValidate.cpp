@@ -114,7 +114,7 @@ void SemanticValidator::validateGlobal()
         // If both are present, validate that they match
         if (lineOrder) {
             size_t x = 0;
-            for (const auto& lineId : *lineOrder) {
+            for (const auto lineId : lineOrder.value()) {
                 addKey(lineId, result.lyricLines, x, lineOrder.value()[x]);
                 x++;
             }
@@ -128,7 +128,7 @@ void SemanticValidator::validateGlobal()
             }
         } else if (lineMetadata) {
             size_t x = 0;
-            for (const auto& [lineId, instance] : *lineMetadata) {
+            for (const auto [lineId, instance] : lineMetadata.value()) {
                 addKey(lineId, result.lyricLines, x, instance);
                 x++;
             }

@@ -194,6 +194,7 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 
 class Object;
 template <typename T> class Array;
+class Part;
 
 namespace validation {
 class SemanticValidator;
@@ -256,6 +257,9 @@ public:
         static_assert(std::is_base_of_v<Base, T>, "Template type mush be derived from Base.");
         return T(m_root, m_pointer.parent_pointer());
     }
+
+    /// @brief Returns the part for this instance, or std::nullopt if the instance is not a subelement of a part.
+    std::optional<Part> part();
 
 protected:
     /**

@@ -22,6 +22,31 @@
 #include "mnxdom.h"
 
 namespace mnx {
+    
+// ****************
+// ***** Base *****
+// ****************
+
+std::optional<Part> Base::part()
+{
+    const std::string prefix = "/parts/";
+    const std::string ptrStr = m_pointer.to_string();
+
+    if (ptrStr.rfind(prefix, 0) == 0) {  // prefix match at position 0
+        const std::string rest = ptrStr.substr(prefix.size());
+        const std::size_t slashPos = rest.find('/');
+        const std::string indexStr = (slashPos == std::string::npos) ? rest : rest.substr(0, slashPos);
+
+        try {
+            std::size_t index = std::stoul(indexStr);
+            return mnx::Part(m_root, json_pointer(ptrStr + indexStr));
+        } catch (...) {
+            return std::nullopt;
+        }
+    }
+
+    return std::nullopt;
+}
 
 // ***************************
 // ***** global::Measure *****

@@ -230,6 +230,9 @@ void SemanticValidator::validateParts()
         auto ties = tiedNote.ties().value();
         for (const auto tie : ties) {
             if (auto target = tie.target()) {
+                if (tie.lv()) {
+                    result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie has both a target and is an lv tie.");
+                }
                 if (auto targetNotePtr = getValue(target.value(), result.noteList, tie)) {
                     mnx::sequence::Note targetNote(document.root(), targetNotePtr.value());
                     if (targetNote.getPart().value().calcArrayIndex() != tiedNote.getPart().value().calcArrayIndex()) {
@@ -238,6 +241,10 @@ void SemanticValidator::validateParts()
                     if (!tiedNote.pitch().isSamePitch(targetNote.pitch())) {
                         result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie points to a note with a different pitch.");
                     }
+                }
+            } else {
+                if (!tie.lv()) {
+                    result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie has neither a target not is it an lv tie.");
                 }
             }
         }

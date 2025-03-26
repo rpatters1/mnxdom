@@ -178,6 +178,10 @@
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 
+#define MNX_ASSERT_IF(TEST) \
+assert(!(TEST)); \
+if (TEST)
+    
 /**
  * @namespace mnx
  * @brief object model for MNX format

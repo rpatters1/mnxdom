@@ -1,0 +1,146 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "key": {
+                    "fifths": 0
+                },
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                }
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "measures": [
+                {
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "type": "event",
+                                    "id": "ev5",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "B",
+                                                "octave": 4
+                                            },
+                                            "id": "ev5n1",
+                                            "ties": [
+                                                {
+                                                    "target": "ev6n1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "type": "event",
+                                    "id": "ev6",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "C",
+                                                "octave": 5
+                                            },
+                                            "id": "ev6n1",
+                                            "ties": [
+                                                {
+                                                    "target": "ev9n1"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "type": "event",
+                                    "id": "ev7",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "C",
+                                                "octave": 5
+                                            },
+                                            "id": "ev7n1"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "voice": "layer1"
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "P2",
+            "measures": [
+                {
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "type": "event",
+                                    "id": "ev8",
+                                    "rest": {}
+                                },
+                                {
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "type": "event",
+                                    "id": "ev9",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "C",
+                                                "octave": 5
+                                            },
+                                            "id": "ev9n1"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "voice": "layer1"
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

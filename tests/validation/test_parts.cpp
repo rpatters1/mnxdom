@@ -63,3 +63,14 @@ TEST(Parts, EventErrors)
         "Event \"ev8\" has both full measure indicator and duration"
     });
 }
+
+TEST(Parts, TieErrors)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "bad_ties.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Tie points to a note in a different part",
+        "Tie points to a note with a different pitch"
+    });
+}

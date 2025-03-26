@@ -286,12 +286,7 @@
                                      "alter": -1,
                                      "octave": 3,
                                      "step": "E"
-                                  },
-                                  "ties": [
-                                    {
-                                       "target": "pedNote2"
-                                    }
-                                  ]
+                                  }
                                }
                             ]
                          }

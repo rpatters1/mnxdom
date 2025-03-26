@@ -131,6 +131,18 @@ public:
     MNX_OPTIONAL_PROPERTY(int, alter);          ///< chromatic alteration
     MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
     MNX_REQUIRED_PROPERTY(NoteStep, step);      ///< the note step, (i.e., "A".."G")
+
+    /// @brief Checks if the input pitch is the same as this pitch
+    /// @todo Support enharmonic equivalents
+    /// @param src The value to compare with
+    /// @return true if they are the same or (eventually) enharmonically equivalent
+    bool isSamePitch(const Pitch& src) const
+    {
+        return src.alter().value_or(0) == alter().value_or(0)
+            && src.octave() == octave()
+            && src.step() == step();
+    }
+
 };
 
 /**

@@ -61,20 +61,17 @@ bool SemanticValidator::addKey(const KeyType& key, std::unordered_map<KeyType, E
     auto it = keyMap.find(key);
     if (it == keyMap.end()) {
         keyMap.emplace(key, value);
-    }
-    else {
+    } else {
         std::string keyString = [key]() {
             if constexpr (std::is_same_v<KeyType, std::string>) {
                 return "\"" + key + "\"";
-            }
-            else {
+            } else {
                 return std::to_string(key);
             }
-            }();
-        if constexpr (std::is_base_of_v<mnx::Base, ElementType>) {
-            result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at " + it->second.pointer().to_string());
-        }
-        else {
+        }();
+        if constexpr (std::is_same_v<mnx::json_pointer, ElementType>) {
+            result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at " + it->second.to_string());
+        } else {
             result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " already exists at index " + std::to_string(it->second));
         }
         return false;
@@ -92,11 +89,10 @@ std::optional<ElementType> SemanticValidator::getValue(const KeyType& key, const
     std::string keyString = [key]() {
         if constexpr (std::is_same_v<KeyType, std::string>) {
             return "\"" + key + "\"";
-        }
-        else {
+        } else {
             return std::to_string(key);
         }
-        }();
+    }();
     result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " not found in key value list.");
     return std::nullopt;
 }
@@ -146,7 +142,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
         if (content.type() == mnx::sequence::Event::ContentTypeValue) {
             auto event = content.get<mnx::sequence::Event>();
             if (event.id().has_value()) {
-                addKey(event.id().value(), result.eventList, event, event);
+                addKey(event.id().value(), result.eventList, event.pointer(), event);
             }
             if (event.measure()) {
                 if (event.duration().has_value()) {
@@ -169,7 +165,10 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             if (const auto notes = event.notes()) {
                 for (const auto note : notes.value()) {
                     if (note.id().has_value()) {
-                        addKey(note.id().value(), result.noteList, note, note);
+                        addKey(note.id().value(), result.noteList, note.pointer(), note);
+                    }
+                    if (note.ties()) {
+                        result.notesWithTies.emplace(note.pointer());
                     }
                 }
             }
@@ -220,6 +219,26 @@ void SemanticValidator::validateParts()
         if (auto measures = part.measures(); measures) {
             for (const auto measure : measures.value()) {
                 validateMeasure(measure);
+            }
+        }
+    }
+    for (const auto& ptr : result.notesWithTies) {
+        mnx::sequence::Note tiedNote(document.root(), json_pointer(ptr));
+        MNX_ASSERT_IF(!tiedNote.ties()) {
+            throw std::logic_error("The notesWithTies array contains a note with no ties.");
+        }
+        auto ties = tiedNote.ties().value();
+        for (const auto tie : ties) {
+            if (auto target = tie.target()) {
+                if (auto targetNotePtr = getValue(target.value(), result.noteList, tie)) {
+                    mnx::sequence::Note targetNote(document.root(), targetNotePtr.value());
+                    if (targetNote.getPart().value().calcArrayIndex() != tiedNote.getPart().value().calcArrayIndex()) {
+                        result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie points to a note in a different part.");
+                    }
+                    if (!tiedNote.pitch().isSamePitch(targetNote.pitch())) {
+                        result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie points to a note with a different pitch.");
+                    }
+                }
             }
         }
     }

@@ -39,7 +39,7 @@ std::optional<Part> Base::getPart()
 
         try {
             std::size_t index = std::stoul(indexStr);
-            return mnx::Part(m_root, json_pointer(ptrStr + indexStr));
+            return mnx::Part(m_root, json_pointer(prefix + indexStr));
         } catch (...) {
             return std::nullopt;
         }

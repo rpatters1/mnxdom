@@ -48,6 +48,27 @@ std::optional<Part> Base::getPart()
     return std::nullopt;
 }
 
+// *********************
+// ***** NoteValue *****
+// *********************
+
+unsigned NoteValue::calcNumberOfFlags() const
+{
+    switch (base()) {
+        default: return 0;
+        case NoteValueBase::Eighth: return 1;
+        case NoteValueBase::Note16th: return 2;
+        case NoteValueBase::Note32nd: return 3;
+        case NoteValueBase::Note64th: return 4;
+        case NoteValueBase::Note128th: return 5;
+        case NoteValueBase::Note256th: return 6;
+        case NoteValueBase::Note512th: return 7;
+        case NoteValueBase::Note1024th: return 8;
+        case NoteValueBase::Note2048th: return 9;
+        case NoteValueBase::Note4096th: return 10;
+    }
+}
+
 // ***************************
 // ***** global::Measure *****
 // ***************************

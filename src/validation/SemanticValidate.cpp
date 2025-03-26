@@ -45,8 +45,8 @@ public:
     void validateScores();
 
 private:
-    void validateMeasure(const mnx::part::Measure& measure);
     void validateSequenceContent(const mnx::ContentArray& contentArray);
+    void validateBeams(const mnx::Array<mnx::part::Beam>& beam, unsigned depth);
 
     template <typename KeyType, typename ElementType>
     bool addKey(const KeyType& key, std::unordered_map<KeyType, ElementType>& keyMap, const ElementType& value, const Base& instance);
@@ -191,11 +191,48 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
     }
 }
 
-void SemanticValidator::validateMeasure(const mnx::part::Measure& measure)
+void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth)
 {
-    for (const auto sequence : measure.sequences()) {
-        /// @todo check voice uniqueness
-        validateSequenceContent(sequence.content());
+    for (const auto beam : beams) {
+        if (beam.events().size() <= 1) {
+            result.errors.emplace_back(beam.pointer(), beam.ref(), "Beam contains only one or fewer events.");
+        }
+        std::unordered_set<std::string> ids;
+        for (const auto id : beam.events()) {
+            if (ids.find(id) != ids.end()) {
+                result.errors.emplace_back(beam.pointer(), beam.ref(), "Event \"" + id + "\" is duplicated in beam.");
+                continue;
+            }
+            ids.emplace(id);
+            if (auto eventPtr = getValue(id, result.eventList, beam)) {
+                auto event = document.get<mnx::sequence::Event>(eventPtr.value());
+                if (auto noteValue = event.duration()) {
+                    if (depth > noteValue.value().calcNumberOfFlags()) {
+                        result.errors.emplace_back(beam.pointer(), beam.ref(), "Event \"" + id + "\" cannot have " + std::to_string(depth) + " beams");
+                    }
+                }
+            }
+        }
+        if (auto hooks = beam.hooks()) {
+            for (const auto hook : hooks.value()) {
+                if (ids.find(hook.event()) == ids.end()) {
+                    result.errors.emplace_back(beam.pointer(), beam.ref(), "Hook event \"" + hook.event() + "\" is not part of the beam.");
+                    continue;
+                }
+                if (auto eventPtr = getValue(hook.event(), result.eventList, beam)) { // errors if the event is not found
+                    auto event = document.get<mnx::sequence::Event>(eventPtr.value());
+                    if (auto noteValue = event.duration()) {
+                        if (depth >= noteValue.value().calcNumberOfFlags()) {
+                            result.errors.emplace_back(beam.pointer(), beam.ref(), "Hook event \"" + hook.event() + "\" cannot have a hook because it already has "
+                                + std::to_string(depth) + " beams");
+                        }
+                    }
+                }
+            }
+        }
+        if (auto inner = beam.inner()) {
+            validateBeams(inner.value(), depth + 1);
+        }
     }
 }
 
@@ -216,12 +253,24 @@ void SemanticValidator::validateParts()
             result.errors.emplace_back(part.pointer(), part.ref(), "Part" + partName + " contains a different number of measures ("
                 + std::to_string(numMeasures) + ") than are defined globally (" + std::to_string(result.measureCount) + ")");
         }
-        if (auto measures = part.measures(); measures) {
+
+        if (auto measures = part.measures()) {
+            // first pass: validateSequenceContent creates the eventList and the noteList
             for (const auto measure : measures.value()) {
-                validateMeasure(measure);
+                for (const auto sequence : measure.sequences()) {
+                    /// @todo check voice uniqueness
+                    validateSequenceContent(sequence.content());
+                }
+            }
+            // second pass: validate other items that need a complete list of events and notes
+            for (const auto measure : measures.value()) {
+                if (auto beams = measure.beams()) {
+                    validateBeams(beams.value(), 1);
+                }
             }
         }
     }
+    // check ties after all parts so we can be certain we have a complete list of notes in all parts.
     for (const auto& ptr : result.notesWithTies) {
         mnx::sequence::Note tiedNote(document.root(), json_pointer(ptr));
         MNX_ASSERT_IF(!tiedNote.ties()) {
@@ -234,7 +283,7 @@ void SemanticValidator::validateParts()
                     result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie has both a target and is an lv tie.");
                 }
                 if (auto targetNotePtr = getValue(target.value(), result.noteList, tie)) {
-                    mnx::sequence::Note targetNote(document.root(), targetNotePtr.value());
+                    auto targetNote = document.get<mnx::sequence::Note>(targetNotePtr.value());
                     if (targetNote.getPart().value().calcArrayIndex() != tiedNote.getPart().value().calcArrayIndex()) {
                         result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie points to a note in a different part.");
                     }

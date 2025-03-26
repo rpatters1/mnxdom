@@ -147,6 +147,23 @@ public:
         file.close();
     }
 
+    /// @brief Allows retrieval of any node within the document typed as the given class.
+    /// @tparam T The class to wrap around the pointer. No error checking is performed.
+    /// @param jsonPointer The pointer to the object
+    /// @return An instance of class T.
+    template <typename T>
+    T get(const json_pointer& jsonPointer)
+    {
+        static_assert(std::is_base_of_v<Base, T>, "template class must be derived from mnx::Base.");
+        return T(root(), jsonPointer);
+    }
+
+    /// @brief String version of get
+    /// @param jsonPointerString The pointer to the object in a string
+    template <typename T>
+    T get(const std::string& jsonPointerString)
+    { return get<T>(json_pointer(jsonPointerString)); }
+
 private:
     friend validation::ValidationResult validation::schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema);
 };

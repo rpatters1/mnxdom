@@ -80,6 +80,7 @@ struct SemanticValidationResult : public ValidationResult
     std::unordered_map<std::string, json_pointer> eventList; ///< list of events in the document.
     std::unordered_map<std::string, json_pointer> noteList; ///< list of notes in the document.
     std::unordered_set<std::string> notesWithTies; ///< list of notes with ties (forward) in the document
+    std::unordered_set<std::string> eventsWithSlurs; ///< list of notes with ties (forward) in the document
 };
 
 /// @brief Validates a document against a JSON schema

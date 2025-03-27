@@ -96,4 +96,20 @@ int global::Measure::calcMeasureIndex() const
     return prevIndex.value_or(prev.calcMeasureIndex());
 }
 
+// ***************************
+// ***** sequence::Event *****
+// ***************************
+
+std::optional<sequence::Note> sequence::Event::findNote(const std::string& noteId) const
+{
+    if (auto notes = this->notes()) {
+        for (const auto note : notes.value()) {
+            if (note.id() == noteId) {
+                return note;
+            }
+        }
+    }
+    return std::nullopt;
+}
+
 } // namespace mnx

@@ -309,6 +309,11 @@ public:
     MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff events.)
     MNX_OPTIONAL_PROPERTY(StemDirection, stemDirection);    ///< Forced stem direction.
 
+    /// @brief Finds a note in the event by its ID
+    /// @param noteId The note ID to find
+    /// @return The note if found, otherwise std::nullopt;
+    std::optional<Note> findNote(const std::string& noteId) const;
+
     static constexpr std::string_view ContentTypeValue = "event"; ///< type value that identifies the type within the content array
 };
 

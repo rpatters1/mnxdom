@@ -469,21 +469,7 @@ public:
     }
 };
 
-/**
- * @brief Represents an MNX object that is included as an array element.
- */
-class ArrayElementObject : public Object
-{
-public:
-    using Object::Object;
-
-    /// @brief Calculates the array index of the current instance within the array.
-    size_t calcArrayIndex() const
-    {
-        return std::stoul(pointer().back());
-    }
-};
-
+class ArrayElementObject;
 /**
  * @brief Represents an MNX array, encapsulating property access.
  */
@@ -614,6 +600,32 @@ protected:
         if (index >= ref().size()) {
             throw std::out_of_range("Index out of range");
         }
+    }
+};
+
+/**
+ * @brief Represents an MNX object that is included as an array element.
+ */
+class ArrayElementObject : public Object
+{
+public:
+    using Object::Object;
+
+    /// @brief Calculates the array index of the current instance within the array.
+    size_t calcArrayIndex() const
+    {
+        return std::stoul(pointer().back());
+    }
+
+    /// @brief Returns the container of the array this element belongs to wrapped as the specified template type.
+    ///
+    /// No error checking is performed beyond verifying that ContainerType matches being an array or object with the json node.
+    ///
+    /// @tparam ContainerType The type to wrap around the container
+    template <typename ContainerType>
+    ContainerType container() const
+    {
+        return parent<Array<ArrayElementObject>>().parent<ContainerType>();
     }
 };
 

@@ -181,7 +181,11 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                     }
                 }
             }
-        } else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
+            if (const auto slurs = event.slurs()) {
+                result.eventsWithSlurs.emplace(event.pointer());
+            }
+        }
+        else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
             auto grace = content.get<mnx::sequence::Grace>();
             validateSequenceContent(grace.content());
         } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {
@@ -272,7 +276,7 @@ void SemanticValidator::validateParts()
     }
     // check ties after all parts so we can be certain we have a complete list of notes in all parts.
     for (const auto& ptr : result.notesWithTies) {
-        mnx::sequence::Note tiedNote(document.root(), json_pointer(ptr));
+        auto tiedNote = document.get<mnx::sequence::Note>(ptr);
         MNX_ASSERT_IF(!tiedNote.ties()) {
             throw std::logic_error("The notesWithTies array contains a note with no ties.");
         }
@@ -294,6 +298,38 @@ void SemanticValidator::validateParts()
             } else {
                 if (!tie.lv()) {
                     result.errors.emplace_back(tie.pointer(), tie.ref(), "Tie has neither a target not is it an lv tie.");
+                }
+            }
+        }
+    }
+    // check slurs after all parts so we can be certain we have a complete list of notes in all parts.
+    for (const auto& ptr : result.eventsWithSlurs) {
+        auto slurEvent = document.get<mnx::sequence::Event>(ptr);
+        MNX_ASSERT_IF(!slurEvent.slurs()) {
+            throw std::logic_error("The eventsWithSlurs array contains an event with no slurs.");
+        }
+        auto slurs = slurEvent.slurs().value();
+        for (const auto slur : slurs) {
+            if (slur.target()) {
+                const auto targetPtr = getValue(slur.target().value(), result.eventList, slur);
+                if (slur.endNote()) {
+                    bool foundNote = false;
+                    if (targetPtr) {
+                        auto target = document.get<mnx::sequence::Event>(targetPtr.value());
+                        foundNote = target.findNote(slur.endNote().value()).has_value();
+                    }
+                    if (!foundNote) {
+                        result.errors.emplace_back(slur.pointer(), slur.ref(), "Slur contains end note \"" + slur.endNote().value() + "\" that does not exist in target.");
+                    }
+                }
+            }
+            else if (slur.endNote()) {
+                result.errors.emplace_back(slur.pointer(), slur.ref(), "Slur contains end note \"" + slur.endNote().value() + "\", but no target was specified.");
+            }
+            if (slur.startNote()) {
+                if (!slur.container<mnx::sequence::Event>().findNote(slur.startNote().value())) {
+                    result.errors.emplace_back(slur.pointer(), slur.ref(), "Slur contains start note \"" + slur.endNote().value()
+                        + "\" that does not exist in the containing event.");
                 }
             }
         }

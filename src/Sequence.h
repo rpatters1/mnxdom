@@ -83,8 +83,9 @@ public:
         set_show(showAcci);
     }
 
-    MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure); ///< The enclosure type (brackets or parentheses). Omit if none.
-    MNX_REQUIRED_PROPERTY(bool, show);                  ///< Whether to show or hide the accidental
+    MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure);     ///< The enclosure type (brackets or parentheses). Omit if none.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, force, false); ///< Whether this accidental was set intentionally (e.g., a courtesy accidental).
+    MNX_REQUIRED_PROPERTY(bool, show);                      ///< Whether to show or hide the accidental
 };
 
 /**

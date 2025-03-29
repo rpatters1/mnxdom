@@ -5,6 +5,7 @@ var namespacemnx =
     [ "part", "namespacemnx_1_1part.html", "namespacemnx_1_1part" ],
     [ "score", "namespacemnx_1_1score.html", "namespacemnx_1_1score" ],
     [ "sequence", "namespacemnx_1_1sequence.html", "namespacemnx_1_1sequence" ],
+    [ "validation", "namespacemnx_1_1validation.html", "namespacemnx_1_1validation" ],
     [ "Array", "classmnx_1_1Array.html", "classmnx_1_1Array" ],
     [ "ArrayElementObject", "classmnx_1_1ArrayElementObject.html", "classmnx_1_1ArrayElementObject" ],
     [ "Base", "classmnx_1_1Base.html", "classmnx_1_1Base" ],

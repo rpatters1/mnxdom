@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['layout_0',['Layout',['../classmnx_1_1Layout.html#abe2305fff71b39e8cbbda787f0fba83f',1,'mnx::Layout']]],
-  ['layoutchange_1',['layoutchange',['../classmnx_1_1score_1_1LayoutChange.html#aea8b2ee2d6771a7fd48efe2e254f47b5',1,'mnx::score::LayoutChange::LayoutChange(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1score_1_1LayoutChange.html#ae239ba7c2943f9ed067d248f6a8ff079',1,'mnx::score::LayoutChange::LayoutChange(Base &amp;parent, const std::string_view &amp;key, const std::string &amp;layoutId, int measureId, const Fraction::Initializer &amp;position)']]]
+  ['keysignature_0',['keysignature',['../classmnx_1_1KeySignature.html#a4cdd0b0ecd41551f135141c4521f36eb',1,'mnx::KeySignature::KeySignature(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1KeySignature.html#a31b260f75378c9063bb1564259bdc620',1,'mnx::KeySignature::KeySignature(Base &amp;parent, const std::string_view &amp;key, int fifths)']]]
 ];

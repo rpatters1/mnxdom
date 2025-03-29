@@ -63,6 +63,10 @@ var annotated_dup =
         [ "Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", "classmnx_1_1sequence_1_1Tuplet" ],
         [ "Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
       ] ],
+      [ "validation", "namespacemnx_1_1validation.html", [
+        [ "SemanticValidationResult", "structmnx_1_1validation_1_1SemanticValidationResult.html", "structmnx_1_1validation_1_1SemanticValidationResult" ],
+        [ "ValidationResult", "structmnx_1_1validation_1_1ValidationResult.html", "structmnx_1_1validation_1_1ValidationResult" ]
+      ] ],
       [ "Array", "classmnx_1_1Array.html", "classmnx_1_1Array" ],
       [ "ArrayElementObject", "classmnx_1_1ArrayElementObject.html", "classmnx_1_1ArrayElementObject" ],
       [ "Base", "classmnx_1_1Base.html", "classmnx_1_1Base" ],
@@ -86,5 +90,9 @@ var annotated_dup =
       [ "Sequence", "classmnx_1_1Sequence.html", "classmnx_1_1Sequence" ],
       [ "SimpleType", "classmnx_1_1SimpleType.html", "classmnx_1_1SimpleType" ],
       [ "TimeSignature", "classmnx_1_1TimeSignature.html", "classmnx_1_1TimeSignature" ]
-    ] ]
+    ] ],
+    [ "music_theory", "namespacemusic__theory.html", [
+      [ "Transposer", "classmusic__theory_1_1Transposer.html", "classmusic__theory_1_1Transposer" ]
+    ] ],
+    [ "Tranposer", "classTranposer.html", null ]
 ];

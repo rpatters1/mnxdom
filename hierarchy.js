@@ -84,5 +84,11 @@ var hierarchy =
       ] ],
       [ "mnx::SimpleType< T, >", "classmnx_1_1SimpleType.html", null ]
     ] ],
-    [ "mnx::EnumStringMapping< E, typename >", "structmnx_1_1EnumStringMapping.html", null ]
+    [ "mnx::EnumStringMapping< E, typename >", "structmnx_1_1EnumStringMapping.html", null ],
+    [ "mnx::validation::ValidationResult::Error", "structmnx_1_1validation_1_1ValidationResult_1_1Error.html", null ],
+    [ "Tranposer", "classTranposer.html", null ],
+    [ "music_theory::Transposer", "classmusic__theory_1_1Transposer.html", null ],
+    [ "mnx::validation::ValidationResult", "structmnx_1_1validation_1_1ValidationResult.html", [
+      [ "mnx::validation::SemanticValidationResult", "structmnx_1_1validation_1_1SemanticValidationResult.html", null ]
+    ] ]
 ];

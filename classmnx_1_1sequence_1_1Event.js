@@ -2,6 +2,7 @@ var classmnx_1_1sequence_1_1Event =
 [
     [ "Event", "classmnx_1_1sequence_1_1Event.html#a101ca1e93eafd55c2743833f6b9569b8", null ],
     [ "Event", "classmnx_1_1sequence_1_1Event.html#a9557c1c4898dd1394a5e2c46ac599752", null ],
+    [ "findNote", "classmnx_1_1sequence_1_1Event.html#a489eb7cdf148502f32dd6ac407408a5a", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#ad3504eac349e6733b757fbe4c8e3e9a8", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#a5f81806105980b706269838472fac2a1", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#aa4fbcc789699b7fcd98a7774b9a5672c", null ],

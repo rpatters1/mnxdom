@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['jump_0',['jump',['../classmnx_1_1global_1_1Jump.html#a1dd351af5d4718b5c11e0e54381e4cb5',1,'mnx::global::Jump::Jump(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1global_1_1Jump.html#aad642aa4b36210e79c64f3a9e2ecdefe',1,'mnx::global::Jump::Jump(Base &amp;parent, const std::string_view &amp;key, JumpType jumpType, const Fraction::Initializer &amp;position)']]]
+  ['isenharmonicequivalent_0',['isEnharmonicEquivalent',['../classmusic__theory_1_1Transposer.html#a909235472081cc8369dc7a4a2b359ae8',1,'music_theory::Transposer']]],
+  ['issamepitch_1',['isSamePitch',['../classmnx_1_1sequence_1_1Pitch.html#adbd41addc5f8aaafa8e06adf802e640b',1,'mnx::sequence::Pitch']]]
 ];

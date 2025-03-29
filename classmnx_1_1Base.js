@@ -7,6 +7,7 @@ var classmnx_1_1Base =
     [ "dump", "classmnx_1_1Base.html#a0e3021a83dab2aeb89dcb1d1c5149d23", null ],
     [ "getChild", "classmnx_1_1Base.html#a1ac9358a2ffb6ee0e65813873e1b7cee", null ],
     [ "getOptionalChild", "classmnx_1_1Base.html#a838e5bd5c02fd07b7acbfe5cec3acc93", null ],
+    [ "getPart", "classmnx_1_1Base.html#a0627fd999ed2346182c884ac4a61e8c6", null ],
     [ "operator=", "classmnx_1_1Base.html#ab755ddef2ad06525c335d7ffdc1af223", null ],
     [ "operator=", "classmnx_1_1Base.html#ab01f4adcf39eaeed385974aeddac21a2", null ],
     [ "parent", "classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335", null ],

@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 #include "mnxdom.h"
+#include "music_theory/transposer.hpp"
 
 namespace mnx {
     
@@ -110,6 +111,21 @@ std::optional<sequence::Note> sequence::Event::findNote(const std::string& noteI
         }
     }
     return std::nullopt;
+}
+
+// ***************************
+// ***** sequence::Pitch *****
+// ***************************
+
+bool sequence::Pitch::isSamePitch(const Pitch& src) const
+{
+    if (src.alter().value_or(0) == alter().value_or(0)
+        && src.octave() == octave()
+        && src.step() == step()) {
+        return true;
+    }
+    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter().value_or(0));
+    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter().value_or(0));
 }
 
 } // namespace mnx

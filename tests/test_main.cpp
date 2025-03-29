@@ -127,11 +127,12 @@ bool validateSemantics(const mnx::Document& doc, const std::filesystem::path& fi
     return true;
 }
 
-void fullValidate(const mnx::Document& doc, const std::filesystem::path& filePath)
+bool fullValidate(const mnx::Document& doc, const std::filesystem::path& filePath)
 {
     if (validateSchema(doc, filePath)) {
-        validateSemantics(doc, filePath);
+        return validateSemantics(doc, filePath);
     }
+    return false;
 }
 
 void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path& filePath, const std::vector<std::string>& errors)

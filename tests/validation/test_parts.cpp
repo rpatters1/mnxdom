@@ -74,3 +74,11 @@ TEST(Parts, TieErrors)
         "Tie points to a note with a different pitch"
     });
 }
+
+TEST(Parts, EnharmonicTies)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "edge_cases" / "enharmonic_ties.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
+}

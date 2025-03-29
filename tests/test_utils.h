@@ -43,7 +43,7 @@ inline void assertStringInFile(const std::string& target, const std::filesystem:
 
 bool validateSchema(const mnx::Document& doc, const std::filesystem::path& filePath);
 bool validateSemantics(const mnx::Document& doc, const std::filesystem::path& filePath);
-void fullValidate(const mnx::Document& doc, const std::filesystem::path& filePath);
+bool fullValidate(const mnx::Document& doc, const std::filesystem::path& filePath);
 
 void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path& filePath, const std::vector<std::string>& errors);
 inline void expectSemanticError(const mnx::Document& doc, const std::filesystem::path& filePath, const std::string& error)

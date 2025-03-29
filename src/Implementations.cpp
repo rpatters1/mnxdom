@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 #include "mnxdom.h"
-#include "music_theory/transposer.hpp"
+#include "music_theory/music_theory.hpp"
 
 namespace mnx {
     

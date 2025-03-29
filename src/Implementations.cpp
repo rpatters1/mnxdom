@@ -19,33 +19,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <fstream>
-
-#include "nlohmann/json-schema.hpp"
-#include "mnx_schema.xxd"
-
 #include "mnxdom.h"
+#include "music_theory/music_theory.hpp"
 
 namespace mnx {
+    
+// ****************
+// ***** Base *****
+// ****************
 
-static const std::string_view MNX_SCHEMA(reinterpret_cast<const char*>(mnx_schema_json), mnx_schema_json_len);
-
-// ********************
-// ***** Document *****
-// ********************
-
-std::optional<std::string> Document::validate(const std::optional<std::string>& jsonSchema) const
+std::optional<Part> Base::getPart()
 {
-    try {
-        // Load JSON schema
-        json schemaJson = json::parse(jsonSchema.value_or(std::string(MNX_SCHEMA)));
-        nlohmann::json_schema::json_validator validator;
-        validator.set_root_schema(schemaJson);
-        validator.validate(*root());
-    } catch (const std::invalid_argument& e) {
-        return e.what();
+    const std::string prefix = "/parts/";
+    const std::string ptrStr = m_pointer.to_string();
+
+    if (ptrStr.rfind(prefix, 0) == 0) {  // prefix match at position 0
+        const std::string rest = ptrStr.substr(prefix.size());
+        const std::size_t slashPos = rest.find('/');
+        const std::string indexStr = (slashPos == std::string::npos) ? rest : rest.substr(0, slashPos);
+
+        try {
+            std::size_t index = std::stoul(indexStr);
+            return mnx::Part(m_root, json_pointer(prefix + indexStr));
+        } catch (...) {
+            return std::nullopt;
+        }
     }
+
     return std::nullopt;
+}
+
+// *********************
+// ***** NoteValue *****
+// *********************
+
+unsigned NoteValue::calcNumberOfFlags() const
+{
+    switch (base()) {
+        default: return 0;
+        case NoteValueBase::Eighth: return 1;
+        case NoteValueBase::Note16th: return 2;
+        case NoteValueBase::Note32nd: return 3;
+        case NoteValueBase::Note64th: return 4;
+        case NoteValueBase::Note128th: return 5;
+        case NoteValueBase::Note256th: return 6;
+        case NoteValueBase::Note512th: return 7;
+        case NoteValueBase::Note1024th: return 8;
+        case NoteValueBase::Note2048th: return 9;
+        case NoteValueBase::Note4096th: return 10;
+    }
 }
 
 // ***************************
@@ -72,7 +94,38 @@ int global::Measure::calcMeasureIndex() const
     const auto parentArray = parent<Array<global::Measure>>();
     const auto prev = parentArray[arrayIndex - 1];
     const auto prevIndex = prev.index();
-    return prevIndex.has_value() ? *prevIndex : prev.calcMeasureIndex();
+    return prevIndex.value_or(prev.calcMeasureIndex());
+}
+
+// ***************************
+// ***** sequence::Event *****
+// ***************************
+
+std::optional<sequence::Note> sequence::Event::findNote(const std::string& noteId) const
+{
+    if (auto notes = this->notes()) {
+        for (const auto note : notes.value()) {
+            if (note.id() == noteId) {
+                return note;
+            }
+        }
+    }
+    return std::nullopt;
+}
+
+// ***************************
+// ***** sequence::Pitch *****
+// ***************************
+
+bool sequence::Pitch::isSamePitch(const Pitch& src) const
+{
+    if (src.alter().value_or(0) == alter().value_or(0)
+        && src.octave() == octave()
+        && src.step() == step()) {
+        return true;
+    }
+    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter().value_or(0));
+    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter().value_or(0));
 }
 
 } // namespace mnx

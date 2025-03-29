@@ -183,6 +183,9 @@ public:
 
     MNX_REQUIRED_PROPERTY(NoteValueBase, base);                 ///< the type ("base") of note
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
+
+    /// @brief Calculates the number of flags or beams required by this note value
+    unsigned calcNumberOfFlags() const;
 };
 
 /**

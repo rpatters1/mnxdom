@@ -42,7 +42,7 @@ TEST(Document, Minimal)
         }
     )");
     Document doc(jsonString);
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
 
     const auto mnx = doc.mnx();
     EXPECT_EQ(mnx.version(), 1);
@@ -69,7 +69,7 @@ TEST(Document, Minimal)
 TEST(Document, MinimalFromScratch)
 {
     Document doc;
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate and return no error";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
 
     auto mnx = doc.mnx();
     EXPECT_EQ(mnx.version(), MNX_VERSION);
@@ -83,27 +83,27 @@ TEST(Document, MinimalFromScratch)
     doc.mnx().clear_support();
     EXPECT_THROW(support.useAccidentalDisplay(), json::out_of_range)
             << "document no longer has a support instance, so the support instance is stale";
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate without a support instance";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate without a support instance";
 
     auto parts = doc.parts();
     EXPECT_EQ(parts.size(), 0u);
     auto part = parts.append();
     EXPECT_EQ(doc.parts().size(), 1u);
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a part";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a part";
     auto measures = part.create_measures();
     measures.append();
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a measure to a part";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a measure to a part";
 
     auto layouts = doc.create_layouts();
     layouts.append();
     auto layout = layouts[0];
-    EXPECT_TRUE(doc.validate().has_value()) << "schema should not validate after adding a layout, because no layout id";
+    EXPECT_FALSE(validation::schemaValidate(doc)) << "schema should not validate after adding a layout, because no layout id";
     layout.set_id("layout0"); // this is required for validation
     auto content = layout.content();
     auto staff = content.append<layout::Staff>();
     staff.set_symbol(LayoutSymbol::Bracket);
     EXPECT_EQ(staff.symbol(), LayoutSymbol::Bracket);
-    EXPECT_FALSE(doc.validate().has_value()) << "schema should validate after adding a layout";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a layout";
     //std::cout << doc.dump(4) << std::endl;
 }
 
@@ -119,23 +119,23 @@ TEST(Document, MissingRequiredFields)
         }
     )");
     Document doc(jsonString);
-    EXPECT_TRUE(doc.validate().has_value()) << "schema should not validate";
+    EXPECT_FALSE(validation::schemaValidate(doc)) << "schema should not validate";
 
     auto mnx = doc.mnx();
     EXPECT_THROW(mnx.version(), std::runtime_error);
     mnx.set_version(MNX_VERSION);
     EXPECT_EQ(doc.mnx().version(), MNX_VERSION);
-    EXPECT_TRUE(doc.validate().has_value()) << "after adding version, schema should still not validate";
+    EXPECT_FALSE(validation::schemaValidate(doc)) << "after adding version, schema should still not validate";
 
     auto global = doc.global();
     EXPECT_THROW(global.measures(), std::runtime_error);
     global.create_measures();
     EXPECT_EQ(doc.global().measures().size(), 0u);
-    EXPECT_FALSE(doc.validate().has_value()) << "after adding global, schema should validate";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "after adding global, schema should validate";
 
     EXPECT_EQ(doc.parts().size(), 0u);
     auto part = doc.parts().append();
-    EXPECT_FALSE(doc.validate().has_value()) << "after adding part, schema should validate";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "after adding part, schema should validate";
     EXPECT_EQ(part.staves(), 1);
     ASSERT_EQ(doc.parts().size(), 1u);
     doc.parts()[0].set_staves(3);

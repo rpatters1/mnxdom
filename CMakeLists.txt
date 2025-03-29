@@ -27,6 +27,8 @@ include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 add_library(mnxdom STATIC
     src/EnumerationMaps.cpp
     src/Implementations.cpp
+    src/validation/SchemaValidate.cpp
+    src/validation/SemanticValidate.cpp
 )
 
 target_include_directories(mnxdom PUBLIC src)

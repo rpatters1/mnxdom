@@ -15,6 +15,11 @@ add_executable(mnxdom_tests
     test_global.cpp
     test_main.cpp
     test_scores.cpp
+    validation/test_examples.cpp
+    validation/test_global.cpp
+    validation/test_layouts.cpp
+    validation/test_parts.cpp
+    validation/test_scores.cpp
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "AppleClang|Clang|GNU")
@@ -36,7 +41,7 @@ target_link_libraries(mnxdom_tests PRIVATE
 include(GoogleTest)
 gtest_discover_tests(mnxdom_tests
     DISCOVERY_TIMEOUT 60 # Set timeout to 60 seconds
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
     PROPERTIES
         ENVIRONMENT "GTEST_COLOR=1"
     EXTRA_ARGS --gtest_color=yes

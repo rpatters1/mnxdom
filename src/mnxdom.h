@@ -54,3 +54,5 @@
 #include "Part.h"
 #include "Score.h"
 #include "Document.h"
+
+#include "validation/Validation.h"

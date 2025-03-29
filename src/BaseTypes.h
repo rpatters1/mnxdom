@@ -178,6 +178,10 @@
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 
+#define MNX_ASSERT_IF(TEST) \
+assert(!(TEST)); \
+if (TEST)
+    
 /**
  * @namespace mnx
  * @brief object model for MNX format
@@ -194,6 +198,11 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 
 class Object;
 template <typename T> class Array;
+class Part;
+
+namespace validation {
+class SemanticValidator;
+}; // namespace validation
 
 /**
  * @brief Base class wrapper for all MNX JSON nodes.
@@ -252,6 +261,9 @@ public:
         static_assert(std::is_base_of_v<Base, T>, "Template type mush be derived from Base.");
         return T(m_root, m_pointer.parent_pointer());
     }
+
+    /// @brief Returns the part for this instance, or std::nullopt if the instance is not a subelement of a part.
+    std::optional<Part> getPart();
 
 protected:
     /**
@@ -392,6 +404,8 @@ private:
 
     const std::shared_ptr<json> m_root;  ///< Shared pointer to the root JSON object.
     json_pointer m_pointer;          ///< JSON pointer to the specific node.
+
+    friend class validation::SemanticValidator;
 };
 
 /**
@@ -455,21 +469,7 @@ public:
     }
 };
 
-/**
- * @brief Represents an MNX object that is included as an array element.
- */
-class ArrayElementObject : public Object
-{
-public:
-    using Object::Object;
-
-    /// @brief Calculates the array index of the current instance within the array.
-    size_t calcArrayIndex() const
-    {
-        return std::stoul(pointer().back());
-    }
-};
-
+class ArrayElementObject;
 /**
  * @brief Represents an MNX array, encapsulating property access.
  */
@@ -527,7 +527,7 @@ public:
     void clear() { ref().clear(); }
 
     /// @brief const operator[]
-    T operator[](size_t index) const
+    auto operator[](size_t index) const
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {
@@ -600,6 +600,32 @@ protected:
         if (index >= ref().size()) {
             throw std::out_of_range("Index out of range");
         }
+    }
+};
+
+/**
+ * @brief Represents an MNX object that is included as an array element.
+ */
+class ArrayElementObject : public Object
+{
+public:
+    using Object::Object;
+
+    /// @brief Calculates the array index of the current instance within the array.
+    size_t calcArrayIndex() const
+    {
+        return std::stoul(pointer().back());
+    }
+
+    /// @brief Returns the container of the array this element belongs to wrapped as the specified template type.
+    ///
+    /// No error checking is performed beyond verifying that ContainerType matches being an array or object with the json node.
+    ///
+    /// @tparam ContainerType The type to wrap around the container
+    template <typename ContainerType>
+    ContainerType container() const
+    {
+        return parent<Array<ArrayElementObject>>().parent<ContainerType>();
     }
 };
 

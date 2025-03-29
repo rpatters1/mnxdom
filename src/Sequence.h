@@ -83,8 +83,9 @@ public:
         set_show(showAcci);
     }
 
-    MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure); ///< The enclosure type (brackets or parentheses). Omit if none.
-    MNX_REQUIRED_PROPERTY(bool, show);                  ///< Whether to show or hide the accidental
+    MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure);     ///< The enclosure type (brackets or parentheses). Omit if none.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, force, false); ///< Whether this accidental was set intentionally (e.g., a courtesy accidental).
+    MNX_REQUIRED_PROPERTY(bool, show);                      ///< Whether to show or hide the accidental
 };
 
 /**
@@ -131,6 +132,11 @@ public:
     MNX_OPTIONAL_PROPERTY(int, alter);          ///< chromatic alteration
     MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
     MNX_REQUIRED_PROPERTY(NoteStep, step);      ///< the note step, (i.e., "A".."G")
+
+    /// @brief Checks if the input pitch is the same as this pitch, including enharmonic equivalents
+    /// @param src The value to compare with
+    /// @return true if they are the same or enharmonically equivalent
+    bool isSamePitch(const Pitch& src) const;
 };
 
 /**
@@ -297,6 +303,11 @@ public:
     MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff events.)
     MNX_OPTIONAL_PROPERTY(StemDirection, stemDirection);    ///< Forced stem direction.
 
+    /// @brief Finds a note in the event by its ID
+    /// @param noteId The note ID to find
+    /// @return The note if found, otherwise std::nullopt;
+    std::optional<Note> findNote(const std::string& noteId) const;
+
     static constexpr std::string_view ContentTypeValue = "event"; ///< type value that identifies the type within the content array
 };
 
@@ -353,7 +364,6 @@ public:
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
-    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
     MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
 
     static constexpr std::string_view ContentTypeValue = "dynamic"; ///< type value that identifies the type within the content array

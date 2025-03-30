@@ -29,9 +29,12 @@
 #include "Layout.h"
 #include "Part.h"
 #include "Score.h"
-#include "validation/Validation.h"
 
 namespace mnx {
+
+namespace util {
+class IdMapping;
+}
 
 /**
  * @class MnxMetaData
@@ -83,7 +86,11 @@ public:
  * @brief Represents an MNX document and provides methods for loading and saving.
  */
 class Document : public Object
-{    
+{
+private:
+    /// @brief Not really shared, but std::unique_ptr creates unacceptable dependencies in the headers
+    std::shared_ptr<util::IdMapping> m_idMapping;
+
 public:
     /**
      * @brief Constructs an empty MNX document. The resulting instance contains all
@@ -96,6 +103,11 @@ public:
         create_global();
         create_parts();
     }
+
+    /// @brief Copy constructor that zaps the id mapping, if any
+    Document(const Document& src) : Object(src), m_idMapping(nullptr) {}
+
+    using Base::root;
 
     /**
      * @brief Constructs a Document from an input stream.
@@ -164,8 +176,20 @@ public:
     T get(const std::string& jsonPointerString)
     { return get<T>(json_pointer(jsonPointerString)); }
 
-private:
-    friend validation::ValidationResult validation::schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema);
+    /// @brief Builds or rebuilds the ID mapping for the document, replacing any existing mapping.
+    void buildIdMapping();
+
+    /// @brief Gets a reference to the ID mapping instance for the document.
+    const util::IdMapping& getIdMapping() const
+    {
+        MNX_ASSERT_IF(!m_idMapping) {
+            throw std::logic_error("Call buildIdMapping before calling getIdMapping.");
+        }
+        return *m_idMapping;
+    }
+
+    /// @brief Returns whether am ID mapping currently exists
+    bool hasIdMapping() const { return static_cast<bool>(m_idMapping); }
 };
 
 static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");

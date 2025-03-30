@@ -28,6 +28,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <optional>
+#include <sstream>
 
 #include "BaseTypes.h"
 #include "Global.h"
@@ -37,30 +38,50 @@
 
 namespace mnx::util {
 
-class mapping_not_found : public std::exception
-{
-private:
+class mapping_error : public std::exception {
+protected:
     std::string message;
 
-public:    
     template <typename KeyType>
-    mapping_not_found(const KeyType& key) : exception()
-    {
-        std::string keyString = [key]() {
-            if constexpr (std::is_same_v<KeyType, std::string>) {
-                return "\"" + key + "\"";
-            } else {
-                return std::to_string(key);
-            }
-        }();
-        message = "ID " + keyString + " not found in ID mapping.");
+    static std::string format_key_string(const KeyType& key) {
+        if constexpr (std::is_same_v<KeyType, std::string>) {
+            return "\"" + key + "\"";
+        } else {
+            std::ostringstream oss;
+            oss << key;
+            return oss.str();
+        }
     }
 
-    const char* what() const noexcept override
-    {
+    template <typename KeyType>
+    mapping_error(const KeyType& key, const std::string& suffix)
+        : message("ID " + format_key_string(key) + " " + suffix) {}
+
+public:
+    const char* what() const noexcept override {
         return message.c_str();
     }
 };
+
+class mapping_not_found : public mapping_error {
+public:
+    template <typename KeyType>
+    explicit mapping_not_found(const KeyType& key)
+        : mapping_error(key, "not found in ID mapping") {}
+};
+
+class mapping_duplicate : public mapping_error {
+public:
+    template <typename KeyType>
+    explicit mapping_duplicate(const KeyType& key, json_pointer currentValue)
+        : mapping_error(key, "already exists at " + currentValue.to_string()) {}
+};
+
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+// Helper to produce static_assert failure for unsupported types
+template <typename T>
+inline constexpr bool always_false = false;
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 /**
  * @class IdMapping
@@ -75,7 +96,8 @@ public:
      * @brief Constructs the index for a given document.
      * @param documentRoot Shared pointer to the document's JSON root.
      */
-    explicit IdMapping(std::shared_ptr<json> documentRoot);
+    explicit IdMapping(std::shared_ptr<json> documentRoot)
+        : m_root(documentRoot) {}
 
     /**
      * @brief Looks up an object by string ID.
@@ -85,10 +107,29 @@ public:
      * @throws std::out_of_range if the ID is not found or mismatched.
      */
     template <typename T, typename IdType>
-    T find(const IdType& id) const;
+    T find(const IdType& id) const
+    {
+        const auto& map = getMap<T>();
+        auto it = map.find(id);
+        if (it == map.end()) {
+            throw mapping_not_found(id);
+        }
+        return T(m_root, it->second);
+    };
+    
+    template <typename T, typename IdType>
+    void add(const IdType& id, const T& value)
+    {
+        auto& map = getMap<T>();
+        auto it = map.find(id);
+        if (it != map.end()) {
+            throw mapping_duplicate(id, value.pointer());
+        }
+        map.emplace(id, value.pointer());
+    }
 
 private:
-    std::shared_ptr<nlohmann::json> m_root;
+    std::shared_ptr<json> m_root;
 
     using Map = std::unordered_map<std::string, json_pointer>;
     Map m_eventMap;
@@ -98,38 +139,31 @@ private:
 
     std::unordered_map<int, json_pointer> m_globalMeasures;
     std::unordered_map<std::string, std::unordered_map<int, json_pointer>> m_partMeasures;
-};
 
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-// Helper to produce static_assert failure for unsupported types
-template <typename T>
-inline constexpr bool always_false = false;
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
-
-template <typename T, typename IdType>
-T IdMapping::find(const IdType& id) const
-{
-    const auto& map = [&]() -> const auto& {
+    template <typename T, typename Self>
+    static auto& getMapImpl(Self& self) {
         if constexpr (std::is_same_v<T, mnx::Part>) {
-            return m_partMap;
+            return self.m_partMap;
         } else if constexpr (std::is_same_v<T, mnx::Layout>) {
-            return m_layoutMap;
+            return self.m_layoutMap;
         } else if constexpr (std::is_same_v<T, mnx::sequence::Note>) {
-            return m_noteMap;
+            return self.m_noteMap;
         } else if constexpr (std::is_same_v<T, mnx::sequence::Event>) {
-            return m_eventMap;
+            return self.m_eventMap;
         } else if constexpr (std::is_same_v<T, mnx::global::Measure>) {
-            return m_globalMeasures;
+            return self.m_globalMeasures;
         } else {
-            static_assert(always_false<T>, "Unsupported type for IdMapping::find");
+            static_assert(always_false<T>, "Unsupported type for IdMapping::getMap");
         }
-    }();
-
-    auto it = map.find(id);
-    if (it == map.end()) {
-        throw mapping_not_found(id);
     }
-    return T(m_root, it->second);
+
+    template <typename T>
+    const auto& getMap() const
+    { return getMapImpl<T>(*this); }
+
+    template <typename T>
+    auto& getMap()
+    { return getMapImpl<T>(*this); }
 };
 
 } // namespace mnx::util

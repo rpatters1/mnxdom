@@ -49,6 +49,17 @@ std::optional<Part> Base::getPart()
     return std::nullopt;
 }
 
+// ********************
+// ***** Document *****
+// ********************
+
+void Document::buildIdMapping()
+{
+    m_idMapping.reset();
+    m_idMapping = std::make_shared<util::IdMapping>(root());
+    /// @todo build the mapping
+}
+
 // *********************
 // ***** NoteValue *****
 // *********************

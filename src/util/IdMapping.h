@@ -35,12 +35,31 @@
 #include "Part.h"
 #include "Score.h"
 
-
 namespace mnx::util {
 
-class mapping_not_found : public std::runtime_error
+class mapping_not_found : public std::exception
 {
-    using runtime_error::runtime_error;
+private:
+    std::string message;
+
+public:    
+    template <typename KeyType>
+    mapping_not_found(const KeyType& key) : exception()
+    {
+        std::string keyString = [key]() {
+            if constexpr (std::is_same_v<KeyType, std::string>) {
+                return "\"" + key + "\"";
+            } else {
+                return std::to_string(key);
+            }
+        }();
+        message = "ID " + keyString + " not found in ID mapping.");
+    }
+
+    const char* what() const noexcept override
+    {
+        return message.c_str();
+    }
 };
 
 /**
@@ -93,27 +112,22 @@ T IdMapping::find(const IdType& id) const
     const auto& map = [&]() -> const auto& {
         if constexpr (std::is_same_v<T, mnx::Part>) {
             return m_partMap;
-        }
-        else if constexpr (std::is_same_v<T, mnx::Layout>) {
+        } else if constexpr (std::is_same_v<T, mnx::Layout>) {
             return m_layoutMap;
-        }
-        else if constexpr (std::is_same_v<T, mnx::sequence::Note>) {
+        } else if constexpr (std::is_same_v<T, mnx::sequence::Note>) {
             return m_noteMap;
-        }
-        else if constexpr (std::is_same_v<T, mnx::sequence::Event>) {
+        } else if constexpr (std::is_same_v<T, mnx::sequence::Event>) {
             return m_eventMap;
-        }
-        else if constexpr (std::is_same_v<T, mnx::global::Measure>) {
+        } else if constexpr (std::is_same_v<T, mnx::global::Measure>) {
             return m_globalMeasures;
-        }
-        else {
+        } else {
             static_assert(always_false<T>, "Unsupported type for IdMapping::find");
         }
-        }();
+    }();
 
     auto it = map.find(id);
     if (it == map.end()) {
-        throw mapping_not_found("ID not found");
+        throw mapping_not_found(id);
     }
     return T(m_root, it->second);
 };

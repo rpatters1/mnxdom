@@ -28,7 +28,7 @@ namespace mnx {
 // ***** Base *****
 // ****************
 
-std::optional<Part> Base::getPart()
+std::optional<Part> Base::getPart() const
 {
     const std::string prefix = "/parts/";
     const std::string ptrStr = m_pointer.to_string();
@@ -72,8 +72,8 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
         if (const auto measures = part.measures()) {
             for (const auto measure : measures.value()) {
                 for (const auto sequence : measure.sequences()) {
-                    auto processContent = [&](const ContentArray& content, auto&& self) -> void {
-                        for (const auto content : sequence.content()) {
+                    auto processContent = [&](const ContentArray& contentArray, auto&& self) -> void {
+                        for (const auto content : contentArray) {
                             if (content.type() == sequence::Event::ContentTypeValue) {
                                 const auto event = content.get<sequence::Event>();
                                 if (event.id()) {

@@ -65,21 +65,30 @@ public:
      * @tparam T The expected type (e.g., mnx::Part, mnx::Layout, mnx::sequence::Note).
      * @tparam IdType The type of @p id
      * @param id The ID to search for.
+     * @param errorLocation The location in the document for error reporting purposes.
      * @return An instance of T if found.
      * @throws mapping_error if the ID is not found.
      */
     template <typename T, typename IdType>
-    T get(const IdType& id) const
+    T get(const IdType& id, const std::optional<Base>& errorLocation = std::nullopt) const
     {
         const auto& map = getMap<T>();
         auto it = map.find(id);
         if (it == map.end()) {
             mapping_error err("ID " + formatKeyString(id) + " not found in ID mapping");
-            if (m_errorHandler) m_errorHandler.value()(err.what(), std::nullopt);
+            if (m_errorHandler) m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
             throw err;
         }
         return T(m_root, it->second);
     };
+
+    /// @brief Returns whether the specified ID exists in the mapping
+    template <typename T, typename IdType>
+    bool exists(const IdType& id) const
+    {
+        const auto& map = getMap<T>();
+        map.find(id) != map.end();
+    }
 
     /// @brief Adds a key to the mapping. If there is no error handler, it throws @ref mapping_error if there is a duplicate key.
     /// @tparam T The type to add
@@ -90,11 +99,9 @@ public:
     template <typename T, typename IdType>
     void add(const IdType& id, const T& value)
     {
-        auto& map = getMap<T>();
-        if (!map.emplace(id, value.pointer()).second) {
-            const auto it = map.find(id);
-            assert(it != map.end());
-            mapping_error err("ID " + formatKeyString(id) + " already exists at " + it->second.to_string());
+        auto result = getMap<T>().emplace(id, value.pointer());
+        if (!result.second) {
+            mapping_error err("ID " + formatKeyString(id) + " already exists at " + result.first->second.to_string());
             if (m_errorHandler) {
                 m_errorHandler.value()(err.what(), value);
             } else {

@@ -32,7 +32,7 @@ TEST(Parts, DuplicateId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "duplicate_parts.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID \"P1\" already exists at index 0");
+    expectSemanticError(doc, inputPath, "ID \"P1\" already exists at /parts/0");
 }
 
 TEST(Parts, MeasuresMismatch)

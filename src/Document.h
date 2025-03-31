@@ -181,7 +181,9 @@ public:
     { return get<T>(json_pointer(jsonPointerString)); }
 
     /// @brief Builds or rebuilds the ID mapping for the document, replacing any existing mapping.
-    void buildIdMapping();
+    /// @param errorHandler An optional error handler. If provided, the function does not throw on duplicate keys added.
+    /// @throws util::mapping_error on duplicate keys if no @p errorHandler is provided.
+    void buildIdMapping(const std::optional<ErrorHandler>& errorHandler = std::nullopt);
 
     /// @brief Gets a reference to the ID mapping instance for the document.
     const util::IdMapping& getIdMapping() const

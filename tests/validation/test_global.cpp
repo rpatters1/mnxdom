@@ -40,5 +40,5 @@ TEST(Global, InvalidLyricLineIds)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "nonexistent_lyric_line_id.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticErrors(doc, inputPath, { "ID \"line1\" not found in key value list", "ID \"line2\" not found in key value list", });
+    expectSemanticErrors(doc, inputPath, { "ID \"line1\" not found in ID mapping", "ID \"line2\" not found in ID mapping", });
 }

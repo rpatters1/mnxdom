@@ -32,7 +32,7 @@ TEST(Scores, InvalidScoreLayoutId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "score_bad_layout.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID \"does-not-exist\" not found in key value list");
+    expectSemanticError(doc, inputPath, "ID \"does-not-exist\" not found in ID mapping");
 }
 
 TEST(Scores, InvalidScorePageLayoutId)

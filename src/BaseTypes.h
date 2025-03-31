@@ -408,6 +408,9 @@ private:
     friend class validation::SemanticValidator;
 };
 
+/// @brief Error handler type for reporting errors
+using ErrorHandler = std::function<void(const std::string& message, const std::optional<Base>& location)>;
+
 /**
  * @brief Represents an MNX object, encapsulating property access.
  */

@@ -39,65 +39,10 @@
 namespace mnx::util {
 
 /// @brief base class for mapping error exceptions
-class mapping_error : public std::exception
+class mapping_error : public std::runtime_error
 {
-private:
-    std::string message;
-
-    template <typename KeyType>
-    static std::string format_key_string(const KeyType& key) {
-        if constexpr (std::is_same_v<KeyType, std::string>) {
-            return "\"" + key + "\"";
-        } else {
-            std::ostringstream oss;
-            oss << key;
-            return oss.str();
-        }
-    }
-
-protected:
-    /// @brief Constructor
-    template <typename KeyType>
-    mapping_error(const KeyType& key, const std::string& suffix)
-        : message("ID " + format_key_string(key) + " " + suffix) {}
-
-public:
-    /// @brief Returns the error message
-    const char* what() const noexcept override
-    {
-        return message.c_str();
-    }
+    using runtime_error::runtime_error;
 };
-
-/// @brief Exception when mapping is not found
-class mapping_not_found : public mapping_error
-{
-public:
-    /// @brief Constructor
-    template <typename KeyType>
-    explicit mapping_not_found(const KeyType& key)
-        : mapping_error(key, "not found in ID mapping")
-    {
-    }
-};
-
-/// @brief Exception when an attempt is made to add a duplicate key.
-class mapping_duplicate : public mapping_error
-{
-public:
-    /// @brief Constructor
-    template <typename KeyType>
-    explicit mapping_duplicate(const KeyType& key, json_pointer currentValue)
-        : mapping_error(key, "already exists at " + currentValue.to_string())
-    {
-    }
-};
-
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-// Helper to produce static_assert failure for unsupported types
-template <typename T>
-inline constexpr bool always_false = false;
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 /**
  * @class IdMapping
@@ -112,43 +57,50 @@ public:
      * @brief Constructs the index for a given document.
      * @param documentRoot Shared pointer to the document's JSON root.
      */
-    explicit IdMapping(std::shared_ptr<json> documentRoot)
-        : m_root(documentRoot) {}
+    explicit IdMapping(std::shared_ptr<json> documentRoot, const std::optional<ErrorHandler>& errorHandler = std::nullopt)
+        : m_root(documentRoot), m_errorHandler(errorHandler) {}
 
     /**
      * @brief Looks up an object by string ID.
      * @tparam T The expected type (e.g., mnx::Part, mnx::Layout, mnx::sequence::Note).
-    /// @tparam IdType The type of @p id
+     * @tparam IdType The type of @p id
      * @param id The ID to search for.
      * @return An instance of T if found.
-     * @throws mapping_not_found if the ID is not found or mismatched.
+     * @throws mapping_error if the ID is not found.
      */
     template <typename T, typename IdType>
-    T find(const IdType& id) const
+    T get(const IdType& id) const
     {
         const auto& map = getMap<T>();
         auto it = map.find(id);
         if (it == map.end()) {
-            throw mapping_not_found(id);
+            mapping_error err("ID " + formatKeyString(id) + " not found in ID mapping");
+            if (m_errorHandler) m_errorHandler.value()(err.what(), std::nullopt);
+            throw err;
         }
         return T(m_root, it->second);
     };
 
-    /// @brief Adds a key to the mapping
+    /// @brief Adds a key to the mapping. If there is no error handler, it throws @ref mapping_error if there is a duplicate key.
     /// @tparam T The type to add
     /// @tparam IdType The type of @p id
     /// @param id The ID to add.
     /// @param value The value to index.
-    /// @throws mapping_duplicate if the ID is a duplicate.
+    /// @throws mapping_error if the ID is a duplicate and there is no error handler.
     template <typename T, typename IdType>
     void add(const IdType& id, const T& value)
     {
         auto& map = getMap<T>();
-        auto it = map.find(id);
-        if (it != map.end()) {
-            throw mapping_duplicate(id, value.pointer());
+        if (!map.emplace(id, value.pointer()).second) {
+            const auto it = map.find(id);
+            assert(it != map.end());
+            mapping_error err("ID " + formatKeyString(id) + " already exists at " + it->second.to_string());
+            if (m_errorHandler) {
+                m_errorHandler.value()(err.what(), value);
+            } else {
+                throw err;
+            }
         }
-        map.emplace(id, value.pointer());
     }
 
     /// @brief Returns the @ref part::Measure instance associated with the input @ref global::Measure.
@@ -158,16 +110,19 @@ public:
     mnx::part::Measure getPartMeasure(const mnx::global::Measure& globalMeasure, const std::string& partId) const
     {
         const size_t measureIndex = globalMeasure.calcArrayIndex();
-        const auto part = find<mnx::Part>(partId);
+        const auto part = get<mnx::Part>(partId);
         const auto measures = part.measures();
         if (!measures || measureIndex >= measures.value().size()) {
-            throw std::invalid_argument("Part \'" + partId + "\" lacks a corresponding measure for the input global measure: " + globalMeasure.pointer().to_string());
+            mapping_error err("Part \'" + partId + "\" lacks a corresponding measure for the input global measure.");
+            if (m_errorHandler) m_errorHandler.value()(err.what(), globalMeasure);
+            throw err;
         }
         return measures.value()[measureIndex];
     }
 
 private:
     std::shared_ptr<json> m_root;
+    std::optional<ErrorHandler> m_errorHandler;
 
     using Map = std::unordered_map<std::string, json_pointer>;
     Map m_eventMap;
@@ -190,7 +145,7 @@ private:
         } else if constexpr (std::is_same_v<T, mnx::global::Measure>) {
             return self.m_globalMeasures;
         } else {
-            static_assert(always_false<T>, "Unsupported type for IdMapping::getMap");
+            static_assert(false, "Unsupported type for IdMapping::getMap");
         }
     }
 
@@ -201,6 +156,17 @@ private:
     template <typename T>
     auto& getMap()
     { return getMapImpl<T>(*this); }
+
+    template <typename KeyType>
+    static std::string formatKeyString(const KeyType& key) {
+        if constexpr (std::is_same_v<KeyType, std::string>) {
+            return "\"" + key + "\"";
+        } else {
+            std::ostringstream oss;
+            oss << key;
+            return oss.str();
+        }
+    }
 };
 
 } // namespace mnx::util

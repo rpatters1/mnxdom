@@ -53,10 +53,10 @@ std::optional<Part> Base::getPart()
 // ***** Document *****
 // ********************
 
-void Document::buildIdMapping()
+void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
 {
     m_idMapping.reset();
-    m_idMapping = std::make_shared<util::IdMapping>(root());
+    m_idMapping = std::make_shared<util::IdMapping>(root(), errorHandler);
     // global measures
     const auto globalMeasures = global().measures();
     int measureId = 0;

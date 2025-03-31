@@ -93,7 +93,7 @@ std::optional<ElementType> SemanticValidator::getValue(const KeyType& key, const
             return std::to_string(key);
         }
     }();
-    result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " not found in key value list.");
+    result.errors.emplace_back(instance.pointer(), instance.ref(), "ID " + keyString + " not found in ID mapping.");
     return std::nullopt;
 }
 

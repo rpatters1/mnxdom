@@ -40,7 +40,7 @@ TEST(Layouts, NonexistentPartId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "layout_with_bad_part.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID \"P-does-not-exist\" not found in key value list");
+    expectSemanticError(doc, inputPath, "ID \"P-does-not-exist\" not found in ID mapping");
 }
 
 TEST(Layouts, NonexistentStaffNumber)
@@ -48,5 +48,5 @@ TEST(Layouts, NonexistentStaffNumber)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "layout_invalid_staffnum.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath,  "ID \"P2\" not found in key value list");
+    expectSemanticError(doc, inputPath,  "ID \"P2\" not found in ID mapping");
 }

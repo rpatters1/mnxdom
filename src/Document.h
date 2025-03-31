@@ -104,6 +104,10 @@ public:
         create_parts();
     }
 
+    /// @brief Wrap a document around a root element
+    /// @param root 
+    Document(const std::shared_ptr<json>& root) : Object(root, json_pointer{}) {}
+
     /// @brief Copy constructor that zaps the id mapping, if any
     Document(const Document& src) : Object(src), m_idMapping(nullptr) {}
 

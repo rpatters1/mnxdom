@@ -38,8 +38,10 @@
 
 namespace mnx::util {
 
-class mapping_error : public std::exception {
-protected:
+/// @brief base class for mapping error exceptions
+class mapping_error : public std::exception
+{
+private:
     std::string message;
 
     template <typename KeyType>
@@ -53,28 +55,42 @@ protected:
         }
     }
 
+protected:
+    /// @brief Constructor
     template <typename KeyType>
     mapping_error(const KeyType& key, const std::string& suffix)
         : message("ID " + format_key_string(key) + " " + suffix) {}
 
 public:
-    const char* what() const noexcept override {
+    /// @brief Returns the error message
+    const char* what() const noexcept override
+    {
         return message.c_str();
     }
 };
 
-class mapping_not_found : public mapping_error {
+/// @brief Exception when mapping is not found
+class mapping_not_found : public mapping_error
+{
 public:
+    /// @brief Constructor
     template <typename KeyType>
     explicit mapping_not_found(const KeyType& key)
-        : mapping_error(key, "not found in ID mapping") {}
+        : mapping_error(key, "not found in ID mapping")
+    {
+    }
 };
 
-class mapping_duplicate : public mapping_error {
+/// @brief Exception when an attempt is made to add a duplicate key.
+class mapping_duplicate : public mapping_error
+{
 public:
+    /// @brief Constructor
     template <typename KeyType>
     explicit mapping_duplicate(const KeyType& key, json_pointer currentValue)
-        : mapping_error(key, "already exists at " + currentValue.to_string()) {}
+        : mapping_error(key, "already exists at " + currentValue.to_string())
+    {
+    }
 };
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
@@ -102,9 +118,10 @@ public:
     /**
      * @brief Looks up an object by string ID.
      * @tparam T The expected type (e.g., mnx::Part, mnx::Layout, mnx::sequence::Note).
-     * @param id The string ID to search for.
+    /// @tparam IdType The type of @p id
+     * @param id The ID to search for.
      * @return An instance of T if found.
-     * @throws std::out_of_range if the ID is not found or mismatched.
+     * @throws mapping_not_found if the ID is not found or mismatched.
      */
     template <typename T, typename IdType>
     T find(const IdType& id) const
@@ -116,7 +133,13 @@ public:
         }
         return T(m_root, it->second);
     };
-    
+
+    /// @brief Adds a key to the mapping
+    /// @tparam T The type to add
+    /// @tparam IdType The type of @p id
+    /// @param id The ID to add.
+    /// @param value The value to index.
+    /// @throws mapping_duplicate if the ID is a duplicate.
     template <typename T, typename IdType>
     void add(const IdType& id, const T& value)
     {
@@ -126,6 +149,21 @@ public:
             throw mapping_duplicate(id, value.pointer());
         }
         map.emplace(id, value.pointer());
+    }
+
+    /// @brief Returns the @ref part::Measure instance associated with the input @ref global::Measure.
+    /// @param globalMeasure The global measure for which to find the associated part measure.
+    /// @param partId ID of the part to search.
+    /// @return The associated part measure.
+    mnx::part::Measure getPartMeasure(const mnx::global::Measure& globalMeasure, const std::string& partId) const
+    {
+        const size_t measureIndex = globalMeasure.calcArrayIndex();
+        const auto part = find<mnx::Part>(partId);
+        const auto measures = part.measures();
+        if (!measures || measureIndex >= measures.value().size()) {
+            throw std::invalid_argument("Part \'" + partId + "\" lacks a corresponding measure for the input global measure: " + globalMeasure.pointer().to_string());
+        }
+        return measures.value()[measureIndex];
     }
 
 private:
@@ -138,7 +176,6 @@ private:
     Map m_partMap;
 
     std::unordered_map<int, json_pointer> m_globalMeasures;
-    std::unordered_map<std::string, std::unordered_map<int, json_pointer>> m_partMeasures;
 
     template <typename T, typename Self>
     static auto& getMapImpl(Self& self) {

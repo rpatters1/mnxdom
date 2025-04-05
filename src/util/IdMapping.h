@@ -139,6 +139,10 @@ private:
 
     std::unordered_map<int, json_pointer> m_globalMeasures;
 
+    // stoopid workround
+    template <typename>
+    static constexpr bool always_false = false;
+    
     template <typename T, typename Self>
     static auto& getMapImpl(Self& self) {
         if constexpr (std::is_same_v<T, mnx::Part>) {
@@ -152,7 +156,7 @@ private:
         } else if constexpr (std::is_same_v<T, mnx::global::Measure>) {
             return self.m_globalMeasures;
         } else {
-            static_assert(false, "Unsupported type for IdMapping::getMap");
+            static_assert(always_false<T>, "Unsupported type for IdMapping::getMap");
         }
     }
 

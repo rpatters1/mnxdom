@@ -42,3 +42,17 @@ TEST(Global, InvalidLyricLineIds)
     auto doc = mnx::Document::create(inputPath);
     expectSemanticErrors(doc, inputPath, { "ID \"line1\" not found in ID mapping", "ID \"line2\" not found in ID mapping", });
 }
+
+TEST(Parts, MeasureIndices)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "measures_mismatch.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "contains a different number of measures (4) than are defined globally (3)");
+
+    auto measures = doc.global().measures();
+    int firstIndex = 1;
+    for (const auto measure : measures) {
+        EXPECT_EQ(measure.calcMeasureIndex(), firstIndex++);
+    }
+}

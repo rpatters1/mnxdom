@@ -80,14 +80,14 @@ public:
             throw err;
         }
         return T(m_root, it->second);
-    };
+    }
 
     /// @brief Returns whether the specified ID exists in the mapping
     template <typename T, typename IdType>
     bool exists(const IdType& id) const
     {
         const auto& map = getMap<T>();
-        map.find(id) != map.end();
+        return map.find(id) != map.end();
     }
 
     /// @brief Adds a key to the mapping. If there is no error handler, it throws @ref mapping_error if there is a duplicate key.

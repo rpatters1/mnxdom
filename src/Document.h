@@ -29,9 +29,12 @@
 #include "Layout.h"
 #include "Part.h"
 #include "Score.h"
-#include "validation/Validation.h"
 
 namespace mnx {
+
+namespace util {
+class IdMapping;
+}
 
 /**
  * @class MnxMetaData
@@ -83,7 +86,11 @@ public:
  * @brief Represents an MNX document and provides methods for loading and saving.
  */
 class Document : public Object
-{    
+{
+private:
+    /// @brief Not really shared, but std::unique_ptr creates unacceptable dependencies in the headers
+    std::shared_ptr<util::IdMapping> m_idMapping;
+
 public:
     /**
      * @brief Constructs an empty MNX document. The resulting instance contains all
@@ -96,6 +103,15 @@ public:
         create_global();
         create_parts();
     }
+
+    /// @brief Wrap a document around a root element
+    /// @param root 
+    Document(const std::shared_ptr<json>& root) : Object(root, json_pointer{}) {}
+
+    /// @brief Copy constructor that zaps the id mapping, if any
+    Document(const Document& src) : Object(src), m_idMapping(nullptr) {}
+
+    using Base::root;
 
     /**
      * @brief Constructs a Document from an input stream.
@@ -147,25 +163,22 @@ public:
         file.close();
     }
 
-    /// @brief Allows retrieval of any node within the document typed as the given class.
-    /// @tparam T The class to wrap around the pointer. No error checking is performed.
-    /// @param jsonPointer The pointer to the object
-    /// @return An instance of class T.
-    template <typename T>
-    T get(const json_pointer& jsonPointer)
+    /// @brief Builds or rebuilds the ID mapping for the document, replacing any existing mapping.
+    /// @param errorHandler An optional error handler. If provided, the function does not throw on duplicate keys added.
+    /// @throws util::mapping_error on duplicate keys if no @p errorHandler is provided.
+    void buildIdMapping(const std::optional<ErrorHandler>& errorHandler = std::nullopt);
+
+    /// @brief Gets a reference to the ID mapping instance for the document.
+    const util::IdMapping& getIdMapping() const
     {
-        static_assert(std::is_base_of_v<Base, T>, "template class must be derived from mnx::Base.");
-        return T(root(), jsonPointer);
+        MNX_ASSERT_IF(!m_idMapping) {
+            throw std::logic_error("Call buildIdMapping before calling getIdMapping.");
+        }
+        return *m_idMapping;
     }
 
-    /// @brief String version of get
-    /// @param jsonPointerString The pointer to the object in a string
-    template <typename T>
-    T get(const std::string& jsonPointerString)
-    { return get<T>(json_pointer(jsonPointerString)); }
-
-private:
-    friend validation::ValidationResult validation::schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema);
+    /// @brief Returns whether am ID mapping currently exists
+    bool hasIdMapping() const { return static_cast<bool>(m_idMapping); }
 };
 
 static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");

@@ -32,7 +32,7 @@ TEST(Parts, DuplicateId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "duplicate_parts.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID \"P1\" already exists at index 0");
+    expectSemanticError(doc, inputPath, "ID \"P1\" already exists at /parts/0");
 }
 
 TEST(Parts, MeasuresMismatch)
@@ -48,7 +48,7 @@ TEST(Parts, InvalidLyricsLineIds)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "lyrics_invalid_lineids.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticErrors(doc, inputPath, { "ID \"1\" not found in key value list", "ID \"2\" not found in key value list" });
+    expectSemanticErrors(doc, inputPath, { "ID \"1\" not found in ID mapping", "ID \"2\" not found in ID mapping" });
 }
 
 TEST(Parts, EventErrors)

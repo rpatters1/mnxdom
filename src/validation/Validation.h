@@ -25,7 +25,7 @@
 #include <vector>
 #include <unordered_set>
 
-#include "BaseTypes.h"
+#include "util/IdMapping.h"
 
 namespace mnx {
 
@@ -72,15 +72,10 @@ struct SemanticValidationResult : public ValidationResult
 {
     using ValidationResult::ValidationResult;
 
-    std::unordered_map<int, size_t> measureList;        ///< key: measId; value: index of measure in `global.measures()` array
-    size_t measureCount{};                              ///< count can be different than `measureList.size()` if there is a duplicate key error
-    std::unordered_map<std::string, size_t> partList;   ///< list of part ID values and their indices in the `parts()` array.
-    std::unordered_map<std::string, size_t> layoutList; ///< list of layout ID values and their indices in the `layouts()` array.
-    std::unordered_map<std::string, size_t> lyricLines; ///< list of lyric line ID values and their indices in the `global.lyrics().lineOrder()` array.
-    std::unordered_map<std::string, json_pointer> eventList; ///< list of events in the document.
-    std::unordered_map<std::string, json_pointer> noteList; ///< list of notes in the document.
-    std::unordered_set<std::string> notesWithTies; ///< list of notes with ties (forward) in the document
-    std::unordered_set<std::string> eventsWithSlurs; ///< list of notes with ties (forward) in the document
+    std::unordered_map<std::string, json_pointer> lyricLines; ///< list of lyric line ID values.
+    ///< These are sourced either from `global.lyrics().lineOrder()` or `global().lyrics().lineMetadata()`.
+    ///< The json_pointer is used only for reporting the location of duplicate values. It points to an element
+    ///< in one of the two arrays, with preference given to `lineOrder` if it exists.
 };
 
 /// @brief Validates a document against a JSON schema

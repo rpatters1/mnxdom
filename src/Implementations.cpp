@@ -28,7 +28,7 @@ namespace mnx {
 // ***** Base *****
 // ****************
 
-std::optional<Part> Base::getPart()
+std::optional<Part> Base::getPart() const
 {
     const std::string prefix = "/parts/";
     const std::string ptrStr = m_pointer.to_string();
@@ -47,6 +47,65 @@ std::optional<Part> Base::getPart()
     }
 
     return std::nullopt;
+}
+
+// ********************
+// ***** Document *****
+// ********************
+
+void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
+{
+    m_idMapping.reset();
+    m_idMapping = std::make_shared<util::IdMapping>(root(), errorHandler);
+    // global measures
+    const auto globalMeasures = global().measures();
+    int measureId = 0;
+    for (const auto globalMeasure : global().measures()) {
+        measureId = globalMeasure.index_or(measureId + 1);
+        m_idMapping->add(measureId, globalMeasure);
+    }
+    // parts, events, notes
+    for (const auto part : parts()) {
+        if (part.id()) {
+            m_idMapping->add(part.id().value(), part);
+        }
+        if (const auto measures = part.measures()) {
+            for (const auto measure : measures.value()) {
+                for (const auto sequence : measure.sequences()) {
+                    auto processContent = [&](const ContentArray& contentArray, auto&& self) -> void {
+                        for (const auto content : contentArray) {
+                            if (content.type() == sequence::Event::ContentTypeValue) {
+                                const auto event = content.get<sequence::Event>();
+                                if (event.id()) {
+                                    m_idMapping->add(event.id().value(), event);
+                                }
+                                if (auto notes = event.notes()) {
+                                    for (const auto note : notes.value()) {
+                                        if (note.id()) {
+                                            m_idMapping->add(note.id().value(), note);
+                                        }
+                                    }
+                                }
+                            } else if (content.type() == sequence::Tuplet::ContentTypeValue) {
+                                const auto tuplet = content.get<sequence::Tuplet>();
+                                self(tuplet.content(), self);
+                            } else if (content.type() == sequence::Grace::ContentTypeValue) {
+                                const auto grace = content.get<sequence::Grace>();
+                                self(grace.content(), self);
+                            }
+                        }
+                    };
+                    processContent(sequence.content(), processContent);
+                }
+            }
+        }
+    }
+    // layouts
+    if (const auto layoutArray = layouts()) {
+        for (const auto layout : layoutArray.value()) {
+            m_idMapping->add(layout.id(), layout);
+        }
+    }
 }
 
 // *********************

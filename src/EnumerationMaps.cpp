@@ -66,6 +66,7 @@ MNX_ENUM_MAPPING(BeamHookDirection, {
     { "left",       BeamHookDirection::Left },
     { "right",      BeamHookDirection::Right }
 });
+
 MNX_ENUM_MAPPING(BreathMarkSymbol, {
     { "comma",      BreathMarkSymbol::Comma },
     { "tick",       BreathMarkSymbol::Tick },

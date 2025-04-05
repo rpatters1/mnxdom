@@ -263,7 +263,10 @@ public:
     }
 
     /// @brief Returns the part for this instance, or std::nullopt if the instance is not a subelement of a part.
-    std::optional<Part> getPart();
+    std::optional<Part> getPart() const;
+
+    /// @brief Returns the json_pointer for this node.
+    json_pointer pointer() const { return m_pointer; }
 
 protected:
     /**
@@ -281,9 +284,6 @@ protected:
 
     /// @brief Returns the root.
     const std::shared_ptr<json>& root() const { return m_root; }
-
-    /// @brief Returns the json_pointer for this node.
-    json_pointer pointer() const { return m_pointer; }
 
     /**
      * @brief Wrap a Base instance around a specific JSON reference using a json_pointer.
@@ -407,6 +407,9 @@ private:
 
     friend class validation::SemanticValidator;
 };
+
+/// @brief Error handler type for reporting errors
+using ErrorHandler = std::function<void(const std::string& message, const Base& location)>;
 
 /**
  * @brief Represents an MNX object, encapsulating property access.

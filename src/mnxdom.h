@@ -56,3 +56,4 @@
 #include "Document.h"
 
 #include "validation/Validation.h"
+#include "util/IdMapping.h"

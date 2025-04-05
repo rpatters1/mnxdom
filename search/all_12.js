@@ -8,10 +8,9 @@ var searchData=
   ['timesignatureunit_5',['TimeSignatureUnit',['../namespacemnx.html#aa17c3a6f2b681e4c8e401dd6691dc8b3',1,'mnx']]],
   ['to_5fstring_6',['to_string',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#ab52c56dcd19296f78c3d76bf200f4133',1,'mnx::validation::ValidationResult::Error']]],
   ['todo_20list_7',['Todo List',['../todo.html',1,'']]],
-  ['tranposer_8',['Tranposer',['../classTranposer.html',1,'']]],
-  ['transposer_9',['transposer',['../classmusic__theory_1_1Transposer.html',1,'music_theory::Transposer'],['../classmusic__theory_1_1Transposer.html#a3d4fc218bf7454202664f23d13bbe3ca',1,'music_theory::Transposer::Transposer()']]],
-  ['tuplet_10',['tuplet',['../classmnx_1_1sequence_1_1Tuplet.html',1,'mnx::sequence::Tuplet'],['../classmnx_1_1sequence_1_1Tuplet.html#a61f06a9a3e85675504c25ad79a50365b',1,'mnx::sequence::Tuplet::Tuplet(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1sequence_1_1Tuplet.html#aa7b3396ac0fcb7ea304ab6c83d13ddbd',1,'mnx::sequence::Tuplet::Tuplet(Base &amp;parent, const std::string_view &amp;key, unsigned innerCount, const NoteValue::Initializer &amp;innerNoteValue, unsigned outerCount, const NoteValue::Initializer &amp;outerNoteValue)']]],
-  ['tupletdisplaysetting_11',['TupletDisplaySetting',['../namespacemnx.html#a9f98fd98d5106fa00063d9df29eea01f',1,'mnx']]],
-  ['twooctavedown_12',['TwoOctaveDown',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ead767ee99c57acbd528fc3cbdc558ab87',1,'mnx']]],
-  ['twooctaveup_13',['TwoOctaveUp',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea082f1d3db8ea79c5afd41d236029ad1c',1,'mnx']]]
+  ['transposer_8',['transposer',['../classmusic__theory_1_1Transposer.html#a77f3b85e9a4d9cfc42678c236fbd9ef6',1,'music_theory::Transposer::Transposer()'],['../classmusic__theory_1_1Transposer.html',1,'music_theory::Transposer']]],
+  ['tuplet_9',['tuplet',['../classmnx_1_1sequence_1_1Tuplet.html',1,'mnx::sequence::Tuplet'],['../classmnx_1_1sequence_1_1Tuplet.html#a61f06a9a3e85675504c25ad79a50365b',1,'mnx::sequence::Tuplet::Tuplet(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1sequence_1_1Tuplet.html#aa7b3396ac0fcb7ea304ab6c83d13ddbd',1,'mnx::sequence::Tuplet::Tuplet(Base &amp;parent, const std::string_view &amp;key, unsigned innerCount, const NoteValue::Initializer &amp;innerNoteValue, unsigned outerCount, const NoteValue::Initializer &amp;outerNoteValue)']]],
+  ['tupletdisplaysetting_10',['TupletDisplaySetting',['../namespacemnx.html#a9f98fd98d5106fa00063d9df29eea01f',1,'mnx']]],
+  ['twooctavedown_11',['TwoOctaveDown',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ead767ee99c57acbd528fc3cbdc558ab87',1,'mnx']]],
+  ['twooctaveup_12',['TwoOctaveUp',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea082f1d3db8ea79c5afd41d236029ad1c',1,'mnx']]]
 ];

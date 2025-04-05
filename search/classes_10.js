@@ -1,10 +1,22 @@
 var searchData=
 [
-  ['tempo_0',['Tempo',['../classmnx_1_1global_1_1Tempo.html',1,'mnx::global']]],
-  ['tenuto_1',['Tenuto',['../classmnx_1_1sequence_1_1Tenuto.html',1,'mnx::sequence']]],
-  ['tie_2',['Tie',['../classmnx_1_1sequence_1_1Tie.html',1,'mnx::sequence']]],
-  ['timesignature_3',['TimeSignature',['../classmnx_1_1TimeSignature.html',1,'mnx']]],
-  ['tranposer_4',['Tranposer',['../classTranposer.html',1,'']]],
-  ['transposer_5',['Transposer',['../classmusic__theory_1_1Transposer.html',1,'music_theory']]],
-  ['tuplet_6',['Tuplet',['../classmnx_1_1sequence_1_1Tuplet.html',1,'mnx::sequence']]]
+  ['score_0',['Score',['../classmnx_1_1Score.html',1,'mnx']]],
+  ['segno_1',['Segno',['../classmnx_1_1global_1_1Segno.html',1,'mnx::global']]],
+  ['semanticvalidationresult_2',['SemanticValidationResult',['../structmnx_1_1validation_1_1SemanticValidationResult.html',1,'mnx::validation']]],
+  ['sequence_3',['Sequence',['../classmnx_1_1Sequence.html',1,'mnx']]],
+  ['simpletype_4',['SimpleType',['../classmnx_1_1SimpleType.html',1,'mnx']]],
+  ['singlenotetremolo_5',['SingleNoteTremolo',['../classmnx_1_1sequence_1_1SingleNoteTremolo.html',1,'mnx::sequence']]],
+  ['slur_6',['Slur',['../classmnx_1_1sequence_1_1Slur.html',1,'mnx::sequence']]],
+  ['softaccent_7',['SoftAccent',['../classmnx_1_1sequence_1_1SoftAccent.html',1,'mnx::sequence']]],
+  ['space_8',['Space',['../classmnx_1_1sequence_1_1Space.html',1,'mnx::sequence']]],
+  ['spiccato_9',['Spiccato',['../classmnx_1_1sequence_1_1Spiccato.html',1,'mnx::sequence']]],
+  ['staccatissimo_10',['Staccatissimo',['../classmnx_1_1sequence_1_1Staccatissimo.html',1,'mnx::sequence']]],
+  ['staccato_11',['Staccato',['../classmnx_1_1sequence_1_1Staccato.html',1,'mnx::sequence']]],
+  ['staff_12',['Staff',['../classmnx_1_1layout_1_1Staff.html',1,'mnx::layout']]],
+  ['staffsource_13',['StaffSource',['../classmnx_1_1layout_1_1StaffSource.html',1,'mnx::layout']]],
+  ['stress_14',['Stress',['../classmnx_1_1sequence_1_1Stress.html',1,'mnx::sequence']]],
+  ['strongaccent_15',['StrongAccent',['../classmnx_1_1sequence_1_1StrongAccent.html',1,'mnx::sequence']]],
+  ['styleglobal_16',['StyleGlobal',['../classmnx_1_1global_1_1StyleGlobal.html',1,'mnx::global']]],
+  ['support_17',['Support',['../classmnx_1_1MnxMetaData_1_1Support.html',1,'mnx::MnxMetaData']]],
+  ['system_18',['System',['../classmnx_1_1score_1_1System.html',1,'mnx::score']]]
 ];

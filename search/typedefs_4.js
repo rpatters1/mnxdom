@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['value_5ftype_0',['value_type',['../classmnx_1_1SimpleType.html#a6720c66c57c31d1b480d84555eb208c8',1,'mnx::SimpleType::value_type'],['../classmnx_1_1Array.html#a370cd11de6dd31c99c2042d94f36a03f',1,'mnx::Array::value_type'],['../classmnx_1_1Dictionary.html#a9a1fad842c4c9bb847f482b0000f7523',1,'mnx::Dictionary::value_type']]]
+  ['json_0',['json',['../namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796',1,'mnx']]],
+  ['json_5fpointer_1',['json_pointer',['../namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc',1,'mnx']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jump_0',['Jump',['../classmnx_1_1global_1_1Jump.html',1,'mnx::global']]]
+  ['idmapping_0',['IdMapping',['../classmnx_1_1util_1_1IdMapping.html',1,'mnx::util']]]
 ];

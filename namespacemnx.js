@@ -29,6 +29,7 @@ var namespacemnx =
     [ "Sequence", "classmnx_1_1Sequence.html", "classmnx_1_1Sequence" ],
     [ "SimpleType", "classmnx_1_1SimpleType.html", "classmnx_1_1SimpleType" ],
     [ "TimeSignature", "classmnx_1_1TimeSignature.html", "classmnx_1_1TimeSignature" ],
+    [ "ErrorHandler", "namespacemnx.html#a1ecfb36b8c75b494f064bfd002c4c119", null ],
     [ "json", "namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796", null ],
     [ "json_pointer", "namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc", null ],
     [ "AccidentalEnclosureSymbol", "namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7d", [

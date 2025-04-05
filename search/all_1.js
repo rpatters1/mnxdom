@@ -12,5 +12,6 @@ var searchData=
   ['bracket_9',['Bracket',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485ab5c644787d66a37b2d0e7eefaf11506b',1,'mnx']]],
   ['brackets_10',['Brackets',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da16e127072878e35f572b8f19bdb4b686',1,'mnx']]],
   ['breathmark_11',['BreathMark',['../classmnx_1_1sequence_1_1BreathMark.html',1,'mnx::sequence']]],
-  ['breathmarksymbol_12',['BreathMarkSymbol',['../namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26',1,'mnx']]]
+  ['breathmarksymbol_12',['BreathMarkSymbol',['../namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26',1,'mnx']]],
+  ['buildidmapping_13',['buildIdMapping',['../classmnx_1_1Document.html#a45b6cf128cc6d711cdc8df498727b385',1,'mnx::Document']]]
 ];

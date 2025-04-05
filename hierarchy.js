@@ -86,7 +86,10 @@ var hierarchy =
     ] ],
     [ "mnx::EnumStringMapping< E, typename >", "structmnx_1_1EnumStringMapping.html", null ],
     [ "mnx::validation::ValidationResult::Error", "structmnx_1_1validation_1_1ValidationResult_1_1Error.html", null ],
-    [ "Tranposer", "classTranposer.html", null ],
+    [ "mnx::util::IdMapping", "classmnx_1_1util_1_1IdMapping.html", null ],
+    [ "std::runtime_error", null, [
+      [ "mnx::util::mapping_error", "classmnx_1_1util_1_1mapping__error.html", null ]
+    ] ],
     [ "music_theory::Transposer", "classmusic__theory_1_1Transposer.html", null ],
     [ "mnx::validation::ValidationResult", "structmnx_1_1validation_1_1ValidationResult.html", [
       [ "mnx::validation::SemanticValidationResult", "structmnx_1_1validation_1_1SemanticValidationResult.html", null ]

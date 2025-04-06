@@ -153,7 +153,7 @@ int global::Measure::calcMeasureIndex() const
     const auto parentArray = parent<Array<global::Measure>>();
     const auto prev = parentArray[arrayIndex - 1];
     const auto prevIndex = prev.index();
-    return prevIndex.value_or(prev.calcMeasureIndex());
+    return prevIndex.value_or(prev.calcMeasureIndex()) + 1;
 }
 
 // ***************************

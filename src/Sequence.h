@@ -321,7 +321,7 @@ public:
     /// @return The note if found, otherwise std::nullopt;
     std::optional<Note> findNote(const std::string& noteId) const;
 
-    static constexpr std::string_view ContentTypeValue = "event"; ///< type value that identifies the type within the content array
+    static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
 };
 
 /**

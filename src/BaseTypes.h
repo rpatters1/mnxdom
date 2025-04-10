@@ -632,13 +632,17 @@ public:
     }
 };
 
+class ContentArray;
 /// @brief Base class for objects that are elements of content arrays
 class ContentObject : public ArrayElementObject
 {
+protected:
+    static constexpr std::string_view ContentTypeValueDefault = "event"; ///< default type value that identifies the type within the content array
+
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_REQUIRED_PROPERTY(std::string, type);   ///< determines our type in the JSON
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(std::string, type, std::string(ContentTypeValueDefault));   ///< determines our type in the JSON
 
     /// @brief Retrieve an element as a specific type
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
@@ -659,6 +663,8 @@ private:
         }
         return T(root(), pointer());
     }
+
+    friend class ContentArray;
 };
 
 /**
@@ -708,7 +714,10 @@ public:
     T append(Args&&... args)
     {
         auto result = BaseArray::append<T>(std::forward<Args>(args)...);
-        result.set_type(std::string(T::ContentTypeValue));
+        /// @todo enable the if statement when the schema supports it
+        //if constexpr (T::ContentTypeValue != ContentObject::ContentTypeValueDefault) {
+            result.set_type(std::string(T::ContentTypeValue));            
+        //}
         return result;
     }
 

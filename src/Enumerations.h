@@ -198,9 +198,11 @@ enum class NoteValueBase
 enum class OttavaAmount : int
 {
     OctaveDown = -1,            ///< 8vb
-    TwoOctaveDown = -2,         ///< 15mb
+    TwoOctavesDown = -2,        ///< 15mb
+    ThreeOctavesDown = 3,       ///< 22mb
     OctaveUp = 1,               ///< 8va
-    TwoOctaveUp = 2              ///< 15ma
+    TwoOctavesUp = 2,           ///< 15ma
+    ThreeOctavesUp = 3          ///< 22ma
 };
 
 /**

@@ -51,7 +51,9 @@ public:
 
 private:
     void validateSequenceContent(const mnx::ContentArray& contentArray);
-    void validateBeams(const mnx::Array<mnx::part::Beam>& beam, unsigned depth);
+    void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
+    void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
+
 
     template <typename T, typename KeyType>
     std::optional<T> tryGetValue(const KeyType& key, const Base& location);
@@ -237,6 +239,20 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
         }
     }
 }
+void SemanticValidator::validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas)
+{    
+    for (const auto ottava : ottavas) {
+        if (auto endMeasure = tryGetValue<mnx::global::Measure>(ottava.end().measure(), ottava)) {
+            size_t thisMeasureIndex = measure.calcArrayIndex();
+            size_t endMeasureInbdex = endMeasure.value().calcArrayIndex();
+            if (thisMeasureIndex > endMeasureInbdex) {
+                addError("Ottava ends before it begins", ottava);
+            } else if (thisMeasureIndex == endMeasureInbdex && ottava.position().fraction() > ottava.end().position().fraction()) {
+                addError("Ottava ends before it begins (in the same measure)", ottava);
+            }
+        }
+    }
+}
 
 void SemanticValidator::validateParts()
 {
@@ -261,6 +277,9 @@ void SemanticValidator::validateParts()
             for (const auto measure : measures.value()) {
                 if (auto beams = measure.beams()) {
                     validateBeams(beams.value(), 1);
+                }
+                if (auto ottavas = measure.ottavas()) {
+                    validateOttavas(measure, ottavas.value());
                 }
             }
         }

@@ -68,6 +68,35 @@ public:
     friend class Base;
 };
 
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
+inline bool operator==(const Fraction& a, const Fraction& b)
+{
+    return a.numerator() * b.denominator() == b.numerator() * a.denominator();
+}
+
+inline bool operator!=(const Fraction& a, const Fraction& b) {
+    return !(a == b);
+}
+
+inline bool operator<(const Fraction& a, const Fraction& b) {
+    return a.numerator() * b.denominator() < b.numerator() * a.denominator();
+}
+
+inline bool operator<=(const Fraction& a, const Fraction& b) {
+    return !(b < a);
+}
+
+inline bool operator>(const Fraction& a, const Fraction& b) {
+    return b < a;
+}
+
+inline bool operator>=(const Fraction& a, const Fraction& b) {
+    return !(a < b);
+}
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
+
 /**
  * @class RhythmicPosition
  * @brief Represents a system on a page in a score.

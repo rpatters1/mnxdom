@@ -166,19 +166,15 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             if (const auto slurs = event.slurs()) {
                 for (const auto slur : slurs.value()) {
-                    if (slur.target()) {
-                        const auto targetEvent = tryGetValue<mnx::sequence::Event>(slur.target().value(), slur);
-                        if (slur.endNote()) {
-                            bool foundNote = false;
-                            if (targetEvent) {
-                                foundNote = targetEvent.value().findNote(slur.endNote().value()).has_value();
-                            }
-                            if (!foundNote) {
-                                addError("Slur contains end note \"" + slur.endNote().value() + "\" that does not exist in target.", slur);
-                            }
+                    const auto targetEvent = tryGetValue<mnx::sequence::Event>(slur.target(), slur);
+                    if (slur.endNote()) {
+                        bool foundNote = false;
+                        if (targetEvent) {
+                            foundNote = targetEvent.value().findNote(slur.endNote().value()).has_value();
                         }
-                    } else if (slur.endNote()) {
-                        addError("Slur contains end note \"" + slur.endNote().value() + "\", but no target was specified.", slur);
+                        if (!foundNote) {
+                            addError("Slur contains end note \"" + slur.endNote().value() + "\" that does not exist in target.", slur);
+                        }
                     }
                     if (slur.startNote()) {
                         if (!event.findNote(slur.startNote().value())) {

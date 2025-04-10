@@ -129,6 +129,74 @@ public:
 };
 
 /**
+ * @class Dynamic
+ * @brief Represents a dynamic positioned with the next event in the sequence.
+ */
+class Dynamic : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Space objects
+    Dynamic(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Space class as a child of a JSON element.
+    /// @param parent The parent class instance.
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param value the value of the dynamic. Currently the spec allows any string here.
+    /// @param position the position of the dynamic within the measure.
+    Dynamic(Base& parent, const std::string_view& key, const std::string& value, const Fraction::Initializer& position)
+        : ContentObject(parent, key)
+    {
+        set_value(value);
+        create_position(position);
+    }
+
+    MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
+    MNX_REQUIRED_CHILD(RhythmicPosition, position);                 ///< The rhythmic position of the dynamic within the measure.
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this dynamic applies to
+    MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
+    MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this dynamic applies to.
+};
+
+/**
+ * @class Ottava
+ * @brief Represents an ottava starting with the next event in the sequence
+ */
+class Ottava : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing Space objects
+    Ottava(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Space class as a child of a JSON element.
+    /// @param parent The parent class instance.
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param value the value (type) of ottava.
+    /// @param position the start position of the ottava.
+    /// @param endMeasureId The end measure of the ottava.
+    /// @param endPosition The position within the end measure of the ottava. (The ottava includes events that start at this position.)
+    Ottava(Base& parent, const std::string_view& key, OttavaAmount value, const Fraction::Initializer& position, int endMeasureId, const Fraction::Initializer& endPosition)
+        : ArrayElementObject(parent, key)
+    {
+        create_position(position);
+        create_end(endMeasureId, endPosition);
+        set_value(value);
+    }
+
+    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
+    /// @todo orient
+    MNX_REQUIRED_CHILD(RhythmicPosition, position);                 ///< The start position of the ottava
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
+    MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
+    MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this ottava applies to.
+};
+
+/**
  * @class PositionedClef
  * @brief Represents a positioned clef for the measure
  */
@@ -179,6 +247,8 @@ public:
 
     MNX_OPTIONAL_CHILD(Array<Beam>, beams);             ///< the beams in this measure
     MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);   ///< the clef changes in this bar
+    MNX_OPTIONAL_CHILD(Array<Dynamic>, dynamics);       ///< the dynamics in this measure
+    MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);         ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
 };
 

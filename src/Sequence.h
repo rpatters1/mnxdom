@@ -163,7 +163,7 @@ public:
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, endNote);            ///< the specific note ID this slur ends on
-    /// @todo lineType
+    MNX_OPTIONAL_PROPERTY(LineType, lineType);              ///< the type of line for the slur
     MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force slur direction (if present)
     MNX_OPTIONAL_PROPERTY(SlurTieSide, sideEnd);            ///< used to force slur's endpoint direction (if different than `side`)
     MNX_OPTIONAL_PROPERTY(std::string, startNote);          ///< the specific note ID this slur starts on

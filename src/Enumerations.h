@@ -128,6 +128,18 @@ enum class LayoutSymbol
 };
 
 /**
+ * @enum LineType
+ * @brief Specifies the visual style of a line in (specifically) slurs
+ */
+enum class LineType
+{
+    Solid,   ///< A solid (unbroken) line
+    Dashed,  ///< A dashed line
+    Dotted,  ///< A dotted line
+    Wavy     ///< A wavy line
+};
+
+/**
  * @enum LyricLineType
  * @brief The symbols available to bracket a staff group
  */

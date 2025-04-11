@@ -714,10 +714,9 @@ public:
     T append(Args&&... args)
     {
         auto result = BaseArray::append<T>(std::forward<Args>(args)...);
-        /// @todo enable the if statement when the schema supports it
-        //if constexpr (T::ContentTypeValue != ContentObject::ContentTypeValueDefault) {
+        if constexpr (T::ContentTypeValue != ContentObject::ContentTypeValueDefault) {
             result.set_type(std::string(T::ContentTypeValue));            
-        //}
+        }
         return result;
     }
 

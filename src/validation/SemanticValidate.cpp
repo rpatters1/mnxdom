@@ -107,6 +107,7 @@ void SemanticValidator::validateGlobal()
         }
     }
 }
+
 void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray)
 {
     for (const auto content : contentArray) {

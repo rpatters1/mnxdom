@@ -96,6 +96,13 @@ MNX_ENUM_MAPPING(LayoutSymbol, {
     { "bracket",    LayoutSymbol::Bracket }
 });
 
+MNX_ENUM_MAPPING(LineType, {
+    { "solid",      LineType::Solid },
+    { "dashed",     LineType::Dashed },
+    { "dotted",     LineType::Dotted },
+    { "wavy",       LineType::Wavy }
+});
+
 MNX_ENUM_MAPPING(LyricLineType, {
     { "end",        LyricLineType::End },
     { "middle",     LyricLineType::Middle },

@@ -128,6 +128,18 @@ enum class LayoutSymbol
 };
 
 /**
+ * @enum LineType
+ * @brief Specifies the visual style of a line in (specifically) slurs
+ */
+enum class LineType
+{
+    Solid,   ///< A solid (unbroken) line
+    Dashed,  ///< A dashed line
+    Dotted,  ///< A dotted line
+    Wavy     ///< A wavy line
+};
+
+/**
  * @enum LyricLineType
  * @brief The symbols available to bracket a staff group
  */
@@ -198,9 +210,11 @@ enum class NoteValueBase
 enum class OttavaAmount : int
 {
     OctaveDown = -1,            ///< 8vb
-    TwoOctaveDown = -2,         ///< 15mb
+    TwoOctavesDown = -2,        ///< 15mb
+    ThreeOctavesDown = 3,       ///< 22mb
     OctaveUp = 1,               ///< 8va
-    TwoOctaveUp = 2              ///< 15ma
+    TwoOctavesUp = 2,           ///< 15ma
+    ThreeOctavesUp = 3          ///< 22ma
 };
 
 /**

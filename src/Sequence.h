@@ -146,15 +146,28 @@ public:
 class Slur : public ArrayElementObject
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
+    /// @brief Constructor for existing Slur objects
+    Slur(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Slur class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param target The target note id of the slur.
+    Slur(Base& parent, const std::string_view& key, const std::string& target)
+        : ArrayElementObject(parent, key)
+    {
+        set_target(target);
+    }
 
     MNX_OPTIONAL_PROPERTY(std::string, endNote);            ///< the specific note ID this slur ends on
-    /// @todo lineType
-    MNX_OPTIONAL_PROPERTY(SlurTieEndLocation, location);    ///< location (incoming/outgoing) if there is no target
+    MNX_OPTIONAL_PROPERTY(LineType, lineType);              ///< the type of line for the slur
     MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force slur direction (if present)
     MNX_OPTIONAL_PROPERTY(SlurTieSide, sideEnd);            ///< used to force slur's endpoint direction (if different than `side`)
     MNX_OPTIONAL_PROPERTY(std::string, startNote);          ///< the specific note ID this slur starts on
-    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the event ID this slur ends on (if present)
+    MNX_REQUIRED_PROPERTY(std::string, target);             ///< the event ID this slur ends on (if present)
 };
 
 /**
@@ -174,7 +187,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param target The target note id of the tie. If omitted, the the tie is created as an l.v. tie.
-    Tie(Base& parent, const std::string_view& key, std::optional<std::string> target = std::nullopt)
+    Tie(Base& parent, const std::string_view& key, const std::optional<std::string>& target = std::nullopt)
         : ArrayElementObject(parent, key)
     {
         if (target) {
@@ -308,7 +321,7 @@ public:
     /// @return The note if found, otherwise std::nullopt;
     std::optional<Note> findNote(const std::string& noteId) const;
 
-    static constexpr std::string_view ContentTypeValue = "event"; ///< type value that identifies the type within the content array
+    static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
 };
 
 /**
@@ -327,46 +340,16 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element.
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param count the quantity of note values.
-    /// @param noteValue The note value.
-    Space(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
+    /// @param duration The duration of the space.
+    Space(Base& parent, const std::string_view& key, const Fraction::Initializer& duration)
         : ContentObject(parent, key)
     {
-        create_duration(count, noteValue);
+        create_duration(duration);
     }
 
-    MNX_REQUIRED_CHILD(NoteValueQuantity, duration);                ///< Symbolic duration of space to occupy.
+    MNX_REQUIRED_CHILD(Fraction, duration);               ///< Duration of space to occupy.
 
     static constexpr std::string_view ContentTypeValue = "space";   ///< type value that identifies the type within the content array
-};
-
-/**
- * @class Dynamic
- * @brief Represents a dynamic positioned with the next event in the sequence.
- */
-class Dynamic : public ContentObject
-{
-public:
-    /// @brief Constructor for existing Space objects
-    Dynamic(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
-    {
-    }
-
-    /// @brief Creates a new Space class as a child of a JSON element.
-    /// @param parent The parent class instance.
-    /// @param key The JSON key to use for embedding in parent.
-    /// @param value the value of the dynamic. Currently the spec allows any string here.
-    Dynamic(Base& parent, const std::string_view& key, const std::string& value)
-        : ContentObject(parent, key)
-    {
-        set_value(value);
-    }
-
-    MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
-    MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
-
-    static constexpr std::string_view ContentTypeValue = "dynamic"; ///< type value that identifies the type within the content array
 };
 
 /**
@@ -398,40 +381,6 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, slash, true);          ///< whether to show a slash on the grace note
 
     static constexpr std::string_view ContentTypeValue = "grace";   ///< type value that identifies the type within the content array
-};
-
-/**
- * @class Ottava
- * @brief Represents an ottava starting with the next event in the sequence
- */
-class Ottava : public ContentObject
-{
-public:
-    /// @brief Constructor for existing Space objects
-    Ottava(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
-    {
-    }
-
-    /// @brief Creates a new Space class as a child of a JSON element.
-    /// @param parent The parent class instance.
-    /// @param key The JSON key to use for embedding in parent.
-    /// @param value the value (type) of ottava.
-    /// @param endMeasureId The end measure of the ottava.
-    /// @param endPosition The position within the end measure of the ottava. (The ottava includes events that start at this position.)
-    Ottava(Base& parent, const std::string_view& key, OttavaAmount value, int endMeasureId, const Fraction::Initializer& endPosition)
-        : ContentObject(parent, key)
-    {
-        create_end(endMeasureId, endPosition);
-        set_value(value);
-    }
-
-    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
-    /// @todo orient
-    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
-    MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
-
-    static constexpr std::string_view ContentTypeValue = "ottava";  ///< type value that identifies the type within the content array
 };
 
 /**

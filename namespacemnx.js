@@ -82,6 +82,12 @@ var namespacemnx =
       [ "Brace", "namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485a7d55ac077f11ad55a67924103d450612", null ],
       [ "Bracket", "namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485ab5c644787d66a37b2d0e7eefaf11506b", null ]
     ] ],
+    [ "LineType", "namespacemnx.html#a28144cefaba3e535366ea178e05f7d9a", [
+      [ "Solid", "namespacemnx.html#a28144cefaba3e535366ea178e05f7d9aae41480b6bbfbf7407974a88d3d34f4fa", null ],
+      [ "Dashed", "namespacemnx.html#a28144cefaba3e535366ea178e05f7d9aaeb656e41b6da91494775ecf47a51da91", null ],
+      [ "Dotted", "namespacemnx.html#a28144cefaba3e535366ea178e05f7d9aa90c09393a4c0970bc9a6703ad527781c", null ],
+      [ "Wavy", "namespacemnx.html#a28144cefaba3e535366ea178e05f7d9aa0e9498bd18e441969b23cb70819abc3c", null ]
+    ] ],
     [ "LyricLineType", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afc", [
       [ "End", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afca87557f11575c0ad78e4e28abedc13b6e", null ],
       [ "Middle", "namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcab1ca34f82e83c52b010f86955f264e05", null ],
@@ -122,9 +128,11 @@ var namespacemnx =
     ] ],
     [ "OttavaAmount", "namespacemnx.html#a361b2c550a67bec829901cf59aec117e", [
       [ "OctaveDown", "namespacemnx.html#a361b2c550a67bec829901cf59aec117eab41646df7c887cc0e3647ba5f8b26afe", null ],
-      [ "TwoOctaveDown", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ead767ee99c57acbd528fc3cbdc558ab87", null ],
+      [ "TwoOctavesDown", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea3e464ec7a7d7edf51b4d6fcf2941da25", null ],
+      [ "ThreeOctavesDown", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea31a2a7d71ebbea3f891854a4f230ca11", null ],
       [ "OctaveUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea1713d26780742b9524fdc6e40c6ef6cd", null ],
-      [ "TwoOctaveUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea082f1d3db8ea79c5afd41d236029ad1c", null ]
+      [ "TwoOctavesUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea962c3ff88330f1f80321975efddcd744", null ],
+      [ "ThreeOctavesUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea3cbfeb45aff39f7d69abcb551d2badb7", null ]
     ] ],
     [ "SlurTieEndLocation", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858d", [
       [ "Outgoing", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858dae60340c5328bd1bdc50cd8f3efd83c88", null ],

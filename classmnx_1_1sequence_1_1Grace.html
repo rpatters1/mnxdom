@@ -142,10 +142,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac5a5ab3484b126c7637995aaced49cf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">whether to show a slash on the grace note  <br /></td></tr>
 <tr class="separator:ac5a5ab3484b126c7637995aaced49cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmnx_1_1ContentObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1ContentObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1ContentObject.html">mnx::ContentObject</a></td></tr>
-<tr class="memitem:aba2d24db0fed84da48b8eac67a6b2f29 inherit pub_methods_classmnx_1_1ContentObject" id="r_aba2d24db0fed84da48b8eac67a6b2f29"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_PROPERTY</b> (std::string, type)</td></tr>
-<tr class="memdesc:aba2d24db0fed84da48b8eac67a6b2f29 inherit pub_methods_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">determines our type in the JSON <br /></td></tr>
-<tr class="separator:aba2d24db0fed84da48b8eac67a6b2f29 inherit pub_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32e118e7e9277021bcd684919bdbf18d inherit pub_methods_classmnx_1_1ContentObject" id="r_a32e118e7e9277021bcd684919bdbf18d"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</b> (std::string, type, std::string(<a class="el" href="classmnx_1_1ContentObject.html#aaabcf2ab2d34b87d60a3b59bbff38d9f">ContentTypeValueDefault</a>))</td></tr>
+<tr class="memdesc:a32e118e7e9277021bcd684919bdbf18d inherit pub_methods_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">determines our type in the JSON <br /></td></tr>
+<tr class="separator:a32e118e7e9277021bcd684919bdbf18d inherit pub_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb9adbcff9476efbc56af33463c63cc4 inherit pub_methods_classmnx_1_1ContentObject" id="r_abb9adbcff9476efbc56af33463c63cc4"><td class="memTemplParams" colspan="2">
 template&lt;typename T , std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1ContentObject.html">ContentObject</a>, T &gt;, int &gt;  = 0&gt; </td></tr>
 <tr class="memitem:abb9adbcff9476efbc56af33463c63cc4 inherit pub_methods_classmnx_1_1ContentObject"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> () const</td></tr>
@@ -244,6 +244,11 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 <tr class="memitem:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a838e5bd5c02fd07b7acbfe5cec3acc93">getOptionalChild</a> (const std::string_view &amp;key) const</td></tr>
 <tr class="memdesc:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves an optional child node.  <br /></td></tr>
 <tr class="separator:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classmnx_1_1ContentObject"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classmnx_1_1ContentObject')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classmnx_1_1ContentObject.html">mnx::ContentObject</a></td></tr>
+<tr class="memitem:aaabcf2ab2d34b87d60a3b59bbff38d9f inherit pro_static_attribs_classmnx_1_1ContentObject" id="r_aaabcf2ab2d34b87d60a3b59bbff38d9f"><td class="memItemLeft" align="right" valign="top">
+static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>ContentTypeValueDefault</b> = &quot;event&quot;</td></tr>
+<tr class="memdesc:aaabcf2ab2d34b87d60a3b59bbff38d9f inherit pro_static_attribs_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">default type value that identifies the type within the content array <br /></td></tr>
+<tr class="separator:aaabcf2ab2d34b87d60a3b59bbff38d9f inherit pro_static_attribs_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a grace note sequence within a sequence. </p>

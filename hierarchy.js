@@ -13,10 +13,9 @@ var hierarchy =
           [ "mnx::ContentObject", "classmnx_1_1ContentObject.html", [
             [ "mnx::layout::Group", "classmnx_1_1layout_1_1Group.html", null ],
             [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ],
-            [ "mnx::sequence::Dynamic", "classmnx_1_1sequence_1_1Dynamic.html", null ],
+            [ "mnx::part::Dynamic", "classmnx_1_1part_1_1Dynamic.html", null ],
             [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
             [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
-            [ "mnx::sequence::Ottava", "classmnx_1_1sequence_1_1Ottava.html", null ],
             [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
             [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ]
           ] ],
@@ -32,6 +31,7 @@ var hierarchy =
           [ "mnx::part::Beam", "classmnx_1_1part_1_1Beam.html", null ],
           [ "mnx::part::BeamHook", "classmnx_1_1part_1_1BeamHook.html", null ],
           [ "mnx::part::Measure", "classmnx_1_1part_1_1Measure.html", null ],
+          [ "mnx::part::Ottava", "classmnx_1_1part_1_1Ottava.html", null ],
           [ "mnx::part::PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", null ],
           [ "mnx::score::LayoutChange", "classmnx_1_1score_1_1LayoutChange.html", null ],
           [ "mnx::score::MultimeasureRest", "classmnx_1_1score_1_1MultimeasureRest.html", null ],

@@ -321,6 +321,9 @@ public:
     /// @return The note if found, otherwise std::nullopt;
     std::optional<Note> findNote(const std::string& noteId) const;
 
+    /// @brief Returns true if this event is part of a grace note sequence.
+    bool isGrace() const;
+
     static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
 };
 

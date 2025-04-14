@@ -205,6 +205,7 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             addError("Beam contains only one or fewer events.", beam);
         }
         std::unordered_set<std::string> ids;
+        std::optional<bool> isGraceBeam;
         for (const auto id : beam.events()) {
             if (ids.find(id) != ids.end()) {
                 addError("Event \"" + id + "\" is duplicated in beam.", beam);
@@ -212,6 +213,13 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             }
             ids.emplace(id);
             if (const auto event = tryGetValue<mnx::sequence::Event>(id, beam)) {
+                if (isGraceBeam.has_value()) {
+                    if (isGraceBeam.value() != event.value().isGrace()) {
+                        addError("Event \"" + id + "\" attempts to beam a grace note to a non grace note.", beam);
+                    }
+                } else {
+                    isGraceBeam = event.value().isGrace();
+                }
                 if (auto noteValue = event.value().duration()) {
                     if (depth > noteValue.value().calcNumberOfFlags()) {
                         addError("Event \"" + id + "\" cannot have " + std::to_string(depth) + " beams", beam);

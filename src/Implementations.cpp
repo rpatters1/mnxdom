@@ -172,6 +172,16 @@ std::optional<sequence::Note> sequence::Event::findNote(const std::string& noteI
     return std::nullopt;
 }
 
+bool sequence::Event::isGrace() const
+{
+    // Note that the top level sequence container is not a ContentObject,
+    // but it does not matter for the purposes of this function. The type()
+    // function returns a value other than "grace" in that case, which is all
+    // that matters here.
+    auto container = this->container<mnx::ContentObject>();
+    return container.type() == mnx::sequence::Grace::ContentTypeValue;
+}
+
 // ***************************
 // ***** sequence::Pitch *****
 // ***************************

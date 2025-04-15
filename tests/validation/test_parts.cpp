@@ -82,3 +82,25 @@ TEST(Parts, EnharmonicTies)
     auto doc = mnx::Document::create(inputPath);
     EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
 }
+
+TEST(Parts, BeamToGraceError)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "8th_plus_grace.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Event \"ev7\" attempts to beam a grace note to a non grace note",
+        "Event \"ev8\" attempts to beam a grace note to a non grace note"
+    });
+}
+
+TEST(Parts, BeamAcrossVoicesError)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "layer1-2.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Event \"ev10\" attempts to beam events from different voices together",
+        "Event \"ev11\" attempts to beam events from different voices together"
+    });
+}

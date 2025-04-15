@@ -28,25 +28,40 @@ namespace mnx {
 // ***** Base *****
 // ****************
 
-std::optional<Part> Base::getPart() const
+template <typename T>
+struct EnclosingKey
 {
-    const std::string prefix = "/parts/";
-    const std::string ptrStr = m_pointer.to_string();
+    static_assert(sizeof(T) == 0, "EnclosingKey<T> must be specialized.");
+};
 
-    if (ptrStr.rfind(prefix, 0) == 0) {  // prefix match at position 0
-        const std::string rest = ptrStr.substr(prefix.size());
-        const std::size_t slashPos = rest.find('/');
-        const std::string indexStr = (slashPos == std::string::npos) ? rest : rest.substr(0, slashPos);
+template <>
+struct EnclosingKey<mnx::Part> {
+    static constexpr std::string_view value = "/parts/"; // prefix
+};
+template std::optional<mnx::Part> Base::getEnclosingElement<mnx::Part>() const;
 
-        try {
-            std::size_t index = std::stoul(indexStr);
-            return mnx::Part(m_root, json_pointer(prefix + indexStr));
-        } catch (...) {
-            return std::nullopt;
-        }
+template <>
+struct EnclosingKey<mnx::Sequence> {
+    static constexpr std::string_view value = "sequences/"; // just a key
+};
+template std::optional<mnx::Sequence> Base::getEnclosingElement<mnx::Sequence>() const;
+
+template <typename T>
+std::optional<T> Base::getEnclosingElement() const
+{
+    constexpr std::string_view key = EnclosingKey<T>::value;
+    std::string s = m_pointer.to_string();
+
+    std::size_t pos = s.find(key);
+    if (pos == std::string::npos)
+        return std::nullopt;
+
+    // Advance past the key to get the start of the index
+    std::size_t after = s.find('/', pos + key.length());
+    if (after == std::string::npos) {
+        return T(m_root, json_pointer(s));  // key was last element
     }
-
-    return std::nullopt;
+    return T(m_root, json_pointer(s.substr(0, after)));
 }
 
 // ********************

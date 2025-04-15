@@ -140,7 +140,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                                     addError("Tie has both a target and is an lv tie.", tie);
                                 }
                                 if (const auto targetNote = tryGetValue<mnx::sequence::Note>(target.value(), tie)) {
-                                    if (targetNote.value().getPart().value().calcArrayIndex() != note.getPart().value().calcArrayIndex()) {
+                                    if (targetNote.value().getEnclosingElement<Part>().value().calcArrayIndex() != note.getEnclosingElement<Part>().value().calcArrayIndex()) {
                                         addError("Tie points to a note in a different part.", tie);
                                     }
                                     if (!note.pitch().isSamePitch(targetNote.value().pitch())) {
@@ -206,6 +206,7 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
         }
         std::unordered_set<std::string> ids;
         std::optional<bool> isGraceBeam;
+        std::optional<std::string> voice;
         for (const auto id : beam.events()) {
             if (ids.find(id) != ids.end()) {
                 addError("Event \"" + id + "\" is duplicated in beam.", beam);
@@ -219,6 +220,18 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                     }
                 } else {
                     isGraceBeam = event.value().isGrace();
+                }
+                auto sequence = event.value().getEnclosingElement<mnx::Sequence>();
+                if (sequence.has_value()) {
+                    if (voice.has_value()) {
+                        if(voice.value() != sequence.value().voice_or("")) {
+                            addError("Event \"" + id + "\" attempts to beam events from different voices together.", beam);
+                        }
+                    } else {
+                        voice = sequence.value().voice_or("");
+                    }
+                } else {
+                    addError("Event \"" + id + "\" is not part of a sequence.", event.value());
                 }
                 if (auto noteValue = event.value().duration()) {
                     if (depth > noteValue.value().calcNumberOfFlags()) {

@@ -197,6 +197,15 @@ bool sequence::Event::isGrace() const
     return container.type() == mnx::sequence::Grace::ContentTypeValue;
 }
 
+Sequence sequence::Event::getSequence() const
+{
+    auto result = getEnclosingElement<Sequence>();
+    MNX_ASSERT_IF(!result.has_value()) {
+        throw std::logic_error("Event \"" + id().value_or("") + "\" at \"" + pointer().to_string() + "\" is not part of a sequence.");
+    }
+    return result.value();
+}
+
 // ***************************
 // ***** sequence::Pitch *****
 // ***************************

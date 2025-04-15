@@ -28,6 +28,8 @@
 
 namespace mnx {
 
+class Sequence; // forward declaration
+
 /**
  * @namespace mnx::sequence
  * @brief classes related to sequences in the part measure
@@ -323,6 +325,10 @@ public:
 
     /// @brief Returns true if this event is part of a grace note sequence.
     bool isGrace() const;
+
+    /// @brief Returns the @ref Sequence instance for this event
+    /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
+    Sequence getSequence() const;
 
     static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
 };

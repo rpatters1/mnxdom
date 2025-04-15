@@ -221,17 +221,12 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                 } else {
                     isGraceBeam = event.value().isGrace();
                 }
-                auto sequence = event.value().getEnclosingElement<mnx::Sequence>();
-                if (sequence.has_value()) {
-                    if (voice.has_value()) {
-                        if(voice.value() != sequence.value().voice_or("")) {
-                            addError("Event \"" + id + "\" attempts to beam events from different voices together.", beam);
-                        }
-                    } else {
-                        voice = sequence.value().voice_or("");
+                if (voice.has_value()) {
+                    if(voice.value() != event.value().getSequence().voice_or("")) {
+                        addError("Event \"" + id + "\" attempts to beam events from different voices together.", beam);
                     }
                 } else {
-                    addError("Event \"" + id + "\" is not part of a sequence.", event.value());
+                    voice = event.value().getSequence().voice_or("");
                 }
                 if (auto noteValue = event.value().duration()) {
                     if (depth > noteValue.value().calcNumberOfFlags()) {

@@ -28,6 +28,8 @@ namespace mnx {
 // ***** Base *****
 // ****************
 
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
 template <typename T>
 struct EnclosingKey
 {
@@ -45,6 +47,8 @@ struct EnclosingKey<mnx::Sequence> {
     static constexpr std::string_view value = "sequences/"; // just a key
 };
 template std::optional<mnx::Sequence> Base::getEnclosingElement<mnx::Sequence>() const;
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 template <typename T>
 std::optional<T> Base::getEnclosingElement() const

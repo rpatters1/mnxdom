@@ -1,6 +1,6 @@
 var classmnx_1_1NoteValue =
 [
-    [ "Initializer", "classmnx_1_1NoteValue.html#abfd215f5ff81e5a9314609c470108ab0", null ],
+    [ "Initializer", "classmnx_1_1NoteValue_1_1Initializer.html", null ],
     [ "NoteValue", "classmnx_1_1NoteValue.html#abc4122556de2cbd54a76fd560406afd7", null ],
     [ "NoteValue", "classmnx_1_1NoteValue.html#a4bb68c500cca49324758a229483afb37", null ],
     [ "calcNumberOfFlags", "classmnx_1_1NoteValue.html#a4784f5595a324f3125c53c8ae0187bac", null ],

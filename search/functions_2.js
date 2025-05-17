@@ -8,7 +8,7 @@ var searchData=
   ['checkindex_5',['checkIndex',['../classmnx_1_1Array.html#a05a20cc19658a6cae21da5ed73d07f7c',1,'mnx::Array']]],
   ['chromatictranspose_6',['chromaticTranspose',['../classmusic__theory_1_1Transposer.html#a316564e5ceb34e7aaa072df6677b1ef3',1,'music_theory::Transposer']]],
   ['clear_7',['clear',['../classmnx_1_1Array.html#abb2b9332b4d17e94fa7be78d42be56c5',1,'mnx::Array::clear()'],['../classmnx_1_1Dictionary.html#af964e19b6398456bf417982fc42a7549',1,'mnx::Dictionary::clear()']]],
-  ['clef_8',['clef',['../classmnx_1_1part_1_1Clef.html#acdb595f30c9010c001057cced35830fa',1,'mnx::part::Clef::Clef(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1part_1_1Clef.html#a531a417e61339935e736f1d7f98afbb5',1,'mnx::part::Clef::Clef(Base &amp;parent, const std::string_view &amp;key, int staffPosition, ClefSign clefSign, std::optional&lt; int &gt; octaveAdjustment=std::nullopt)']]],
+  ['clef_8',['clef',['../classmnx_1_1part_1_1Clef.html#acdb595f30c9010c001057cced35830fa',1,'mnx::part::Clef::Clef(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1part_1_1Clef.html#af4f7b01e89cc0b7f2a31527acec04064',1,'mnx::part::Clef::Clef(Base &amp;parent, const std::string_view &amp;key, ClefSign clefSign, int staffPosition, std::optional&lt; int &gt; octaveAdjustment=std::nullopt)']]],
   ['container_9',['container',['../classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291',1,'mnx::ArrayElementObject']]],
   ['create_10',['create',['../classmnx_1_1Document.html#a5494915a76ef3b0d4c91c08ddb3a1f32',1,'mnx::Document']]]
 ];

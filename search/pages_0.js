@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['document_20model_0',['MUSX Document Model',['../index.html',1,'']]]
+  ['document_20model_0',['MNX Document Model',['../index.html',1,'']]]
 ];

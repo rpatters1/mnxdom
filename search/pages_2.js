@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['model_0',['MUSX Document Model',['../index.html',1,'']]],
-  ['musx_20document_20model_1',['MUSX Document Model',['../index.html',1,'']]]
+  ['mnx_20document_20model_0',['MNX Document Model',['../index.html',1,'']]],
+  ['model_1',['MNX Document Model',['../index.html',1,'']]]
 ];

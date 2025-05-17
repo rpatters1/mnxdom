@@ -294,7 +294,7 @@ public:
     /// @brief Creates a new Event class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param noteValue The note value
+    /// @param noteValue The note value. If omitted, the event is set to full measure.
     Event(Base& parent, const std::string_view& key, std::optional<NoteValue::Initializer> noteValue = std::nullopt)
         : ContentObject(parent, key)
     {
@@ -310,7 +310,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
-    MNX_OPTIONAL_PROPERTY(bool, measure);                   ///< Whether this event is a whole-measure event.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, measure, false); ///< Whether this event is a whole-measure event.
     MNX_OPTIONAL_CHILD(Array<Note>, notes);                 ///< Note array
     /// @todo `orient`
     MNX_OPTIONAL_CHILD(Rest, rest);                         ///< indicates this event is a rest.

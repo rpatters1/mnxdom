@@ -56,6 +56,7 @@ public:
     /**
      * @brief Constructs the index for a given document.
      * @param documentRoot Shared pointer to the document's JSON root.
+     * @param errorHandler A optional callback function for handling errors.
      */
     explicit IdMapping(std::shared_ptr<json> documentRoot, const std::optional<ErrorHandler>& errorHandler = std::nullopt)
         : m_root(documentRoot), m_errorHandler(errorHandler) {}

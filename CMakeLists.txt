@@ -8,8 +8,18 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type (Release/Debug)" FORCE)
 endif()
 
-# Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
+# Set the C++ standard
+if(NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 23)
+endif()
+
+# Enforce at least C++17, allow higher if set by the parent
+if(CMAKE_CXX_STANDARD LESS 17)
+    message(FATAL_ERROR "Mnxdom requires at least C++17. Current: C++${CMAKE_CXX_STANDARD}")
+endif()
+
+message(STATUS "Mnxdom C++ standard: ${CMAKE_CXX_STANDARD}")
+
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -36,12 +46,12 @@ target_include_directories(mnxdom PUBLIC src)
 # Disable building tests for nlohmann_json
 set(JSON_BuildTests OFF CACHE BOOL "Do not build tests for nlohmann_json")
 # Define the version of nlohmann_json to use
-set(NLOHMANN_JSON_VERSION v3.11.3)
+set(NLOHMANN_JSON_VERSION v3.12.0)
 # Fetch nlohmann_json
 FetchContent_Declare(
     nlohmann_json
     URL https://github.com/nlohmann/json/releases/download/${NLOHMANN_JSON_VERSION}/json.tar.xz
-    URL_HASH SHA256=d6c65aca6b1ed68e7a182f4757257b107ae403032760ed6ef121c9d55e81757d  # Verify the hash matches the tarball
+    URL_HASH SHA256=42f6e95cad6ec532fd372391373363b62a14af6d771056dbfc86160e6dfff7aa  # Verify the hash matches the tarball
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 FetchContent_MakeAvailable(nlohmann_json)

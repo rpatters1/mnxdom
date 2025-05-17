@@ -140,7 +140,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                                     addError("Tie has both a target and is an lv tie.", tie);
                                 }
                                 if (const auto targetNote = tryGetValue<mnx::sequence::Note>(target.value(), tie)) {
-                                    if (targetNote.value().getPart().value().calcArrayIndex() != note.getPart().value().calcArrayIndex()) {
+                                    if (targetNote.value().getEnclosingElement<Part>().value().calcArrayIndex() != note.getEnclosingElement<Part>().value().calcArrayIndex()) {
                                         addError("Tie points to a note in a different part.", tie);
                                     }
                                     if (!note.pitch().isSamePitch(targetNote.value().pitch())) {
@@ -205,6 +205,8 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             addError("Beam contains only one or fewer events.", beam);
         }
         std::unordered_set<std::string> ids;
+        std::optional<bool> isGraceBeam;
+        std::optional<std::string> voice;
         for (const auto id : beam.events()) {
             if (ids.find(id) != ids.end()) {
                 addError("Event \"" + id + "\" is duplicated in beam.", beam);
@@ -212,6 +214,20 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             }
             ids.emplace(id);
             if (const auto event = tryGetValue<mnx::sequence::Event>(id, beam)) {
+                if (isGraceBeam.has_value()) {
+                    if (isGraceBeam.value() != event.value().isGrace()) {
+                        addError("Event \"" + id + "\" attempts to beam a grace note to a non grace note.", beam);
+                    }
+                } else {
+                    isGraceBeam = event.value().isGrace();
+                }
+                if (voice.has_value()) {
+                    if(voice.value() != event.value().getSequence().voice_or("")) {
+                        addError("Event \"" + id + "\" attempts to beam events from different voices together.", beam);
+                    }
+                } else {
+                    voice = event.value().getSequence().voice_or("");
+                }
                 if (auto noteValue = event.value().duration()) {
                     if (depth > noteValue.value().calcNumberOfFlags()) {
                         addError("Event \"" + id + "\" cannot have " + std::to_string(depth) + " beams", beam);

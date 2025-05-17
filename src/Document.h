@@ -140,7 +140,7 @@ public:
         jsonFile.exceptions(std::ios::failbit | std::ios::badbit);
         jsonFile.open(inputPath);
         if (!jsonFile.is_open()) {
-            throw std::runtime_error("Unable to open JSON file: " + inputPath.u8string());
+            throw std::runtime_error("Unable to open JSON file: " + inputPath.string());
         }
         return Document(jsonFile);
     }
@@ -157,7 +157,7 @@ public:
         file.exceptions(std::ofstream::failbit | std::ofstream::badbit);
         file.open(outputPath, std::ios::out | std::ios::binary);
         if (!file.is_open()) {
-            throw std::runtime_error("Unable to write to JSON file: " + outputPath.u8string());
+            throw std::runtime_error("Unable to write to JSON file: " + outputPath.string());
         }
         file << root()->dump(indentSpaces.value_or(-1));
         file.close();

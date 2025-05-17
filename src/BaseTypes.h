@@ -198,7 +198,6 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 
 class Object;
 template <typename T> class Array;
-class Part;
 
 namespace validation {
 class SemanticValidator;
@@ -262,8 +261,11 @@ public:
         return T(m_root, m_pointer.parent_pointer());
     }
 
-    /// @brief Returns the part for this instance, or std::nullopt if the instance is not a subelement of a part.
-    std::optional<Part> getPart() const;
+    /// @brief Returns the enclosing array element for this instance.
+    /// @tparam T The type to find. A limited list of types are supported, including @ref Part and @ref Sequence. Others may be added as needed.
+    /// @return the enclosing element, or std::nullopt if not found.
+    template <typename T>
+    std::optional<T> getEnclosingElement() const;
 
     /// @brief Returns the json_pointer for this node.
     json_pointer pointer() const { return m_pointer; }

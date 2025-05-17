@@ -2,7 +2,7 @@
 
 Document object model for the MNX music interchange format. It is compatible with the C++17 standard.
 
-- compatible with the C++17 standard.
+- compatible with the C++17 standard and higher. (Currently tested with C++23.)
 - uses [nlohmann\_json](https://github.com/nlohmann/json) as its JSON parser.
 - allows structured access to MNX objects, without the need of quoted strings.
 - validates against the MNX schema using [json-schema-validator](https://github.com/pboettch/json-schema-validator).
@@ -10,6 +10,26 @@ Document object model for the MNX music interchange format. It is compatible wit
 ### Documentation
 
 [MNX Document Model for C++17](https://rpatters1.github.io/mnxdom/)
+
+Here is a simple example of code that creates the [Hello World]() MNX JSON file.
+
+```cpp
+// create new document
+auto doc = mnx::Document(); // automatically creates required child nodes
+// global
+auto globalMeasure = doc.global().measures().append();
+// required fields are supplied when objects are created
+globalMeasure.create_barline(mnx::BarlineType::Regular);
+globalMeasure.create_time(4, mnx::TimeSignatureUnit::Quarter);
+// parts
+auto part = doc.parts().append();
+auto measure = part.create_measures().append();
+measure.create_clefs().append(mnx::ClefSign::GClef, -2);
+auto event = measure.sequences().append<mnx::sequence::Event>(mnx::NoteValueBase::Whole);
+event.create_notes().append(mnx::NoteStep::C, 4);
+// save to file
+doc.save("hello_world.json", 4); // indent with 4 spaces
+```
 
 ### Setup Instructions
 

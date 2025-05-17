@@ -11,7 +11,7 @@ Document object model for the MNX music interchange format. It is compatible wit
 
 [MNX Document Model for C++17](https://rpatters1.github.io/mnxdom/)
 
-Here is a simple example of code that creates the [Hello World]() MNX JSON file.
+Here is a simple example of code that creates the [Hello World](https://w3c.github.io/mnx/docs/mnx-reference/examples/hello-world/) MNX JSON file.
 
 ```cpp
 // create new document

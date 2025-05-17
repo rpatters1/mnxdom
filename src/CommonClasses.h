@@ -189,7 +189,14 @@ public:
 class NoteValue : public Object
 {
 public:
-    using Initializer = std::pair<NoteValueBase, unsigned>; ///< used to initialize a NoteValue instance.
+    class Initializer
+    {
+    public:
+        NoteValueBase base;
+        unsigned dots;
+
+        Initializer(NoteValueBase inBase, unsigned inDots = 0) : base(inBase), dots(inDots) {}
+    };
 
     /// @brief Constructor for existing NoteValue instances
     NoteValue(const std::shared_ptr<json>& root, json_pointer pointer)
@@ -204,9 +211,9 @@ public:
     NoteValue(Base& parent, const std::string_view& key, const Initializer& noteValue)
         : Object(parent, key)
     {
-        set_base(noteValue.first);
-        if (noteValue.second) {
-            set_dots(noteValue.second);
+        set_base(noteValue.base);
+        if (noteValue.dots) {
+            set_dots(noteValue.dots);
         }
     }
 

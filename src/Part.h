@@ -110,11 +110,11 @@ public:
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    Clef(Base& parent, const std::string_view& key, int staffPosition, ClefSign clefSign, std::optional<int> octaveAdjustment = std::nullopt)
+    Clef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<int> octaveAdjustment = std::nullopt)
         : Object(parent, key)
     {
-        set_staffPosition(staffPosition);
         set_sign(clefSign);
+        set_staffPosition(staffPosition);
         if (octaveAdjustment.has_value()) {
             set_octave(octaveAdjustment.value());
         }
@@ -215,10 +215,10 @@ public:
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    PositionedClef(Base& parent, const std::string_view& key, int staffPosition, ClefSign clefSign, std::optional<int> octaveAdjustment = std::nullopt)
+    PositionedClef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<int> octaveAdjustment = std::nullopt)
         : ArrayElementObject(parent, key)
     {
-        create_clef(staffPosition, clefSign, octaveAdjustment);
+        create_clef(clefSign, staffPosition, octaveAdjustment);
     }
 
     MNX_REQUIRED_CHILD(Clef, clef);                     ///< the beats per minute of this tempo marking

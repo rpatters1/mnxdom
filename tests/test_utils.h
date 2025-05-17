@@ -33,6 +33,11 @@ inline std::filesystem::path getInputPath()
 inline std::filesystem::path getOutputPath()
 { return std::filesystem::current_path() / "outputs"; }
 
+inline std::string pathString(const std::filesystem::path& path) {
+    auto s = path.u8string();
+    return std::string(reinterpret_cast<const char*>(s.data()), s.size());
+}
+
 void setupTestDataPaths();
 void copyInputToOutput(const std::string& fileName, std::filesystem::path& outputPath);
 void compareFiles(const std::filesystem::path& path1, const std::filesystem::path& path2);

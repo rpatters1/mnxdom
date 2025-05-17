@@ -29,8 +29,8 @@ void setupTestDataPaths()
     auto workingDir = std::filesystem::current_path();
     ASSERT_TRUE(std::filesystem::is_directory(workingDir));
     ASSERT_GE(std::distance(workingDir.begin(), workingDir.end()), 2);
-    ASSERT_EQ((--workingDir.end())->u8string(), "data");
-    ASSERT_EQ((--workingDir.parent_path().end())->u8string(), "tests");
+    ASSERT_EQ((--workingDir.end())->string(), "data");
+    ASSERT_EQ((--workingDir.parent_path().end())->string(), "tests");
     ASSERT_TRUE(std::filesystem::exists(getInputPath()));
     ASSERT_NO_THROW({
         auto outputDir = getOutputPath();
@@ -56,8 +56,8 @@ void copyInputToOutput(const std::string& fileName, std::filesystem::path& outpu
 
 void compareFiles(const std::filesystem::path& path1, const std::filesystem::path& path2)
 {
-    ASSERT_TRUE(std::filesystem::is_regular_file(path1)) << "unable to find " << path1.u8string();
-    ASSERT_TRUE(std::filesystem::is_regular_file(path2)) << "unable to find " << path2.u8string();
+    ASSERT_TRUE(std::filesystem::is_regular_file(path1)) << "unable to find " << pathString(path1);
+    ASSERT_TRUE(std::filesystem::is_regular_file(path2)) << "unable to find " << pathString(path2);
     std::ifstream file1(path1);
     ASSERT_TRUE(file1);
     std::ifstream file2(path2);
@@ -65,7 +65,7 @@ void compareFiles(const std::filesystem::path& path1, const std::filesystem::pat
     char c1, c2;
     while (file1.get(c1)) {
         ASSERT_TRUE(file2.get(c2));
-        ASSERT_EQ(c1, c2) << "comparing " << path1.u8string() << " and " << path2.u8string();
+        ASSERT_EQ(c1, c2) << "comparing " << pathString(path1) << " and " << pathString(path2);
     }
     EXPECT_FALSE(file2.get(c2));
 }
@@ -80,21 +80,21 @@ void assertStringsInFile(const std::vector<std::string>& targets, const std::fil
         auto matchingFile = std::find_if(begin(it), end(it), [&extension](const std::filesystem::directory_entry& entry) {
             return entry.is_regular_file() && entry.path().extension() == extension;
         });
-        ASSERT_NE(matchingFile, std::filesystem::end(it)) << "No file with extension " << extension.u8string() << " found in directory: " << filePath.u8string();
+        ASSERT_NE(matchingFile, std::filesystem::end(it)) << "No file with extension " << pathString(extension) << " found in directory: " << pathString(filePath);
         actualFilePath = matchingFile->path();
     } else {
-        FAIL() << "Path is neither a regular file nor a directory: " << filePath.u8string();
+        FAIL() << "Path is neither a regular file nor a directory: " << pathString(filePath);
     }
     std::ifstream file(actualFilePath, std::ios::binary);
-    ASSERT_TRUE(file.is_open()) << "failed to open file: " << actualFilePath.u8string();
+    ASSERT_TRUE(file.is_open()) << "failed to open file: " << pathString(actualFilePath);
     std::string fileContents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     for (const auto& target : targets) {
         if (target.size() > 1 && target[0] == '!') {
             EXPECT_EQ(fileContents.find(target.substr(1)), std::string::npos)
-                << "String \"" << target.substr(1) << "\" was not expected but was found in file: " << actualFilePath.u8string();
+                << "String \"" << target.substr(1) << "\" was not expected but was found in file: " << pathString(actualFilePath);
         } else {
             EXPECT_NE(fileContents.find(target), std::string::npos)
-                << "String \"" << target << "\" not found in file: " << actualFilePath.u8string();
+                << "String \"" << target << "\" not found in file: " << pathString(actualFilePath);
         }
     }
 }
@@ -102,10 +102,10 @@ void assertStringsInFile(const std::vector<std::string>& targets, const std::fil
 bool validateSchema(const mnx::Document& doc, const std::filesystem::path& filePath)
 {
     auto schemaResult = mnx::validation::schemaValidate(doc);
-    EXPECT_TRUE(schemaResult) << "schema validation failed for " << filePath.filename();
+    EXPECT_TRUE(schemaResult) << "schema validation failed for " << pathString(filePath);
     if (!schemaResult) {
         for (const auto& err : schemaResult.errors) {
-            std::cout << "SCHEMA ERROR " << filePath.filename() << ": " << std::endl;
+            std::cout << "SCHEMA ERROR " << pathString(filePath.filename()) << ": " << std::endl;
             std::cout << err.to_string(4) << std::endl;
         }
         return false;
@@ -116,10 +116,10 @@ bool validateSchema(const mnx::Document& doc, const std::filesystem::path& fileP
 bool validateSemantics(const mnx::Document& doc, const std::filesystem::path& filePath)
 {
     auto semanticResult = mnx::validation::semanticValidate(doc);
-    EXPECT_TRUE(semanticResult) << "semantic validation failed for " << filePath.filename();
+    EXPECT_TRUE(semanticResult) << "semantic validation failed for " << pathString(filePath.filename());
     if (!semanticResult) {
         for (const auto& err : semanticResult.errors) {
-            std::cout << "SEMANTIC ERROR " << filePath.filename() << ": " << std::endl;
+            std::cout << "SEMANTIC ERROR " << pathString(filePath.filename()) << ": " << std::endl;
             std::cout << err.to_string(4) << std::endl;
         }
         return false;
@@ -138,11 +138,11 @@ bool fullValidate(const mnx::Document& doc, const std::filesystem::path& filePat
 void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path& filePath, const std::vector<std::string>& errors)
 {
     bool schemaResult = validateSchema(doc, filePath);
-    EXPECT_TRUE(schemaResult) << "schema validation failed for " << filePath;
+    EXPECT_TRUE(schemaResult) << "schema validation failed for " << pathString(filePath);
     if (!schemaResult) return;
 
     auto semanticResult = mnx::validation::semanticValidate(doc);
-    EXPECT_FALSE(semanticResult) << "semantic validation succeeded for " << filePath.filename() << " but expected failure";
+    EXPECT_FALSE(semanticResult) << "semantic validation succeeded for " << pathString(filePath.filename()) << " but expected failure";
 
     std::vector<std::string> actualMessages;
     for (const auto& err : semanticResult.errors)
@@ -154,7 +154,7 @@ void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path&
                                  [&](const std::string& msg) {
                                      return msg.find(expected) != std::string::npos;
                                  });
-        EXPECT_TRUE(found) << "Expected error string not found: \"" << expected << "\" in file " << filePath.filename();
+        EXPECT_TRUE(found) << "Expected error string not found: \"" << expected << "\" in file " << pathString(filePath.filename());
         if (!found) {
             showMessages = true;
         }
@@ -162,7 +162,7 @@ void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path&
 
     if (showMessages) {
         for (const auto& err : semanticResult.errors) {
-            std::cout << "SEMANTIC ERROR " << filePath.filename() << ": " << std::endl;
+            std::cout << "SEMANTIC ERROR " << pathString(filePath.filename()) << ": " << std::endl;
             std::cout << err.to_string(4) << std::endl;
         }
     }

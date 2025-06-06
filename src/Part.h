@@ -110,7 +110,7 @@ public:
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    Clef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<int> octaveAdjustment = std::nullopt)
+    Clef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
         : Object(parent, key)
     {
         set_sign(clefSign);
@@ -123,7 +123,7 @@ public:
     MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the specific SMuFL glyph to use for rendering the clef
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, octave, 0);  ///< the number of octaves by which the clef transposes
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(OttavaAmountOrZero, octave, OttavaAmountOrZero::NoTransposition);  ///< the number of octaves by which the clef transposes
     MNX_REQUIRED_PROPERTY(ClefSign, sign);          ///< the clef sign
     MNX_REQUIRED_PROPERTY(int, staffPosition);      ///< staff position offset from center of staff (in half-spaces)
 };
@@ -215,7 +215,7 @@ public:
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    PositionedClef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<int> octaveAdjustment = std::nullopt)
+    PositionedClef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
         : ArrayElementObject(parent, key)
     {
         create_clef(clefSign, staffPosition, octaveAdjustment);

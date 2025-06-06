@@ -211,10 +211,30 @@ enum class OttavaAmount : int
 {
     OctaveDown = -1,            ///< 8vb
     TwoOctavesDown = -2,        ///< 15mb
-    ThreeOctavesDown = 3,       ///< 22mb
+    ThreeOctavesDown = -3,      ///< 22mb
     OctaveUp = 1,               ///< 8va
     TwoOctavesUp = 2,           ///< 15ma
     ThreeOctavesUp = 3          ///< 22ma
+};
+
+/**
+ * @enum OttavaAmountOrZero
+ * @brief Valid values for octave displacment amount, including zero for no transposition.
+ *
+ * These values represent transposition intervals in octaves. Negative values
+ * indicate downward transposition, positive values indicate upward transposition,
+ * and zero indicates no transposition. This type may be used for clefs or other
+ * elements where octave displacement is relevant.
+ */
+enum class OttavaAmountOrZero : int
+{
+    NoTransposition     = 0,   ///< No transposition
+    ThreeOctavesDown    = -3,  ///< Transpose down three octaves
+    TwoOctavesDown      = -2,  ///< Transpose down two octaves
+    OctaveDown          = -1,  ///< Transpose down one octave
+    OctaveUp            = 1,   ///< Transpose up one octave
+    TwoOctavesUp        = 2,   ///< Transpose up two octaves
+    ThreeOctavesUp      = 3    ///< Transpose up three octaves
 };
 
 /**
@@ -301,6 +321,18 @@ struct adl_serializer<mnx::OttavaAmount>
 
     template<typename BasicJsonType>
     static void to_json(BasicJsonType& j, const mnx::OttavaAmount& value)
+    { j = int(value); }
+};
+
+template<>
+struct adl_serializer<mnx::OttavaAmountOrZero>
+{
+    template<typename BasicJsonType>
+    static mnx::OttavaAmountOrZero from_json(const BasicJsonType& j)
+    { return mnx::OttavaAmountOrZero(j.template get<int>()); }
+
+    template<typename BasicJsonType>
+    static void to_json(BasicJsonType& j, const mnx::OttavaAmountOrZero& value)
     { j = int(value); }
 };
 

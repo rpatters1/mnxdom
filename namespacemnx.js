@@ -134,6 +134,15 @@ var namespacemnx =
       [ "TwoOctavesUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea962c3ff88330f1f80321975efddcd744", null ],
       [ "ThreeOctavesUp", "namespacemnx.html#a361b2c550a67bec829901cf59aec117ea3cbfeb45aff39f7d69abcb551d2badb7", null ]
     ] ],
+    [ "OttavaAmountOrZero", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9", [
+      [ "NoTransposition", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a23c5006e290a895c389cf3bdc3af8723", null ],
+      [ "ThreeOctavesDown", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a31a2a7d71ebbea3f891854a4f230ca11", null ],
+      [ "TwoOctavesDown", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a3e464ec7a7d7edf51b4d6fcf2941da25", null ],
+      [ "OctaveDown", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9ab41646df7c887cc0e3647ba5f8b26afe", null ],
+      [ "OctaveUp", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a1713d26780742b9524fdc6e40c6ef6cd", null ],
+      [ "TwoOctavesUp", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a962c3ff88330f1f80321975efddcd744", null ],
+      [ "ThreeOctavesUp", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a3cbfeb45aff39f7d69abcb551d2badb7", null ]
+    ] ],
     [ "SlurTieEndLocation", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858d", [
       [ "Outgoing", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858dae60340c5328bd1bdc50cd8f3efd83c88", null ],
       [ "Incoming", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858da589ab34e870b80c8c7d035805452df19", null ]

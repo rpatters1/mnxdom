@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['cclef_0',['CClef',['../namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a9a8b74d33d96a2daa9375a22d68ce09f',1,'mnx']]],
-  ['comma_1',['Comma',['../namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6',1,'mnx']]]
+  ['brace_0',['Brace',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485a7d55ac077f11ad55a67924103d450612',1,'mnx']]],
+  ['bracket_1',['Bracket',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485ab5c644787d66a37b2d0e7eefaf11506b',1,'mnx']]],
+  ['brackets_2',['Brackets',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da16e127072878e35f572b8f19bdb4b686',1,'mnx']]]
 ];

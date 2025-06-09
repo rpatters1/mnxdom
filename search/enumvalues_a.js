@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['octavedown_0',['OctaveDown',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117eab41646df7c887cc0e3647ba5f8b26afe',1,'mnx']]],
-  ['octaveup_1',['OctaveUp',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea1713d26780742b9524fdc6e40c6ef6cd',1,'mnx']]]
+  ['middle_0',['Middle',['../namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcab1ca34f82e83c52b010f86955f264e05',1,'mnx']]],
+  ['mixolydian_1',['Mixolydian',['../namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683ceac1992ab744a3d5a14cb387c34a42c7ed',1,'music_theory']]]
 ];

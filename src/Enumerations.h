@@ -69,8 +69,9 @@ enum class BarlineType
  */
 enum class BeamHookDirection
 {
-    Left,           ///< Hook left
-    Right           ///< Hook right
+    Auto,           ///< Automatic hook direction
+    Left,           ///< Force hook left
+    Right           ///< Force hook right
 };
 
 /**

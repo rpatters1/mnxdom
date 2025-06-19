@@ -201,7 +201,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
 void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth)
 {
     for (const auto beam : beams) {
-        if (beam.events().size() <= 1) {
+        if (beam.events().empty()) {
             addError("Beam contains only one or fewer events.", beam);
         }
         std::unordered_set<std::string> ids;
@@ -235,24 +235,11 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                 }
             }
         }
-        if (auto hooks = beam.hooks()) {
-            for (const auto hook : hooks.value()) {
-                if (ids.find(hook.event()) == ids.end()) {
-                    addError("Hook event \"" + hook.event() + "\" is not part of the beam.", beam);
-                    continue;
-                }
-                if (const auto event = tryGetValue<mnx::sequence::Event>(hook.event(), beam)) { // errors if the event is not found
-                    if (auto noteValue = event.value().duration()) {
-                        if (depth >= noteValue.value().calcNumberOfFlags()) {
-                            addError("Hook event \"" + hook.event() + "\" cannot have a hook because it already has "
-                                + std::to_string(depth) + " beams", beam);
-                        }
-                    }
-                }
-            }
+        if (beam.direction().has_value() && beam.events().size() != 1) {
+            addError("Beam specifies a hook direction but contains more than one event.", beam);
         }
-        if (auto inner = beam.inner()) {
-            validateBeams(inner.value(), depth + 1);
+        if (auto beams = beam.beams()) {
+            validateBeams(beams.value(), depth + 1);
         }
     }
 }

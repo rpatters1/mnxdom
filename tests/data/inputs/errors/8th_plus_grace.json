@@ -1,5 +1,8 @@
 {
     "mnx": {
+        "support": {
+            "useBeams": true
+        },
         "version": 1
     },
     "global": {
@@ -172,7 +175,7 @@
                                 "ev7",
                                 "ev8"
                             ],
-                            "inner": [
+                            "beams": [
                                 {
                                     "events": [
                                         "ev7",

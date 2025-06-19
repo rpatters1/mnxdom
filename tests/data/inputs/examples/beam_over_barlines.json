@@ -1,5 +1,8 @@
 {
     "mnx": {
+       "support": {
+         "useBeams": true
+       },
        "version": 1
     },
     "global": {

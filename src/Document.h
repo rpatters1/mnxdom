@@ -64,10 +64,8 @@ public:
     public:
         using Object::Object;
 
-        /**
-         * @brief Optional property indicating whether accidental display is used.
-         */
-        MNX_OPTIONAL_PROPERTY(bool, useAccidentalDisplay);
+        MNX_OPTIONAL_PROPERTY(bool, useAccidentalDisplay);  ///< Optional property indicating whether accidental display is used.
+        MNX_OPTIONAL_PROPERTY(bool, useBeams);              ///< Optional property that indicates if beams are encoded.
     };
 
     /**

@@ -63,6 +63,7 @@ MNX_ENUM_MAPPING(BarlineType, {
 });
 
 MNX_ENUM_MAPPING(BeamHookDirection, {
+    { "auto",       BeamHookDirection::Auto },
     { "left",       BeamHookDirection::Left },
     { "right",      BeamHookDirection::Right }
 });

@@ -55,6 +55,7 @@ var namespacemnx =
       [ "Tick", "namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a0b3516a5bbb77566f904f9d3877f4710", null ]
     ] ],
     [ "BeamHookDirection", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391", [
+      [ "Auto", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a06b9281e396db002010bde1de57262eb", null ],
       [ "Left", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a945d5e233cf7d6240f6b783b36a374ff", null ],
       [ "Right", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a92b09c7c48c520c3c55e497875da437c", null ]
     ] ],

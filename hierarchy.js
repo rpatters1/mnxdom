@@ -29,7 +29,6 @@ var hierarchy =
           [ "mnx::global::Tempo", "classmnx_1_1global_1_1Tempo.html", null ],
           [ "mnx::layout::StaffSource", "classmnx_1_1layout_1_1StaffSource.html", null ],
           [ "mnx::part::Beam", "classmnx_1_1part_1_1Beam.html", null ],
-          [ "mnx::part::BeamHook", "classmnx_1_1part_1_1BeamHook.html", null ],
           [ "mnx::part::Measure", "classmnx_1_1part_1_1Measure.html", null ],
           [ "mnx::part::Ottava", "classmnx_1_1part_1_1Ottava.html", null ],
           [ "mnx::part::PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", null ],

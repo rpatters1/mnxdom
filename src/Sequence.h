@@ -103,6 +103,18 @@ public:
 };
 
 /**
+ * @class NoteWritten
+ * @brief Represents the options for how a note is written when transposed
+ */
+class TransposeWritten : public Object
+{
+public:
+    using Object::Object;
+
+    MNX_OPTIONAL_PROPERTY(int, diatonicDelta);  ///< the number of enharmonic transpositions to apply
+};
+
+/**
  * @class Pitch
  * @brief Represents the pitch of a note
  */
@@ -236,6 +248,7 @@ public:
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
     MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
+    MNX_OPTIONAL_CHILD(TransposeWritten, written);                  ///< How to write this note when it is displayed transposed
 };
 
 /**

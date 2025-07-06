@@ -234,7 +234,6 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, id);                         ///< note Id
     /// @todo `perform`
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
-    MNX_OPTIONAL_PROPERTY(std::string, smuflFont);                  ///< The SMuFL-complaint font to use for rendering the note.
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
     MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
 };

@@ -166,6 +166,34 @@ public:
 };
 
 /**
+ * @class PartTransposition
+ * @brief Describes a part's instrument transposition
+ */
+class PartTransposition : public Object
+{
+public:
+    /// @brief Constructor for existing Clef instances
+    PartTransposition(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Clef class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param diatonic The number of diatonic steps in the interval (negative is down)
+    /// @param chromatic The number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    PartTransposition(Base& parent, const std::string_view& key, int diatonic, int chromatic)
+        : Object(parent, key)
+    {
+        create_interval(diatonic, chromatic);
+    }
+
+    MNX_REQUIRED_CHILD(Interval, interval);         ///< the transposition interval
+    MNX_OPTIONAL_PROPERTY(int, keyFifthsFlipAt);    ///< the number of sharps (positive) or flats (negative) at which to simplify the key signature
+};
+
+/**
  * @class PositionedClef
  * @brief Represents a positioned clef for the measure
  */
@@ -221,7 +249,7 @@ public:
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
 };
 
-} // namespace Part
+} // namespace part
 
 /**
  * @class Part
@@ -238,6 +266,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, shortName);      ///< Specifies the user-facing abbreviated name of this part
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);      ///< Name of SMuFL-font for notation elements in the part (can be overridden by children)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staves, 1); ///< The number of staves in this part.
+    MNX_OPTIONAL_CHILD(part::PartTransposition, transposition); ///< the instrument transposition for the part
 };
 
 } // namespace mnx

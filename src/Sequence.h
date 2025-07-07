@@ -103,7 +103,7 @@ public:
 };
 
 /**
- * @class NoteWritten
+ * @class TransposeWritten
  * @brief Represents the options for how a note is written when transposed
  */
 class TransposeWritten : public Object

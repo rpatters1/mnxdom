@@ -218,12 +218,14 @@ public:
 class NoteValue : public Object
 {
 public:
+    /// @brief initializer class for #NoteValue
     class Initializer
     {
     public:
-        NoteValueBase base;
-        unsigned dots;
+        NoteValueBase base;     ///< the note value base to initialize
+        unsigned dots;          ///< the number of dots to initialize
 
+        /// @brief constructor
         Initializer(NoteValueBase inBase, unsigned inDots = 0) : base(inBase), dots(inDots) {}
     };
 

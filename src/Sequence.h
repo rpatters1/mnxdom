@@ -217,6 +217,34 @@ public:
 };
 
 /**
+ * @class KitNote
+ * @brief Represents a single note in a (drum) kit within a musical event within a sequence.
+ */
+class KitNote : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing Note objects
+    KitNote(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Note class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param id The ID within the kit for this part.
+    KitNote(Base& parent, const std::string_view& key, std::string kitComponentId)
+        : ArrayElementObject(parent, key)
+    {
+        set_kitComponent(kitComponentId);
+    }
+
+    MNX_REQUIRED_PROPERTY(std::string, kitComponent);               ///< The ID within the kit for this part.
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
+    MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
+};
+
+/**
  * @class Note
  * @brief Represents a single note (i.e., within a chord) within a musical event within a sequence.
  */
@@ -320,6 +348,7 @@ public:
 
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
     MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
+    MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, measure, false); ///< Whether this event is a whole-measure event.
@@ -327,6 +356,7 @@ public:
     /// @todo `orient`
     MNX_OPTIONAL_CHILD(Rest, rest);                         ///< indicates this event is a rest.
     MNX_OPTIONAL_CHILD(Array<Slur>, slurs);                 ///< The slurs that start on this event.
+    MNX_OPTIONAL_PROPERTY(std::string, smuflFont);          ///< SMuFL font to be used for rendering this event.
     MNX_OPTIONAL_PROPERTY(int, staff);                      ///< Staff number override (e.g., for cross-staff events.)
     MNX_OPTIONAL_PROPERTY(StemDirection, stemDirection);    ///< Forced stem direction.
 

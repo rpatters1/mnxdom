@@ -166,6 +166,34 @@ public:
 };
 
 /**
+ * @class KitComponent
+ * @brief Describes a single instrument of a drum kit associated with the part.
+ */
+class KitComponent : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing Clef instances
+    KitComponent(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Clef class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param staffPosition The staff position of the kit component, where 0 is the middle line.
+    KitComponent(Base& parent, const std::string_view& key, int staffPosition)
+        : ArrayElementObject(parent, key)
+    {
+        set_staffPosition(staffPosition);
+    }
+
+    MNX_OPTIONAL_PROPERTY(std::string, name);       ///< Human-readable name of the kit component
+    MNX_OPTIONAL_PROPERTY(std::string, soundID);    ///< The sound ID in `global.sounds`.
+    MNX_REQUIRED_PROPERTY(int, staffPosition);      ///< The staff position of the kit component, where 0 is the middle line.
+};
+
+/**
  * @class PartTransposition
  * @brief Describes a part's instrument transposition
  */
@@ -261,6 +289,7 @@ public:
     using ArrayElementObject::ArrayElementObject;
 
     MNX_OPTIONAL_PROPERTY(std::string, id);             ///< Uniquely identifies the part
+    MNX_OPTIONAL_CHILD(Dictionary<part::KitComponent>, kit); ///< The definition of a kit of (usually percussion) instruments that are used by the part.
     MNX_OPTIONAL_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
     MNX_OPTIONAL_PROPERTY(std::string, name);           ///< Specifies the user-facing full name of this part
     MNX_OPTIONAL_PROPERTY(std::string, shortName);      ///< Specifies the user-facing abbreviated name of this part

@@ -198,6 +198,19 @@ public:
 };
 
 /**
+ * @class Sound
+ * @brief Represents a sound definition.
+ */
+class Sound : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
+
+    MNX_OPTIONAL_PROPERTY(unsigned, midiNumber);  ///< MIDI pitch of the sound from 0-127, where middle C is 60.
+    MNX_OPTIONAL_PROPERTY(std::string, name);     ///< The name of the sound (presentable to the user)
+};
+
+/**
  * @class Tempo
  * @brief Represents the tempo for a global measure.
  */
@@ -333,6 +346,7 @@ public:
 
     MNX_OPTIONAL_CHILD(global::LyricsGlobal, lyrics);       ///< lyrics metadata
     MNX_REQUIRED_CHILD(Array<global::Measure>, measures);   ///< array of global measures.
+    MNX_OPTIONAL_CHILD(Dictionary<global::Sound>, sounds);  ///< dictionary of sounds with user-defined keys
     MNX_OPTIONAL_CHILD(Array<global::StyleGlobal>, styles); ///< array of styles
 };
 

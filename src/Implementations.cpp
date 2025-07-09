@@ -105,6 +105,13 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                                         }
                                     }
                                 }
+                                if (auto kitNotes = event.kitNotes()) {
+                                    for (const auto kitNote : kitNotes.value()) {
+                                        if (kitNote.id()) {
+                                            m_idMapping->add(kitNote.id().value(), kitNote);
+                                        }
+                                    }
+                                }
                             } else if (content.type() == sequence::Tuplet::ContentTypeValue) {
                                 const auto tuplet = content.get<sequence::Tuplet>();
                                 self(tuplet.content(), self);

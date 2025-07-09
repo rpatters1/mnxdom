@@ -54,6 +54,8 @@ private:
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
 
+    template <typename NoteType>
+    void validateTies(const mnx::Array<mnx::sequence::Tie>& ties, const NoteType& note);
 
     template <typename T, typename KeyType>
     std::optional<T> tryGetValue(const KeyType& key, const Base& location);
@@ -108,6 +110,46 @@ void SemanticValidator::validateGlobal()
     }
 }
 
+template <typename NoteType>
+void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties, const NoteType& note)
+{
+    static_assert(std::is_base_of_v<mnx::sequence::NoteBase, NoteType>, "NoteType must be derived from NoteBase.");
+
+    std::optional<mnx::Part> enclosingPart = note.template getEnclosingElement<Part>();
+    if (!enclosingPart) {
+        addError("The tied note has no part.", note);
+        return;
+    }
+
+    for (const auto tie : ties) {
+        if (auto target = tie.target()) {
+            if (tie.lv()) {
+                addError("Tie has both a target and is an lv tie.", tie);
+            }
+            if (const auto targetNote = tryGetValue<NoteType>(target.value(), tie)) {
+                if (targetNote->template getEnclosingElement<Part>()->calcArrayIndex() != enclosingPart->calcArrayIndex()) {
+                    addError("Tie points to a note in a different part.", tie);
+                }
+                if constexpr (std::is_same_v<NoteType, mnx::sequence::Note>) {
+                    if (!note.pitch().isSamePitch(targetNote->pitch())) {
+                        addError("Tie points to a note with a different pitch.", tie);
+                    }
+                } else if constexpr (std::is_same_v<NoteType, mnx::sequence::KitNote>) {
+                    if (targetNote->kitComponent() != note.kitComponent()) {
+                        addError("Tie points to a different kit component.", tie);
+                    }
+                }
+            } else {
+                addError("Tie points to non-existent target " + target.value(), tie);
+            }
+        } else {
+            if (!tie.lv()) {
+                addError("Tie has neither a target nor is it an lv tie.", tie);
+            }
+        }
+    }
+}
+
 void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray)
 {
     for (const auto content : contentArray) {
@@ -134,25 +176,15 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             if (const auto notes = event.notes()) {
                 for (const auto note : notes.value()) {
                     if (const auto ties = note.ties()) {
-                        for (const auto tie : ties.value()) {
-                            if (auto target = tie.target()) {
-                                if (tie.lv()) {
-                                    addError("Tie has both a target and is an lv tie.", tie);
-                                }
-                                if (const auto targetNote = tryGetValue<mnx::sequence::Note>(target.value(), tie)) {
-                                    if (targetNote.value().getEnclosingElement<Part>().value().calcArrayIndex() != note.getEnclosingElement<Part>().value().calcArrayIndex()) {
-                                        addError("Tie points to a note in a different part.", tie);
-                                    }
-                                    if (!note.pitch().isSamePitch(targetNote.value().pitch())) {
-                                        addError("Tie points to a note with a different pitch.", tie);
-                                    }
-                                }
-                            } else {
-                                if (!tie.lv()) {
-                                    addError("Tie has neither a target not is it an lv tie.", tie);
-                                }
-                            }
-                        }
+                        validateTies(ties.value(), note);
+                    }
+                }
+            }
+            if (const auto kitNotes = event.kitNotes()) {
+                for (const auto kitNote : kitNotes.value()) {
+                    /// @todo validate kitComponent.
+                    if (const auto ties = kitNote.ties()) {
+                        validateTies(ties.value(), kitNote);
                     }
                 }
             }
@@ -187,8 +219,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                     }
                 }
             }
-        }
-        else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
+        } else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
             auto grace = content.get<mnx::sequence::Grace>();
             validateSequenceContent(grace.content());
         } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {

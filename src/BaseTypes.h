@@ -905,6 +905,11 @@ public:
         return (it != ref().end()) ? const_iterator(this, it) : end();
     }
 
+    /// @brief Returns true if the key exists in in the dictionary.
+    /// @param key  The key to search for.
+    bool contains(const std::string& key) const
+    { return find(key) != end(); }
+
     /// @brief Returns an iterator to the beginning of the dictionary.
     auto begin() { return iterator(this, ref().begin()); }
 

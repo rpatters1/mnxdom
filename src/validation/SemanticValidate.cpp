@@ -74,9 +74,11 @@ std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& 
 
 void SemanticValidator::validateGlobal()
 {
+    auto global = document.global();
+
     result.lyricLines.clear();
-    if (document.global().lyrics().has_value()) {
-        const auto lyricsGlobal = document.global().lyrics().value();
+    if (global.lyrics().has_value()) {
+        const auto lyricsGlobal = global.lyrics().value();
         const auto lineOrder = lyricsGlobal.lineOrder();
         const auto lineMetadata = lyricsGlobal.lineMetadata();
         // If both are present, validate that they match
@@ -92,7 +94,7 @@ void SemanticValidator::validateGlobal()
                 if (result.lyricLines.size() != lineMetadata.value().size()) {
                     addError("Size of line metadata does not match size of line order.", lineMetadata.value());
                 }
-                for (const auto& [lineId, instance] : lineMetadata.value()) {
+                for (const auto [lineId, instance] : lineMetadata.value()) {
                     if (result.lyricLines.find(lineId) == result.lyricLines.end()) {
                         addError("ID \"" + lineId + "\" not found in ID mapping", instance);
                     }
@@ -105,6 +107,16 @@ void SemanticValidator::validateGlobal()
                     addError("ID \"" + lineId + "\" already exists at " + rslt.first->second.to_string(), instance);
                 }
                 x++;
+            }
+        }
+    }
+
+    if (const auto sounds = global.sounds()) {
+        for (const auto [soundId, sound] : sounds.value()) {
+            if (auto midiNumber = sound.midiNumber()) {
+                if (midiNumber.value() < 0 || midiNumber.value() > 127) {
+                    addError("Invalid midi number: " + std::to_string(midiNumber.value()), sound);
+                }
             }
         }
     }
@@ -152,6 +164,11 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
 
 void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray)
 {
+    auto part = contentArray.getEnclosingElement<mnx::Part>();
+    if (!part.has_value()) {
+        addError("Sequence content array has no part.", contentArray);
+        return;
+    }
     for (const auto content : contentArray) {
         if (content.type() == mnx::sequence::Event::ContentTypeValue) {
             auto event = content.get<mnx::sequence::Event>();
@@ -169,7 +186,9 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                     addError("Event \"" + event.id().value_or("<no-id>") + "\" is a rest but also has notes.", event);
                 }
             } else {
-                if (!event.notes() || event.notes().value().empty()) {
+                const bool notesExist = event.notes() && !event.notes().value().empty();
+                const bool kitNotesExist = event.kitNotes() && !event.kitNotes().value().empty();
+                if (!notesExist && !kitNotesExist) {
                     addError("Event \"" + event.id().value_or("<no-id>") + "\" is neither a rest nor has notes.", event);
                 }
             }
@@ -182,7 +201,9 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             if (const auto kitNotes = event.kitNotes()) {
                 for (const auto kitNote : kitNotes.value()) {
-                    /// @todo validate kitComponent.
+                    if (!part->kit() || !part->kit()->contains(kitNote.kitComponent())) {
+                        addError("Kit note has kit element " + kitNote.kitComponent() + " that is not defined in the part's kit.", kitNote);
+                    }
                     if (const auto ties = kitNote.ties()) {
                         validateTies(ties.value(), kitNote);
                     }
@@ -299,6 +320,16 @@ void SemanticValidator::validateParts()
         if (numPartMeasures != numGlobalMeasures) {
             addError("Part" + partName + " contains a different number of measures (" + std::to_string(numPartMeasures)
                 + ") than are defined globally (" + std::to_string(numGlobalMeasures) + ")", part);
+        }
+        if (auto kit = part.kit()) {
+            auto sounds = document.global().sounds();
+            for (const auto [kitElementId, kitElement] : kit.value()) {
+                if (kitElement.soundID()) {
+                    if (!sounds || !sounds->contains(kitElement.soundID().value())) {
+                        addError("Sound ID " + kitElement.soundID().value() + " is not defined in global.sounds.", kitElement);
+                    }
+                }
+            }
         }
         if (auto measures = part.measures()) {
             // first pass: validateSequenceContent creates the eventList and the noteList

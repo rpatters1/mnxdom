@@ -218,7 +218,7 @@ public:
 
 /**
  * @class NoteBase
- * @brief Represents common elements between #Note and #KitNote
+ * @brief Represents common elements between @ref Note and @ref KitNote
  */
 class NoteBase : public ArrayElementObject
 {
@@ -247,7 +247,7 @@ public:
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param id The ID within the kit for this part.
+    /// @param kitComponentId The ID within the kit for this part.
     KitNote(Base& parent, const std::string_view& key, std::string kitComponentId)
         : NoteBase(parent, key)
     {

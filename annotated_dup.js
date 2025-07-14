@@ -12,6 +12,7 @@ var annotated_dup =
         [ "RepeatEnd", "classmnx_1_1global_1_1RepeatEnd.html", "classmnx_1_1global_1_1RepeatEnd" ],
         [ "RepeatStart", "classmnx_1_1global_1_1RepeatStart.html", "classmnx_1_1global_1_1RepeatStart" ],
         [ "Segno", "classmnx_1_1global_1_1Segno.html", "classmnx_1_1global_1_1Segno" ],
+        [ "Sound", "classmnx_1_1global_1_1Sound.html", "classmnx_1_1global_1_1Sound" ],
         [ "StyleGlobal", "classmnx_1_1global_1_1StyleGlobal.html", "classmnx_1_1global_1_1StyleGlobal" ],
         [ "Tempo", "classmnx_1_1global_1_1Tempo.html", "classmnx_1_1global_1_1Tempo" ]
       ] ],
@@ -24,8 +25,10 @@ var annotated_dup =
         [ "Beam", "classmnx_1_1part_1_1Beam.html", "classmnx_1_1part_1_1Beam" ],
         [ "Clef", "classmnx_1_1part_1_1Clef.html", "classmnx_1_1part_1_1Clef" ],
         [ "Dynamic", "classmnx_1_1part_1_1Dynamic.html", "classmnx_1_1part_1_1Dynamic" ],
+        [ "KitComponent", "classmnx_1_1part_1_1KitComponent.html", "classmnx_1_1part_1_1KitComponent" ],
         [ "Measure", "classmnx_1_1part_1_1Measure.html", "classmnx_1_1part_1_1Measure" ],
         [ "Ottava", "classmnx_1_1part_1_1Ottava.html", "classmnx_1_1part_1_1Ottava" ],
+        [ "PartTransposition", "classmnx_1_1part_1_1PartTransposition.html", "classmnx_1_1part_1_1PartTransposition" ],
         [ "PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", "classmnx_1_1part_1_1PositionedClef" ]
       ] ],
       [ "score", "namespacemnx_1_1score.html", [
@@ -45,7 +48,9 @@ var annotated_dup =
         [ "EventMarkingBase", "classmnx_1_1sequence_1_1EventMarkingBase.html", "classmnx_1_1sequence_1_1EventMarkingBase" ],
         [ "EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", "classmnx_1_1sequence_1_1EventMarkings" ],
         [ "Grace", "classmnx_1_1sequence_1_1Grace.html", "classmnx_1_1sequence_1_1Grace" ],
+        [ "KitNote", "classmnx_1_1sequence_1_1KitNote.html", "classmnx_1_1sequence_1_1KitNote" ],
         [ "Note", "classmnx_1_1sequence_1_1Note.html", "classmnx_1_1sequence_1_1Note" ],
+        [ "NoteBase", "classmnx_1_1sequence_1_1NoteBase.html", "classmnx_1_1sequence_1_1NoteBase" ],
         [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
         [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
         [ "SingleNoteTremolo", "classmnx_1_1sequence_1_1SingleNoteTremolo.html", "classmnx_1_1sequence_1_1SingleNoteTremolo" ],
@@ -59,6 +64,7 @@ var annotated_dup =
         [ "StrongAccent", "classmnx_1_1sequence_1_1StrongAccent.html", "classmnx_1_1sequence_1_1StrongAccent" ],
         [ "Tenuto", "classmnx_1_1sequence_1_1Tenuto.html", null ],
         [ "Tie", "classmnx_1_1sequence_1_1Tie.html", "classmnx_1_1sequence_1_1Tie" ],
+        [ "TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", "classmnx_1_1sequence_1_1TransposeWritten" ],
         [ "Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", "classmnx_1_1sequence_1_1Tuplet" ],
         [ "Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
       ] ],
@@ -80,6 +86,7 @@ var annotated_dup =
       [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
       [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
       [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],
+      [ "Interval", "classmnx_1_1Interval.html", "classmnx_1_1Interval" ],
       [ "KeySignature", "classmnx_1_1KeySignature.html", "classmnx_1_1KeySignature" ],
       [ "Layout", "classmnx_1_1Layout.html", "classmnx_1_1Layout" ],
       [ "MeasureRhythmicPosition", "classmnx_1_1MeasureRhythmicPosition.html", "classmnx_1_1MeasureRhythmicPosition" ],

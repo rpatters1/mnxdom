@@ -10,7 +10,9 @@ var namespacemnx_1_1sequence =
     [ "EventMarkingBase", "classmnx_1_1sequence_1_1EventMarkingBase.html", "classmnx_1_1sequence_1_1EventMarkingBase" ],
     [ "EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", "classmnx_1_1sequence_1_1EventMarkings" ],
     [ "Grace", "classmnx_1_1sequence_1_1Grace.html", "classmnx_1_1sequence_1_1Grace" ],
+    [ "KitNote", "classmnx_1_1sequence_1_1KitNote.html", "classmnx_1_1sequence_1_1KitNote" ],
     [ "Note", "classmnx_1_1sequence_1_1Note.html", "classmnx_1_1sequence_1_1Note" ],
+    [ "NoteBase", "classmnx_1_1sequence_1_1NoteBase.html", "classmnx_1_1sequence_1_1NoteBase" ],
     [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
     [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
     [ "SingleNoteTremolo", "classmnx_1_1sequence_1_1SingleNoteTremolo.html", "classmnx_1_1sequence_1_1SingleNoteTremolo" ],
@@ -24,6 +26,7 @@ var namespacemnx_1_1sequence =
     [ "StrongAccent", "classmnx_1_1sequence_1_1StrongAccent.html", "classmnx_1_1sequence_1_1StrongAccent" ],
     [ "Tenuto", "classmnx_1_1sequence_1_1Tenuto.html", null ],
     [ "Tie", "classmnx_1_1sequence_1_1Tie.html", "classmnx_1_1sequence_1_1Tie" ],
+    [ "TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", "classmnx_1_1sequence_1_1TransposeWritten" ],
     [ "Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", "classmnx_1_1sequence_1_1Tuplet" ],
     [ "Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
 ];

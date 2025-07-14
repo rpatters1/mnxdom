@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pointer_0',['pointer',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#a40acbb014740670b2682a5050a52c65e',1,'mnx::validation::ValidationResult::Error']]]
+  ['lyriclines_0',['lyricLines',['../structmnx_1_1validation_1_1SemanticValidationResult.html#afc062dace0308c1dcb6e072343f89a59',1,'mnx::validation::SemanticValidationResult']]]
 ];

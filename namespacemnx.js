@@ -16,6 +16,7 @@ var namespacemnx =
     [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
     [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
     [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],
+    [ "Interval", "classmnx_1_1Interval.html", "classmnx_1_1Interval" ],
     [ "KeySignature", "classmnx_1_1KeySignature.html", "classmnx_1_1KeySignature" ],
     [ "Layout", "classmnx_1_1Layout.html", "classmnx_1_1Layout" ],
     [ "MeasureRhythmicPosition", "classmnx_1_1MeasureRhythmicPosition.html", "classmnx_1_1MeasureRhythmicPosition" ],

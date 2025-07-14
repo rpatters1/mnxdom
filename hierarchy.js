@@ -25,10 +25,12 @@ var hierarchy =
           [ "mnx::Sequence", "classmnx_1_1Sequence.html", null ],
           [ "mnx::global::LyricLineMetadata", "classmnx_1_1global_1_1LyricLineMetadata.html", null ],
           [ "mnx::global::Measure", "classmnx_1_1global_1_1Measure.html", null ],
+          [ "mnx::global::Sound", "classmnx_1_1global_1_1Sound.html", null ],
           [ "mnx::global::StyleGlobal", "classmnx_1_1global_1_1StyleGlobal.html", null ],
           [ "mnx::global::Tempo", "classmnx_1_1global_1_1Tempo.html", null ],
           [ "mnx::layout::StaffSource", "classmnx_1_1layout_1_1StaffSource.html", null ],
           [ "mnx::part::Beam", "classmnx_1_1part_1_1Beam.html", null ],
+          [ "mnx::part::KitComponent", "classmnx_1_1part_1_1KitComponent.html", null ],
           [ "mnx::part::Measure", "classmnx_1_1part_1_1Measure.html", null ],
           [ "mnx::part::Ottava", "classmnx_1_1part_1_1Ottava.html", null ],
           [ "mnx::part::PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", null ],
@@ -37,7 +39,10 @@ var hierarchy =
           [ "mnx::score::Page", "classmnx_1_1score_1_1Page.html", null ],
           [ "mnx::score::System", "classmnx_1_1score_1_1System.html", null ],
           [ "mnx::sequence::EventLyricLine", "classmnx_1_1sequence_1_1EventLyricLine.html", null ],
-          [ "mnx::sequence::Note", "classmnx_1_1sequence_1_1Note.html", null ],
+          [ "mnx::sequence::NoteBase", "classmnx_1_1sequence_1_1NoteBase.html", [
+            [ "mnx::sequence::KitNote", "classmnx_1_1sequence_1_1KitNote.html", null ],
+            [ "mnx::sequence::Note", "classmnx_1_1sequence_1_1Note.html", null ]
+          ] ],
           [ "mnx::sequence::Rest", "classmnx_1_1sequence_1_1Rest.html", null ],
           [ "mnx::sequence::Slur", "classmnx_1_1sequence_1_1Slur.html", null ],
           [ "mnx::sequence::Tie", "classmnx_1_1sequence_1_1Tie.html", null ]
@@ -45,6 +50,7 @@ var hierarchy =
         [ "mnx::Dictionary< T >", "classmnx_1_1Dictionary.html", null ],
         [ "mnx::Document", "classmnx_1_1Document.html", null ],
         [ "mnx::Global", "classmnx_1_1Global.html", null ],
+        [ "mnx::Interval", "classmnx_1_1Interval.html", null ],
         [ "mnx::KeySignature", "classmnx_1_1KeySignature.html", null ],
         [ "mnx::MeasureRhythmicPosition", "classmnx_1_1MeasureRhythmicPosition.html", null ],
         [ "mnx::MnxMetaData", "classmnx_1_1MnxMetaData.html", null ],
@@ -62,6 +68,7 @@ var hierarchy =
         [ "mnx::global::RepeatStart", "classmnx_1_1global_1_1RepeatStart.html", null ],
         [ "mnx::global::Segno", "classmnx_1_1global_1_1Segno.html", null ],
         [ "mnx::part::Clef", "classmnx_1_1part_1_1Clef.html", null ],
+        [ "mnx::part::PartTransposition", "classmnx_1_1part_1_1PartTransposition.html", null ],
         [ "mnx::sequence::AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", null ],
         [ "mnx::sequence::AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", null ],
         [ "mnx::sequence::EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", null ],
@@ -79,7 +86,8 @@ var hierarchy =
           [ "mnx::sequence::Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
         ] ],
         [ "mnx::sequence::EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", null ],
-        [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ]
+        [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ],
+        [ "mnx::sequence::TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", null ]
       ] ],
       [ "mnx::SimpleType< T, >", "classmnx_1_1SimpleType.html", null ]
     ] ],

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['instance_0',['instance',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#a1adda86fc4504ee4dea9f4357f0ec868',1,'mnx::validation::ValidationResult::Error']]]
+  ['diatonic_5finterval_5fadjustments_0',['DIATONIC_INTERVAL_ADJUSTMENTS',['../namespacemusic__theory.html#ab15e3c9f32056a8a2b7c6991bcaa974d',1,'music_theory']]],
+  ['dots_1',['dots',['../classmnx_1_1NoteValue_1_1Initializer.html#a68cf33c183e8064f254af84e9cbfdcc9',1,'mnx::NoteValue::Initializer']]]
 ];

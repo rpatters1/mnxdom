@@ -9,6 +9,7 @@ var classmnx_1_1Dictionary =
     [ "begin", "classmnx_1_1Dictionary.html#a9b69c927beebcd644bff737205b30866", null ],
     [ "begin", "classmnx_1_1Dictionary.html#a415f5a61b54e6be16f7b64ad6a40abee", null ],
     [ "clear", "classmnx_1_1Dictionary.html#af964e19b6398456bf417982fc42a7549", null ],
+    [ "contains", "classmnx_1_1Dictionary.html#a8d32cec9bdc8eb499d79bf31b51fce71", null ],
     [ "emplace", "classmnx_1_1Dictionary.html#a9e701a88a1e3d0a244d2e8acf9158862", null ],
     [ "empty", "classmnx_1_1Dictionary.html#a9ccc9de2e6826b8f9996bf520c646b2b", null ],
     [ "end", "classmnx_1_1Dictionary.html#ae7976ebf0993763793fa6c4b62df9f1a", null ],

@@ -54,6 +54,8 @@ private:
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
 
+    template <typename NoteType>
+    void validateTies(const mnx::Array<mnx::sequence::Tie>& ties, const NoteType& note);
 
     template <typename T, typename KeyType>
     std::optional<T> tryGetValue(const KeyType& key, const Base& location);
@@ -72,9 +74,11 @@ std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& 
 
 void SemanticValidator::validateGlobal()
 {
+    auto global = document.global();
+
     result.lyricLines.clear();
-    if (document.global().lyrics().has_value()) {
-        const auto lyricsGlobal = document.global().lyrics().value();
+    if (global.lyrics().has_value()) {
+        const auto lyricsGlobal = global.lyrics().value();
         const auto lineOrder = lyricsGlobal.lineOrder();
         const auto lineMetadata = lyricsGlobal.lineMetadata();
         // If both are present, validate that they match
@@ -90,7 +94,7 @@ void SemanticValidator::validateGlobal()
                 if (result.lyricLines.size() != lineMetadata.value().size()) {
                     addError("Size of line metadata does not match size of line order.", lineMetadata.value());
                 }
-                for (const auto& [lineId, instance] : lineMetadata.value()) {
+                for (const auto [lineId, instance] : lineMetadata.value()) {
                     if (result.lyricLines.find(lineId) == result.lyricLines.end()) {
                         addError("ID \"" + lineId + "\" not found in ID mapping", instance);
                     }
@@ -106,10 +110,65 @@ void SemanticValidator::validateGlobal()
             }
         }
     }
+
+    if (const auto sounds = global.sounds()) {
+        for (const auto [soundId, sound] : sounds.value()) {
+            if (auto midiNumber = sound.midiNumber()) {
+                if (midiNumber.value() < 0 || midiNumber.value() > 127) {
+                    addError("Invalid midi number: " + std::to_string(midiNumber.value()), sound);
+                }
+            }
+        }
+    }
+}
+
+template <typename NoteType>
+void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties, const NoteType& note)
+{
+    static_assert(std::is_base_of_v<mnx::sequence::NoteBase, NoteType>, "NoteType must be derived from NoteBase.");
+
+    std::optional<mnx::Part> enclosingPart = note.template getEnclosingElement<Part>();
+    if (!enclosingPart) {
+        addError("The tied note has no part.", note);
+        return;
+    }
+
+    for (const auto tie : ties) {
+        if (auto target = tie.target()) {
+            if (tie.lv()) {
+                addError("Tie has both a target and is an lv tie.", tie);
+            }
+            if (const auto targetNote = tryGetValue<NoteType>(target.value(), tie)) {
+                if (targetNote->template getEnclosingElement<Part>()->calcArrayIndex() != enclosingPart->calcArrayIndex()) {
+                    addError("Tie points to a note in a different part.", tie);
+                }
+                if constexpr (std::is_same_v<NoteType, mnx::sequence::Note>) {
+                    if (!note.pitch().isSamePitch(targetNote->pitch())) {
+                        addError("Tie points to a note with a different pitch.", tie);
+                    }
+                } else if constexpr (std::is_same_v<NoteType, mnx::sequence::KitNote>) {
+                    if (targetNote->kitComponent() != note.kitComponent()) {
+                        addError("Tie points to a different kit component.", tie);
+                    }
+                }
+            } else {
+                addError("Tie points to non-existent target " + target.value(), tie);
+            }
+        } else {
+            if (!tie.lv()) {
+                addError("Tie has neither a target nor is it an lv tie.", tie);
+            }
+        }
+    }
 }
 
 void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray)
 {
+    auto part = contentArray.getEnclosingElement<mnx::Part>();
+    if (!part.has_value()) {
+        addError("Sequence content array has no part.", contentArray);
+        return;
+    }
     for (const auto content : contentArray) {
         if (content.type() == mnx::sequence::Event::ContentTypeValue) {
             auto event = content.get<mnx::sequence::Event>();
@@ -127,32 +186,26 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                     addError("Event \"" + event.id().value_or("<no-id>") + "\" is a rest but also has notes.", event);
                 }
             } else {
-                if (!event.notes() || event.notes().value().empty()) {
+                const bool notesExist = event.notes() && !event.notes().value().empty();
+                const bool kitNotesExist = event.kitNotes() && !event.kitNotes().value().empty();
+                if (!notesExist && !kitNotesExist) {
                     addError("Event \"" + event.id().value_or("<no-id>") + "\" is neither a rest nor has notes.", event);
                 }
             }
             if (const auto notes = event.notes()) {
                 for (const auto note : notes.value()) {
                     if (const auto ties = note.ties()) {
-                        for (const auto tie : ties.value()) {
-                            if (auto target = tie.target()) {
-                                if (tie.lv()) {
-                                    addError("Tie has both a target and is an lv tie.", tie);
-                                }
-                                if (const auto targetNote = tryGetValue<mnx::sequence::Note>(target.value(), tie)) {
-                                    if (targetNote.value().getEnclosingElement<Part>().value().calcArrayIndex() != note.getEnclosingElement<Part>().value().calcArrayIndex()) {
-                                        addError("Tie points to a note in a different part.", tie);
-                                    }
-                                    if (!note.pitch().isSamePitch(targetNote.value().pitch())) {
-                                        addError("Tie points to a note with a different pitch.", tie);
-                                    }
-                                }
-                            } else {
-                                if (!tie.lv()) {
-                                    addError("Tie has neither a target not is it an lv tie.", tie);
-                                }
-                            }
-                        }
+                        validateTies(ties.value(), note);
+                    }
+                }
+            }
+            if (const auto kitNotes = event.kitNotes()) {
+                for (const auto kitNote : kitNotes.value()) {
+                    if (!part->kit() || !part->kit()->contains(kitNote.kitComponent())) {
+                        addError("Kit note has kit element " + kitNote.kitComponent() + " that is not defined in the part's kit.", kitNote);
+                    }
+                    if (const auto ties = kitNote.ties()) {
+                        validateTies(ties.value(), kitNote);
                     }
                 }
             }
@@ -187,8 +240,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                     }
                 }
             }
-        }
-        else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
+        } else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
             auto grace = content.get<mnx::sequence::Grace>();
             validateSequenceContent(grace.content());
         } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {
@@ -268,6 +320,16 @@ void SemanticValidator::validateParts()
         if (numPartMeasures != numGlobalMeasures) {
             addError("Part" + partName + " contains a different number of measures (" + std::to_string(numPartMeasures)
                 + ") than are defined globally (" + std::to_string(numGlobalMeasures) + ")", part);
+        }
+        if (auto kit = part.kit()) {
+            auto sounds = document.global().sounds();
+            for (const auto [kitElementId, kitElement] : kit.value()) {
+                if (kitElement.soundID()) {
+                    if (!sounds || !sounds->contains(kitElement.soundID().value())) {
+                        addError("Sound ID " + kitElement.soundID().value() + " is not defined in global.sounds.", kitElement);
+                    }
+                }
+            }
         }
         if (auto measures = part.measures()) {
             // first pass: validateSequenceContent creates the eventList and the noteList

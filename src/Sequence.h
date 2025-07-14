@@ -103,6 +103,18 @@ public:
 };
 
 /**
+ * @class TransposeWritten
+ * @brief Represents the options for how a note is written when transposed
+ */
+class TransposeWritten : public Object
+{
+public:
+    using Object::Object;
+
+    MNX_OPTIONAL_PROPERTY(int, diatonicDelta);  ///< the number of enharmonic transpositions to apply
+};
+
+/**
  * @class Pitch
  * @brief Represents the pitch of a note
  */
@@ -205,15 +217,56 @@ public:
 };
 
 /**
+ * @class NoteBase
+ * @brief Represents common elements between @ref Note and @ref KitNote
+ */
+class NoteBase : public ArrayElementObject
+{
+public:
+    using ArrayElementObject::ArrayElementObject;
+
+    MNX_OPTIONAL_PROPERTY(std::string, id);                         ///< note Id
+    /// @todo `perform`
+    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
+    MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
+};
+
+/**
+ * @class KitNote
+ * @brief Represents a single note in a (drum) kit within a musical event within a sequence.
+ */
+class KitNote : public NoteBase
+{
+public:
+    /// @brief Constructor for existing Note objects
+    KitNote(const std::shared_ptr<json>& root, json_pointer pointer)
+        : NoteBase(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Note class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param kitComponentId The ID within the kit for this part.
+    KitNote(Base& parent, const std::string_view& key, std::string kitComponentId)
+        : NoteBase(parent, key)
+    {
+        set_kitComponent(kitComponentId);
+    }
+
+    MNX_REQUIRED_PROPERTY(std::string, kitComponent);               ///< The ID within the kit for this part.
+};
+
+/**
  * @class Note
  * @brief Represents a single note (i.e., within a chord) within a musical event within a sequence.
  */
-class Note : public ArrayElementObject
+class Note : public NoteBase
 {
 public:
     /// @brief Constructor for existing Note objects
     Note(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ArrayElementObject(root, pointer)
+        : NoteBase(root, pointer)
     {
     }
 
@@ -224,19 +277,15 @@ public:
     /// @param octave The octave number of the note (where C4 is middle C).
     /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat)
     Note(Base& parent, const std::string_view& key, NoteStep step, int octave, std::optional<int> alter = std::nullopt)
-        : ArrayElementObject(parent, key)
+        : NoteBase(parent, key)
     {
         create_pitch(step, octave, alter);
     }
 
     MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental
     MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
-    MNX_OPTIONAL_PROPERTY(std::string, id);                         ///< note Id
-    /// @todo `perform`
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
-    MNX_OPTIONAL_PROPERTY(std::string, smuflFont);                  ///< The SMuFL-complaint font to use for rendering the note.
-    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
-    MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
+    MNX_OPTIONAL_CHILD(TransposeWritten, written);                  ///< How to write this note when it is displayed transposed
 };
 
 /**
@@ -308,6 +357,7 @@ public:
 
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
     MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
+    MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, measure, false); ///< Whether this event is a whole-measure event.

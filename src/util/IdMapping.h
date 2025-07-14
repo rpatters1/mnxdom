@@ -136,6 +136,7 @@ private:
     Map m_eventMap;
     Map m_layoutMap;
     Map m_noteMap;
+    Map m_kitNoteMap;
     Map m_partMap;
 
     std::unordered_map<int, json_pointer> m_globalMeasures;
@@ -152,6 +153,8 @@ private:
             return self.m_layoutMap;
         } else if constexpr (std::is_same_v<T, mnx::sequence::Note>) {
             return self.m_noteMap;
+        } else if constexpr (std::is_same_v<T, mnx::sequence::KitNote>) {
+            return self.m_kitNoteMap;
         } else if constexpr (std::is_same_v<T, mnx::sequence::Event>) {
             return self.m_eventMap;
         } else if constexpr (std::is_same_v<T, mnx::global::Measure>) {

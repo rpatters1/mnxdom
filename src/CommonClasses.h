@@ -155,6 +155,35 @@ public:
 };
 
 /**
+ * @class Interval
+ * @brief Represents a musical chromatic interval
+ */
+class Interval : public Object
+{
+public:
+    /// @brief Constructor for existing NoteValue instances
+    Interval(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Barline class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param diatonic The number of diatonic steps in the interval (negative is down)
+    /// @param chromatic The number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    Interval(Base& parent, const std::string_view& key, int diatonic, int chromatic)
+        : Object(parent, key)
+    {
+        set_chromatic(chromatic);
+        set_diatonic(diatonic);
+    }
+
+    MNX_REQUIRED_PROPERTY(int, chromatic);      ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    MNX_REQUIRED_PROPERTY(int, diatonic);       ///< the number of diatonic steps in the interval (negative is down)
+};
+
+/**
  * @class KeySignature
  * @brief Represents a key signature
  */
@@ -189,12 +218,14 @@ public:
 class NoteValue : public Object
 {
 public:
+    /// @brief initializer class for #NoteValue
     class Initializer
     {
     public:
-        NoteValueBase base;
-        unsigned dots;
+        NoteValueBase base;     ///< the note value base to initialize
+        unsigned dots;          ///< the number of dots to initialize
 
+        /// @brief constructor
         Initializer(NoteValueBase inBase, unsigned inDots = 0) : base(inBase), dots(inDots) {}
     };
 

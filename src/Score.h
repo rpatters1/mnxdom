@@ -173,6 +173,7 @@ public:
     MNX_OPTIONAL_CHILD(Array<score::MultimeasureRest>, multimeasureRests);  ///< List of multimeasure rests in the score.
     MNX_REQUIRED_PROPERTY(std::string, name);                               ///< Required name, such as "Flute 1" or "Full Score".
     MNX_OPTIONAL_CHILD(Array<score::Page>, pages);                          ///< An optional list of pages.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, useWritten, false);            ///< If this value is true, the score should be displayed transposed.
 };
 
 } // namespace mnx

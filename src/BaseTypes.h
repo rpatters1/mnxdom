@@ -163,7 +163,7 @@
   * It creates the following class methods.
   *
   * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
-  * - `create_NAME(args...) creates the child from the input constructor arguments.
+  * - `create_NAME(args...) if the child does not exist, creates the child from the input constructor arguments. Otherwise returns the child.
   * - `clear_NAME(args...) clears the child from JSON document.
   *
   * @param TYPE the type of the child object or array
@@ -173,6 +173,7 @@
     std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
+        if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \
         return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
     } \
     void clear_##NAME() { ref().erase(#NAME); } \
@@ -903,6 +904,11 @@ public:
         auto it = ref().find(key);
         return (it != ref().end()) ? const_iterator(this, it) : end();
     }
+
+    /// @brief Returns true if the key exists in in the dictionary.
+    /// @param key  The key to search for.
+    bool contains(const std::string& key) const
+    { return find(key) != end(); }
 
     /// @brief Returns an iterator to the beginning of the dictionary.
     auto begin() { return iterator(this, ref().begin()); }

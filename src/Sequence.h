@@ -228,6 +228,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, id);                         ///< note Id
     /// @todo `perform`
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
+    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
     MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
 };
 
@@ -283,7 +284,6 @@ public:
     }
 
     MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
     MNX_OPTIONAL_CHILD(TransposeWritten, written);                  ///< How to write this note when it is displayed transposed
 };

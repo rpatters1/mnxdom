@@ -324,9 +324,9 @@ void SemanticValidator::validateParts()
         if (auto kit = part.kit()) {
             auto sounds = document.global().sounds();
             for (const auto [kitElementId, kitElement] : kit.value()) {
-                if (kitElement.soundID()) {
-                    if (!sounds || !sounds->contains(kitElement.soundID().value())) {
-                        addError("Sound ID " + kitElement.soundID().value() + " is not defined in global.sounds.", kitElement);
+                if (kitElement.sound()) {
+                    if (!sounds || !sounds->contains(kitElement.sound().value())) {
+                        addError("Sound ID " + kitElement.sound().value() + " is not defined in global.sounds.", kitElement);
                     }
                 }
             }

@@ -189,7 +189,7 @@ public:
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, name);       ///< Human-readable name of the kit component
-    MNX_OPTIONAL_PROPERTY(std::string, soundID);    ///< The sound ID in `global.sounds`.
+    MNX_OPTIONAL_PROPERTY(std::string, sound);      ///< The sound ID in `global.sounds`.
     MNX_REQUIRED_PROPERTY(int, staffPosition);      ///< The staff position of the kit component, where 0 is the middle line.
 };
 

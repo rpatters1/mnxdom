@@ -219,6 +219,8 @@ public:
 
     MNX_REQUIRED_CHILD(Interval, interval);         ///< the transposition interval
     MNX_OPTIONAL_PROPERTY(int, keyFifthsFlipAt);    ///< the number of sharps (positive) or flats (negative) at which to simplify the key signature
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, prefersWrittenPitches, false); ///< if true, this instrument prefers displaying written pitches even in the context of
+                                                    ///< concert-pitch score. (Examples could be piccolo, double base, glockenspiel, etc.)
 };
 
 /**

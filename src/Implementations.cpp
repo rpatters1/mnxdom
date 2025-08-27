@@ -129,7 +129,9 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
     // layouts
     if (const auto layoutArray = layouts()) {
         for (const auto layout : layoutArray.value()) {
-            m_idMapping->add(layout.id(), layout);
+            if (layout.id().has_value()) {
+                m_idMapping->add(layout.id().value(), layout);
+            }
         }
     }
 }

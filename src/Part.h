@@ -290,7 +290,6 @@ class Part : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_PROPERTY(std::string, id);             ///< Uniquely identifies the part
     MNX_OPTIONAL_CHILD(Dictionary<part::KitComponent>, kit); ///< The definition of a kit of (usually percussion) instruments that are used by the part.
     MNX_OPTIONAL_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
     MNX_OPTIONAL_PROPERTY(std::string, name);           ///< Specifies the user-facing full name of this part

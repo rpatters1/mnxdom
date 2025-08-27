@@ -369,7 +369,7 @@ void SemanticValidator::validateLayouts()
                                 int staffNum = source.staff();
                                 int numStaves = part.value().staves();
                                 if (staffNum > numStaves || staffNum < 1) {
-                                    addError("Layout \"" + layout.id() + "\" has invalid staff number ("
+                                    addError("Layout \"" + layout.id().value_or("") + "\" has invalid staff number ("
                                         + std::to_string(staffNum) + ") for part " + source.part(), source);
                                 }
                             }

@@ -435,6 +435,8 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     Object(Base& parent, const std::string_view& key)
         : Base(json::object(), parent, key) {}
+
+    MNX_OPTIONAL_PROPERTY(std::string, id);             ///< Uniquely identifies the object
 };
 
 /// @brief Allows access to a fundamental type (number, boolean, string) in a JSON node

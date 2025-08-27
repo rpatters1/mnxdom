@@ -225,7 +225,6 @@ class NoteBase : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_PROPERTY(std::string, id);                         ///< note Id
     /// @todo `perform`
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
     MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
@@ -356,7 +355,6 @@ public:
     }
 
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
-    MNX_OPTIONAL_PROPERTY(std::string, id);                 ///< Identifying string for the event.
     MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.

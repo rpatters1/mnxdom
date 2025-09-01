@@ -214,7 +214,7 @@ Sequence sequence::Event::getSequence() const
 {
     auto result = getEnclosingElement<Sequence>();
     MNX_ASSERT_IF(!result.has_value()) {
-        throw std::logic_error("Event \"" + id().value_or("") + "\" at \"" + pointer().to_string() + "\" is not part of a sequence.");
+        throw std::logic_error("Event \"" + id_or("") + "\" at \"" + pointer().to_string() + "\" is not part of a sequence.");
     }
     return result.value();
 }
@@ -225,13 +225,13 @@ Sequence sequence::Event::getSequence() const
 
 bool sequence::Pitch::isSamePitch(const Pitch& src) const
 {
-    if (src.alter().value_or(0) == alter().value_or(0)
+    if (src.alter_or(0) == alter_or(0)
         && src.octave() == octave()
         && src.step() == step()) {
         return true;
     }
-    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter().value_or(0));
-    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter().value_or(0));
+    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter_or(0));
+    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter_or(0));
 }
 
 } // namespace mnx

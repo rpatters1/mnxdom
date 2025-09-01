@@ -174,26 +174,30 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             auto event = content.get<mnx::sequence::Event>();
             if (event.measure()) {
                 if (event.duration().has_value()) {
-                    addError("Event \"" + event.id().value_or("<no-id>") + "\" has both full measure indicator and duration.", event);
+                    addError("Event \"" + event.id_or("<no-id>") + "\" has both full measure indicator and duration.", event);
                 }
             } else {
                 if (!event.duration().has_value()) {
-                    addError("Event \"" + event.id().value_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
+                    addError("Event \"" + event.id_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
                 }
             }
             if (event.rest().has_value()) {
                 if (event.notes() && !event.notes().value().empty()) {
-                    addError("Event \"" + event.id().value_or("<no-id>") + "\" is a rest but also has notes.", event);
+                    addError("Event \"" + event.id_or("<no-id>") + "\" is a rest but also has notes.", event);
                 }
             } else {
                 const bool notesExist = event.notes() && !event.notes().value().empty();
                 const bool kitNotesExist = event.kitNotes() && !event.kitNotes().value().empty();
                 if (!notesExist && !kitNotesExist) {
-                    addError("Event \"" + event.id().value_or("<no-id>") + "\" is neither a rest nor has notes.", event);
+                    addError("Event \"" + event.id_or("<no-id>") + "\" is neither a rest nor has notes.", event);
                 }
             }
             if (const auto notes = event.notes()) {
                 for (const auto note : notes.value()) {
+                    const int noteAlter = note.pitch().alter_or(0);
+                    if (std::abs(noteAlter) > 3) {
+                        addError("Note \"" + note.id_or("<no-id>") + "\" has alteration value " + std::to_string(noteAlter) + ". MNX files are limited to +/-3.", note);
+                    }
                     if (const auto ties = note.ties()) {
                         validateTies(ties.value(), note);
                     }
@@ -369,7 +373,7 @@ void SemanticValidator::validateLayouts()
                                 int staffNum = source.staff();
                                 int numStaves = part.value().staves();
                                 if (staffNum > numStaves || staffNum < 1) {
-                                    addError("Layout \"" + layout.id().value_or("") + "\" has invalid staff number ("
+                                    addError("Layout \"" + layout.id_or("") + "\" has invalid staff number ("
                                         + std::to_string(staffNum) + ") for part " + source.part(), source);
                                 }
                             }

@@ -104,3 +104,13 @@ TEST(Parts, BeamAcrossVoicesError)
         "Event \"ev11\" attempts to beam events from different voices together"
     });
 }
+
+TEST(Parts, AlterationError)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "big_alter.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Note \"note1\" has alteration value 4. MNX files are limited to +/-3."
+    });
+}

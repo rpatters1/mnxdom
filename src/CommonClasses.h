@@ -170,17 +170,17 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param diatonic The number of diatonic steps in the interval (negative is down)
-    /// @param chromatic The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    Interval(Base& parent, const std::string_view& key, int diatonic, int chromatic)
+    /// @param staffDistance The number of diatonic steps in the interval (negative is down)
+    /// @param halfSteps The number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    Interval(Base& parent, const std::string_view& key, int staffDistance, int halfSteps)
         : Object(parent, key)
     {
-        set_chromatic(chromatic);
-        set_diatonic(diatonic);
+        set_halfSteps(halfSteps);
+        set_staffDistance(staffDistance);
     }
 
-    MNX_REQUIRED_PROPERTY(int, chromatic);      ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    MNX_REQUIRED_PROPERTY(int, diatonic);       ///< the number of diatonic steps in the interval (negative is down)
+    MNX_REQUIRED_PROPERTY(int, halfSteps);      ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    MNX_REQUIRED_PROPERTY(int, staffDistance);  ///< the number of diatonic steps in the interval (negative is down)
 };
 
 /**

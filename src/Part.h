@@ -219,6 +219,8 @@ public:
 
     MNX_REQUIRED_CHILD(Interval, interval);         ///< the transposition interval
     MNX_OPTIONAL_PROPERTY(int, keyFifthsFlipAt);    ///< the number of sharps (positive) or flats (negative) at which to simplify the key signature
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, prefersWrittenPitches, false); ///< if true, this instrument prefers displaying written pitches even in the context of
+                                                    ///< concert-pitch score. (Examples could be piccolo, double base, glockenspiel, etc.)
 };
 
 /**
@@ -288,7 +290,6 @@ class Part : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_PROPERTY(std::string, id);             ///< Uniquely identifies the part
     MNX_OPTIONAL_CHILD(Dictionary<part::KitComponent>, kit); ///< The definition of a kit of (usually percussion) instruments that are used by the part.
     MNX_OPTIONAL_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
     MNX_OPTIONAL_PROPERTY(std::string, name);           ///< Specifies the user-facing full name of this part

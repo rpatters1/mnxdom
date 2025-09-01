@@ -97,8 +97,8 @@ TEST(Document, MinimalFromScratch)
     auto layouts = doc.create_layouts();
     layouts.append();
     auto layout = layouts[0];
-    EXPECT_FALSE(validation::schemaValidate(doc)) << "schema should not validate after adding a layout, because no layout id";
-    layout.set_id("layout0"); // this is required for validation
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a layout, even with no layout id";
+    layout.set_id("layout0");
     auto content = layout.content();
     auto staff = content.append<layout::Staff>();
     staff.set_symbol(LayoutSymbol::Bracket);
@@ -139,5 +139,7 @@ TEST(Document, MissingRequiredFields)
     EXPECT_EQ(part.staves(), 1);
     ASSERT_EQ(doc.parts().size(), 1u);
     doc.parts()[0].set_staves(3);
+    doc.parts()[0].set__c("This is a comment.");
     EXPECT_EQ(part.staves(), 3) << "detached instance should reflect changed value from doc";
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "after adding comment, schema should validate";
 }

@@ -138,7 +138,6 @@ public:
     }
 
     MNX_REQUIRED_CHILD(ContentArray, content);      ///< Required child containing the layout content (groups and staves).
-    MNX_REQUIRED_PROPERTY(std::string, id);         ///< The unique identifier used to identify this layout.
 };
 
 } // namespace mnx

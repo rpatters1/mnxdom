@@ -437,6 +437,7 @@ public:
         : Base(json::object(), parent, key) {}
 
     MNX_OPTIONAL_PROPERTY(std::string, _c);     ///< An optional comment. This serves a similar function as XML or HTML comments.
+    MNX_OPTIONAL_CHILD(Object, _x);             ///< Vendor-defined dictionary.
     MNX_OPTIONAL_PROPERTY(std::string, id);     ///< Uniquely identifies the object
 };
 

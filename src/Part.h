@@ -255,7 +255,7 @@ public:
 
 /**
  * @class Measure
- * @brief Represents a single measuer in a part in an MNX document. It contains the majority of the musical information in its sequences.
+ * @brief Represents a single measure in a part in an MNX document. It contains the majority of the musical information in its sequences.
  */
 class Measure : public ArrayElementObject
 {

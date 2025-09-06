@@ -255,6 +255,8 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(std::string, kitComponent);               ///< The ID within the kit for this part.
+
+    inline static constexpr std::string_view JsonSchemaTypeName = "kit-note";     ///< required for mapping
 };
 
 /**
@@ -285,6 +287,8 @@ public:
     MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
     MNX_OPTIONAL_CHILD(TransposeWritten, written);                  ///< How to write this note when it is displayed transposed
+
+    inline static constexpr std::string_view JsonSchemaTypeName = "note";     ///< required for mapping
 };
 
 /**
@@ -378,7 +382,8 @@ public:
     /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
     Sequence getSequence() const;
 
-    static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
+    inline static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
+    inline static constexpr std::string_view JsonSchemaTypeName = "event";     ///< required for mapping
 };
 
 /**
@@ -406,7 +411,7 @@ public:
 
     MNX_REQUIRED_CHILD(Fraction, duration);               ///< Duration of space to occupy.
 
-    static constexpr std::string_view ContentTypeValue = "space";   ///< type value that identifies the type within the content array
+    inline static constexpr std::string_view ContentTypeValue = "space";   ///< type value that identifies the type within the content array
 };
 
 /**
@@ -437,7 +442,7 @@ public:
     /// @todo `graceType`
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, slash, true);          ///< whether to show a slash on the grace note
 
-    static constexpr std::string_view ContentTypeValue = "grace";   ///< type value that identifies the type within the content array
+    inline static constexpr std::string_view ContentTypeValue = "grace";   ///< type value that identifies the type within the content array
 };
 
 /**
@@ -479,7 +484,7 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showValue, TupletDisplaySetting::NoNumber); ///< How and whether to show the tuplet note value(s)
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
 
-    static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array
+    inline static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array
 };
 
 } // namespace sequence

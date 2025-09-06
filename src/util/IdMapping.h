@@ -77,10 +77,20 @@ public:
         auto it = map.find(id);
         if (it == map.end()) {
             mapping_error err("ID " + formatKeyString(id) + " not found in ID mapping");
-            if (m_errorHandler) m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
+            if (m_errorHandler) {
+                m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
+            }
             throw err;
         }
-        return T(m_root, it->second);
+        if (it->second.typeName != T::JsonSchemaTypeName) {
+            mapping_error err("ID " + formatKeyString(id) + " has type \"" + std::string(it->second.typeName)
+                + "\", but the requested type is \"" + std::string(T::JsonSchemaTypeName) + "\".");
+            if (m_errorHandler) {
+                m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
+            }
+            throw err;
+        }
+        return T(m_root, it->second.location);
     }
 
     /// @brief Returns whether the specified ID exists in the mapping
@@ -100,9 +110,10 @@ public:
     template <typename T, typename IdType>
     void add(const IdType& id, const T& value)
     {
-        auto result = getMap<T>().emplace(id, value.pointer());
+        auto result = getMap<T>().emplace(id, MappedLocation{ value.pointer(), T::JsonSchemaTypeName });
         if (!result.second) {
-            mapping_error err("ID " + formatKeyString(id) + " already exists at " + result.first->second.to_string());
+            mapping_error err("ID " + formatKeyString(id) + " already exists for type \"" + std::string(result.first->second.typeName)
+                + "\" at " + result.first->second.location.to_string());
             if (m_errorHandler) {
                 m_errorHandler.value()(err.what(), value);
             } else {
@@ -132,35 +143,20 @@ private:
     std::shared_ptr<json> m_root;
     std::optional<ErrorHandler> m_errorHandler;
 
-    using Map = std::unordered_map<std::string, json_pointer>;
-    Map m_eventMap;
-    Map m_layoutMap;
-    Map m_noteMap;
-    Map m_kitNoteMap;
-    Map m_partMap;
-
-    std::unordered_map<int, json_pointer> m_globalMeasures;
-
-    // stoopid workround
-    template <typename>
-    static constexpr bool always_false = false;
+    using MappedLocation = struct
+    {
+        json_pointer location;          ///< location of instance in JSON
+        std::string_view typeName;      ///< schema name of type for this instance
+    };
+    std::unordered_map<std::string, MappedLocation> m_objectMap;
+    std::unordered_map<int, MappedLocation> m_globalMeasures;
     
     template <typename T, typename Self>
     static auto& getMapImpl(Self& self) {
-        if constexpr (std::is_same_v<T, mnx::Part>) {
-            return self.m_partMap;
-        } else if constexpr (std::is_same_v<T, mnx::Layout>) {
-            return self.m_layoutMap;
-        } else if constexpr (std::is_same_v<T, mnx::sequence::Note>) {
-            return self.m_noteMap;
-        } else if constexpr (std::is_same_v<T, mnx::sequence::KitNote>) {
-            return self.m_kitNoteMap;
-        } else if constexpr (std::is_same_v<T, mnx::sequence::Event>) {
-            return self.m_eventMap;
-        } else if constexpr (std::is_same_v<T, mnx::global::Measure>) {
+        if constexpr (std::is_same_v<T, mnx::global::Measure>) {
             return self.m_globalMeasures;
         } else {
-            static_assert(always_false<T>, "Unsupported type for IdMapping::getMap");
+            return self.m_objectMap;
         }
     }
 

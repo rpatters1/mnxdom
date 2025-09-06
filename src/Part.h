@@ -277,6 +277,8 @@ public:
     MNX_OPTIONAL_CHILD(Array<Dynamic>, dynamics);       ///< the dynamics in this measure
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);         ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
+
+    inline static constexpr std::string_view JsonSchemaTypeName = "part-measure";     ///< required for mapping
 };
 
 } // namespace part
@@ -297,6 +299,8 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);      ///< Name of SMuFL-font for notation elements in the part (can be overridden by children)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staves, 1); ///< The number of staves in this part.
     MNX_OPTIONAL_CHILD(part::PartTransposition, transposition); ///< the instrument transposition for the part
+
+    inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };
 
 } // namespace mnx

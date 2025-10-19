@@ -118,6 +118,9 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                             } else if (content.type() == sequence::Grace::ContentTypeValue) {
                                 const auto grace = content.get<sequence::Grace>();
                                 self(grace.content(), self);
+                            } else if (content.type() == sequence::MultiNoteTremolo::ContentTypeValue) {
+                                const auto tremolo = content.get<sequence::MultiNoteTremolo>();
+                                self(tremolo.content(), self);
                             }
                         }
                     };
@@ -208,6 +211,16 @@ bool sequence::Event::isGrace() const
     // that matters here.
     auto container = this->container<mnx::ContentObject>();
     return container.type() == mnx::sequence::Grace::ContentTypeValue;
+}
+
+bool sequence::Event::isTremolo() const
+{
+    // Note that the top level sequence container is not a ContentObject,
+    // but it does not matter for the purposes of this function. The type()
+    // function returns a value other than "tremolo" in that case, which is all
+    // that matters here.
+    auto container = this->container<mnx::ContentObject>();
+    return container.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue;
 }
 
 Sequence sequence::Event::getSequence() const

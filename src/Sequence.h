@@ -378,6 +378,9 @@ public:
     /// @brief Returns true if this event is part of a grace note sequence.
     bool isGrace() const;
 
+    /// @brief Returns true if this event is part of a multi-note tremolo sequence.
+    bool isTremolo() const;
+
     /// @brief Returns the @ref Sequence instance for this event
     /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
     Sequence getSequence() const;
@@ -446,6 +449,41 @@ public:
 };
 
 /**
+ * @class MultiNoteTremolo
+ * @brief Represents a multi-note tremolo sequence within a sequence.
+ */
+class MultiNoteTremolo : public ContentObject
+{
+public:
+    /// @brief Constructor for existing Tuplet objects
+    MultiNoteTremolo(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ContentObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new MultiNoteTremolo class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param numberOfMarks The number of marks (beams) in the tremolo
+    /// @param noteCount The number of events in the tremolo (usually 2)
+    /// @param noteValue The duration of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
+    MultiNoteTremolo(Base& parent, const std::string_view& key, int numberOfMarks, unsigned noteCount, const NoteValue::Initializer& noteValue)
+        : ContentObject(parent, key)
+    {
+        create_content();
+        set_marks(numberOfMarks);
+        create_outer(noteCount, noteValue);
+    }
+
+    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
+    MNX_OPTIONAL_CHILD(NoteValue, individualDuration);              ///< optional value that specifies the individual duration of each event in the tremolo.
+    MNX_REQUIRED_PROPERTY(int, marks);                              ///< the number of marks (beams)
+    MNX_REQUIRED_CHILD(NoteValueQuantity, outer);                   ///< a half note tremolo would be 2 quarters here
+
+    inline static constexpr std::string_view ContentTypeValue = "tremolo";   ///< type value that identifies the type within the content array
+};
+
+/**
  * @class Tuplet
  * @brief Represents a tuplet sequence within a sequence.
  */
@@ -476,7 +514,7 @@ public:
     }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style
-    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events (and tuplets, at least for now)
+    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events, tuplets, and grace notes
     MNX_REQUIRED_CHILD(NoteValueQuantity, inner);                   ///< Inner quantity: **3 quarters in the time** of 2 quarters
     MNX_REQUIRED_CHILD(NoteValueQuantity, outer);                   ///< Outer quantity: 3 quarters in the time **of 2 quarters**
     /// @todo `orient`

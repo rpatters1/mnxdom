@@ -284,6 +284,7 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             if (const auto event = tryGetValue<mnx::sequence::Event>(id, beam)) {
                 if (event.value().isTremolo()) {
                     addError("Beam containing event \"" + id + "\" is actually a multi-note tremolo and should not be a beam.", beam);
+                    continue;
                 }
                 if (isGraceBeam.has_value()) {
                     if (isGraceBeam.value() != event.value().isGrace()) {

@@ -16,6 +16,7 @@ var hierarchy =
             [ "mnx::part::Dynamic", "classmnx_1_1part_1_1Dynamic.html", null ],
             [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
             [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
+            [ "mnx::sequence::MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", null ],
             [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
             [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ]
           ] ],

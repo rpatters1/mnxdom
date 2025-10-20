@@ -8,5 +8,6 @@ var searchData=
   ['isenharmonicequivalent_5',['isEnharmonicEquivalent',['../classmusic__theory_1_1Transposer.html#a909235472081cc8369dc7a4a2b359ae8',1,'music_theory::Transposer']]],
   ['isgrace_6',['isGrace',['../classmnx_1_1sequence_1_1Event.html#a5fa82508a1361f7b4348fe2afaff924f',1,'mnx::sequence::Event']]],
   ['issamepitch_7',['isSamePitch',['../classmnx_1_1sequence_1_1Pitch.html#adbd41addc5f8aaafa8e06adf802e640b',1,'mnx::sequence::Pitch']]],
-  ['iterator_8',['iterator',['../classmnx_1_1Array.html#a302af380b7058c862d97146fd0cd1101',1,'mnx::Array::iterator'],['../classmnx_1_1Dictionary.html#a019b524d836830d0434d6d9f5010c8ef',1,'mnx::Dictionary::iterator']]]
+  ['istremolo_8',['isTremolo',['../classmnx_1_1sequence_1_1Event.html#affe69e7696d92a46edb2f2502b865868',1,'mnx::sequence::Event']]],
+  ['iterator_9',['iterator',['../classmnx_1_1Array.html#a302af380b7058c862d97146fd0cd1101',1,'mnx::Array::iterator'],['../classmnx_1_1Dictionary.html#a019b524d836830d0434d6d9f5010c8ef',1,'mnx::Dictionary::iterator']]]
 ];

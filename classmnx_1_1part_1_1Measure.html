@@ -94,12 +94,13 @@ $(document).ready(function(){initNavTree('classmnx_1_1part_1_1Measure.html','');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classmnx_1_1part_1_1Measure-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mnx::part::Measure Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Represents a single measuer in a part in an MNX document. It contains the majority of the musical information in its sequences.  
+<p>Represents a single measure in a part in an MNX document. It contains the majority of the musical information in its sequences.  
  <a href="classmnx_1_1part_1_1Measure.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Part_8h_source.html">Part.h</a>&gt;</code></p>
@@ -120,7 +121,7 @@ $(document).ready(function(){initNavTree('classmnx_1_1part_1_1Measure.html','');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ec333647be5f25750be60f4dcd00fdc" id="r_a7ec333647be5f25750be60f4dcd00fdc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1part_1_1Measure.html#a7ec333647be5f25750be60f4dcd00fdc">Measure</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, const std::string_view &amp;key)</td></tr>
-<tr class="memdesc:a7ec333647be5f25750be60f4dcd00fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1part_1_1Measure.html" title="Represents a single measuer in a part in an MNX document. It contains the majority of the musical inf...">Measure</a> class as a child of a JSON element.  <br /></td></tr>
+<tr class="memdesc:a7ec333647be5f25750be60f4dcd00fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1part_1_1Measure.html" title="Represents a single measure in a part in an MNX document. It contains the majority of the musical inf...">Measure</a> class as a child of a JSON element.  <br /></td></tr>
 <tr class="separator:a7ec333647be5f25750be60f4dcd00fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbf45cdd255052b39ece754a9243dd7b" id="r_abbf45cdd255052b39ece754a9243dd7b"><td class="memItemLeft" align="right" valign="top"><a id="abbf45cdd255052b39ece754a9243dd7b" name="abbf45cdd255052b39ece754a9243dd7b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1Array.html">Array</a>&lt; <a class="el" href="classmnx_1_1part_1_1Beam.html">Beam</a> &gt;, beams)</td></tr>
@@ -168,6 +169,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (std::string, _c)</td></tr>
 <tr class="memdesc:a3f532392b8549f4828a54f0d15a77229 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">An optional comment. This serves a similar function as XML or HTML comments. <br /></td></tr>
 <tr class="separator:a3f532392b8549f4828a54f0d15a77229 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5530de79d74dd0772f0e8e607744b6d3 inherit pub_methods_classmnx_1_1Object" id="r_a5530de79d74dd0772f0e8e607744b6d3"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1Object.html">Object</a>, _x)</td></tr>
+<tr class="memdesc:a5530de79d74dd0772f0e8e607744b6d3 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vendor-defined dictionary. <br /></td></tr>
+<tr class="separator:a5530de79d74dd0772f0e8e607744b6d3 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object" id="r_aba3107608d5f547dbca6d864ffb5d7b5"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (std::string, id)</td></tr>
 <tr class="memdesc:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniquely identifies the object. <br /></td></tr>
@@ -205,6 +210,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 <tr class="memdesc:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the json_pointer for this node. <br /></td></tr>
 <tr class="separator:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a8ff4cdf17c41244d4a91793cbd8549a7" id="r_a8ff4cdf17c41244d4a91793cbd8549a7"><td class="memItemLeft" align="right" valign="top"><a id="a8ff4cdf17c41244d4a91793cbd8549a7" name="a8ff4cdf17c41244d4a91793cbd8549a7"></a>
+static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>JsonSchemaTypeName</b> = &quot;part-measure&quot;</td></tr>
+<tr class="memdesc:a8ff4cdf17c41244d4a91793cbd8549a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">required for mapping <br /></td></tr>
+<tr class="separator:a8ff4cdf17c41244d4a91793cbd8549a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_classmnx_1_1Base"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classmnx_1_1Base')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classmnx_1_1Base.html">mnx::Base</a></td></tr>
@@ -238,7 +250,7 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 <tr class="separator:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents a single measuer in a part in an MNX document. It contains the majority of the musical information in its sequences. </p>
+<div class="textblock"><p>Represents a single measure in a part in an MNX document. It contains the majority of the musical information in its sequences. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7ec333647be5f25750be60f4dcd00fdc" name="a7ec333647be5f25750be60f4dcd00fdc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ec333647be5f25750be60f4dcd00fdc">&#9670;&#160;</a></span>Measure()</h2>
@@ -274,7 +286,7 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 </table>
 </div><div class="memdoc">
 
-<p>Creates a new <a class="el" href="classmnx_1_1part_1_1Measure.html" title="Represents a single measuer in a part in an MNX document. It contains the majority of the musical inf...">Measure</a> class as a child of a JSON element. </p>
+<p>Creates a new <a class="el" href="classmnx_1_1part_1_1Measure.html" title="Represents a single measure in a part in an MNX document. It contains the majority of the musical inf...">Measure</a> class as a child of a JSON element. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>The parent class instance </td></tr>

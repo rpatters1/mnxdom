@@ -49,6 +49,7 @@ var annotated_dup =
         [ "EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", "classmnx_1_1sequence_1_1EventMarkings" ],
         [ "Grace", "classmnx_1_1sequence_1_1Grace.html", "classmnx_1_1sequence_1_1Grace" ],
         [ "KitNote", "classmnx_1_1sequence_1_1KitNote.html", "classmnx_1_1sequence_1_1KitNote" ],
+        [ "MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", "classmnx_1_1sequence_1_1MultiNoteTremolo" ],
         [ "Note", "classmnx_1_1sequence_1_1Note.html", "classmnx_1_1sequence_1_1Note" ],
         [ "NoteBase", "classmnx_1_1sequence_1_1NoteBase.html", "classmnx_1_1sequence_1_1NoteBase" ],
         [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],

@@ -172,6 +172,10 @@ Public Member Functions</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isGrace</b> () const</td></tr>
 <tr class="memdesc:a5fa82508a1361f7b4348fe2afaff924f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this event is part of a grace note sequence. <br /></td></tr>
 <tr class="separator:a5fa82508a1361f7b4348fe2afaff924f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affe69e7696d92a46edb2f2502b865868" id="r_affe69e7696d92a46edb2f2502b865868"><td class="memItemLeft" align="right" valign="top"><a id="affe69e7696d92a46edb2f2502b865868" name="affe69e7696d92a46edb2f2502b865868"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isTremolo</b> () const</td></tr>
+<tr class="memdesc:affe69e7696d92a46edb2f2502b865868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this event is part of a multi-note tremolo sequence. <br /></td></tr>
+<tr class="separator:affe69e7696d92a46edb2f2502b865868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a620b9ae602e819af5e752cb94f4c4dc4" id="r_a620b9ae602e819af5e752cb94f4c4dc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmnx_1_1Sequence.html">Sequence</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Event.html#a620b9ae602e819af5e752cb94f4c4dc4">getSequence</a> () const</td></tr>
 <tr class="memdesc:a620b9ae602e819af5e752cb94f4c4dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classmnx_1_1Sequence.html">Sequence</a> instance for this event.  <br /></td></tr>
 <tr class="separator:a620b9ae602e819af5e752cb94f4c4dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,6 +215,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (std::string, _c)</td></tr>
 <tr class="memdesc:a3f532392b8549f4828a54f0d15a77229 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">An optional comment. This serves a similar function as XML or HTML comments. <br /></td></tr>
 <tr class="separator:a3f532392b8549f4828a54f0d15a77229 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5530de79d74dd0772f0e8e607744b6d3 inherit pub_methods_classmnx_1_1Object" id="r_a5530de79d74dd0772f0e8e607744b6d3"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1Object.html">Object</a>, _x)</td></tr>
+<tr class="memdesc:a5530de79d74dd0772f0e8e607744b6d3 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vendor-defined dictionary. <br /></td></tr>
+<tr class="separator:a5530de79d74dd0772f0e8e607744b6d3 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object" id="r_aba3107608d5f547dbca6d864ffb5d7b5"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (std::string, id)</td></tr>
 <tr class="memdesc:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniquely identifies the object. <br /></td></tr>
@@ -254,6 +262,10 @@ Static Public Attributes</h2></td></tr>
 static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>ContentTypeValue</b> = <a class="el" href="classmnx_1_1ContentObject.html#aaabcf2ab2d34b87d60a3b59bbff38d9f">ContentObject::ContentTypeValueDefault</a></td></tr>
 <tr class="memdesc:a68693c6ffb90edfaaa5e82b06225038a"><td class="mdescLeft">&#160;</td><td class="mdescRight">type value that identifies the type within the content array <br /></td></tr>
 <tr class="separator:a68693c6ffb90edfaaa5e82b06225038a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a194a66ae405c0d281bc00733f4238028" id="r_a194a66ae405c0d281bc00733f4238028"><td class="memItemLeft" align="right" valign="top"><a id="a194a66ae405c0d281bc00733f4238028" name="a194a66ae405c0d281bc00733f4238028"></a>
+static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>JsonSchemaTypeName</b> = &quot;event&quot;</td></tr>
+<tr class="memdesc:a194a66ae405c0d281bc00733f4238028"><td class="mdescLeft">&#160;</td><td class="mdescRight">required for mapping <br /></td></tr>
+<tr class="separator:a194a66ae405c0d281bc00733f4238028"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

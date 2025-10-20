@@ -57,10 +57,10 @@ var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
 "classmnx_1_1MnxMetaData.html#a4988843f33731e91af29f49660111eb6",
-"classmnx_1_1global_1_1Segno.html#adc0d11dc3b382ee307f2bcb9ec27d818",
-"classmnx_1_1sequence_1_1AccidentalEnclosure.html#a8e8f827d1e5af0260c9064fcc3054386",
-"classmnx_1_1util_1_1mapping__error.html",
-"structmnx_1_1EnumStringMapping.html"
+"classmnx_1_1global_1_1Segno.html#acfeb4e25df41b499abd35cdc181928f9",
+"classmnx_1_1sequence_1_1AccidentalEnclosure.html#a37621700159c40186922b123877ffe2d",
+"classmnx_1_1sequence_1_1Tuplet.html#abc0557822c80e57ba23dd5585019e3e4",
+"namespacemusic__theory.html#a815d2a1e748a138127d59c252e4fa946ae45a3c65bbd13b82efb95ddfce95ee28"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

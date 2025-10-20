@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lyriclines_0',['lyricLines',['../structmnx_1_1validation_1_1SemanticValidationResult.html#afc062dace0308c1dcb6e072343f89a59',1,'mnx::validation::SemanticValidationResult']]]
+  ['jsonschematypename_0',['jsonschematypename',['../classmnx_1_1global_1_1Measure.html#af1652983089ae678107d28d3ae23d10e',1,'mnx::global::Measure::JsonSchemaTypeName'],['../classmnx_1_1Layout.html#ad2944963ab874ea9303ce05cd7add4c1',1,'mnx::Layout::JsonSchemaTypeName'],['../classmnx_1_1part_1_1Measure.html#a8ff4cdf17c41244d4a91793cbd8549a7',1,'mnx::part::Measure::JsonSchemaTypeName'],['../classmnx_1_1Part.html#a4216d9b3c8e5153be57718afc6a2bcb9',1,'mnx::Part::JsonSchemaTypeName'],['../classmnx_1_1sequence_1_1KitNote.html#a5558f68b47a326f09afdfff7d01ef726',1,'mnx::sequence::KitNote::JsonSchemaTypeName'],['../classmnx_1_1sequence_1_1Note.html#acd125cb578580d16c46715eb0aa16df0',1,'mnx::sequence::Note::JsonSchemaTypeName'],['../classmnx_1_1sequence_1_1Event.html#a194a66ae405c0d281bc00733f4238028',1,'mnx::sequence::Event::JsonSchemaTypeName']]]
 ];

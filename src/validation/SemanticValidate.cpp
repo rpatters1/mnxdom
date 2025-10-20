@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    void validateSequenceContent(const mnx::ContentArray& contentArray);
+    void validateSequenceContent(const mnx::ContentArray& contentArray, bool allowEventsOnly = false);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
 
@@ -162,7 +162,7 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
     }
 }
 
-void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray)
+void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray, bool allowEventsOnly)
 {
     auto part = contentArray.getEnclosingElement<mnx::Part>();
     if (!part.has_value()) {
@@ -245,11 +245,23 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 }
             }
         } else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
+            if (allowEventsOnly) {
+                addError("Content array contains grace note object, which is not permitted for this type", content);
+            }
             auto grace = content.get<mnx::sequence::Grace>();
-            validateSequenceContent(grace.content());
+            validateSequenceContent(grace.content(), true); // true => error on content other than events
         } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {
+            if (allowEventsOnly) {
+                addError("Content array contains tuplet object, which is not permitted for this type", content);
+            }
             auto tuplet = content.get<mnx::sequence::Tuplet>();
             validateSequenceContent(tuplet.content());
+        } else if (content.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
+            if (allowEventsOnly) {
+                addError("Content array contains multi-note tremolo object, which is not permitted for this type", content);
+            }
+            auto tremolo = content.get<mnx::sequence::MultiNoteTremolo>();
+            validateSequenceContent(tremolo.content(), true); // true => error on content other than events
         }
     }
 }
@@ -270,6 +282,10 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             }
             ids.emplace(id);
             if (const auto event = tryGetValue<mnx::sequence::Event>(id, beam)) {
+                if (event.value().isTremolo()) {
+                    addError("Beam containing event \"" + id + "\" is actually a multi-note tremolo and should not be a beam.", beam);
+                    continue;
+                }
                 if (isGraceBeam.has_value()) {
                     if (isGraceBeam.value() != event.value().isGrace()) {
                         addError("Event \"" + id + "\" attempts to beam a grace note to a non grace note.", beam);

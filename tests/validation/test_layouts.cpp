@@ -32,7 +32,7 @@ TEST(Layouts, DuplicateId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "duplicate_layouts.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID \"S0-ScrVw\" already exists at /layouts/0");
+    expectSemanticError(doc, inputPath, "ID \"S0-ScrVw\" already exists for type \"system-layout\" at /layouts/0");
 }
 
 TEST(Layouts, NonexistentPartId)

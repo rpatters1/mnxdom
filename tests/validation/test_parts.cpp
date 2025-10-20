@@ -32,7 +32,7 @@ TEST(Parts, DuplicateId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "duplicate_parts.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID \"P1\" already exists at /parts/0");
+    expectSemanticError(doc, inputPath, "ID \"P1\" already exists for type \"measure-global\" at /parts/0");
 }
 
 TEST(Parts, MeasuresMismatch)
@@ -57,8 +57,9 @@ TEST(Parts, EventErrors)
     std::filesystem::path inputPath = getInputPath() / "errors" / "event_errors.json";
     auto doc = mnx::Document::create(inputPath);
     expectSemanticErrors(doc, inputPath, {
-        "ID \"ev5n1\" already exists at",
-        "ID \"ev6\" already exists at",
+        "ID \"ev5n1\" already exists for type \"note\" at",
+        "ID \"ev6\" already exists for type \"event\" at",
+        "ID \"ev7\" already exists for type \"event\" at",
         "Event \"ev7\" is a rest but also has notes",
         "Event \"ev8\" has both full measure indicator and duration"
     });

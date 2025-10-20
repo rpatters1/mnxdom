@@ -269,6 +269,8 @@ public:
     /// @brief Calculates the measure index for this measure.
     /// @return index() if it has a value or the default value (defined in the MNX specification) if it does not.
     int calcMeasureIndex() const;
+
+    inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };
 
 /**

@@ -266,6 +266,9 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             auto tremolo = content.get<mnx::sequence::MultiNoteTremolo>();
             validateSequenceContent(tremolo.content(), elapsedTime, 0, true); // true => error on content other than events
             elapsedTime += timeRatio * tremolo.outer();
+        } else if (content.type() == mnx::sequence::Space::ContentTypeValue) {
+            auto space = content.get<mnx::sequence::Space>();
+            elapsedTime += timeRatio * space.duration();
         }
     }
 }
@@ -368,8 +371,8 @@ void SemanticValidator::validateParts()
                         }
                         return FractionValue(4, 4);
                     }();
-                    if (elapsedTime != measureTime) {
-                        addError("Entries in measure at index " + std::to_string(measure.calcArrayIndex()) + " do not add up to time signature.", measure);
+                    if (elapsedTime > measureTime) {
+                        addError("Entries in measure at index " + std::to_string(measure.calcArrayIndex()) + " add up to more than the time signature.", measure);
                     }
                 }
             }

@@ -522,6 +522,7 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showValue, TupletDisplaySetting::NoNumber); ///< How and whether to show the tuplet note value(s)
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
 
+    /// @brief Return the triplet ratio as a FractionValue
     FractionValue ratio() const
     { return outer() / inner(); }
 

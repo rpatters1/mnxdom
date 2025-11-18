@@ -21,6 +21,7 @@
  */
 #include <memory>
 #include <unordered_map>
+#include <set>
 #include <map>
 #include <string>
 
@@ -268,19 +269,19 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
 
 void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth)
 {
+    std::set<std::pair<unsigned, std::string>> ids;
     for (const auto beam : beams) {
         if (beam.events().empty()) {
             addError("Beam contains only one or fewer events.", beam);
         }
-        std::unordered_set<std::string> ids;
         std::optional<bool> isGraceBeam;
         std::optional<std::string> voice;
         for (const auto id : beam.events()) {
-            if (ids.find(id) != ids.end()) {
-                addError("Event \"" + id + "\" is duplicated in beam.", beam);
+            if (ids.find(std::make_pair(depth, id)) != ids.end()) {
+                addError("Event \"" + id + "\" is duplicated in beam at depth " + std::to_string(depth) + ".", beam);
                 continue;
             }
-            ids.emplace(id);
+            ids.emplace(std::make_pair(depth, id));
             if (const auto event = tryGetValue<mnx::sequence::Event>(id, beam)) {
                 if (event.value().isTremolo()) {
                     addError("Beam containing event \"" + id + "\" is actually a multi-note tremolo and should not be a beam.", beam);

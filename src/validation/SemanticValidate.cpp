@@ -51,7 +51,7 @@ public:
     }
 
 private:
-    void validateSequenceContent(const mnx::ContentArray& contentArray, bool allowEventsOnly = false);
+    void validateSequenceContent(const mnx::ContentArray& contentArray, FractionValue& elapsedTime, FractionValue timeRatio, bool allowEventsOnly = false);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
 
@@ -163,7 +163,7 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
     }
 }
 
-void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray, bool allowEventsOnly)
+void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray, FractionValue& elapsedTime, FractionValue timeRatio, bool allowEventsOnly)
 {
     auto part = contentArray.getEnclosingElement<mnx::Part>();
     if (!part.has_value()) {
@@ -180,6 +180,8 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             } else {
                 if (!event.duration().has_value()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
+                } else {
+                    elapsedTime += timeRatio * event.duration().value();
                 }
             }
             if (event.rest().has_value()) {
@@ -250,19 +252,20 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 addError("Content array contains grace note object, which is not permitted for this type", content);
             }
             auto grace = content.get<mnx::sequence::Grace>();
-            validateSequenceContent(grace.content(), true); // true => error on content other than events
+            validateSequenceContent(grace.content(), elapsedTime, 0, true); // true => error on content other than events
         } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {
             if (allowEventsOnly) {
                 addError("Content array contains tuplet object, which is not permitted for this type", content);
             }
             auto tuplet = content.get<mnx::sequence::Tuplet>();
-            validateSequenceContent(tuplet.content());
+            validateSequenceContent(tuplet.content(), elapsedTime, timeRatio * tuplet.ratio());
         } else if (content.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
             if (allowEventsOnly) {
                 addError("Content array contains multi-note tremolo object, which is not permitted for this type", content);
             }
             auto tremolo = content.get<mnx::sequence::MultiNoteTremolo>();
-            validateSequenceContent(tremolo.content(), true); // true => error on content other than events
+            validateSequenceContent(tremolo.content(), elapsedTime, 0, true); // true => error on content other than events
+            elapsedTime += timeRatio * tremolo.outer();
         }
     }
 }
@@ -357,7 +360,17 @@ void SemanticValidator::validateParts()
             for (const auto measure : measures.value()) {
                 for (const auto sequence : measure.sequences()) {
                     /// @todo check voice uniqueness
-                    validateSequenceContent(sequence.content());
+                    FractionValue elapsedTime = 0;
+                    validateSequenceContent(sequence.content(), elapsedTime, 1);
+                    auto measureTime = [&]() -> FractionValue {
+                        if (auto time = measure.calcCurrentTime()) {
+                            return time.value();
+                        }
+                        return FractionValue(4, 4);
+                    }();
+                    if (elapsedTime != measureTime) {
+                        addError("Entries in measure at index " + std::to_string(measure.calcArrayIndex()) + " do not add up to time signature.", measure);
+                    }
                 }
             }
             // second pass: validate other items that need a complete list of events and notes

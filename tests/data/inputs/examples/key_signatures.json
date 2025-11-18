@@ -196,7 +196,7 @@
                          {
                             "type": "event",
                             "duration": {
-                               "base": "quarter"
+                               "base": "whole"
                             },
                             "notes": [
                                {

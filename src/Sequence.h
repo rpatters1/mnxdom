@@ -522,6 +522,9 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showValue, TupletDisplaySetting::NoNumber); ///< How and whether to show the tuplet note value(s)
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
 
+    FractionValue ratio() const
+    { return outer() / inner(); }
+
     inline static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array
 };
 

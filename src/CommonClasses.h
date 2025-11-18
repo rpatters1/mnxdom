@@ -79,7 +79,7 @@ public:
      * The fraction is not automatically reduced. Use normalize() if you need
      * the value in lowest terms.
      */
-    FractionValue(NumType num, NumType den)
+    FractionValue(NumType num, NumType den = 1)
         : m_num(num)
         , m_den(den)
     {
@@ -444,6 +444,9 @@ public:
 
     /// @brief Calculates the number of flags or beams required by this note value
     unsigned calcNumberOfFlags() const;
+
+    /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
+    operator FractionValue() const;
 };
 
 /**
@@ -473,6 +476,11 @@ public:
 
     MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
     MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
+
+
+    /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
+    operator FractionValue() const
+    { return multiple() * duration(); }
 };
 
 /**
@@ -502,6 +510,10 @@ public:
 
     MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
     MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
+
+    /// @brief Implicit converter to FractionValue.
+    operator FractionValue() const
+    { return count() * FractionValue(1, static_cast<unsigned>(unit())); }
 };
 
 } // namespace mnx

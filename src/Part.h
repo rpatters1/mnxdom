@@ -278,6 +278,10 @@ public:
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);         ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
 
+    /// @brief Caculates the time signature at this measure.
+    /// @return The time signagure or std::nullopt if none.
+    std::optional<TimeSignature> calcCurrentTime() const;
+
     inline static constexpr std::string_view JsonSchemaTypeName = "part-measure";     ///< required for mapping
 };
 

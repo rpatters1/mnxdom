@@ -270,6 +270,10 @@ public:
     /// @return index() if it has a value or the default value (defined in the MNX specification) if it does not.
     int calcMeasureIndex() const;
 
+    /// @brief Calculates the current time signature by searching backwards.
+    /// @return The current time signature or std::nullopt if none found.
+    std::optional<TimeSignature> calcCurrentTime() const;
+
     inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };
 

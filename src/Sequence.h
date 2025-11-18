@@ -406,7 +406,7 @@ public:
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
     /// @param duration The duration of the space.
-    Space(Base& parent, const std::string_view& key, const Fraction::Initializer& duration)
+    Space(Base& parent, const std::string_view& key, const FractionValue& duration)
         : ContentObject(parent, key)
     {
         create_duration(duration);

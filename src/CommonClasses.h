@@ -22,11 +22,227 @@
 #pragma once
 
 #include <utility>
+#include <numeric>
+#include <stdexcept>
 
 #include "BaseTypes.h"
 #include "Enumerations.h"
 
 namespace mnx {
+
+/**
+ * @class FractionValue
+ * @brief Represents a detached arithmetic fraction with normalization.
+ *
+ * This class provides arithmetic operations on rational numbers without
+ * attaching them to the JSON DOM. It is intended for musical-duration and
+ * proportional calculations where a simple fraction is needed independently
+ * of the MNX DOM structure.
+ *
+ * A FractionValue constructed from a numerator and denominator preserves the
+ * values exactly as provided. Arithmetic operations (+=, -=, *=, /=) normalize
+ * the result to lowest terms using std::gcd. Call normalize() explicitly if
+ * you need a reduced form immediately after construction.
+ *
+ * The class supports:
+ *  - Exact rational arithmetic (addition, subtraction, multiplication, division)
+ *  - Normalization to lowest terms after each operation
+ *  - Comparison operators (in helper section)
+ *
+ * Compound assignment operators (+=, -=, *=, /=) are implemented as members.
+ * Binary operators (+, -, *, /) are implemented as non-member functions to
+ * allow symmetric conversions and correct C++ arithmetic semantics.
+ */
+struct FractionValue
+{
+    /// @brief Unsigned integer type used for numerator and denominator.
+    using NumType = unsigned;
+
+private:
+    NumType m_num = 0; ///< Numerator of the fraction (always non-negative).
+    NumType m_den = 1; ///< Denominator of the fraction (must be > 0).
+
+public:
+    /**
+     * @brief Default constructor initializes the value to 0/1.
+     */
+    FractionValue() = default;
+
+    /**
+     * @brief Constructs a fraction from a numerator and denominator.
+     *
+     * @param num The numerator.
+     * @param den The denominator. Must not be zero.
+     *
+     * @throws std::invalid_argument if @p den is zero.
+     *
+     * The fraction is not automatically reduced. Use normalize() if you need
+     * the value in lowest terms.
+     */
+    FractionValue(NumType num, NumType den)
+        : m_num(num)
+        , m_den(den)
+    {
+        if (m_den == 0) {
+            throw std::invalid_argument("FractionValue: denominator must not be zero.");
+        }
+    }
+
+    /// @brief Returns the numerator.
+    NumType numerator() const noexcept   { return m_num; }
+
+    /// @brief Returns the denominator.
+    NumType denominator() const noexcept { return m_den; }
+
+    /**
+     * @brief Adds another FractionValue to this one.
+     *
+     * @param rhs The fraction to add.
+     * @return Reference to this object after modification.
+     *
+     * The result is normalized.
+     */
+    FractionValue& operator+=(const FractionValue& rhs)
+    {
+        // a/b + c/d = (ad + bc)/bd
+        m_num = m_num * rhs.m_den + rhs.m_num * m_den;
+        m_den = m_den * rhs.m_den;
+        normalize();
+        return *this;
+    }
+
+    /**
+     * @brief Subtracts another FractionValue from this one.
+     *
+     * @param rhs The fraction to subtract.
+     * @return Reference to this object after modification.
+     *
+     * The result is normalized.
+     */
+    FractionValue& operator-=(const FractionValue& rhs)
+    {
+        // a/b - c/d = (ad - bc)/bd
+        m_num = m_num * rhs.m_den - rhs.m_num * m_den;
+        m_den = m_den * rhs.m_den;
+        normalize();
+        return *this;
+    }
+
+    /**
+     * @brief Multiplies this fraction by another.
+     *
+     * @param rhs The fraction to multiply with.
+     * @return Reference to this object after modification.
+     *
+     * The result is normalized.
+     */
+    FractionValue& operator*=(const FractionValue& rhs)
+    {
+        m_num = m_num * rhs.m_num;
+        m_den = m_den * rhs.m_den;
+        normalize();
+        return *this;
+    }
+
+    /**
+     * @brief Divides this fraction by another.
+     *
+     * @param rhs The divisor.
+     * @return Reference to this object after modification.
+     *
+     * @throws std::invalid_argument if @p rhs has a numerator of zero.
+     *
+     * The result is normalized.
+     */
+    FractionValue& operator/=(const FractionValue& rhs)
+    {
+        if (rhs.m_num == 0) {
+            throw std::invalid_argument("Division by zero FractionValue.");
+        }
+        m_num = m_num * rhs.m_den;
+        m_den = m_den * rhs.m_num;
+        normalize();
+        return *this;
+    }
+
+    /**
+     * @brief Reduces the fraction to lowest terms using std::gcd.
+     */
+    void normalize()
+    {
+        const NumType g = std::gcd(m_num, m_den);
+        if (g > 1) {
+            m_num /= g;
+            m_den /= g;
+        }
+    }
+};
+
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
+// ------------------------------------------------------------
+// Non-member arithmetic operators
+// ------------------------------------------------------------
+
+inline FractionValue operator+(FractionValue lhs, const FractionValue& rhs)
+{
+    lhs += rhs;
+    return lhs;
+}
+
+inline FractionValue operator-(FractionValue lhs, const FractionValue& rhs)
+{
+    lhs -= rhs;
+    return lhs;
+}
+
+inline FractionValue operator*(FractionValue lhs, const FractionValue& rhs)
+{
+    lhs *= rhs;
+    return lhs;
+}
+
+inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
+{
+    lhs /= rhs;
+    return lhs;
+}
+
+// ------------------------------------------------------------
+// Comparison operators
+// ------------------------------------------------------------
+
+inline bool operator==(const FractionValue& a, const FractionValue& b)
+{
+    return a.numerator() * b.denominator() == b.numerator() * a.denominator();
+}
+
+inline bool operator!=(const FractionValue& a, const FractionValue& b)
+{
+    return !(a == b);
+}
+
+inline bool operator<(const FractionValue& a, const FractionValue& b)
+{
+    return a.numerator() * b.denominator() < b.numerator() * a.denominator();
+}
+
+inline bool operator<=(const FractionValue& a, const FractionValue& b)
+{
+    return !(b < a);
+}
+
+inline bool operator>(const FractionValue& a, const FractionValue& b)
+{
+    return b < a;
+}
+
+inline bool operator>=(const FractionValue& a, const FractionValue& b)
+{
+    return !(a < b);
+}
+
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 /// @class Fraction
 /// @brief Represents a fraction of a whole note, for measuring musical time.
@@ -39,9 +255,7 @@ private:
     static constexpr size_t NUMERATOR_INDEX = 0;
     static constexpr size_t DENOMINATOR_INDEX = 1;
 
-public:
-    using Initializer = std::pair<NumType, NumType>;    ///< initializer for Fraction class (numerator, denominator)
-    
+public:    
     /// @brief Constructor to wrap a Fraction instance around existing JSON
     Fraction(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayType(root, pointer)
@@ -55,11 +269,17 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param value The numerator (number on top) and denominator (number on bottom) of the fraction.
-    Fraction(Base& parent, const std::string_view& key, const Initializer& value)
+    Fraction(Base& parent, const std::string_view& key, const FractionValue& value)
         : ArrayType(parent, key)
     {
-        push_back(value.first);
-        push_back(value.second);
+        push_back(value.numerator());
+        push_back(value.denominator());
+    }
+
+    /// @brief Implicit conversion to @ref FractionValue for arithmetic and comparisons.
+    operator FractionValue() const
+    {
+        return FractionValue(numerator(), denominator());
     }
 
     MNX_ARRAY_ELEMENT_PROPERTY(NumType, numerator, NUMERATOR_INDEX);        ///< the numerator of the fraction
@@ -67,35 +287,6 @@ public:
 
     friend class Base;
 };
-
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-
-inline bool operator==(const Fraction& a, const Fraction& b)
-{
-    return a.numerator() * b.denominator() == b.numerator() * a.denominator();
-}
-
-inline bool operator!=(const Fraction& a, const Fraction& b) {
-    return !(a == b);
-}
-
-inline bool operator<(const Fraction& a, const Fraction& b) {
-    return a.numerator() * b.denominator() < b.numerator() * a.denominator();
-}
-
-inline bool operator<=(const Fraction& a, const Fraction& b) {
-    return !(b < a);
-}
-
-inline bool operator>(const Fraction& a, const Fraction& b) {
-    return b < a;
-}
-
-inline bool operator>=(const Fraction& a, const Fraction& b) {
-    return !(a < b);
-}
-
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 /**
  * @class RhythmicPosition
@@ -114,7 +305,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param position Position within a measure (as a fraction of whole notes)
-    RhythmicPosition(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
+    RhythmicPosition(Base& parent, const std::string_view& key, const FractionValue& position)
         : Object(parent, key)
     {
         create_fraction(position);
@@ -143,7 +334,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param measureId The measure index of the measure of the position.
     /// @param position Position within the measure (as a fraction of whole notes)
-    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, const Fraction::Initializer& position)
+    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, const FractionValue& position)
         : Object(parent, key)
     {
         set_measure(measureId);

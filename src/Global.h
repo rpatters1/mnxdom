@@ -105,7 +105,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param position The position of the Fine within the measure.
-    Fine(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
+    Fine(Base& parent, const std::string_view& key, const FractionValue& position)
         : Object(parent, key)
     {
         create_location(position);
@@ -134,7 +134,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param jumpType The @ref JumpType of this jump.
     /// @param position The position of the Jump within the measure.
-    Jump(Base& parent, const std::string_view& key, JumpType jumpType, const Fraction::Initializer& position)
+    Jump(Base& parent, const std::string_view& key, JumpType jumpType, const FractionValue& position)
         : Object(parent, key)
     {
         set_type(jumpType);
@@ -185,7 +185,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param position The position of the Segno within the measure.
-    Segno(Base& parent, const std::string_view& key, const Fraction::Initializer& position)
+    Segno(Base& parent, const std::string_view& key, const FractionValue& position)
         : Object(parent, key)
     {
         create_location(position);

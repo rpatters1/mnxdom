@@ -249,24 +249,27 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
         } else if (content.type() == mnx::sequence::Grace::ContentTypeValue) {
             if (allowEventsOnly) {
-                addError("Content array contains grace note object, which is not permitted for this type", content);
+                addError("Content array contains grace note object, which is not permitted for type " + content.type(), content);
             }
             auto grace = content.get<mnx::sequence::Grace>();
             validateSequenceContent(grace.content(), elapsedTime, 0, true); // true => error on content other than events
         } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {
             if (allowEventsOnly) {
-                addError("Content array contains tuplet object, which is not permitted for this type", content);
+                addError("Content array contains tuplet object, which is not permitted for type " + content.type(), content);
             }
             auto tuplet = content.get<mnx::sequence::Tuplet>();
             validateSequenceContent(tuplet.content(), elapsedTime, timeRatio * tuplet.ratio());
         } else if (content.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
             if (allowEventsOnly) {
-                addError("Content array contains multi-note tremolo object, which is not permitted for this type", content);
+                addError("Content array contains multi-note tremolo object, which is not permitted for type " + content.type(), content);
             }
             auto tremolo = content.get<mnx::sequence::MultiNoteTremolo>();
             validateSequenceContent(tremolo.content(), elapsedTime, 0, true); // true => error on content other than events
             elapsedTime += timeRatio * tremolo.outer();
         } else if (content.type() == mnx::sequence::Space::ContentTypeValue) {
+            if (allowEventsOnly) {
+                addError("Content array contains space object, which is not permitted for type " + content.type(), content);
+            }
             auto space = content.get<mnx::sequence::Space>();
             elapsedTime += timeRatio * space.duration();
         }

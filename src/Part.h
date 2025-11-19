@@ -115,7 +115,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param value the value of the dynamic. Currently the spec allows any string here.
     /// @param position the position of the dynamic within the measure.
-    Dynamic(Base& parent, const std::string_view& key, const std::string& value, const Fraction::Initializer& position)
+    Dynamic(Base& parent, const std::string_view& key, const std::string& value, const FractionValue& position)
         : ContentObject(parent, key)
     {
         set_value(value);
@@ -149,7 +149,7 @@ public:
     /// @param position the start position of the ottava.
     /// @param endMeasureId The end measure of the ottava.
     /// @param endPosition The position within the end measure of the ottava. (The ottava includes events that start at this position.)
-    Ottava(Base& parent, const std::string_view& key, OttavaAmount value, const Fraction::Initializer& position, int endMeasureId, const Fraction::Initializer& endPosition)
+    Ottava(Base& parent, const std::string_view& key, OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
         : ArrayElementObject(parent, key)
     {
         create_position(position);
@@ -277,6 +277,10 @@ public:
     MNX_OPTIONAL_CHILD(Array<Dynamic>, dynamics);       ///< the dynamics in this measure
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);         ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
+
+    /// @brief Caculates the time signature at this measure.
+    /// @return The time signagure or std::nullopt if none.
+    std::optional<TimeSignature> calcCurrentTime() const;
 
     inline static constexpr std::string_view JsonSchemaTypeName = "part-measure";     ///< required for mapping
 };

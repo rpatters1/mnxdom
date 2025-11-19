@@ -406,7 +406,7 @@ public:
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
     /// @param duration The duration of the space.
-    Space(Base& parent, const std::string_view& key, const Fraction::Initializer& duration)
+    Space(Base& parent, const std::string_view& key, const FractionValue& duration)
         : ContentObject(parent, key)
     {
         create_duration(duration);
@@ -521,6 +521,10 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showNumber, TupletDisplaySetting::Inner); ///< How and whether to show the tuplet number(s)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showValue, TupletDisplaySetting::NoNumber); ///< How and whether to show the tuplet note value(s)
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
+
+    /// @brief Return the triplet ratio as a FractionValue
+    FractionValue ratio() const
+    { return outer() / inner(); }
 
     inline static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array
 };

@@ -82,7 +82,7 @@ public:
     /// @param measureId The measure index of the measure of the position.
     /// @param position The position of the LayoutChange within the measure.
     LayoutChange(Base& parent, const std::string_view& key, const std::string& layoutId,
-            int measureId, const Fraction::Initializer& position)
+            int measureId, const FractionValue& position)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);

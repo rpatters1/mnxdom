@@ -198,6 +198,7 @@ using json = nlohmann::ordered_json;        ///< JSON class for MNX
 using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 
 class Object;
+class Document;
 template <typename T> class Array;
 
 namespace validation {
@@ -247,7 +248,7 @@ public:
 
     /// @brief Dumps the branch to a string. Useful in debugging.
     /// @param indents Number of indents or -1 for no indents 
-    std::string dump(int indents = -1)
+    std::string dump(int indents = -1) const
     {
         return ref().dump(indents);
     }
@@ -270,6 +271,9 @@ public:
 
     /// @brief Returns the json_pointer for this node.
     json_pointer pointer() const { return m_pointer; }
+
+    /// @brief Returns the document root
+    Document document() const;
 
 protected:
     /**

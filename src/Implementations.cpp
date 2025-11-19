@@ -68,6 +68,11 @@ std::optional<T> Base::getEnclosingElement() const
     return T(m_root, json_pointer(s.substr(0, after)));
 }
 
+Document Base::document() const
+{
+    return Document(root());
+}
+
 // ********************
 // ***** Document *****
 // ********************
@@ -160,6 +165,50 @@ unsigned NoteValue::calcNumberOfFlags() const
     }
 }
 
+NoteValue::operator FractionValue() const
+{
+    using Num = FractionValue::NumType;
+
+    Num num = 1;
+    Num den = 1;
+
+    // Base duration, with a quarter note = 1/4
+    switch (base())
+    {
+        case NoteValueBase::Note4096th:     den = 4096; break;
+        case NoteValueBase::Note2048th:     den = 2048; break;
+        case NoteValueBase::Note1024th:     den = 1024; break;
+        case NoteValueBase::Note512th:      den = 512;  break;
+        case NoteValueBase::Note256th:      den = 256;  break;
+        case NoteValueBase::Note128th:      den = 128;  break;
+        case NoteValueBase::Note64th:       den = 64;   break;
+        case NoteValueBase::Note32nd:       den = 32;   break;
+        case NoteValueBase::Note16th:       den = 16;   break;
+        case NoteValueBase::Eighth:         den = 8;    break;
+        case NoteValueBase::Quarter:        den = 4;    break;
+        case NoteValueBase::Half:           den = 2;    break;
+        case NoteValueBase::Whole:          den = 1;    break;
+        case NoteValueBase::Breve:          num = 2;    break;  // 2/1
+        case NoteValueBase::Longa:          num = 4;    break;  // 4/1
+        case NoteValueBase::Maxima:         num = 8;    break;  // 8/1
+        case NoteValueBase::DuplexMaxima:   num = 16;   break;  // 16/1
+    }
+
+    const unsigned numDots = dots();
+    if (numDots)
+    {
+        // Geometric factor: 1 + 1/2 + ... + 1/2^dots
+        // = (2^(dots+1) - 1) / 2^dots
+        const Num factorNum = (Num(1) << (numDots + 1U)) - Num(1);
+        const Num factorDen = (Num(1) << numDots);
+
+        num *= factorNum;
+        den *= factorDen;
+    }
+
+    return FractionValue(num, den);  // FractionValue will normalize internally
+}
+
 // ***************************
 // ***** global::Measure *****
 // ***************************
@@ -185,6 +234,35 @@ int global::Measure::calcMeasureIndex() const
     const auto prev = parentArray[arrayIndex - 1];
     const auto prevIndex = prev.index();
     return prevIndex.value_or(prev.calcMeasureIndex()) + 1;
+}
+
+std::optional<TimeSignature> global::Measure::calcCurrentTime() const
+{
+    auto measures = parent<Array<global::Measure>>();
+    global::Measure next = *this;
+    size_t currentIndex = next.calcArrayIndex();
+    while (!next.time())
+    {
+        if (currentIndex == 0) {
+            return std::nullopt;
+        }
+        next = measures[--currentIndex];
+    }
+    return next.time();
+}
+
+// *************************
+// ***** part::Measure *****
+// *************************
+
+std::optional<TimeSignature> part::Measure::calcCurrentTime() const
+{
+    const size_t measureIndex = calcArrayIndex();
+    auto globalMeasures = document().global().measures();
+    MNX_ASSERT_IF (measureIndex > globalMeasures.size()) {
+        throw std::logic_error("Part measure has higher index than global measure at " + dump());
+    }
+    return globalMeasures[measureIndex].calcCurrentTime();
 }
 
 // ***************************

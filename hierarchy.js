@@ -94,6 +94,7 @@ var hierarchy =
     ] ],
     [ "mnx::EnumStringMapping< E, typename >", "structmnx_1_1EnumStringMapping.html", null ],
     [ "mnx::validation::ValidationResult::Error", "structmnx_1_1validation_1_1ValidationResult_1_1Error.html", null ],
+    [ "mnx::FractionValue", "structmnx_1_1FractionValue.html", null ],
     [ "mnx::util::IdMapping", "classmnx_1_1util_1_1IdMapping.html", null ],
     [ "mnx::NoteValue::Initializer", "classmnx_1_1NoteValue_1_1Initializer.html", null ],
     [ "std::runtime_error", null, [

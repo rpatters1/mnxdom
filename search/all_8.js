@@ -1,7 +1,7 @@
 var searchData=
 [
   ['idmapping_0',['idmapping',['../classmnx_1_1util_1_1IdMapping.html',1,'mnx::util::IdMapping'],['../classmnx_1_1util_1_1IdMapping.html#a6855c0abc1af91194a8fb61274676d01',1,'mnx::util::IdMapping::IdMapping()']]],
-  ['initializer_1',['initializer',['../classmnx_1_1NoteValue_1_1Initializer.html',1,'mnx::NoteValue::Initializer'],['../classmnx_1_1Fraction.html#a2542a999312eac44f13aa93b7f4520f7',1,'mnx::Fraction::Initializer'],['../classmnx_1_1NoteValue_1_1Initializer.html#a11bdf345310068f4668abb4c860934a8',1,'mnx::NoteValue::Initializer::Initializer()']]],
+  ['initializer_1',['initializer',['../classmnx_1_1NoteValue_1_1Initializer.html',1,'mnx::NoteValue::Initializer'],['../classmnx_1_1NoteValue_1_1Initializer.html#a11bdf345310068f4668abb4c860934a8',1,'mnx::NoteValue::Initializer::Initializer()']]],
   ['instance_2',['instance',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#a1adda86fc4504ee4dea9f4357f0ec868',1,'mnx::validation::ValidationResult::Error']]],
   ['interval_3',['interval',['../classmnx_1_1Interval.html',1,'mnx::Interval'],['../classmnx_1_1Interval.html#a65ab6db7a20d6eefaa0c06137a503ce2',1,'mnx::Interval::Interval(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1Interval.html#acdb314fff253990ecc7aa69139109bf3',1,'mnx::Interval::Interval(Base &amp;parent, const std::string_view &amp;key, int staffDistance, int halfSteps)']]],
   ['ionian_4',['Ionian',['../namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683cea2dfbe3d304372906c238010701613654',1,'music_theory']]],

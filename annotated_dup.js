@@ -86,6 +86,7 @@ var annotated_dup =
       [ "Document", "classmnx_1_1Document.html", "classmnx_1_1Document" ],
       [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
       [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
+      [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],
       [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],
       [ "Interval", "classmnx_1_1Interval.html", "classmnx_1_1Interval" ],
       [ "KeySignature", "classmnx_1_1KeySignature.html", "classmnx_1_1KeySignature" ],

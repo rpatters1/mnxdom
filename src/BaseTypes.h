@@ -119,7 +119,7 @@
   * - `NAME()` returns the value of the property.
   * - `set_NAME(value) sets the value of the property.
   * - `clear_NAME() clears the property from the JSON document.
-  * - `set_or_clear_NAME(value) sets the value of the property if it the input value is not the default.
+  * - `set_or_clear_NAME(value) sets the value of the property if the input value is not the default.
   * Otherwise it clears the property.
   *
   * @param TYPE the type of the property

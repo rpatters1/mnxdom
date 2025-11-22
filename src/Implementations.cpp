@@ -259,7 +259,7 @@ std::optional<TimeSignature> part::Measure::calcCurrentTime() const
 {
     const size_t measureIndex = calcArrayIndex();
     auto globalMeasures = document().global().measures();
-    MNX_ASSERT_IF (measureIndex > globalMeasures.size()) {
+    MNX_ASSERT_IF (measureIndex >= globalMeasures.size()) {
         throw std::logic_error("Part measure has higher index than global measure at " + dump());
     }
     return globalMeasures[measureIndex].calcCurrentTime();

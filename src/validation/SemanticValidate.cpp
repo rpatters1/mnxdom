@@ -51,7 +51,8 @@ public:
     }
 
 private:
-    void validateSequenceContent(const mnx::ContentArray& contentArray, FractionValue& elapsedTime, FractionValue timeRatio, bool allowEventsOnly = false);
+    void validateSequenceContent(const mnx::ContentArray& contentArray, const Base& location,
+        FractionValue expectedDuration, bool allowEventsOnly = false, bool requireExactDuration = false, FractionValue* actualElapsedOut = nullptr);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
 
@@ -163,13 +164,18 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
     }
 }
 
-void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray, FractionValue& elapsedTime, FractionValue timeRatio, bool allowEventsOnly)
+void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray, const Base& location,
+    FractionValue expectedDuration, bool allowEventsOnly, bool requireExactDuration, FractionValue* actualElapsedOut)
 {
+    if (actualElapsedOut) {
+        *actualElapsedOut = 0;
+    }
     auto part = contentArray.getEnclosingElement<mnx::Part>();
     if (!part.has_value()) {
         addError("Sequence content array has no part.", contentArray);
         return;
     }
+    auto elapsedTime = FractionValue(0);
     for (const auto content : contentArray) {
         if (content.type() == mnx::sequence::Event::ContentTypeValue) {
             auto event = content.get<mnx::sequence::Event>();
@@ -181,7 +187,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 if (!event.duration().has_value()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
                 } else {
-                    elapsedTime += timeRatio * event.duration().value();
+                    elapsedTime += event.duration().value();
                 }
             }
             if (event.rest().has_value()) {
@@ -252,27 +258,43 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 addError("Content array contains grace note object, which is not permitted for type " + content.type(), content);
             }
             auto grace = content.get<mnx::sequence::Grace>();
-            validateSequenceContent(grace.content(), elapsedTime, 0, true); // true => error on content other than events
+            validateSequenceContent(grace.content(), grace, 0, /*allowEventsOnly*/true); // true => error on content other than events
         } else if (content.type() == mnx::sequence::Tuplet::ContentTypeValue) {
             if (allowEventsOnly) {
                 addError("Content array contains tuplet object, which is not permitted for type " + content.type(), content);
             }
             auto tuplet = content.get<mnx::sequence::Tuplet>();
-            validateSequenceContent(tuplet.content(), elapsedTime, timeRatio * tuplet.ratio());
+            FractionValue tupletElapsed;
+            validateSequenceContent(tuplet.content(), tuplet, tuplet.inner(), /*allowEventsOnly*/false, /*requireExactDuration*/true, &tupletElapsed);
+            if (tuplet.inner() != 0) {
+                elapsedTime += tupletElapsed * tuplet.ratio();
+            } else {
+                addError("Encountered tuplet with zero length inner value.", tuplet);
+            }
         } else if (content.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
             if (allowEventsOnly) {
                 addError("Content array contains multi-note tremolo object, which is not permitted for type " + content.type(), content);
             }
             auto tremolo = content.get<mnx::sequence::MultiNoteTremolo>();
-            validateSequenceContent(tremolo.content(), elapsedTime, 0, true); // true => error on content other than events
-            elapsedTime += timeRatio * tremolo.outer();
+            validateSequenceContent(tremolo.content(), tremolo, 0, /*allowEventsOnly*/true); // true => error on content other than events
+            elapsedTime += tremolo.outer();
         } else if (content.type() == mnx::sequence::Space::ContentTypeValue) {
             if (allowEventsOnly) {
                 addError("Content array contains space object, which is not permitted for type " + content.type(), content);
             }
             auto space = content.get<mnx::sequence::Space>();
-            elapsedTime += timeRatio * space.duration();
+            elapsedTime += space.duration();
         }
+    }
+    if (expectedDuration != 0) {
+        if (elapsedTime > expectedDuration) {
+            addError("Entries in content array add up to more than the expected value.", location);
+        } else if (elapsedTime < expectedDuration && requireExactDuration) {
+            addError("Entries in content array add up to less than the expected value.", location);
+        }
+    }
+    if (actualElapsedOut) {
+        *actualElapsedOut = elapsedTime;
     }
 }
 
@@ -325,6 +347,7 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
         }
     }
 }
+
 void SemanticValidator::validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas)
 {    
     for (const auto ottava : ottavas) {
@@ -350,6 +373,9 @@ void SemanticValidator::validateParts()
         if (numPartMeasures != numGlobalMeasures) {
             addError("Part" + partName + " contains a different number of measures (" + std::to_string(numPartMeasures)
                 + ") than are defined globally (" + std::to_string(numGlobalMeasures) + ")", part);
+            if (numGlobalMeasures < numPartMeasures) {
+                return; // cannot continue because can't get current time for part measures greater than global measures
+            }
         }
         if (auto kit = part.kit()) {
             auto sounds = document.global().sounds();
@@ -364,19 +390,15 @@ void SemanticValidator::validateParts()
         if (auto measures = part.measures()) {
             // first pass: validateSequenceContent creates the eventList and the noteList
             for (const auto measure : measures.value()) {
+                auto measureTime = [&]() -> FractionValue {
+                    if (auto time = measure.calcCurrentTime()) {
+                        return time.value();
+                    }
+                    return FractionValue(4, 4);
+                }();
                 for (const auto sequence : measure.sequences()) {
                     /// @todo check voice uniqueness
-                    FractionValue elapsedTime = 0;
-                    validateSequenceContent(sequence.content(), elapsedTime, 1);
-                    auto measureTime = [&]() -> FractionValue {
-                        if (auto time = measure.calcCurrentTime()) {
-                            return time.value();
-                        }
-                        return FractionValue(4, 4);
-                    }();
-                    if (elapsedTime > measureTime) {
-                        addError("Entries in measure at index " + std::to_string(measure.calcArrayIndex()) + " add up to more than the time signature.", measure);
-                    }
+                    validateSequenceContent(sequence.content(), sequence, measureTime);
                 }
             }
             // second pass: validate other items that need a complete list of events and notes

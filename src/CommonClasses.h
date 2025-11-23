@@ -53,7 +53,7 @@ namespace mnx {
  * Binary operators (+, -, *, /) are implemented as non-member functions to
  * allow symmetric conversions and correct C++ arithmetic semantics.
  */
-struct FractionValue
+struct [[nodiscard]] FractionValue
 {
     /// @brief Unsigned integer type used for numerator and denominator.
     using NumType = unsigned;

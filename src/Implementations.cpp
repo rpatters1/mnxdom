@@ -38,34 +38,74 @@ struct EnclosingKey
 
 template <>
 struct EnclosingKey<mnx::Part> {
-    static constexpr std::string_view value = "/parts/"; // prefix
+    static constexpr std::array<std::string_view, 1> value = { "parts" };
 };
 template std::optional<mnx::Part> Base::getEnclosingElement<mnx::Part>() const;
 
 template <>
 struct EnclosingKey<mnx::Sequence> {
-    static constexpr std::string_view value = "sequences/"; // just a key
+    static constexpr std::array<std::string_view, 5> value = { "parts", "*", "measures", "*", "sequences" };
 };
 template std::optional<mnx::Sequence> Base::getEnclosingElement<mnx::Sequence>() const;
+
+template <>
+struct EnclosingKey<mnx::part::Measure> {
+    static constexpr std::array<std::string_view, 3> value = { "parts", "*", "measures" };
+};
+template std::optional<mnx::part::Measure> Base::getEnclosingElement<mnx::part::Measure>() const;
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 template <typename T>
 std::optional<T> Base::getEnclosingElement() const
 {
-    constexpr std::string_view key = EnclosingKey<T>::value;
-    std::string s = m_pointer.to_string();
+    // Compile-time pattern like {"parts"}, {"parts","*","measures"}, etc.
+    constexpr auto& key = EnclosingKey<T>::value;
+    constexpr std::size_t keySize = key.size();
 
-    std::size_t pos = s.find(key);
-    if (pos == std::string::npos)
-        return std::nullopt;
-
-    // Advance past the key to get the start of the index
-    std::size_t after = s.find('/', pos + key.length());
-    if (after == std::string::npos) {
-        return T(m_root, json_pointer(s));  // key was last element
+    const std::string ptrStr = m_pointer.to_string();
+    if (ptrStr.empty() || ptrStr[0] != '/') {
+        return std::nullopt; // not a valid JSON pointer form
     }
-    return T(m_root, json_pointer(s.substr(0, after)));
+
+    std::size_t pos = 1;                 // skip leading '/'
+    std::size_t tokenIndex = 0;
+    std::size_t enclosingEnd = std::string::npos;
+
+    while (pos <= ptrStr.size()) {
+        // Find end of current token
+        std::size_t slash = ptrStr.find('/', pos);
+        if (slash == std::string::npos) {
+            slash = ptrStr.size();
+        }
+        if (slash == pos) {
+            break; // empty segment; shouldn't happen in valid pointers
+        }
+
+        std::string_view token(ptrStr.data() + pos, slash - pos);
+
+        if (tokenIndex < keySize) {
+            // Compare against key prefix (with "*" wildcard)
+            if (key[tokenIndex] != "*" && token != key[tokenIndex]) {
+                return std::nullopt;     // not under this enclosing family
+            }
+        } else if (tokenIndex == keySize) {
+            // This is the trailing index segment we want to include
+            enclosingEnd = slash;
+            break;                       // we don't care about deeper segments
+        }
+
+        ++tokenIndex;
+        pos = slash + 1;
+    }
+
+    // We must have seen at least keySize + 1 segments (the trailing index)
+    if (enclosingEnd == std::string::npos) {
+        return std::nullopt;
+    }
+
+    // pointer to the enclosing element: "/segments[0]/.../segments[keySize]"
+    return T(m_root, json_pointer(ptrStr.substr(0, enclosingEnd)));
 }
 
 Document Base::document() const

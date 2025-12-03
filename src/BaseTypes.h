@@ -462,7 +462,7 @@ public:
     {
     }
 
-    /// @brief Convert to simple type
+    /// @brief Implicit conversion to simple type
     operator T() const
     {
         return ref().template get<T>();
@@ -540,6 +540,12 @@ public:
     /** @brief Clear all elements. */
     void clear() { ref().clear(); }
 
+    /** @brief Direct getter for a particular element. */
+    T at(size_t index) const
+    {
+        return operator[](index);
+    }
+    
     /// @brief const operator[]
     auto operator[](size_t index) const
     {

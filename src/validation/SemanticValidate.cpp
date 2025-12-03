@@ -60,14 +60,14 @@ private:
     void validateTies(const mnx::Array<mnx::sequence::Tie>& ties, const NoteType& note);
 
     template <typename T, typename KeyType>
-    std::optional<T> tryGetValue(const KeyType& key, const Base& location);
+    std::optional<T> tryGetValue(const KeyType& key, const Base& errorLocation);
 };
 
 template <typename T, typename KeyType>
-std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& location)
+std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& errorLocation)
 {
     try {
-        return document.getIdMapping().get<T>(key, location);
+        return document.getIdMapping().get<T>(key, errorLocation);
     } catch (const util::mapping_error&) {
         // already reported error, so fall through
     }
@@ -305,8 +305,15 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
         if (beam.events().empty()) {
             addError("Beam contains only one or fewer events.", beam);
         }
+        const auto beamMeasure = beam.getEnclosingElement<mnx::part::Measure>();
+        if (!beamMeasure) {
+            addError("Unable to find enclosing measure for beam.", beam);
+        }
+        size_t currentMeasureIndex = beamMeasure.value().calcArrayIndex();
+        bool requireMeasuresEqualOnFirst = depth == 1;
         std::optional<bool> isGraceBeam;
         std::optional<std::string> voice;
+        size_t currentEventIndex = 0;
         for (const auto id : beam.events()) {
             if (ids.find(std::make_pair(depth, id)) != ids.end()) {
                 addError("Event \"" + id + "\" is duplicated in beam at depth " + std::to_string(depth) + ".", beam);
@@ -314,6 +321,24 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             }
             ids.emplace(std::make_pair(depth, id));
             if (const auto event = tryGetValue<mnx::sequence::Event>(id, beam)) {
+                size_t nextMeasureIndex = currentMeasureIndex;
+                if (const auto eventMeasure = event.value().getEnclosingElement<mnx::part::Measure>()) {
+                    nextMeasureIndex = eventMeasure.value().calcArrayIndex();
+                } else {
+                    addError("Unable to find enclosing measure for event.", event.value());
+                }
+                if (requireMeasuresEqualOnFirst && nextMeasureIndex != currentMeasureIndex) {
+                    addError("First event in beam is not in the same measure as the beam.", beam);
+                } else if (nextMeasureIndex < currentMeasureIndex) {
+                    addError("Beam measures are out of sequence", beam);
+                } else if (nextMeasureIndex > currentEventIndex) {
+                    currentEventIndex = event.value().calcArrayIndex();
+                }
+                requireMeasuresEqualOnFirst = false;
+                currentMeasureIndex = nextMeasureIndex;
+                if (event.value().calcArrayIndex() < currentEventIndex) {
+                    addError("Beam events are out of sequence", beam);
+                }
                 if (event.value().isTremolo()) {
                     addError("Beam containing event \"" + id + "\" is actually a multi-note tremolo and should not be a beam.", beam);
                     continue;

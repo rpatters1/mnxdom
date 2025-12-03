@@ -24,6 +24,7 @@
 #include <utility>
 #include <numeric>
 #include <stdexcept>
+#include <limits>
 
 #include "BaseTypes.h"
 #include "Enumerations.h"
@@ -79,7 +80,7 @@ public:
      * The fraction is not automatically reduced. Use normalize() if you need
      * the value in lowest terms.
      */
-    FractionValue(NumType num, NumType den = 1)
+    FractionValue(NumType num, NumType den)
         : m_num(num)
         , m_den(den)
     {
@@ -88,11 +89,24 @@ public:
         }
     }
 
+    /**
+     * @brief Constructs a Fraction object from an integer.
+     * @param value The integer value of the fraction.
+     * @throws std::invalid_argument if the m_denominator is zero.
+     */
+    constexpr FractionValue(int value) : m_num(value), m_den(1) {}
+
     /// @brief Returns the numerator.
-    NumType numerator() const noexcept   { return m_num; }
+    constexpr NumType numerator() const noexcept   { return m_num; }
 
     /// @brief Returns the denominator.
-    NumType denominator() const noexcept { return m_den; }
+    constexpr NumType denominator() const noexcept { return m_den; }
+
+    /// @brief Constructs the max fractional value.
+    static constexpr FractionValue max() noexcept
+    {
+        return FractionValue((std::numeric_limits<NumType>::max)());
+    }
 
     /**
      * @brief Adds another FractionValue to this one.
@@ -119,7 +133,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator-=(const FractionValue& rhs)
+    constexpr FractionValue& operator-=(const FractionValue& rhs)
     {
         // a/b - c/d = (ad - bc)/bd
         m_num = m_num * rhs.m_den - rhs.m_num * m_den;
@@ -136,7 +150,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator*=(const FractionValue& rhs)
+    constexpr FractionValue& operator*=(const FractionValue& rhs)
     {
         m_num = m_num * rhs.m_num;
         m_den = m_den * rhs.m_den;
@@ -168,7 +182,7 @@ public:
     /**
      * @brief Reduces the fraction to lowest terms using std::gcd.
      */
-    void normalize()
+    constexpr void normalize()
     {
         const NumType g = std::gcd(m_num, m_den);
         if (g > 1) {
@@ -184,19 +198,19 @@ public:
 // Non-member arithmetic operators
 // ------------------------------------------------------------
 
-inline FractionValue operator+(FractionValue lhs, const FractionValue& rhs)
+constexpr FractionValue operator+(FractionValue lhs, const FractionValue& rhs)
 {
     lhs += rhs;
     return lhs;
 }
 
-inline FractionValue operator-(FractionValue lhs, const FractionValue& rhs)
+constexpr FractionValue operator-(FractionValue lhs, const FractionValue& rhs)
 {
     lhs -= rhs;
     return lhs;
 }
 
-inline FractionValue operator*(FractionValue lhs, const FractionValue& rhs)
+constexpr FractionValue operator*(FractionValue lhs, const FractionValue& rhs)
 {
     lhs *= rhs;
     return lhs;
@@ -212,32 +226,32 @@ inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
 // Comparison operators
 // ------------------------------------------------------------
 
-inline bool operator==(const FractionValue& a, const FractionValue& b)
+constexpr bool operator==(const FractionValue& a, const FractionValue& b)
 {
     return a.numerator() * b.denominator() == b.numerator() * a.denominator();
 }
 
-inline bool operator!=(const FractionValue& a, const FractionValue& b)
+constexpr bool operator!=(const FractionValue& a, const FractionValue& b)
 {
     return !(a == b);
 }
 
-inline bool operator<(const FractionValue& a, const FractionValue& b)
+constexpr bool operator<(const FractionValue& a, const FractionValue& b)
 {
     return a.numerator() * b.denominator() < b.numerator() * a.denominator();
 }
 
-inline bool operator<=(const FractionValue& a, const FractionValue& b)
+constexpr bool operator<=(const FractionValue& a, const FractionValue& b)
 {
     return !(b < a);
 }
 
-inline bool operator>(const FractionValue& a, const FractionValue& b)
+constexpr bool operator>(const FractionValue& a, const FractionValue& b)
 {
     return b < a;
 }
 
-inline bool operator>=(const FractionValue& a, const FractionValue& b)
+constexpr bool operator>=(const FractionValue& a, const FractionValue& b)
 {
     return !(a < b);
 }

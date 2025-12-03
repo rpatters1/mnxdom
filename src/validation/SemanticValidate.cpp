@@ -313,7 +313,7 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
         bool requireMeasuresEqualOnFirst = depth == 1;
         std::optional<bool> isGraceBeam;
         std::optional<std::string> voice;
-        size_t currentEventIndex = 0;
+        size_t currentSequenceIndex = 0;
         for (const auto id : beam.events()) {
             if (ids.find(std::make_pair(depth, id)) != ids.end()) {
                 addError("Event \"" + id + "\" is duplicated in beam at depth " + std::to_string(depth) + ".", beam);
@@ -331,14 +331,16 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                     addError("First event in beam is not in the same measure as the beam.", beam);
                 } else if (nextMeasureIndex < currentMeasureIndex) {
                     addError("Beam measures are out of sequence", beam);
-                } else if (nextMeasureIndex > currentEventIndex) {
-                    currentEventIndex = event.value().calcArrayIndex();
+                } else if (nextMeasureIndex > currentMeasureIndex) {
+                    currentSequenceIndex = event.value().getSequenceIndex();
                 }
                 requireMeasuresEqualOnFirst = false;
                 currentMeasureIndex = nextMeasureIndex;
-                if (event.value().calcArrayIndex() < currentEventIndex) {
+                const auto nextSequenceIndex = event.value().getSequenceIndex();
+                if (nextSequenceIndex < currentSequenceIndex) {
                     addError("Beam events are out of sequence", beam);
                 }
+                currentSequenceIndex = nextSequenceIndex;
                 if (event.value().isTremolo()) {
                     addError("Beam containing event \"" + id + "\" is actually a multi-note tremolo and should not be a beam.", beam);
                     continue;

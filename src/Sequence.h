@@ -36,6 +36,13 @@ class Sequence; // forward declaration
  */
 namespace sequence {
 
+/// @brief Base class for objects that are elements of sequence content arrays
+class ContentObject : public mnx::ContentObject
+{
+public:
+    using mnx::ContentObject::ContentObject;
+};
+
 /**
  * @class AccidentalEnclosure
  * @brief Represents the enclosure on an accidental.
@@ -384,6 +391,10 @@ public:
     /// @brief Returns the @ref Sequence instance for this event
     /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
     Sequence getSequence() const;
+
+    /// @brief Returns the index of the event (or its container) in the @ref Sequence instance for this event
+    /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
+    size_t getSequenceIndex() const;
 
     inline static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
     inline static constexpr std::string_view JsonSchemaTypeName = "event";     ///< required for mapping

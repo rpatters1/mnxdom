@@ -43,16 +43,22 @@ struct EnclosingKey<mnx::Part> {
 template std::optional<mnx::Part> Base::getEnclosingElement<mnx::Part>() const;
 
 template <>
+struct EnclosingKey<mnx::part::Measure> {
+    static constexpr std::array<std::string_view, 3> value = { "parts", "*", "measures" };
+};
+template std::optional<mnx::part::Measure> Base::getEnclosingElement<mnx::part::Measure>() const;
+
+template <>
 struct EnclosingKey<mnx::Sequence> {
     static constexpr std::array<std::string_view, 5> value = { "parts", "*", "measures", "*", "sequences" };
 };
 template std::optional<mnx::Sequence> Base::getEnclosingElement<mnx::Sequence>() const;
 
 template <>
-struct EnclosingKey<mnx::part::Measure> {
-    static constexpr std::array<std::string_view, 3> value = { "parts", "*", "measures" };
+struct EnclosingKey<mnx::sequence::ContentObject> {
+    static constexpr std::array<std::string_view, 7> value = { "parts", "*", "measures", "*", "sequences", "*", "content" };
 };
-template std::optional<mnx::part::Measure> Base::getEnclosingElement<mnx::part::Measure>() const;
+template std::optional<mnx::sequence::ContentObject> Base::getEnclosingElement<mnx::sequence::ContentObject>() const;
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
@@ -327,7 +333,7 @@ bool sequence::Event::isGrace() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "grace" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::ContentObject>();
+    auto container = this->container<mnx::sequence::ContentObject>();
     return container.type() == mnx::sequence::Grace::ContentTypeValue;
 }
 
@@ -337,7 +343,7 @@ bool sequence::Event::isTremolo() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "tremolo" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::ContentObject>();
+    auto container = this->container<mnx::sequence::ContentObject>();
     return container.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue;
 }
 
@@ -348,6 +354,15 @@ Sequence sequence::Event::getSequence() const
         throw std::logic_error("Event \"" + id_or("") + "\" at \"" + pointer().to_string() + "\" is not part of a sequence.");
     }
     return result.value();
+}
+
+size_t sequence::Event::getSequenceIndex() const
+{
+    auto result = getEnclosingElement<mnx::sequence::ContentObject>();
+    MNX_ASSERT_IF(!result.has_value()) {
+        throw std::logic_error("Event \"" + id_or("") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
+    }
+    return result.value().calcArrayIndex();
 }
 
 // ***************************

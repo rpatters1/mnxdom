@@ -263,7 +263,8 @@ public:
         return T(m_root, m_pointer.parent_pointer());
     }
 
-    /// @brief Returns the enclosing array element for this instance.
+    /// @brief Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. ContentObject), the highest
+    /// level instance is returned. (To get the lowest level immediate container, use #ArrayElementObject::container.)
     /// @tparam T The type to find. A limited list of types are supported, including @ref Part and @ref Sequence. Others may be added as needed.
     /// @return the enclosing element, or std::nullopt if not found.
     template <typename T>

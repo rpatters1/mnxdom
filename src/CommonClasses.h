@@ -81,8 +81,7 @@ public:
      * the value in lowest terms.
      */
     FractionValue(NumType num, NumType den)
-        : m_num(num)
-        , m_den(den)
+        : m_num(num), m_den(den)
     {
         if (m_den == 0) {
             throw std::invalid_argument("FractionValue: denominator must not be zero.");
@@ -116,7 +115,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator+=(const FractionValue& rhs)
+    constexpr FractionValue& operator+=(const FractionValue& rhs)
     {
         // a/b + c/d = (ad + bc)/bd
         m_num = m_num * rhs.m_den + rhs.m_num * m_den;

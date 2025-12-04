@@ -157,7 +157,7 @@ public:
     /// @brief Checks if the input pitch is the same as this pitch, including enharmonic equivalents
     /// @param src The value to compare with
     /// @return true if they are the same or enharmonically equivalent
-    bool isSamePitch(const Pitch& src) const;
+    [[nodiscard]] bool isSamePitch(const Pitch& src) const;
 };
 
 /**
@@ -380,27 +380,27 @@ public:
     /// @brief Finds a note in the event by its ID
     /// @param noteId The note ID to find
     /// @return The note if found, otherwise std::nullopt;
-    std::optional<Note> findNote(const std::string& noteId) const;
+    [[nodiscard]] std::optional<Note> findNote(const std::string& noteId) const;
 
     /// @brief Returns true if this event is part of a grace note sequence.
-    bool isGrace() const;
+    [[nodiscard]] bool isGrace() const;
 
     /// @brief Returns true if this event is part of a multi-note tremolo sequence.
-    bool isTremolo() const;
+    [[nodiscard]] bool isTremolo() const;
 
     /// @brief Returns the @ref Sequence instance for this event
     /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
-    Sequence getSequence() const;
+    [[nodiscard]] Sequence getSequence() const;
 
     /// @brief Returns the index of the event (or its container) in the @ref Sequence instance for this event
     /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
-    size_t getSequenceIndex() const;
+    [[nodiscard]] size_t getSequenceIndex() const;
 
     /// @brief Calculates and returns the duration of this event.
-    FractionValue calcDuration() const;
+    [[nodiscard]]  FractionValue calcDuration() const;
 
     /// @brief Calculates and returns the start time of this event within the measure.
-    FractionValue calcStartTime() const;
+    [[nodiscard]] FractionValue calcStartTime() const;
 
     inline static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
     inline static constexpr std::string_view JsonSchemaTypeName = "event";     ///< required for mapping
@@ -540,7 +540,7 @@ public:
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
 
     /// @brief Return the triplet ratio as a FractionValue
-    FractionValue ratio() const
+    [[nodiscard]] FractionValue ratio() const
     { return outer() / inner(); }
 
     inline static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array

@@ -198,25 +198,25 @@ public:
 // Non-member arithmetic operators
 // ------------------------------------------------------------
 
-constexpr FractionValue operator+(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator+(FractionValue lhs, const FractionValue& rhs)
 {
     lhs += rhs;
     return lhs;
 }
 
-constexpr FractionValue operator-(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator-(FractionValue lhs, const FractionValue& rhs)
 {
     lhs -= rhs;
     return lhs;
 }
 
-constexpr FractionValue operator*(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator*(FractionValue lhs, const FractionValue& rhs)
 {
     lhs *= rhs;
     return lhs;
 }
 
-inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
 {
     lhs /= rhs;
     return lhs;
@@ -226,32 +226,32 @@ inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
 // Comparison operators
 // ------------------------------------------------------------
 
-constexpr bool operator==(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator==(const FractionValue& a, const FractionValue& b)
 {
     return a.numerator() * b.denominator() == b.numerator() * a.denominator();
 }
 
-constexpr bool operator!=(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator!=(const FractionValue& a, const FractionValue& b)
 {
     return !(a == b);
 }
 
-constexpr bool operator<(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator<(const FractionValue& a, const FractionValue& b)
 {
     return a.numerator() * b.denominator() < b.numerator() * a.denominator();
 }
 
-constexpr bool operator<=(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator<=(const FractionValue& a, const FractionValue& b)
 {
     return !(b < a);
 }
 
-constexpr bool operator>(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator>(const FractionValue& a, const FractionValue& b)
 {
     return b < a;
 }
 
-constexpr bool operator>=(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator>=(const FractionValue& a, const FractionValue& b)
 {
     return !(a < b);
 }
@@ -291,7 +291,7 @@ public:
     }
 
     /// @brief Implicit conversion to @ref FractionValue for arithmetic and comparisons.
-    operator FractionValue() const
+    [[nodiscard]] operator FractionValue() const
     {
         return FractionValue(numerator(), denominator());
     }
@@ -457,10 +457,10 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
 
     /// @brief Calculates the number of flags or beams required by this note value
-    unsigned calcNumberOfFlags() const;
+    [[nodiscard]] unsigned calcNumberOfFlags() const;
 
     /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
-    operator FractionValue() const;
+    [[nodiscard]] operator FractionValue() const;
 };
 
 /**
@@ -493,7 +493,7 @@ public:
 
 
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
-    operator FractionValue() const
+    [[nodiscard]] operator FractionValue() const
     { return multiple() * duration(); }
 };
 
@@ -526,7 +526,7 @@ public:
     MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
 
     /// @brief Implicit converter to FractionValue.
-    operator FractionValue() const
+    [[nodiscard]] operator FractionValue() const
     { return count() * FractionValue(1, static_cast<unsigned>(unit())); }
 };
 

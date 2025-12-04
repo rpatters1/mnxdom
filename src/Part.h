@@ -280,11 +280,11 @@ public:
 
     /// @brief Returns the global measure for this part measure.
     /// @throws std::logic_error if the global measure does not exist.
-    mnx::global::Measure getGlobalMeasure() const;
+    [[nodiscard]] mnx::global::Measure getGlobalMeasure() const;
 
     /// @brief Caculates the time signature at this measure.
     /// @return The time signagure or std::nullopt if none.
-    std::optional<TimeSignature> calcCurrentTime() const;
+    [[nodiscard]] std::optional<TimeSignature> calcCurrentTime() const;
 
     inline static constexpr std::string_view JsonSchemaTypeName = "part-measure";     ///< required for mapping
 };

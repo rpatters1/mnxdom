@@ -186,10 +186,9 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             } else {
                 if (!event.duration().has_value()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
-                } else {
-                    elapsedTime += event.duration().value();
                 }
             }
+            elapsedTime += event.calcDuration();
             if (event.rest().has_value()) {
                 if (event.notes() && !event.notes().value().empty()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" is a rest but also has notes.", event);

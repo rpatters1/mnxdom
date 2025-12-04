@@ -42,7 +42,7 @@
   * @param NAME the name of the property (no quotes)
   */
 #define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
-    TYPE NAME() const { \
+    [[nodiscard]] TYPE NAME() const { \
         if (!ref().contains(#NAME)) { \
             throw std::runtime_error("Missing required property: " #NAME); \
         } \
@@ -65,7 +65,7 @@
   */
  #define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
     static_assert(std::is_integral_v<decltype(INDEX)>, "array index must be an integer type"); \
-    TYPE NAME() const { return (*this)[INDEX]; } \
+    [[nodiscard]] TYPE NAME() const { return (*this)[INDEX]; } \
     void set_##NAME(const TYPE& value) { (*this)[INDEX] = value; } \
     static_assert(true, "") // require semicolon after macro
 
@@ -86,10 +86,10 @@
   * @param KEY the JSON key of the property (with quotes)
   */
  #define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, KEY) \
-    std::optional<TYPE> NAME() const { \
+    [[nodiscard]] std::optional<TYPE> NAME() const { \
         return ref().contains(KEY) ? std::optional<TYPE>(ref()[KEY].get<TYPE>()) : std::nullopt; \
     } \
-    TYPE NAME##_or(const TYPE& defaultVal) const { \
+    [[nodiscard]] TYPE NAME##_or(const TYPE& defaultVal) const { \
         return ref().contains(KEY) ? ref()[KEY].get<TYPE>() : defaultVal; \
     } \
     void set_##NAME(const TYPE& value) { ref()[KEY] = value; } \
@@ -127,7 +127,7 @@
   * @param DEFAULT the default value of the property.
   */
 #define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
-    TYPE NAME() const { \
+    [[nodiscard]] TYPE NAME() const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
     } \
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
@@ -150,7 +150,7 @@
   * @param NAME the name of the child object or array (no quotes)
   */
  #define MNX_REQUIRED_CHILD(TYPE, NAME) \
-    TYPE NAME() const { return getChild<TYPE>(#NAME); } \
+    [[nodiscard]] TYPE NAME() const { return getChild<TYPE>(#NAME); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
         return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
@@ -170,7 +170,7 @@
   * @param NAME the name of the child object or array (no quotes)
   */
  #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
+    [[nodiscard]] std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
         if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \

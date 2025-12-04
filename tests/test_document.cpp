@@ -81,7 +81,7 @@ TEST(Document, MinimalFromScratch)
 
     EXPECT_TRUE(support.useAccidentalDisplay()) << "mnx has a support instance";
     doc.mnx().clear_support();
-    EXPECT_THROW(support.useAccidentalDisplay(), json::out_of_range)
+    EXPECT_THROW(static_cast<void>(support.useAccidentalDisplay()), json::out_of_range)
             << "document no longer has a support instance, so the support instance is stale";
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate without a support instance";
 
@@ -122,13 +122,13 @@ TEST(Document, MissingRequiredFields)
     EXPECT_FALSE(validation::schemaValidate(doc)) << "schema should not validate";
 
     auto mnx = doc.mnx();
-    EXPECT_THROW(mnx.version(), std::runtime_error);
+    EXPECT_THROW(static_cast<void>(mnx.version()), std::runtime_error);
     mnx.set_version(MNX_VERSION);
     EXPECT_EQ(doc.mnx().version(), MNX_VERSION);
     EXPECT_FALSE(validation::schemaValidate(doc)) << "after adding version, schema should still not validate";
 
     auto global = doc.global();
-    EXPECT_THROW(global.measures(), std::runtime_error);
+    EXPECT_THROW(static_cast<void>(global.measures()), std::runtime_error);
     global.create_measures();
     EXPECT_EQ(doc.global().measures().size(), 0u);
     EXPECT_TRUE(validation::schemaValidate(doc)) << "after adding global, schema should validate";

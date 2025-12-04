@@ -301,14 +301,19 @@ std::optional<TimeSignature> global::Measure::calcCurrentTime() const
 // ***** part::Measure *****
 // *************************
 
-std::optional<TimeSignature> part::Measure::calcCurrentTime() const
+mnx::global::Measure part::Measure::getGlobalMeasure() const
 {
     const size_t measureIndex = calcArrayIndex();
     auto globalMeasures = document().global().measures();
     MNX_ASSERT_IF (measureIndex >= globalMeasures.size()) {
         throw std::logic_error("Part measure has higher index than global measure at " + dump());
     }
-    return globalMeasures[measureIndex].calcCurrentTime();
+    return globalMeasures[measureIndex];
+}
+
+std::optional<TimeSignature> part::Measure::calcCurrentTime() const
+{
+    return getGlobalMeasure().calcCurrentTime();
 }
 
 // ***************************
@@ -360,9 +365,49 @@ size_t sequence::Event::getSequenceIndex() const
 {
     auto result = getEnclosingElement<mnx::sequence::ContentObject>();
     MNX_ASSERT_IF(!result.has_value()) {
-        throw std::logic_error("Event \"" + id_or("") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
+        throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
     }
     return result.value().calcArrayIndex();
+}
+
+FractionValue sequence::Event::calcDuration() const
+{
+    if (measure()) {
+        auto partMeasure = getEnclosingElement<mnx::part::Measure>();
+        MNX_ASSERT_IF(!partMeasure) {
+            throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a part measure.");
+        }
+        if (auto currentTime = partMeasure.value().calcCurrentTime()) {
+            return currentTime.value();
+        }
+    }
+    if (duration().has_value()) {
+        return duration().value();
+    }
+    return 0;
+}
+
+FractionValue sequence::Event::calcStartTime() const
+{
+    auto sequence = getEnclosingElement<mnx::Sequence>();
+    MNX_ASSERT_IF(!sequence) {
+        throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a sequence.");
+    }
+
+    auto retval = std::optional<FractionValue>();
+    auto thisPtr = pointer();
+    sequence->iterateEvents([&](sequence::Event event, FractionValue startDuration, FractionValue /*actualDuration*/) -> bool {
+        if (event.pointer() == thisPtr) {
+            retval = startDuration;
+            return false;
+        }
+        return true;
+    });
+
+    MNX_ASSERT_IF(!retval) {
+        throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" was not found in its enclosing sequence.");
+    }
+    return retval.value();
 }
 
 // ***************************
@@ -378,6 +423,56 @@ bool sequence::Pitch::isSamePitch(const Pitch& src) const
     }
     music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter_or(0));
     return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter_or(0));
+}
+
+// ********************
+// ***** Sequence *****
+// ********************
+
+bool Sequence::iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const
+{
+    auto elapsedTime = FractionValue{0};
+
+    auto processContent = [&](ContentArray content, FractionValue timeRatio, auto&& self) -> bool {
+        for (const auto item : content) {
+            if (item.type() == mnx::sequence::Event::ContentTypeValue) {
+                auto event = item.get<mnx::sequence::Event>();
+                auto actualDuration = event.calcDuration() * timeRatio;
+                if (!iterator(event, elapsedTime, actualDuration)) {
+                    return false;
+                }
+                elapsedTime += actualDuration;
+            } else if (item.type() == mnx::sequence::Grace::ContentTypeValue) {
+                auto grace = item.get<mnx::sequence::Grace>();
+                if (!self(grace.content(), 0, self)) {
+                    return false;
+                }
+            } else if (item.type() == mnx::sequence::Tuplet::ContentTypeValue) {
+                auto tuplet = item.get<mnx::sequence::Tuplet>();
+                if (!self(tuplet.content(), timeRatio * tuplet.ratio(), self)) {
+                    return false;
+                }
+            } else if (item.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
+                auto tremolo = item.get<mnx::sequence::MultiNoteTremolo>();
+                /// @todo: MNX tremolo durations.
+                // Currently, inner tremolo notes are treated as time-neutral and only
+                // tremolo.outer() * timeRatio advances elapsedTime. Once the MNX spec
+                // clarifies per-note duration semantics for multi-note tremolos, this
+                // iterator should be updated so each event gets an appropriate share of
+                // the tremolo duration pie.
+                if (!self(tremolo.content(), 0, self)) {
+                    return false;
+                }
+                elapsedTime += tremolo.outer() * timeRatio;
+            } else if (item.type() == mnx::sequence::Space::ContentTypeValue) {
+                auto space = item.get<mnx::sequence::Space>();
+                elapsedTime += space.duration() * timeRatio;
+            }
+        }
+        return true;
+    };
+
+    return processContent(content(), 1, processContent);
 }
 
 } // namespace mnx

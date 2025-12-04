@@ -396,6 +396,12 @@ public:
     /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
     size_t getSequenceIndex() const;
 
+    /// @brief Calculates and returns the duration of this event.
+    FractionValue calcDuration() const;
+
+    /// @brief Calculates and returns the start time of this event within the measure.
+    FractionValue calcStartTime() const;
+
     inline static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
     inline static constexpr std::string_view JsonSchemaTypeName = "event";     ///< required for mapping
 };
@@ -568,6 +574,22 @@ public:
     /// @todo `orient` property
     MNX_OPTIONAL_PROPERTY(int, staff);              ///< the staff number for this sequence
     MNX_OPTIONAL_PROPERTY(std::string, voice);      ///< the unique (per measure) voice label for this sequence.
+
+    /// @brief Iterate all the events in this sequence in order as they come.
+    /// @param iterator Callback function invoked for each event.
+    ///     The callback must have signature:
+    ///     `bool(sequence::Event event,
+    ///           FractionValue elapsedTime,
+    ///           FractionValue actualDuration)`.
+    ///     - `event`: the current event in the sequence.
+    ///     - `startDuration`: total elapsed metric time before this event.
+    ///     - `actualDuration`: the event’s real performed duration.
+    ///     - return @c true to continue iterating.
+    /// @return true if iteration completed without interruption; false if it exited early.
+    /// @todo Multi-note tremolos are currently treated as a span whose outer()
+    ///       value advances time. Inner tremolo notes have zero actual duration until
+    ///       the MNX spec clarifies how their durations should be distributed.
+    bool iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const;
 };
 
 } // namespace mnx

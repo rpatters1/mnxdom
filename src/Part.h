@@ -278,6 +278,10 @@ public:
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);         ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
 
+    /// @brief Returns the global measure for this part measure.
+    /// @throws std::logic_error if the global measure does not exist.
+    mnx::global::Measure getGlobalMeasure() const;
+
     /// @brief Caculates the time signature at this measure.
     /// @return The time signagure or std::nullopt if none.
     std::optional<TimeSignature> calcCurrentTime() const;

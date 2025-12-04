@@ -302,17 +302,19 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
     std::set<std::pair<unsigned, std::string>> ids;
     for (const auto beam : beams) {
         if (beam.events().empty()) {
-            addError("Beam contains only one or fewer events.", beam);
+            addError("Beam contains no events.", beam);
+            continue;
         }
         const auto beamMeasure = beam.getEnclosingElement<mnx::part::Measure>();
         if (!beamMeasure) {
             addError("Unable to find enclosing measure for beam.", beam);
+            continue;
         }
         size_t currentMeasureIndex = beamMeasure.value().calcArrayIndex();
         bool requireMeasuresEqualOnFirst = depth == 1;
         std::optional<bool> isGraceBeam;
         std::optional<std::string> voice;
-        size_t currentSequenceIndex = 0;
+        FractionValue currentSequenceTime = 0;
         for (const auto id : beam.events()) {
             if (ids.find(std::make_pair(depth, id)) != ids.end()) {
                 addError("Event \"" + id + "\" is duplicated in beam at depth " + std::to_string(depth) + ".", beam);
@@ -326,20 +328,21 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                 } else {
                     addError("Unable to find enclosing measure for event.", event.value());
                 }
+                const auto startTime = event.value().calcStartTime();
                 if (requireMeasuresEqualOnFirst && nextMeasureIndex != currentMeasureIndex) {
                     addError("First event in beam is not in the same measure as the beam.", beam);
                 } else if (nextMeasureIndex < currentMeasureIndex) {
                     addError("Beam measures are out of sequence", beam);
                 } else if (nextMeasureIndex > currentMeasureIndex) {
-                    currentSequenceIndex = event.value().getSequenceIndex();
+                    currentSequenceTime = startTime;
                 }
                 requireMeasuresEqualOnFirst = false;
                 currentMeasureIndex = nextMeasureIndex;
-                const auto nextSequenceIndex = event.value().getSequenceIndex();
-                if (nextSequenceIndex < currentSequenceIndex) {
+                const auto nextSequenceTime = startTime;
+                if (nextSequenceTime < currentSequenceTime) {
                     addError("Beam events are out of sequence", beam);
                 }
-                currentSequenceIndex = nextSequenceIndex;
+                currentSequenceTime = nextSequenceTime;
                 if (event.value().isTremolo()) {
                     addError("Beam containing event \"" + id + "\" is actually a multi-note tremolo and should not be a beam.", beam);
                     continue;

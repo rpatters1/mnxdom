@@ -283,7 +283,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param value The numerator (number on top) and denominator (number on bottom) of the fraction.
-    Fraction(Base& parent, const std::string_view& key, const FractionValue& value)
+    Fraction(Base& parent, std::string_view key, const FractionValue& value)
         : ArrayType(parent, key)
     {
         push_back(value.numerator());
@@ -319,7 +319,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param position Position within a measure (as a fraction of whole notes)
-    RhythmicPosition(Base& parent, const std::string_view& key, const FractionValue& position)
+    RhythmicPosition(Base& parent, std::string_view key, const FractionValue& position)
         : Object(parent, key)
     {
         create_fraction(position);
@@ -348,7 +348,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param measureId The measure index of the measure of the position.
     /// @param position Position within the measure (as a fraction of whole notes)
-    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, const FractionValue& position)
+    MeasureRhythmicPosition(Base& parent, std::string_view key, int measureId, const FractionValue& position)
         : Object(parent, key)
     {
         set_measure(measureId);
@@ -377,7 +377,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param staffDistance The number of diatonic steps in the interval (negative is down)
     /// @param halfSteps The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    Interval(Base& parent, const std::string_view& key, int staffDistance, int halfSteps)
+    Interval(Base& parent, std::string_view key, int staffDistance, int halfSteps)
         : Object(parent, key)
     {
         set_halfSteps(halfSteps);
@@ -405,7 +405,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param fifths The number of fifths distance from a signature with no accidentals.
-    KeySignature(Base& parent, const std::string_view& key, int fifths)
+    KeySignature(Base& parent, std::string_view key, int fifths)
         : Object(parent, key)
     {
         set_fifths(fifths);
@@ -444,7 +444,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value
-    NoteValue(Base& parent, const std::string_view& key, const Initializer& noteValue)
+    NoteValue(Base& parent, std::string_view key, const Initializer& noteValue)
         : Object(parent, key)
     {
         set_base(noteValue.base);
@@ -481,7 +481,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param count The quantity of note value units
     /// @param noteValue The note value
-    NoteValueQuantity(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
+    NoteValueQuantity(Base& parent, std::string_view key, unsigned count, const NoteValue::Initializer& noteValue)
         : Object(parent, key)
     {
         set_multiple(count);
@@ -515,7 +515,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param count The number of beats per minutes
     /// @param unit The note value base for this Barline
-    TimeSignature(Base& parent, const std::string_view& key, int count, TimeSignatureUnit unit)
+    TimeSignature(Base& parent, std::string_view key, int count, TimeSignatureUnit unit)
         : Object(parent, key)
     {
         set_count(count);

@@ -307,7 +307,7 @@ protected:
      * @param parent Reference to the parent instance.
      * @param key The key under which the new node is stored.
      */
-    Base(json&& jsonRef, Base& parent, const std::string_view& key)
+    Base(json&& jsonRef, Base& parent, std::string_view key)
         : m_root(parent.m_root), m_pointer(parent.m_pointer / std::string(key))
     {
         (*m_root)[m_pointer] = std::move(jsonRef);
@@ -321,7 +321,7 @@ protected:
      * @throws std::runtime_error if the key is missing or the type is incorrect.
      */
     template <typename T>
-    [[nodiscard]] T getChild(const std::string_view& key) const
+    [[nodiscard]] T getChild(std::string_view key) const
     {
         static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
 
@@ -341,7 +341,7 @@ protected:
      * @return The newly created child.
      */
     template <typename T>
-    T setChild(const std::string_view& key, const T& value)
+    T setChild(std::string_view key, const T& value)
     {
         static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
 
@@ -358,7 +358,7 @@ protected:
      * @throws std::runtime_error if the type is incorrect.
      */
     template <typename T>
-    [[nodiscard]] std::optional<T> getOptionalChild(const std::string_view& key) const
+    [[nodiscard]] std::optional<T> getOptionalChild(std::string_view key) const
     {
         static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
 
@@ -438,7 +438,7 @@ public:
     /// @brief Creates a new Object class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Object(Base& parent, const std::string_view& key)
+    Object(Base& parent, std::string_view key)
         : Base(json::object(), parent, key) {}
 
     MNX_OPTIONAL_PROPERTY(std::string, _c);     ///< An optional comment. This serves a similar function as XML or HTML comments.
@@ -529,7 +529,7 @@ public:
     /// @brief Creates a new Array class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Array(Base& parent, const std::string_view& key)
+    Array(Base& parent, std::string_view key)
         : Base(json::array(), parent, key) {}
 
     /** @brief Get the size of the array. */
@@ -840,7 +840,7 @@ public:
     /// @brief Creates a new Dictionary class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Dictionary(Base& parent, const std::string_view& key)
+    Dictionary(Base& parent, std::string_view key)
         : Object(parent, key) {}
 
     /** @brief Get the size of the array. */

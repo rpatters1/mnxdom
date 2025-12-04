@@ -48,7 +48,7 @@ public:
     /// @brief Creates a new Beam class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.¥
-    Beam(Base& parent, const std::string_view& key)
+    Beam(Base& parent, std::string_view key)
         : ArrayElementObject(parent, key)
     {
         create_events();
@@ -78,7 +78,7 @@ public:
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    Clef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    Clef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
         : Object(parent, key)
     {
         set_sign(clefSign);
@@ -115,7 +115,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param value the value of the dynamic. Currently the spec allows any string here.
     /// @param position the position of the dynamic within the measure.
-    Dynamic(Base& parent, const std::string_view& key, const std::string& value, const FractionValue& position)
+    Dynamic(Base& parent, std::string_view key, const std::string& value, const FractionValue& position)
         : ContentObject(parent, key)
     {
         set_value(value);
@@ -149,7 +149,7 @@ public:
     /// @param position the start position of the ottava.
     /// @param endMeasureId The end measure of the ottava.
     /// @param endPosition The position within the end measure of the ottava. (The ottava includes events that start at this position.)
-    Ottava(Base& parent, const std::string_view& key, OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
+    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
         : ArrayElementObject(parent, key)
     {
         create_position(position);
@@ -182,7 +182,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param staffPosition The staff position of the kit component, where 0 is the middle line.
-    KitComponent(Base& parent, const std::string_view& key, int staffPosition)
+    KitComponent(Base& parent, std::string_view key, int staffPosition)
         : ArrayElementObject(parent, key)
     {
         set_staffPosition(staffPosition);
@@ -211,7 +211,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param diatonic The number of diatonic steps in the interval (negative is down)
     /// @param chromatic The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    PartTransposition(Base& parent, const std::string_view& key, int diatonic, int chromatic)
+    PartTransposition(Base& parent, std::string_view key, int diatonic, int chromatic)
         : Object(parent, key)
     {
         create_interval(diatonic, chromatic);
@@ -242,7 +242,7 @@ public:
     /// @param staffPosition The note value base for this Barline
     /// @param clefSign The type of clef symbold
     /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    PositionedClef(Base& parent, const std::string_view& key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    PositionedClef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
         : ArrayElementObject(parent, key)
     {
         create_clef(clefSign, staffPosition, octaveAdjustment);
@@ -265,7 +265,7 @@ public:
     /// @brief Creates a new Measure class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Measure(Base& parent, const std::string_view& key)
+    Measure(Base& parent, std::string_view key)
         : ArrayElementObject(parent, key)
     {
         // required children

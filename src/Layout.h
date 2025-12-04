@@ -56,7 +56,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param partId The part to use as a source
-    StaffSource(Base& parent, const std::string_view& key, std::string& partId)
+    StaffSource(Base& parent, std::string_view key, std::string& partId)
         : ArrayElementObject(parent, key)
     {
         set_part(partId);
@@ -82,7 +82,7 @@ public:
     /// @brief Creates a new Staff class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Staff(Base& parent, const std::string_view& key)
+    Staff(Base& parent, std::string_view key)
         : ContentObject(parent, key)
     {
         // required children
@@ -109,7 +109,7 @@ public:
     /// @brief Creates a new Group class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Group(Base& parent, const std::string_view& key)
+    Group(Base& parent, std::string_view key)
         : ContentObject(parent, key)
     {
         // required children
@@ -137,7 +137,7 @@ public:
     /// @brief Creates a new Layout class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Layout(Base& parent, const std::string_view& key)
+    Layout(Base& parent, std::string_view key)
         : ArrayElementObject(parent, key)
     {
         // required children

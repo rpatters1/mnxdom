@@ -60,7 +60,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
     /// @param inSymbol The enclosure symbol to use.
-    AccidentalEnclosure(Base& parent, const std::string_view& key, AccidentalEnclosureSymbol inSymbol)
+    AccidentalEnclosure(Base& parent, std::string_view key, AccidentalEnclosureSymbol inSymbol)
         : Object(parent, key)
     {
         set_symbol(inSymbol);
@@ -86,7 +86,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
     /// @param showAcci Show or hide the accidental.
-    AccidentalDisplay(Base& parent, const std::string_view& key, bool showAcci)
+    AccidentalDisplay(Base& parent, std::string_view key, bool showAcci)
         : Object(parent, key)
     {
         set_show(showAcci);
@@ -140,7 +140,7 @@ public:
     /// @param inpStep The letter spelling of the note.
     /// @param inpOctave The octave number of the note (where C4 is middle C).
     /// @param inpAlter The chromatic alteration of the note (positive for sharp, negative for flat)
-    Pitch(Base& parent, const std::string_view& key, NoteStep inpStep, int inpOctave, std::optional<int> inpAlter = std::nullopt)
+    Pitch(Base& parent, std::string_view key, NoteStep inpStep, int inpOctave, std::optional<int> inpAlter = std::nullopt)
         : Object(parent, key)
     {
         set_step(inpStep);
@@ -177,7 +177,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param target The target note id of the slur.
-    Slur(Base& parent, const std::string_view& key, const std::string& target)
+    Slur(Base& parent, std::string_view key, const std::string& target)
         : ArrayElementObject(parent, key)
     {
         set_target(target);
@@ -208,7 +208,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param target The target note id of the tie. If omitted, the the tie is created as an l.v. tie.
-    Tie(Base& parent, const std::string_view& key, const std::optional<std::string>& target = std::nullopt)
+    Tie(Base& parent, std::string_view key, const std::optional<std::string>& target = std::nullopt)
         : ArrayElementObject(parent, key)
     {
         if (target) {
@@ -255,7 +255,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param kitComponentId The ID within the kit for this part.
-    KitNote(Base& parent, const std::string_view& key, std::string kitComponentId)
+    KitNote(Base& parent, std::string_view key, std::string kitComponentId)
         : NoteBase(parent, key)
     {
         set_kitComponent(kitComponentId);
@@ -285,7 +285,7 @@ public:
     /// @param step The letter spelling of the note.
     /// @param octave The octave number of the note (where C4 is middle C).
     /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat)
-    Note(Base& parent, const std::string_view& key, NoteStep step, int octave, std::optional<int> alter = std::nullopt)
+    Note(Base& parent, std::string_view key, NoteStep step, int octave, std::optional<int> alter = std::nullopt)
         : NoteBase(parent, key)
     {
         create_pitch(step, octave, alter);
@@ -315,7 +315,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param syllableText The syllable text for this instance.
-    EventLyricLine(Base& parent, const std::string_view& key, const std::string& syllableText)
+    EventLyricLine(Base& parent, std::string_view key, const std::string& syllableText)
         : ArrayElementObject(parent, key)
     {
         set_text(syllableText);
@@ -354,7 +354,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value. If omitted, the event is set to full measure.
-    Event(Base& parent, const std::string_view& key, std::optional<NoteValue::Initializer> noteValue = std::nullopt)
+    Event(Base& parent, std::string_view key, std::optional<NoteValue::Initializer> noteValue = std::nullopt)
         : ContentObject(parent, key)
     {
         // per the specification, either noteValue or the full-measure boolean *must* be supplied.
@@ -423,7 +423,7 @@ public:
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
     /// @param duration The duration of the space.
-    Space(Base& parent, const std::string_view& key, const FractionValue& duration)
+    Space(Base& parent, std::string_view key, const FractionValue& duration)
         : ContentObject(parent, key)
     {
         create_duration(duration);
@@ -450,7 +450,7 @@ public:
     /// @brief Creates a new Grace class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Grace(Base& parent, const std::string_view& key)
+    Grace(Base& parent, std::string_view key)
         : ContentObject(parent, key)
     {
         create_content();
@@ -484,7 +484,7 @@ public:
     /// @param numberOfMarks The number of marks (beams) in the tremolo
     /// @param noteCount The number of events in the tremolo (usually 2)
     /// @param noteValue The duration of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
-    MultiNoteTremolo(Base& parent, const std::string_view& key, int numberOfMarks, unsigned noteCount, const NoteValue::Initializer& noteValue)
+    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, unsigned noteCount, const NoteValue::Initializer& noteValue)
         : ContentObject(parent, key)
     {
         create_content();
@@ -520,7 +520,7 @@ public:
     /// @param innerNoteValue The inner amount: 3 **quarters** in the time of 2 quarters
     /// @param outerCount The outer count: 3 quarters in the time of **2** quarters
     /// @param outerNoteValue The outer amount: 3 quarters in the time of 2 **quarters**
-    Tuplet(Base& parent, const std::string_view& key,
+    Tuplet(Base& parent, std::string_view key,
         unsigned innerCount, const NoteValue::Initializer& innerNoteValue,
         unsigned outerCount, const NoteValue::Initializer& outerNoteValue)
         : ContentObject(parent, key)
@@ -564,7 +564,7 @@ public:
     /// @brief Creates a new Sequence class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Sequence(Base& parent, const std::string_view& key)
+    Sequence(Base& parent, std::string_view key)
         : ArrayElementObject(parent, key)
     {
         create_content();

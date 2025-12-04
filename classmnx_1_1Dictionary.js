@@ -4,8 +4,9 @@ var classmnx_1_1Dictionary =
     [ "iterator", "classmnx_1_1Dictionary.html#a019b524d836830d0434d6d9f5010c8ef", null ],
     [ "value_type", "classmnx_1_1Dictionary.html#a9a1fad842c4c9bb847f482b0000f7523", null ],
     [ "Dictionary", "classmnx_1_1Dictionary.html#ac569e15f069c649c5627467c1fd6d1b6", null ],
-    [ "Dictionary", "classmnx_1_1Dictionary.html#ab976191af4dd8436f2275ad91a1cde86", null ],
+    [ "Dictionary", "classmnx_1_1Dictionary.html#a66ba1e3e1fac06d8e275fb86f2eab199", null ],
     [ "append", "classmnx_1_1Dictionary.html#a471e334e53ef63567b58cb64b2ae6211", null ],
+    [ "at", "classmnx_1_1Dictionary.html#a111f524859a9486e6cc305da7e2d6d27", null ],
     [ "begin", "classmnx_1_1Dictionary.html#a9b69c927beebcd644bff737205b30866", null ],
     [ "begin", "classmnx_1_1Dictionary.html#a415f5a61b54e6be16f7b64ad6a40abee", null ],
     [ "clear", "classmnx_1_1Dictionary.html#af964e19b6398456bf417982fc42a7549", null ],
@@ -18,6 +19,6 @@ var classmnx_1_1Dictionary =
     [ "find", "classmnx_1_1Dictionary.html#af14789620d9166f8c408e4317d675791", null ],
     [ "find", "classmnx_1_1Dictionary.html#a4327ca695cfc1a85aafd70be14f5aa6e", null ],
     [ "operator[]", "classmnx_1_1Dictionary.html#a0cf7ce8344a366321e55f2b8bd55f066", null ],
-    [ "operator[]", "classmnx_1_1Dictionary.html#a91f44e8d63fe2a75d313b3805a942ed6", null ],
+    [ "operator[]", "classmnx_1_1Dictionary.html#a1b12c95dbcf72bfe5f58243cffbfa5a2", null ],
     [ "size", "classmnx_1_1Dictionary.html#a10700ee06490128d2c6db35a978009ca", null ]
 ];

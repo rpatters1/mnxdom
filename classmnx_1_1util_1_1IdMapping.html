@@ -122,9 +122,6 @@ template&lt;typename T , typename IdType &gt; </td></tr>
 <tr class="memitem:a168552bdc976ffb460bf3d38bffaa21b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1util_1_1IdMapping.html#a168552bdc976ffb460bf3d38bffaa21b">add</a> (const IdType &amp;id, const T &amp;value)</td></tr>
 <tr class="memdesc:a168552bdc976ffb460bf3d38bffaa21b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a key to the mapping. If there is no error handler, it throws <a class="el" href="classmnx_1_1util_1_1mapping__error.html">mapping_error</a> if there is a duplicate key.  <br /></td></tr>
 <tr class="separator:a168552bdc976ffb460bf3d38bffaa21b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a209a37672aeb4753e44b244c99c89a35" id="r_a209a37672aeb4753e44b244c99c89a35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmnx_1_1part_1_1Measure.html">mnx::part::Measure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1util_1_1IdMapping.html#a209a37672aeb4753e44b244c99c89a35">getPartMeasure</a> (const <a class="el" href="classmnx_1_1global_1_1Measure.html">mnx::global::Measure</a> &amp;globalMeasure, const std::string &amp;partId) const</td></tr>
-<tr class="memdesc:a209a37672aeb4753e44b244c99c89a35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classmnx_1_1part_1_1Measure.html">part::Measure</a> instance associated with the input <a class="el" href="classmnx_1_1global_1_1Measure.html">global::Measure</a>.  <br /></td></tr>
-<tr class="separator:a209a37672aeb4753e44b244c99c89a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides type-safe ID-based lookup for elements in an MNX document. </p>
@@ -294,52 +291,6 @@ template&lt;typename T , typename IdType &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a209a37672aeb4753e44b244c99c89a35" name="a209a37672aeb4753e44b244c99c89a35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a209a37672aeb4753e44b244c99c89a35">&#9670;&#160;</a></span>getPartMeasure()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmnx_1_1part_1_1Measure.html">mnx::part::Measure</a> mnx::util::IdMapping::getPartMeasure </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmnx_1_1global_1_1Measure.html">mnx::global::Measure</a> &amp;&#160;</td>
-          <td class="paramname"><em>globalMeasure</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>partId</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the <a class="el" href="classmnx_1_1part_1_1Measure.html">part::Measure</a> instance associated with the input <a class="el" href="classmnx_1_1global_1_1Measure.html">global::Measure</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">globalMeasure</td><td>The global measure for which to find the associated part measure. </td></tr>
-    <tr><td class="paramname">partId</td><td>ID of the part to search. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The associated part measure. </dd></dl>
 
 </div>
 </div>

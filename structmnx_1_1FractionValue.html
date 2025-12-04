@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('structmnx_1_1FractionValue.html',''); 
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structmnx_1_1FractionValue-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mnx::FractionValue Class Reference</div></div>
 </div><!--header-->
@@ -118,38 +119,48 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>FractionValue</b> ()=default</td></tr>
 <tr class="memdesc:ac5285b914d0f79b8ed4063c59045a7fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor initializes the value to 0/1. <br /></td></tr>
 <tr class="separator:ac5285b914d0f79b8ed4063c59045a7fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0967e315a26ca853e73b25ced399a0d7" id="r_a0967e315a26ca853e73b25ced399a0d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#a0967e315a26ca853e73b25ced399a0d7">FractionValue</a> (<a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a> num, <a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a> den=1)</td></tr>
-<tr class="memdesc:a0967e315a26ca853e73b25ced399a0d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a fraction from a numerator and denominator.  <br /></td></tr>
-<tr class="separator:a0967e315a26ca853e73b25ced399a0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59fe25e37e3c8346d0c49d74d9f3d856" id="r_a59fe25e37e3c8346d0c49d74d9f3d856"><td class="memItemLeft" align="right" valign="top"><a id="a59fe25e37e3c8346d0c49d74d9f3d856" name="a59fe25e37e3c8346d0c49d74d9f3d856"></a>
-<a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>numerator</b> () const noexcept</td></tr>
-<tr class="memdesc:a59fe25e37e3c8346d0c49d74d9f3d856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the numerator. <br /></td></tr>
-<tr class="separator:a59fe25e37e3c8346d0c49d74d9f3d856"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affa96c6fddfe421c09ed11db826a58cd" id="r_affa96c6fddfe421c09ed11db826a58cd"><td class="memItemLeft" align="right" valign="top"><a id="affa96c6fddfe421c09ed11db826a58cd" name="affa96c6fddfe421c09ed11db826a58cd"></a>
-<a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>denominator</b> () const noexcept</td></tr>
-<tr class="memdesc:affa96c6fddfe421c09ed11db826a58cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the denominator. <br /></td></tr>
-<tr class="separator:affa96c6fddfe421c09ed11db826a58cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5852a109fd1c12564efcc2577fb0f807" id="r_a5852a109fd1c12564efcc2577fb0f807"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#a5852a109fd1c12564efcc2577fb0f807">operator+=</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a5852a109fd1c12564efcc2577fb0f807"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds another <a class="el" href="structmnx_1_1FractionValue.html" title="Represents a detached arithmetic fraction with normalization.">FractionValue</a> to this one.  <br /></td></tr>
-<tr class="separator:a5852a109fd1c12564efcc2577fb0f807"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc61ff3a57c831191a7488b1586cfa42" id="r_adc61ff3a57c831191a7488b1586cfa42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#adc61ff3a57c831191a7488b1586cfa42">operator-=</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;rhs)</td></tr>
-<tr class="memdesc:adc61ff3a57c831191a7488b1586cfa42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts another <a class="el" href="structmnx_1_1FractionValue.html" title="Represents a detached arithmetic fraction with normalization.">FractionValue</a> from this one.  <br /></td></tr>
-<tr class="separator:adc61ff3a57c831191a7488b1586cfa42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6543172ce2cc5055f3c6cad191f924d8" id="r_a6543172ce2cc5055f3c6cad191f924d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#a6543172ce2cc5055f3c6cad191f924d8">operator*=</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a6543172ce2cc5055f3c6cad191f924d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies this fraction by another.  <br /></td></tr>
-<tr class="separator:a6543172ce2cc5055f3c6cad191f924d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae787cbc66c80953346c624359ff0a26" id="r_aae787cbc66c80953346c624359ff0a26"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#aae787cbc66c80953346c624359ff0a26">FractionValue</a> (<a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a> num, <a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a> den)</td></tr>
+<tr class="memdesc:aae787cbc66c80953346c624359ff0a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a fraction from a numerator and denominator.  <br /></td></tr>
+<tr class="separator:aae787cbc66c80953346c624359ff0a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64994a9c26248c412405a5a468207b25" id="r_a64994a9c26248c412405a5a468207b25"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#a64994a9c26248c412405a5a468207b25">FractionValue</a> (int value)</td></tr>
+<tr class="memdesc:a64994a9c26248c412405a5a468207b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classmnx_1_1Fraction.html" title="Represents a fraction of a whole note, for measuring musical time.">Fraction</a> object from an integer.  <br /></td></tr>
+<tr class="separator:a64994a9c26248c412405a5a468207b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea2d7f1e769113aa8d5b70097111b874" id="r_aea2d7f1e769113aa8d5b70097111b874"><td class="memItemLeft" align="right" valign="top"><a id="aea2d7f1e769113aa8d5b70097111b874" name="aea2d7f1e769113aa8d5b70097111b874"></a>
+constexpr <a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>numerator</b> () const noexcept</td></tr>
+<tr class="memdesc:aea2d7f1e769113aa8d5b70097111b874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the numerator. <br /></td></tr>
+<tr class="separator:aea2d7f1e769113aa8d5b70097111b874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a165ff3b23210bd57341c10f3ae8f87dd" id="r_a165ff3b23210bd57341c10f3ae8f87dd"><td class="memItemLeft" align="right" valign="top"><a id="a165ff3b23210bd57341c10f3ae8f87dd" name="a165ff3b23210bd57341c10f3ae8f87dd"></a>
+constexpr <a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>denominator</b> () const noexcept</td></tr>
+<tr class="memdesc:a165ff3b23210bd57341c10f3ae8f87dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the denominator. <br /></td></tr>
+<tr class="separator:a165ff3b23210bd57341c10f3ae8f87dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa340e3ba92e51eb18757f3bf9711a3c2" id="r_aa340e3ba92e51eb18757f3bf9711a3c2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#aa340e3ba92e51eb18757f3bf9711a3c2">operator+=</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;rhs)</td></tr>
+<tr class="memdesc:aa340e3ba92e51eb18757f3bf9711a3c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds another <a class="el" href="structmnx_1_1FractionValue.html" title="Represents a detached arithmetic fraction with normalization.">FractionValue</a> to this one.  <br /></td></tr>
+<tr class="separator:aa340e3ba92e51eb18757f3bf9711a3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5ae46d5ca174b6c8df6ed71b9dc810f" id="r_aa5ae46d5ca174b6c8df6ed71b9dc810f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#aa5ae46d5ca174b6c8df6ed71b9dc810f">operator-=</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;rhs)</td></tr>
+<tr class="memdesc:aa5ae46d5ca174b6c8df6ed71b9dc810f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts another <a class="el" href="structmnx_1_1FractionValue.html" title="Represents a detached arithmetic fraction with normalization.">FractionValue</a> from this one.  <br /></td></tr>
+<tr class="separator:aa5ae46d5ca174b6c8df6ed71b9dc810f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd3f4b175f503bfa916e6176a6b98366" id="r_acd3f4b175f503bfa916e6176a6b98366"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#acd3f4b175f503bfa916e6176a6b98366">operator*=</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;rhs)</td></tr>
+<tr class="memdesc:acd3f4b175f503bfa916e6176a6b98366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies this fraction by another.  <br /></td></tr>
+<tr class="separator:acd3f4b175f503bfa916e6176a6b98366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3960fc63cf02e4e148c82b7b1e2c6dba" id="r_a3960fc63cf02e4e148c82b7b1e2c6dba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1FractionValue.html#a3960fc63cf02e4e148c82b7b1e2c6dba">operator/=</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;rhs)</td></tr>
 <tr class="memdesc:a3960fc63cf02e4e148c82b7b1e2c6dba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divides this fraction by another.  <br /></td></tr>
 <tr class="separator:a3960fc63cf02e4e148c82b7b1e2c6dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24e33a54242aebd280a8ead4621c35e9" id="r_a24e33a54242aebd280a8ead4621c35e9"><td class="memItemLeft" align="right" valign="top"><a id="a24e33a54242aebd280a8ead4621c35e9" name="a24e33a54242aebd280a8ead4621c35e9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td></tr>
-<tr class="memdesc:a24e33a54242aebd280a8ead4621c35e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduces the fraction to lowest terms using std::gcd. <br /></td></tr>
-<tr class="separator:a24e33a54242aebd280a8ead4621c35e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c641406dc8b6bb597a0979e6c39e8a" id="r_ae5c641406dc8b6bb597a0979e6c39e8a"><td class="memItemLeft" align="right" valign="top"><a id="ae5c641406dc8b6bb597a0979e6c39e8a" name="ae5c641406dc8b6bb597a0979e6c39e8a"></a>
+constexpr void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td></tr>
+<tr class="memdesc:ae5c641406dc8b6bb597a0979e6c39e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduces the fraction to lowest terms using std::gcd. <br /></td></tr>
+<tr class="separator:ae5c641406dc8b6bb597a0979e6c39e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a68aad9881f909f5e9310244ba6790592" id="r_a68aad9881f909f5e9310244ba6790592"><td class="memItemLeft" align="right" valign="top"><a id="a68aad9881f909f5e9310244ba6790592" name="a68aad9881f909f5e9310244ba6790592"></a>
+static constexpr <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a>&#160;</td><td class="memItemRight" valign="bottom"><b>max</b> () noexcept</td></tr>
+<tr class="memdesc:a68aad9881f909f5e9310244ba6790592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the max fractional value. <br /></td></tr>
+<tr class="separator:a68aad9881f909f5e9310244ba6790592"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a detached arithmetic fraction with normalization. </p>
 <p>This class provides arithmetic operations on rational numbers without attaching them to the JSON DOM. It is intended for musical-duration and proportional calculations where a simple fraction is needed independently of the MNX DOM structure.</p>
-<p>A <a class="el" href="structmnx_1_1FractionValue.html" title="Represents a detached arithmetic fraction with normalization.">FractionValue</a> constructed from a numerator and denominator preserves the values exactly as provided. Arithmetic operations (+=, -=, *=, /=) normalize the result to lowest terms using std::gcd. Call <a class="el" href="structmnx_1_1FractionValue.html#a24e33a54242aebd280a8ead4621c35e9" title="Reduces the fraction to lowest terms using std::gcd.">normalize()</a> explicitly if you need a reduced form immediately after construction.</p>
+<p>A <a class="el" href="structmnx_1_1FractionValue.html" title="Represents a detached arithmetic fraction with normalization.">FractionValue</a> constructed from a numerator and denominator preserves the values exactly as provided. Arithmetic operations (+=, -=, *=, /=) normalize the result to lowest terms using std::gcd. Call <a class="el" href="structmnx_1_1FractionValue.html#ae5c641406dc8b6bb597a0979e6c39e8a" title="Reduces the fraction to lowest terms using std::gcd.">normalize()</a> explicitly if you need a reduced form immediately after construction.</p>
 <p>The class supports:</p><ul>
 <li>Exact rational arithmetic (addition, subtraction, multiplication, division)</li>
 <li>Normalization to lowest terms after each operation</li>
@@ -157,8 +168,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
 </ul>
 <p>Compound assignment operators (+=, -=, *=, /=) are implemented as members. Binary operators (+, -, *, /) are implemented as non-member functions to allow symmetric conversions and correct C++ arithmetic semantics. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0967e315a26ca853e73b25ced399a0d7" name="a0967e315a26ca853e73b25ced399a0d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0967e315a26ca853e73b25ced399a0d7">&#9670;&#160;</a></span>FractionValue()</h2>
+<a id="aae787cbc66c80953346c624359ff0a26" name="aae787cbc66c80953346c624359ff0a26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae787cbc66c80953346c624359ff0a26">&#9670;&#160;</a></span>FractionValue() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +187,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structmnx_1_1FractionValue.html#aa742fb95958a7db5ea2593d6a175fddf">NumType</a>&#160;</td>
-          <td class="paramname"><em>den</em> = <code>1</code>&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -205,13 +216,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
   </table>
   </dd>
 </dl>
-<p>The fraction is not automatically reduced. Use <a class="el" href="structmnx_1_1FractionValue.html#a24e33a54242aebd280a8ead4621c35e9" title="Reduces the fraction to lowest terms using std::gcd.">normalize()</a> if you need the value in lowest terms. </p>
+<p>The fraction is not automatically reduced. Use <a class="el" href="structmnx_1_1FractionValue.html#ae5c641406dc8b6bb597a0979e6c39e8a" title="Reduces the fraction to lowest terms using std::gcd.">normalize()</a> if you need the value in lowest terms. </p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6543172ce2cc5055f3c6cad191f924d8" name="a6543172ce2cc5055f3c6cad191f924d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6543172ce2cc5055f3c6cad191f924d8">&#9670;&#160;</a></span>operator*=()</h2>
+<a id="a64994a9c26248c412405a5a468207b25" name="a64994a9c26248c412405a5a468207b25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64994a9c26248c412405a5a468207b25">&#9670;&#160;</a></span>FractionValue() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,7 +230,48 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp; mnx::FractionValue::operator*= </td>
+          <td class="memname">constexpr mnx::FractionValue::FractionValue </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a <a class="el" href="classmnx_1_1Fraction.html" title="Represents a fraction of a whole note, for measuring musical time.">Fraction</a> object from an integer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>The integer value of the fraction. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the m_denominator is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="acd3f4b175f503bfa916e6176a6b98366" name="acd3f4b175f503bfa916e6176a6b98366"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd3f4b175f503bfa916e6176a6b98366">&#9670;&#160;</a></span>operator*=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp; mnx::FractionValue::operator*= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
@@ -229,7 +280,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -246,8 +297,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
 
 </div>
 </div>
-<a id="a5852a109fd1c12564efcc2577fb0f807" name="a5852a109fd1c12564efcc2577fb0f807"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5852a109fd1c12564efcc2577fb0f807">&#9670;&#160;</a></span>operator+=()</h2>
+<a id="aa340e3ba92e51eb18757f3bf9711a3c2" name="aa340e3ba92e51eb18757f3bf9711a3c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa340e3ba92e51eb18757f3bf9711a3c2">&#9670;&#160;</a></span>operator+=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -256,7 +307,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp; mnx::FractionValue::operator+= </td>
+          <td class="memname">constexpr <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp; mnx::FractionValue::operator+= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
@@ -265,7 +316,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -282,8 +333,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
 
 </div>
 </div>
-<a id="adc61ff3a57c831191a7488b1586cfa42" name="adc61ff3a57c831191a7488b1586cfa42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc61ff3a57c831191a7488b1586cfa42">&#9670;&#160;</a></span>operator-=()</h2>
+<a id="aa5ae46d5ca174b6c8df6ed71b9dc810f" name="aa5ae46d5ca174b6c8df6ed71b9dc810f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5ae46d5ca174b6c8df6ed71b9dc810f">&#9670;&#160;</a></span>operator-=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,7 +343,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp; mnx::FractionValue::operator-= </td>
+          <td class="memname">constexpr <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp; mnx::FractionValue::operator-= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
@@ -301,7 +352,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

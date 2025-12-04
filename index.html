@@ -97,13 +97,15 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><p>Welcome to the <b>MNX Document Model</b>.</p>
 <p>Use the <b>navigation buttons</b> at the top of this page to browse through the framework documentation.</p>
-<p>The MNX Document Model is a <b>C++ class framework</b> around the MNX music interchange format, which uses JSON files. It requires the C++17 standard.</p>
+<p>The MNX Document Model is a <b>C++ class framework</b> around the MNX music interchange format, which uses JSON files. It requires the C++17 standard or higher. (It is currently tested with C++23.)</p>
 <p>Features include:</p><ul>
-<li>Implemented with an underlying nlohmann JSON document. No class-level streaming to/from JSON is required.</li>
+<li>Implemented with an underlying nlohmann JSON document. No class-level serializing to/from JSON is required.</li>
 <li>Lightweight class definitions contain only the shared JSON document and a json_pointer to the object. (See <a class="el" href="classmnx_1_1Base.html">mnx::Base</a>.)</li>
+<li>Validation routines for both the MNX JSON schema and semantic validation.</li>
 </ul>
 <p>Member functions for each MNX entity are defined using macros that create the boilerplate for the definitions. For example, <code>MNX_REQUIRED_PROPERTY</code> creates a getter (equal to the property name) and a setter (<code>set_</code> followed by the property name). The boilerplate macros are defined in <code><a class="el" href="BaseTypes_8h_source.html">BaseTypes.h</a></code> and have extensive documentation in the comments.</p>
 <p>A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed from scratch. They can be subsequently changed if need be. Many classes have <code>Initializer</code> types to facilitate passing all the required data for a child object.</p>
+<dl class="section warning"><dt>Warning</dt><dd>Avoid using references for instances returned by the methods in this library. Because classes are so lightweight, all methods return temporary copies. Using a reference on a temporary is undefined behavior.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Robert Patterson </dd></dl>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->

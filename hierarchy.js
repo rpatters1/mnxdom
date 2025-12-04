@@ -11,14 +11,18 @@ var hierarchy =
       [ "mnx::Object", "classmnx_1_1Object.html", [
         [ "mnx::ArrayElementObject", "classmnx_1_1ArrayElementObject.html", [
           [ "mnx::ContentObject", "classmnx_1_1ContentObject.html", [
-            [ "mnx::layout::Group", "classmnx_1_1layout_1_1Group.html", null ],
-            [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ],
+            [ "mnx::layout::ContentObject", "classmnx_1_1layout_1_1ContentObject.html", [
+              [ "mnx::layout::Group", "classmnx_1_1layout_1_1Group.html", null ],
+              [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ]
+            ] ],
             [ "mnx::part::Dynamic", "classmnx_1_1part_1_1Dynamic.html", null ],
-            [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
-            [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
-            [ "mnx::sequence::MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", null ],
-            [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
-            [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ]
+            [ "mnx::sequence::ContentObject", "classmnx_1_1sequence_1_1ContentObject.html", [
+              [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
+              [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
+              [ "mnx::sequence::MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", null ],
+              [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
+              [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ]
+            ] ]
           ] ],
           [ "mnx::Layout", "classmnx_1_1Layout.html", null ],
           [ "mnx::Part", "classmnx_1_1Part.html", null ],

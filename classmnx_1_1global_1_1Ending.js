@@ -1,7 +1,7 @@
 var classmnx_1_1global_1_1Ending =
 [
     [ "Ending", "classmnx_1_1global_1_1Ending.html#afa7978cea3261f4125b68583342fceff", null ],
-    [ "Ending", "classmnx_1_1global_1_1Ending.html#a92df08c76d302d4c3143a9a6dc623074", null ],
+    [ "Ending", "classmnx_1_1global_1_1Ending.html#a7a3a886ea87909ffbcc7e8ccc563cd72", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Ending.html#a0dc15029301ee9a9834c7091e10b1a31", null ],
     [ "MNX_OPTIONAL_NAMED_PROPERTY", "classmnx_1_1global_1_1Ending.html#a440106685d72473ed3b24a209da7ca45", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1global_1_1Ending.html#a2a51a3a80b475fd0d2874fb5615adb99", null ],

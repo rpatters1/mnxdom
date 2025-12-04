@@ -17,6 +17,7 @@ var annotated_dup =
         [ "Tempo", "classmnx_1_1global_1_1Tempo.html", "classmnx_1_1global_1_1Tempo" ]
       ] ],
       [ "layout", "namespacemnx_1_1layout.html", [
+        [ "ContentObject", "classmnx_1_1layout_1_1ContentObject.html", null ],
         [ "Group", "classmnx_1_1layout_1_1Group.html", "classmnx_1_1layout_1_1Group" ],
         [ "Staff", "classmnx_1_1layout_1_1Staff.html", "classmnx_1_1layout_1_1Staff" ],
         [ "StaffSource", "classmnx_1_1layout_1_1StaffSource.html", "classmnx_1_1layout_1_1StaffSource" ]
@@ -42,6 +43,7 @@ var annotated_dup =
         [ "AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", "classmnx_1_1sequence_1_1AccidentalDisplay" ],
         [ "AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", "classmnx_1_1sequence_1_1AccidentalEnclosure" ],
         [ "BreathMark", "classmnx_1_1sequence_1_1BreathMark.html", "classmnx_1_1sequence_1_1BreathMark" ],
+        [ "ContentObject", "classmnx_1_1sequence_1_1ContentObject.html", null ],
         [ "Event", "classmnx_1_1sequence_1_1Event.html", "classmnx_1_1sequence_1_1Event" ],
         [ "EventLyricLine", "classmnx_1_1sequence_1_1EventLyricLine.html", "classmnx_1_1sequence_1_1EventLyricLine" ],
         [ "EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", "classmnx_1_1sequence_1_1EventLyrics" ],

@@ -138,9 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abe20cb3f95cee1491a0fe46a11cb1bfd" id="r_abe20cb3f95cee1491a0fe46a11cb1bfd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#abe20cb3f95cee1491a0fe46a11cb1bfd">Array</a> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:abe20cb3f95cee1491a0fe46a11cb1bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps an <a class="el" href="classmnx_1_1Array.html" title="Represents an MNX array, encapsulating property access.">Array</a> class around an existing JSON array node.  <br /></td></tr>
 <tr class="separator:abe20cb3f95cee1491a0fe46a11cb1bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1dde6259bec35d63697b2a6f36b5179" id="r_af1dde6259bec35d63697b2a6f36b5179"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#af1dde6259bec35d63697b2a6f36b5179">Array</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, const std::string_view &amp;key)</td></tr>
-<tr class="memdesc:af1dde6259bec35d63697b2a6f36b5179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1Array.html" title="Represents an MNX array, encapsulating property access.">Array</a> class as a child of a JSON node.  <br /></td></tr>
-<tr class="separator:af1dde6259bec35d63697b2a6f36b5179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fc676b2d5484d189bd905ad6bd1ec4d" id="r_a3fc676b2d5484d189bd905ad6bd1ec4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#a3fc676b2d5484d189bd905ad6bd1ec4d">Array</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key)</td></tr>
+<tr class="memdesc:a3fc676b2d5484d189bd905ad6bd1ec4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1Array.html" title="Represents an MNX array, encapsulating property access.">Array</a> class as a child of a JSON node.  <br /></td></tr>
+<tr class="separator:a3fc676b2d5484d189bd905ad6bd1ec4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d4cf011d9f8cba4bfb36954b17ad7ad" id="r_a0d4cf011d9f8cba4bfb36954b17ad7ad"><td class="memItemLeft" align="right" valign="top"><a id="a0d4cf011d9f8cba4bfb36954b17ad7ad" name="a0d4cf011d9f8cba4bfb36954b17ad7ad"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
 <tr class="memdesc:a0d4cf011d9f8cba4bfb36954b17ad7ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of the array. <br /></td></tr>
@@ -153,6 +153,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</t
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
 <tr class="memdesc:abb2b9332b4d17e94fa7be78d42be56c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all elements. <br /></td></tr>
 <tr class="separator:abb2b9332b4d17e94fa7be78d42be56c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3f9afe3548f6babc1664c31e5ed80bb" id="r_ad3f9afe3548f6babc1664c31e5ed80bb"><td class="memItemLeft" align="right" valign="top"><a id="ad3f9afe3548f6babc1664c31e5ed80bb" name="ad3f9afe3548f6babc1664c31e5ed80bb"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t index) const</td></tr>
+<tr class="memdesc:ad3f9afe3548f6babc1664c31e5ed80bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct getter for a particular element. <br /></td></tr>
+<tr class="separator:ad3f9afe3548f6babc1664c31e5ed80bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fbf0b5765e79612d02accee536dc0a6" id="r_a3fbf0b5765e79612d02accee536dc0a6"><td class="memItemLeft" align="right" valign="top"><a id="a3fbf0b5765e79612d02accee536dc0a6" name="a3fbf0b5765e79612d02accee536dc0a6"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t index) const</td></tr>
 <tr class="memdesc:a3fbf0b5765e79612d02accee536dc0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">const operator[] <br /></td></tr>
@@ -216,7 +220,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td>
 <tr class="separator:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base" id="r_a088b161677e48210d553c7b6b0cd72aa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a088b161677e48210d553c7b6b0cd72aa">getEnclosingElement</a> () const</td></tr>
-<tr class="memdesc:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance.  <br /></td></tr>
+<tr class="memdesc:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. <a class="el" href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays.">ContentObject</a>), the highest level instance is returned. (To get the lowest level immediate container, use <a class="el" href="classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291" title="Returns the container of the array this element belongs to wrapped as the specified template type.">ArrayElementObject::container</a>.)  <br /></td></tr>
 <tr class="separator:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base" id="r_a1ef198706551096c7bbd023a3fae3406"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> () const</td></tr>
@@ -246,21 +250,21 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 <tr class="memitem:a473f70457687cdc1f46af66f4368e79b inherit pro_methods_classmnx_1_1Base" id="r_a473f70457687cdc1f46af66f4368e79b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a473f70457687cdc1f46af66f4368e79b">Base</a> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:a473f70457687cdc1f46af66f4368e79b inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap a <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> instance around a specific JSON reference using a json_pointer.  <br /></td></tr>
 <tr class="separator:a473f70457687cdc1f46af66f4368e79b inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43bba25c1fc0e27826427135fa906222 inherit pro_methods_classmnx_1_1Base" id="r_a43bba25c1fc0e27826427135fa906222"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a43bba25c1fc0e27826427135fa906222">Base</a> (<a class="el" href="namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796">json</a> &amp;&amp;jsonRef, <a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, const std::string_view &amp;key)</td></tr>
-<tr class="memdesc:a43bba25c1fc0e27826427135fa906222 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> reference as a child inside a parent node.  <br /></td></tr>
-<tr class="separator:a43bba25c1fc0e27826427135fa906222 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ac9358a2ffb6ee0e65813873e1b7cee inherit pro_methods_classmnx_1_1Base" id="r_a1ac9358a2ffb6ee0e65813873e1b7cee"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1ac9358a2ffb6ee0e65813873e1b7cee inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a1ac9358a2ffb6ee0e65813873e1b7cee">getChild</a> (const std::string_view &amp;key) const</td></tr>
-<tr class="memdesc:a1ac9358a2ffb6ee0e65813873e1b7cee inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves and validates a required child node.  <br /></td></tr>
-<tr class="separator:a1ac9358a2ffb6ee0e65813873e1b7cee inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47f04a398e2d42c00aabce33941ad1fd inherit pro_methods_classmnx_1_1Base" id="r_a47f04a398e2d42c00aabce33941ad1fd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a47f04a398e2d42c00aabce33941ad1fd inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a47f04a398e2d42c00aabce33941ad1fd">setChild</a> (const std::string_view &amp;key, const T &amp;value)</td></tr>
-<tr class="memdesc:a47f04a398e2d42c00aabce33941ad1fd inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a child node.  <br /></td></tr>
-<tr class="separator:a47f04a398e2d42c00aabce33941ad1fd inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base" id="r_a838e5bd5c02fd07b7acbfe5cec3acc93"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a838e5bd5c02fd07b7acbfe5cec3acc93">getOptionalChild</a> (const std::string_view &amp;key) const</td></tr>
-<tr class="memdesc:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves an optional child node.  <br /></td></tr>
-<tr class="separator:a838e5bd5c02fd07b7acbfe5cec3acc93 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bd1084c2a090fb4a3a97b71cca86831 inherit pro_methods_classmnx_1_1Base" id="r_a0bd1084c2a090fb4a3a97b71cca86831"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a0bd1084c2a090fb4a3a97b71cca86831">Base</a> (<a class="el" href="namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796">json</a> &amp;&amp;jsonRef, <a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key)</td></tr>
+<tr class="memdesc:a0bd1084c2a090fb4a3a97b71cca86831 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> reference as a child inside a parent node.  <br /></td></tr>
+<tr class="separator:a0bd1084c2a090fb4a3a97b71cca86831 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a716986623a990dc5e8335e8ddfc9b004 inherit pro_methods_classmnx_1_1Base" id="r_a716986623a990dc5e8335e8ddfc9b004"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a716986623a990dc5e8335e8ddfc9b004 inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a716986623a990dc5e8335e8ddfc9b004">getChild</a> (std::string_view key) const</td></tr>
+<tr class="memdesc:a716986623a990dc5e8335e8ddfc9b004 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves and validates a required child node.  <br /></td></tr>
+<tr class="separator:a716986623a990dc5e8335e8ddfc9b004 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e9cecbea5088d0c63fb0f92eb71556c inherit pro_methods_classmnx_1_1Base" id="r_a9e9cecbea5088d0c63fb0f92eb71556c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9e9cecbea5088d0c63fb0f92eb71556c inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a9e9cecbea5088d0c63fb0f92eb71556c">setChild</a> (std::string_view key, const T &amp;value)</td></tr>
+<tr class="memdesc:a9e9cecbea5088d0c63fb0f92eb71556c inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a child node.  <br /></td></tr>
+<tr class="separator:a9e9cecbea5088d0c63fb0f92eb71556c inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9004086ecbdbcccecaf288f3d5d60716 inherit pro_methods_classmnx_1_1Base" id="r_a9004086ecbdbcccecaf288f3d5d60716"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9004086ecbdbcccecaf288f3d5d60716 inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a9004086ecbdbcccecaf288f3d5d60716">getOptionalChild</a> (std::string_view key) const</td></tr>
+<tr class="memdesc:a9004086ecbdbcccecaf288f3d5d60716 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves an optional child node.  <br /></td></tr>
+<tr class="separator:a9004086ecbdbcccecaf288f3d5d60716 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
@@ -313,8 +317,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="af1dde6259bec35d63697b2a6f36b5179" name="af1dde6259bec35d63697b2a6f36b5179"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1dde6259bec35d63697b2a6f36b5179">&#9670;&#160;</a></span>Array() <span class="overload">[2/2]</span></h2>
+<a id="a3fc676b2d5484d189bd905ad6bd1ec4d" name="a3fc676b2d5484d189bd905ad6bd1ec4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fc676b2d5484d189bd905ad6bd1ec4d">&#9670;&#160;</a></span>Array() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -333,7 +337,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string_view &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>key</em>&#160;</td>
         </tr>
         <tr>

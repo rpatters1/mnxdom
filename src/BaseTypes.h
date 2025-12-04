@@ -42,7 +42,7 @@
   * @param NAME the name of the property (no quotes)
   */
 #define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
-    TYPE NAME() const { \
+    [[nodiscard]] TYPE NAME() const { \
         if (!ref().contains(#NAME)) { \
             throw std::runtime_error("Missing required property: " #NAME); \
         } \
@@ -65,7 +65,7 @@
   */
  #define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
     static_assert(std::is_integral_v<decltype(INDEX)>, "array index must be an integer type"); \
-    TYPE NAME() const { return (*this)[INDEX]; } \
+    [[nodiscard]] TYPE NAME() const { return (*this)[INDEX]; } \
     void set_##NAME(const TYPE& value) { (*this)[INDEX] = value; } \
     static_assert(true, "") // require semicolon after macro
 
@@ -86,10 +86,10 @@
   * @param KEY the JSON key of the property (with quotes)
   */
  #define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, KEY) \
-    std::optional<TYPE> NAME() const { \
+    [[nodiscard]] std::optional<TYPE> NAME() const { \
         return ref().contains(KEY) ? std::optional<TYPE>(ref()[KEY].get<TYPE>()) : std::nullopt; \
     } \
-    TYPE NAME##_or(const TYPE& defaultVal) const { \
+    [[nodiscard]] TYPE NAME##_or(const TYPE& defaultVal) const { \
         return ref().contains(KEY) ? ref()[KEY].get<TYPE>() : defaultVal; \
     } \
     void set_##NAME(const TYPE& value) { ref()[KEY] = value; } \
@@ -127,7 +127,7 @@
   * @param DEFAULT the default value of the property.
   */
 #define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
-    TYPE NAME() const { \
+    [[nodiscard]] TYPE NAME() const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
     } \
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
@@ -150,7 +150,7 @@
   * @param NAME the name of the child object or array (no quotes)
   */
  #define MNX_REQUIRED_CHILD(TYPE, NAME) \
-    TYPE NAME() const { return getChild<TYPE>(#NAME); } \
+    [[nodiscard]] TYPE NAME() const { return getChild<TYPE>(#NAME); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
         return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
@@ -170,7 +170,7 @@
   * @param NAME the name of the child object or array (no quotes)
   */
  #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
-    std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
+    [[nodiscard]] std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
     template<typename... Args> \
     TYPE create_##NAME(Args&&... args) { \
         if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \
@@ -248,7 +248,7 @@ public:
 
     /// @brief Dumps the branch to a string. Useful in debugging.
     /// @param indents Number of indents or -1 for no indents 
-    std::string dump(int indents = -1) const
+    [[nodiscard]] std::string dump(int indents = -1) const
     {
         return ref().dump(indents);
     }
@@ -257,23 +257,24 @@ public:
     /// @tparam T The type to create. Must correctly match whether it is an array or object.
     /// @throws std::invalid_argument if the type of T does not match the type of the underlying pointer.
     template <typename T>
-    T parent() const
+    [[nodiscard]] T parent() const
     {
         static_assert(std::is_base_of_v<Base, T>, "Template type mush be derived from Base.");
         return T(m_root, m_pointer.parent_pointer());
     }
 
-    /// @brief Returns the enclosing array element for this instance.
+    /// @brief Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. ContentObject), the highest
+    /// level instance is returned. (To get the lowest level immediate container, use #ArrayElementObject::container.)
     /// @tparam T The type to find. A limited list of types are supported, including @ref Part and @ref Sequence. Others may be added as needed.
     /// @return the enclosing element, or std::nullopt if not found.
     template <typename T>
-    std::optional<T> getEnclosingElement() const;
+    [[nodiscard]] std::optional<T> getEnclosingElement() const;
 
     /// @brief Returns the json_pointer for this node.
-    json_pointer pointer() const { return m_pointer; }
+    [[nodiscard]] json_pointer pointer() const { return m_pointer; }
 
     /// @brief Returns the document root
-    Document document() const;
+    [[nodiscard]] Document document() const;
 
 protected:
     /**
@@ -281,16 +282,16 @@ protected:
      *
      * @return A reference to the JSON node.
      */
-    json& ref() const { return resolve_pointer(); }
+    [[nodiscard]] json& ref() const { return resolve_pointer(); }
 
     /**
      * @brief Access the JSON node for modification.
      * @return A reference to the JSON node.
      */
-    json& ref() { return resolve_pointer(); }
+    [[nodiscard]] json& ref() { return resolve_pointer(); }
 
     /// @brief Returns the root.
-    const std::shared_ptr<json>& root() const { return m_root; }
+    [[nodiscard]] const std::shared_ptr<json>& root() const { return m_root; }
 
     /**
      * @brief Wrap a Base instance around a specific JSON reference using a json_pointer.
@@ -306,7 +307,7 @@ protected:
      * @param parent Reference to the parent instance.
      * @param key The key under which the new node is stored.
      */
-    Base(json&& jsonRef, Base& parent, const std::string_view& key)
+    Base(json&& jsonRef, Base& parent, std::string_view key)
         : m_root(parent.m_root), m_pointer(parent.m_pointer / std::string(key))
     {
         (*m_root)[m_pointer] = std::move(jsonRef);
@@ -320,7 +321,7 @@ protected:
      * @throws std::runtime_error if the key is missing or the type is incorrect.
      */
     template <typename T>
-    T getChild(const std::string_view& key) const
+    [[nodiscard]] T getChild(std::string_view key) const
     {
         static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
 
@@ -340,7 +341,7 @@ protected:
      * @return The newly created child.
      */
     template <typename T>
-    T setChild(const std::string_view& key, const T& value)
+    T setChild(std::string_view key, const T& value)
     {
         static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
 
@@ -357,7 +358,7 @@ protected:
      * @throws std::runtime_error if the type is incorrect.
      */
     template <typename T>
-    std::optional<T> getOptionalChild(const std::string_view& key) const
+    [[nodiscard]] std::optional<T> getOptionalChild(std::string_view key) const
     {
         static_assert(std::is_base_of_v<Base, T>, "template type must be derived from Base");
 
@@ -378,7 +379,7 @@ private:
      * @throws std::runtime_error if the type is incorrect.
      */
     template <typename T>
-    bool checkKeyIsValid(const json_pointer& pointer) const
+    [[nodiscard]] bool checkKeyIsValid(const json_pointer& pointer) const
     {
         if (!(*m_root).contains(pointer)) {
             return false;
@@ -404,7 +405,7 @@ private:
      * @return Reference to the JSON node.
      * @throws json::out_of_range if the node does not exist.
      */
-    json& resolve_pointer() const
+    [[nodiscard]] json& resolve_pointer() const
     {
         return (*m_root).at(m_pointer);  // Throws if invalid
     }
@@ -437,7 +438,7 @@ public:
     /// @brief Creates a new Object class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Object(Base& parent, const std::string_view& key)
+    Object(Base& parent, std::string_view key)
         : Base(json::object(), parent, key) {}
 
     MNX_OPTIONAL_PROPERTY(std::string, _c);     ///< An optional comment. This serves a similar function as XML or HTML comments.
@@ -462,7 +463,7 @@ public:
     {
     }
 
-    /// @brief Convert to simple type
+    /// @brief Implicit conversion to simple type
     operator T() const
     {
         return ref().template get<T>();
@@ -528,20 +529,26 @@ public:
     /// @brief Creates a new Array class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Array(Base& parent, const std::string_view& key)
+    Array(Base& parent, std::string_view key)
         : Base(json::array(), parent, key) {}
 
     /** @brief Get the size of the array. */
-    size_t size() const { return ref().size(); }
+    [[nodiscard]] size_t size() const { return ref().size(); }
 
     /** @brief Check if the array is empty. */
-    bool empty() const { return ref().empty(); }
+    [[nodiscard]] bool empty() const { return ref().empty(); }
 
     /** @brief Clear all elements. */
     void clear() { ref().clear(); }
 
+    /** @brief Direct getter for a particular element. */
+    [[nodiscard]] T at(size_t index) const
+    {
+        return operator[](index);
+    }
+    
     /// @brief const operator[]
-    auto operator[](size_t index) const
+    [[nodiscard]] auto operator[](size_t index) const
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {
@@ -552,7 +559,7 @@ public:
     }
 
     /// @brief non-const operator[]
-    auto operator[](size_t index)
+    [[nodiscard]] auto operator[](size_t index)
     {
         checkIndex(index);
         if constexpr (std::is_base_of_v<Base, T>) {
@@ -594,16 +601,16 @@ public:
     }
 
     /// @brief Returns an iterator to the beginning of the array.
-    auto begin() { return iterator(this, 0); }
+    [[nodiscard]] auto begin() { return iterator(this, 0); }
 
     /// @brief Returns an iterator to the end of the array.
-    auto end() { return iterator(this, size()); }
+    [[nodiscard]] auto end() { return iterator(this, size()); }
 
     /// @brief Returns a const iterator to the beginning of the array.
-    auto begin() const { return const_iterator(this, 0); }
+    [[nodiscard]] auto begin() const { return const_iterator(this, 0); }
 
     /// @brief Returns a const iterator to the end of the array.
-    auto end() const { return const_iterator(this, size()); }
+    [[nodiscard]] auto end() const { return const_iterator(this, size()); }
 
 protected:
     /// @brief validates that an index is not out of range
@@ -657,7 +664,7 @@ public:
 
     /// @brief Retrieve an element as a specific type
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T get() const
+    [[nodiscard]] T get() const
     {
         return getTypedObject<T>();
     }
@@ -666,7 +673,7 @@ private:
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T getTypedObject() const
+    [[nodiscard]] T getTypedObject() const
     {
         if (type() != T::ContentTypeValue) {
             throw std::invalid_argument("Type mismatch: expected " + std::string(T::ContentTypeValue) +
@@ -713,7 +720,7 @@ public:
 
     /// @brief Retrieve an element from the array as a specific type
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T get(size_t index) const
+    [[nodiscard]] T get(size_t index) const
     {
         this->checkIndex(index);
         return operator[](index).get<T>();
@@ -735,7 +742,7 @@ private:
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T getTypedObject(size_t index) const
+    [[nodiscard]] T getTypedObject(size_t index) const
     {
         this->checkIndex(index);
         auto element = (*this)[index];
@@ -805,14 +812,14 @@ private:
         iter(DictionaryType* ptr, IteratorType it) : m_ptr(ptr), m_it(it)
         { update_pair(); }
 
-        reference operator*() const { return *m_pair.get(); }
-        pointer operator->() const { return m_pair.get(); }
+        [[nodiscard]] reference operator*() const { return *m_pair.get(); }
+        [[nodiscard]] pointer operator->() const { return m_pair.get(); }
 
         iter& operator++() { ++m_it; update_pair(); return *this; }
         iter operator++(int) { iter tmp = *this; ++(*this); return tmp; }
 
-        bool operator!=(const iter& o) const { return m_it != o.m_it; }
-        bool operator==(const iter& o) const { return m_it == o.m_it; }
+        [[nodiscard]] bool operator!=(const iter& o) const { return m_it != o.m_it; }
+        [[nodiscard]] bool operator==(const iter& o) const { return m_it == o.m_it; }
     };
 
 public:
@@ -833,20 +840,26 @@ public:
     /// @brief Creates a new Dictionary class as a child of a JSON node
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Dictionary(Base& parent, const std::string_view& key)
+    Dictionary(Base& parent, std::string_view key)
         : Object(parent, key) {}
 
     /** @brief Get the size of the array. */
-    size_t size() const { return ref().size(); }
+    [[nodiscard]] size_t size() const { return ref().size(); }
 
     /** @brief Check if the array is empty. */
-    bool empty() const { return ref().empty(); }
+    [[nodiscard]] bool empty() const { return ref().empty(); }
 
     /** @brief Clear all elements. */
     void clear() { ref().clear(); }
 
+    /** @brief Direct getter for a particular element. */
+    [[nodiscard]] T at(size_t index) const
+    {
+        return operator[](index);
+    }
+
     /// @brief const operator[]
-    T operator[](const std::string& key) const
+    [[nodiscard]] auto operator[](const std::string& key) const
     {
         if constexpr (std::is_base_of_v<Base, T>) {
             return getChild<T>(key);
@@ -856,7 +869,7 @@ public:
     }
 
     /// @brief non-const operator[]
-    auto operator[](const std::string& key)
+    [[nodiscard]] auto operator[](const std::string& key)
     {
         if constexpr (std::is_base_of_v<Base, T>) {
             return getChild<T>(key);
@@ -898,7 +911,7 @@ public:
     /// @brief Finds an element by key and returns an iterator.
     /// @param key The key to search for.
     /// @return Iterator to the found element or end() if not found.
-    auto find(const std::string& key)
+    [[nodiscard]] auto find(const std::string& key)
     {
         auto it = ref().find(key);
         return (it != ref().end()) ? iterator(this, it) : end();
@@ -907,7 +920,7 @@ public:
     /// @brief Finds an element by key and returns a const iterator.
     /// @param key The key to search for.
     /// @return Const iterator to the found element or end() if not found.
-    auto find(const std::string& key) const
+    [[nodiscard]] auto find(const std::string& key) const
     {
         auto it = ref().find(key);
         return (it != ref().end()) ? const_iterator(this, it) : end();
@@ -915,20 +928,20 @@ public:
 
     /// @brief Returns true if the key exists in in the dictionary.
     /// @param key  The key to search for.
-    bool contains(const std::string& key) const
+    [[nodiscard]] bool contains(const std::string& key) const
     { return find(key) != end(); }
 
     /// @brief Returns an iterator to the beginning of the dictionary.
-    auto begin() { return iterator(this, ref().begin()); }
+    [[nodiscard]] auto begin() { return iterator(this, ref().begin()); }
 
     /// @brief Returns an iterator to the end of the dictionary.
-    auto end() { return iterator(this, ref().end()); }
+    [[nodiscard]] auto end() { return iterator(this, ref().end()); }
 
     /// @brief Returns a const iterator to the beginning of the dictionary.
-    auto begin() const { return const_iterator(this, ref().begin()); }
+    [[nodiscard]] auto begin() const { return const_iterator(this, ref().begin()); }
 
     /// @brief Returns a const iterator to the end of the dictionary.
-    auto end() const { return const_iterator(this, ref().end()); }
+    [[nodiscard]] auto end() const { return const_iterator(this, ref().end()); }
 };
 
 } // namespace mnx

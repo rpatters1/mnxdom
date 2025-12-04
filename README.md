@@ -6,6 +6,8 @@ Document object model for the MNX music interchange format. It is compatible wit
 - uses [nlohmann\_json](https://github.com/nlohmann/json) as its JSON parser.
 - allows structured access to MNX objects, without the need of quoted strings.
 - validates against the MNX schema using [json-schema-validator](https://github.com/pboettch/json-schema-validator).
+- no class serialization beyond nlohmann.
+- every MNX class is a wrapper around the root JSON object and a pointer to the location of the instance.
 
 ### Documentation
 
@@ -30,6 +32,8 @@ event.create_notes().append(mnx::NoteStep::C, 4);
 // save to file
 doc.save("hello_world.json", 4); // indent with 4 spaces
 ```
+
+Note that this code never uses references. Since every MNX class in the model is a lightweight wrapper around a root JSON object and a pointer to its location, copying them is extremely cheap. The class instance returned by any method is a temporary instance. Using references on return values can result in undefined behavior.
 
 ### Setup Instructions
 

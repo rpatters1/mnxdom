@@ -28,11 +28,12 @@
  *
  * The MNX Document Model is a <b>C++ class framework</b>
  * around the MNX music interchange format, which uses JSON files.
- * It requires the C++17 standard.
+ * It requires the C++17 standard or higher. (It is currently tested with C++23.)
  * 
  * Features include:
- * - Implemented with an underlying nlohmann JSON document. No class-level streaming to/from JSON is required.
+ * - Implemented with an underlying nlohmann JSON document. No class-level serializing to/from JSON is required.
  * - Lightweight class definitions contain only the shared JSON document and a json_pointer to the object. (See @ref mnx::Base.)
+ * - Validation routines for both the MNX JSON schema and semantic validation.
  *
  * Member functions for each MNX entity are defined using macros that create the boilerplate for the definitions.
  * For example, `MNX_REQUIRED_PROPERTY` creates a getter (equal to the property name) and a setter (`set_` followed
@@ -41,6 +42,9 @@
  * A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed
  * from scratch. They can be subsequently changed if need be. Many classes have `Initializer` types to facilitate passing
  * all the required data for a child object.
+ *
+ * @warning Avoid using references for instances returned by the methods in this library. Because classes are so lightweight,
+ * all methods return temporary copies. Using a reference on a temporary is undefined behavior.
  *
  * @author Robert Patterson
  */

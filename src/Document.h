@@ -48,7 +48,7 @@ public:
     /// @brief Creates a new MnxMetaData class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    MnxMetaData(Base& parent, const std::string_view& key)
+    MnxMetaData(Base& parent, std::string_view key)
         : Object(parent, key)
     {
         // required children
@@ -132,7 +132,7 @@ public:
      * @return A Document instance populated with the parsed data.
      * @throws std::runtime_error if the file cannot be opened.
      */
-    static Document create(const std::filesystem::path& inputPath)
+    [[nodiscard]] static Document create(const std::filesystem::path& inputPath)
     {
         std::ifstream jsonFile;
         jsonFile.exceptions(std::ios::failbit | std::ios::badbit);
@@ -167,7 +167,7 @@ public:
     void buildIdMapping(const std::optional<ErrorHandler>& errorHandler = std::nullopt);
 
     /// @brief Gets a reference to the ID mapping instance for the document.
-    const util::IdMapping& getIdMapping() const
+    [[nodiscard]] const util::IdMapping& getIdMapping() const
     {
         MNX_ASSERT_IF(!m_idMapping) {
             throw std::logic_error("Call buildIdMapping before calling getIdMapping.");
@@ -176,7 +176,7 @@ public:
     }
 
     /// @brief Returns whether am ID mapping currently exists
-    bool hasIdMapping() const { return static_cast<bool>(m_idMapping); }
+    [[nodiscard]] bool hasIdMapping() const { return static_cast<bool>(m_idMapping); }
 };
 
 static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");

@@ -24,6 +24,7 @@
 #include <utility>
 #include <numeric>
 #include <stdexcept>
+#include <limits>
 
 #include "BaseTypes.h"
 #include "Enumerations.h"
@@ -79,20 +80,32 @@ public:
      * The fraction is not automatically reduced. Use normalize() if you need
      * the value in lowest terms.
      */
-    FractionValue(NumType num, NumType den = 1)
-        : m_num(num)
-        , m_den(den)
+    FractionValue(NumType num, NumType den)
+        : m_num(num), m_den(den)
     {
         if (m_den == 0) {
             throw std::invalid_argument("FractionValue: denominator must not be zero.");
         }
     }
 
+    /**
+     * @brief Constructs a Fraction object from an integer.
+     * @param value The integer value of the fraction.
+     * @throws std::invalid_argument if the m_denominator is zero.
+     */
+    constexpr FractionValue(int value) : m_num(value), m_den(1) {}
+
     /// @brief Returns the numerator.
-    NumType numerator() const noexcept   { return m_num; }
+    constexpr NumType numerator() const noexcept   { return m_num; }
 
     /// @brief Returns the denominator.
-    NumType denominator() const noexcept { return m_den; }
+    constexpr NumType denominator() const noexcept { return m_den; }
+
+    /// @brief Constructs the max fractional value.
+    static constexpr FractionValue max() noexcept
+    {
+        return FractionValue((std::numeric_limits<NumType>::max)());
+    }
 
     /**
      * @brief Adds another FractionValue to this one.
@@ -102,7 +115,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator+=(const FractionValue& rhs)
+    constexpr FractionValue& operator+=(const FractionValue& rhs)
     {
         // a/b + c/d = (ad + bc)/bd
         m_num = m_num * rhs.m_den + rhs.m_num * m_den;
@@ -119,7 +132,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator-=(const FractionValue& rhs)
+    constexpr FractionValue& operator-=(const FractionValue& rhs)
     {
         // a/b - c/d = (ad - bc)/bd
         m_num = m_num * rhs.m_den - rhs.m_num * m_den;
@@ -136,7 +149,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator*=(const FractionValue& rhs)
+    constexpr FractionValue& operator*=(const FractionValue& rhs)
     {
         m_num = m_num * rhs.m_num;
         m_den = m_den * rhs.m_den;
@@ -168,7 +181,7 @@ public:
     /**
      * @brief Reduces the fraction to lowest terms using std::gcd.
      */
-    void normalize()
+    constexpr void normalize()
     {
         const NumType g = std::gcd(m_num, m_den);
         if (g > 1) {
@@ -184,25 +197,25 @@ public:
 // Non-member arithmetic operators
 // ------------------------------------------------------------
 
-inline FractionValue operator+(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator+(FractionValue lhs, const FractionValue& rhs)
 {
     lhs += rhs;
     return lhs;
 }
 
-inline FractionValue operator-(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator-(FractionValue lhs, const FractionValue& rhs)
 {
     lhs -= rhs;
     return lhs;
 }
 
-inline FractionValue operator*(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator*(FractionValue lhs, const FractionValue& rhs)
 {
     lhs *= rhs;
     return lhs;
 }
 
-inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
 {
     lhs /= rhs;
     return lhs;
@@ -212,32 +225,32 @@ inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
 // Comparison operators
 // ------------------------------------------------------------
 
-inline bool operator==(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator==(const FractionValue& a, const FractionValue& b)
 {
     return a.numerator() * b.denominator() == b.numerator() * a.denominator();
 }
 
-inline bool operator!=(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator!=(const FractionValue& a, const FractionValue& b)
 {
     return !(a == b);
 }
 
-inline bool operator<(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator<(const FractionValue& a, const FractionValue& b)
 {
     return a.numerator() * b.denominator() < b.numerator() * a.denominator();
 }
 
-inline bool operator<=(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator<=(const FractionValue& a, const FractionValue& b)
 {
     return !(b < a);
 }
 
-inline bool operator>(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator>(const FractionValue& a, const FractionValue& b)
 {
     return b < a;
 }
 
-inline bool operator>=(const FractionValue& a, const FractionValue& b)
+[[nodiscard]] constexpr bool operator>=(const FractionValue& a, const FractionValue& b)
 {
     return !(a < b);
 }
@@ -269,7 +282,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param value The numerator (number on top) and denominator (number on bottom) of the fraction.
-    Fraction(Base& parent, const std::string_view& key, const FractionValue& value)
+    Fraction(Base& parent, std::string_view key, const FractionValue& value)
         : ArrayType(parent, key)
     {
         push_back(value.numerator());
@@ -277,7 +290,7 @@ public:
     }
 
     /// @brief Implicit conversion to @ref FractionValue for arithmetic and comparisons.
-    operator FractionValue() const
+    [[nodiscard]] operator FractionValue() const
     {
         return FractionValue(numerator(), denominator());
     }
@@ -305,7 +318,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param position Position within a measure (as a fraction of whole notes)
-    RhythmicPosition(Base& parent, const std::string_view& key, const FractionValue& position)
+    RhythmicPosition(Base& parent, std::string_view key, const FractionValue& position)
         : Object(parent, key)
     {
         create_fraction(position);
@@ -334,7 +347,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param measureId The measure index of the measure of the position.
     /// @param position Position within the measure (as a fraction of whole notes)
-    MeasureRhythmicPosition(Base& parent, const std::string_view& key, int measureId, const FractionValue& position)
+    MeasureRhythmicPosition(Base& parent, std::string_view key, int measureId, const FractionValue& position)
         : Object(parent, key)
     {
         set_measure(measureId);
@@ -363,7 +376,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param staffDistance The number of diatonic steps in the interval (negative is down)
     /// @param halfSteps The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    Interval(Base& parent, const std::string_view& key, int staffDistance, int halfSteps)
+    Interval(Base& parent, std::string_view key, int staffDistance, int halfSteps)
         : Object(parent, key)
     {
         set_halfSteps(halfSteps);
@@ -391,7 +404,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param fifths The number of fifths distance from a signature with no accidentals.
-    KeySignature(Base& parent, const std::string_view& key, int fifths)
+    KeySignature(Base& parent, std::string_view key, int fifths)
         : Object(parent, key)
     {
         set_fifths(fifths);
@@ -430,7 +443,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value
-    NoteValue(Base& parent, const std::string_view& key, const Initializer& noteValue)
+    NoteValue(Base& parent, std::string_view key, const Initializer& noteValue)
         : Object(parent, key)
     {
         set_base(noteValue.base);
@@ -443,10 +456,10 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
 
     /// @brief Calculates the number of flags or beams required by this note value
-    unsigned calcNumberOfFlags() const;
+    [[nodiscard]] unsigned calcNumberOfFlags() const;
 
     /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
-    operator FractionValue() const;
+    [[nodiscard]] operator FractionValue() const;
 };
 
 /**
@@ -467,7 +480,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param count The quantity of note value units
     /// @param noteValue The note value
-    NoteValueQuantity(Base& parent, const std::string_view& key, unsigned count, const NoteValue::Initializer& noteValue)
+    NoteValueQuantity(Base& parent, std::string_view key, unsigned count, const NoteValue::Initializer& noteValue)
         : Object(parent, key)
     {
         set_multiple(count);
@@ -479,7 +492,7 @@ public:
 
 
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
-    operator FractionValue() const
+    [[nodiscard]] operator FractionValue() const
     { return multiple() * duration(); }
 };
 
@@ -501,7 +514,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param count The number of beats per minutes
     /// @param unit The note value base for this Barline
-    TimeSignature(Base& parent, const std::string_view& key, int count, TimeSignatureUnit unit)
+    TimeSignature(Base& parent, std::string_view key, int count, TimeSignatureUnit unit)
         : Object(parent, key)
     {
         set_count(count);
@@ -512,7 +525,7 @@ public:
     MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
 
     /// @brief Implicit converter to FractionValue.
-    operator FractionValue() const
+    [[nodiscard]] operator FractionValue() const
     { return count() * FractionValue(1, static_cast<unsigned>(unit())); }
 };
 

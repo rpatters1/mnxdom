@@ -38,34 +38,80 @@ struct EnclosingKey
 
 template <>
 struct EnclosingKey<mnx::Part> {
-    static constexpr std::string_view value = "/parts/"; // prefix
+    static constexpr std::array<std::string_view, 1> value = { "parts" };
 };
 template std::optional<mnx::Part> Base::getEnclosingElement<mnx::Part>() const;
 
 template <>
+struct EnclosingKey<mnx::part::Measure> {
+    static constexpr std::array<std::string_view, 3> value = { "parts", "*", "measures" };
+};
+template std::optional<mnx::part::Measure> Base::getEnclosingElement<mnx::part::Measure>() const;
+
+template <>
 struct EnclosingKey<mnx::Sequence> {
-    static constexpr std::string_view value = "sequences/"; // just a key
+    static constexpr std::array<std::string_view, 5> value = { "parts", "*", "measures", "*", "sequences" };
 };
 template std::optional<mnx::Sequence> Base::getEnclosingElement<mnx::Sequence>() const;
+
+template <>
+struct EnclosingKey<mnx::sequence::ContentObject> {
+    static constexpr std::array<std::string_view, 7> value = { "parts", "*", "measures", "*", "sequences", "*", "content" };
+};
+template std::optional<mnx::sequence::ContentObject> Base::getEnclosingElement<mnx::sequence::ContentObject>() const;
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 template <typename T>
 std::optional<T> Base::getEnclosingElement() const
 {
-    constexpr std::string_view key = EnclosingKey<T>::value;
-    std::string s = m_pointer.to_string();
+    // Compile-time pattern like {"parts"}, {"parts","*","measures"}, etc.
+    constexpr auto& key = EnclosingKey<T>::value;
+    constexpr std::size_t keySize = key.size();
 
-    std::size_t pos = s.find(key);
-    if (pos == std::string::npos)
-        return std::nullopt;
-
-    // Advance past the key to get the start of the index
-    std::size_t after = s.find('/', pos + key.length());
-    if (after == std::string::npos) {
-        return T(m_root, json_pointer(s));  // key was last element
+    const std::string ptrStr = m_pointer.to_string();
+    if (ptrStr.empty() || ptrStr[0] != '/') {
+        return std::nullopt; // not a valid JSON pointer form
     }
-    return T(m_root, json_pointer(s.substr(0, after)));
+
+    std::size_t pos = 1;                 // skip leading '/'
+    std::size_t tokenIndex = 0;
+    std::size_t enclosingEnd = std::string::npos;
+
+    while (pos <= ptrStr.size()) {
+        // Find end of current token
+        std::size_t slash = ptrStr.find('/', pos);
+        if (slash == std::string::npos) {
+            slash = ptrStr.size();
+        }
+        if (slash == pos) {
+            break; // empty segment; shouldn't happen in valid pointers
+        }
+
+        std::string_view token(ptrStr.data() + pos, slash - pos);
+
+        if (tokenIndex < keySize) {
+            // Compare against key prefix (with "*" wildcard)
+            if (key[tokenIndex] != "*" && token != key[tokenIndex]) {
+                return std::nullopt;     // not under this enclosing family
+            }
+        } else if (tokenIndex == keySize) {
+            // This is the trailing index segment we want to include
+            enclosingEnd = slash;
+            break;                       // we don't care about deeper segments
+        }
+
+        ++tokenIndex;
+        pos = slash + 1;
+    }
+
+    // We must have seen at least keySize + 1 segments (the trailing index)
+    if (enclosingEnd == std::string::npos) {
+        return std::nullopt;
+    }
+
+    // pointer to the enclosing element: "/segments[0]/.../segments[keySize]"
+    return T(m_root, json_pointer(ptrStr.substr(0, enclosingEnd)));
 }
 
 Document Base::document() const
@@ -255,14 +301,19 @@ std::optional<TimeSignature> global::Measure::calcCurrentTime() const
 // ***** part::Measure *****
 // *************************
 
-std::optional<TimeSignature> part::Measure::calcCurrentTime() const
+mnx::global::Measure part::Measure::getGlobalMeasure() const
 {
     const size_t measureIndex = calcArrayIndex();
     auto globalMeasures = document().global().measures();
     MNX_ASSERT_IF (measureIndex >= globalMeasures.size()) {
         throw std::logic_error("Part measure has higher index than global measure at " + dump());
     }
-    return globalMeasures[measureIndex].calcCurrentTime();
+    return globalMeasures[measureIndex];
+}
+
+std::optional<TimeSignature> part::Measure::calcCurrentTime() const
+{
+    return getGlobalMeasure().calcCurrentTime();
 }
 
 // ***************************
@@ -287,7 +338,7 @@ bool sequence::Event::isGrace() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "grace" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::ContentObject>();
+    auto container = this->container<mnx::sequence::ContentObject>();
     return container.type() == mnx::sequence::Grace::ContentTypeValue;
 }
 
@@ -297,7 +348,7 @@ bool sequence::Event::isTremolo() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "tremolo" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::ContentObject>();
+    auto container = this->container<mnx::sequence::ContentObject>();
     return container.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue;
 }
 
@@ -308,6 +359,55 @@ Sequence sequence::Event::getSequence() const
         throw std::logic_error("Event \"" + id_or("") + "\" at \"" + pointer().to_string() + "\" is not part of a sequence.");
     }
     return result.value();
+}
+
+size_t sequence::Event::getSequenceIndex() const
+{
+    auto result = getEnclosingElement<mnx::sequence::ContentObject>();
+    MNX_ASSERT_IF(!result.has_value()) {
+        throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
+    }
+    return result.value().calcArrayIndex();
+}
+
+FractionValue sequence::Event::calcDuration() const
+{
+    if (measure()) {
+        auto partMeasure = getEnclosingElement<mnx::part::Measure>();
+        MNX_ASSERT_IF(!partMeasure) {
+            throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a part measure.");
+        }
+        if (auto currentTime = partMeasure.value().calcCurrentTime()) {
+            return currentTime.value();
+        }
+    }
+    if (duration().has_value()) {
+        return duration().value();
+    }
+    return 0;
+}
+
+FractionValue sequence::Event::calcStartTime() const
+{
+    auto sequence = getEnclosingElement<mnx::Sequence>();
+    MNX_ASSERT_IF(!sequence) {
+        throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a sequence.");
+    }
+
+    auto retval = std::optional<FractionValue>();
+    auto thisPtr = pointer();
+    sequence->iterateEvents([&](sequence::Event event, FractionValue startDuration, FractionValue /*actualDuration*/) -> bool {
+        if (event.pointer() == thisPtr) {
+            retval = startDuration;
+            return false;
+        }
+        return true;
+    });
+
+    MNX_ASSERT_IF(!retval) {
+        throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" was not found in its enclosing sequence.");
+    }
+    return retval.value();
 }
 
 // ***************************
@@ -323,6 +423,56 @@ bool sequence::Pitch::isSamePitch(const Pitch& src) const
     }
     music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter_or(0));
     return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter_or(0));
+}
+
+// ********************
+// ***** Sequence *****
+// ********************
+
+bool Sequence::iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const
+{
+    auto elapsedTime = FractionValue{0};
+
+    auto processContent = [&](ContentArray content, FractionValue timeRatio, auto&& self) -> bool {
+        for (const auto item : content) {
+            if (item.type() == mnx::sequence::Event::ContentTypeValue) {
+                auto event = item.get<mnx::sequence::Event>();
+                auto actualDuration = event.calcDuration() * timeRatio;
+                if (!iterator(event, elapsedTime, actualDuration)) {
+                    return false;
+                }
+                elapsedTime += actualDuration;
+            } else if (item.type() == mnx::sequence::Grace::ContentTypeValue) {
+                auto grace = item.get<mnx::sequence::Grace>();
+                if (!self(grace.content(), 0, self)) {
+                    return false;
+                }
+            } else if (item.type() == mnx::sequence::Tuplet::ContentTypeValue) {
+                auto tuplet = item.get<mnx::sequence::Tuplet>();
+                if (!self(tuplet.content(), timeRatio * tuplet.ratio(), self)) {
+                    return false;
+                }
+            } else if (item.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
+                auto tremolo = item.get<mnx::sequence::MultiNoteTremolo>();
+                /// @todo: MNX tremolo durations.
+                // Currently, inner tremolo notes are treated as time-neutral and only
+                // tremolo.outer() * timeRatio advances elapsedTime. Once the MNX spec
+                // clarifies per-note duration semantics for multi-note tremolos, this
+                // iterator should be updated so each event gets an appropriate share of
+                // the tremolo duration pie.
+                if (!self(tremolo.content(), 0, self)) {
+                    return false;
+                }
+                elapsedTime += tremolo.outer() * timeRatio;
+            } else if (item.type() == mnx::sequence::Space::ContentTypeValue) {
+                auto space = item.get<mnx::sequence::Space>();
+                elapsedTime += space.duration() * timeRatio;
+            }
+        }
+        return true;
+    };
+
+    return processContent(content(), 1, processContent);
 }
 
 } // namespace mnx

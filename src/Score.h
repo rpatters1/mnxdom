@@ -50,7 +50,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
-    MultimeasureRest(Base& parent, const std::string_view& key, int startMeasure, int numMeasures)
+    MultimeasureRest(Base& parent, std::string_view key, int startMeasure, int numMeasures)
         : ArrayElementObject(parent, key)
     {
         set_start(startMeasure);
@@ -81,7 +81,7 @@ public:
     /// @param layoutId The id of the layout to use for the layout change
     /// @param measureId The measure index of the measure of the position.
     /// @param position The position of the LayoutChange within the measure.
-    LayoutChange(Base& parent, const std::string_view& key, const std::string& layoutId,
+    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId,
             int measureId, const FractionValue& position)
         : ArrayElementObject(parent, key)
     {
@@ -110,7 +110,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the system
-    System(Base& parent, const std::string_view& key, int startMeasure)
+    System(Base& parent, std::string_view key, int startMeasure)
         : ArrayElementObject(parent, key)
     {
         set_measure(startMeasure);
@@ -133,7 +133,7 @@ public:
     /// @brief Creates a new Page class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Page(Base& parent, const std::string_view& key)
+    Page(Base& parent, std::string_view key)
         : ArrayElementObject(parent, key)
     {
         // required children
@@ -163,7 +163,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param scoreName The name of the score to be created
-    Score(Base& parent, const std::string_view& key, const std::string& scoreName)
+    Score(Base& parent, std::string_view key, const std::string& scoreName)
         : ArrayElementObject(parent, key)
     {
         set_name(scoreName);

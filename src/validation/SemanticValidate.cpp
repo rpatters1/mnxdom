@@ -60,14 +60,14 @@ private:
     void validateTies(const mnx::Array<mnx::sequence::Tie>& ties, const NoteType& note);
 
     template <typename T, typename KeyType>
-    std::optional<T> tryGetValue(const KeyType& key, const Base& location);
+    std::optional<T> tryGetValue(const KeyType& key, const Base& errorLocation);
 };
 
 template <typename T, typename KeyType>
-std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& location)
+std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& errorLocation)
 {
     try {
-        return document.getIdMapping().get<T>(key, location);
+        return document.getIdMapping().get<T>(key, errorLocation);
     } catch (const util::mapping_error&) {
         // already reported error, so fall through
     }
@@ -186,10 +186,9 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             } else {
                 if (!event.duration().has_value()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
-                } else {
-                    elapsedTime += event.duration().value();
                 }
             }
+            elapsedTime += event.calcDuration();
             if (event.rest().has_value()) {
                 if (event.notes() && !event.notes().value().empty()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" is a rest but also has notes.", event);
@@ -303,10 +302,19 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
     std::set<std::pair<unsigned, std::string>> ids;
     for (const auto beam : beams) {
         if (beam.events().empty()) {
-            addError("Beam contains only one or fewer events.", beam);
+            addError("Beam contains no events.", beam);
+            continue;
         }
+        const auto beamMeasure = beam.getEnclosingElement<mnx::part::Measure>();
+        if (!beamMeasure) {
+            addError("Unable to find enclosing measure for beam.", beam);
+            continue;
+        }
+        size_t currentMeasureIndex = beamMeasure.value().calcArrayIndex();
+        bool requireMeasuresEqualOnFirst = depth == 1;
         std::optional<bool> isGraceBeam;
         std::optional<std::string> voice;
+        FractionValue currentSequenceTime = 0;
         for (const auto id : beam.events()) {
             if (ids.find(std::make_pair(depth, id)) != ids.end()) {
                 addError("Event \"" + id + "\" is duplicated in beam at depth " + std::to_string(depth) + ".", beam);
@@ -314,6 +322,27 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
             }
             ids.emplace(std::make_pair(depth, id));
             if (const auto event = tryGetValue<mnx::sequence::Event>(id, beam)) {
+                size_t nextMeasureIndex = currentMeasureIndex;
+                if (const auto eventMeasure = event.value().getEnclosingElement<mnx::part::Measure>()) {
+                    nextMeasureIndex = eventMeasure.value().calcArrayIndex();
+                } else {
+                    addError("Unable to find enclosing measure for event.", event.value());
+                }
+                const auto startTime = event.value().calcStartTime();
+                if (requireMeasuresEqualOnFirst && nextMeasureIndex != currentMeasureIndex) {
+                    addError("First event in beam is not in the same measure as the beam.", beam);
+                } else if (nextMeasureIndex < currentMeasureIndex) {
+                    addError("Beam measures are out of sequence", beam);
+                } else if (nextMeasureIndex > currentMeasureIndex) {
+                    currentSequenceTime = startTime;
+                }
+                requireMeasuresEqualOnFirst = false;
+                currentMeasureIndex = nextMeasureIndex;
+                const auto nextSequenceTime = startTime;
+                if (nextSequenceTime < currentSequenceTime) {
+                    addError("Beam events are out of sequence.", beam);
+                }
+                currentSequenceTime = nextSequenceTime;
                 if (event.value().isTremolo()) {
                     addError("Beam containing event \"" + id + "\" is actually a multi-note tremolo and should not be a beam.", beam);
                     continue;

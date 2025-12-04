@@ -121,24 +121,7 @@ public:
             }
         }
     }
-
-    /// @brief Returns the @ref part::Measure instance associated with the input @ref global::Measure.
-    /// @param globalMeasure The global measure for which to find the associated part measure.
-    /// @param partId ID of the part to search.
-    /// @return The associated part measure.
-    mnx::part::Measure getPartMeasure(const mnx::global::Measure& globalMeasure, const std::string& partId) const
-    {
-        const size_t measureIndex = globalMeasure.calcArrayIndex();
-        const auto part = get<mnx::Part>(partId);
-        const auto measures = part.measures();
-        if (!measures || measureIndex >= measures.value().size()) {
-            mapping_error err("Part \'" + partId + "\" lacks a corresponding measure for the input global measure.");
-            if (m_errorHandler) m_errorHandler.value()(err.what(), globalMeasure);
-            throw err;
-        }
-        return measures.value()[measureIndex];
-    }
-
+    
 private:
     std::shared_ptr<json> m_root;
     std::optional<ErrorHandler> m_errorHandler;

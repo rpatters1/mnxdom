@@ -150,7 +150,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param marks The number of marks.
-    SingleNoteTremolo(Base& parent, const std::string_view& key, unsigned marks)
+    SingleNoteTremolo(Base& parent, std::string_view key, unsigned marks)
         : EventMarkingBase(parent, key)
     {
         set_marks(marks);

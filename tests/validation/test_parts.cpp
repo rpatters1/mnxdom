@@ -115,3 +115,23 @@ TEST(Parts, AlterationError)
         "Note \"note1\" has alteration value 4. MNX files are limited to +/-3."
     });
 }
+
+TEST(Parts, BeamWrongMeasure)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "beam_wrong_measure.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "First event in beam is not in the same measure as the beam."
+    });
+}
+
+TEST(Parts, BeamOutOfOrder)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "beam_out_of_order.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Beam events are out of sequence."
+    });
+}

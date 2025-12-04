@@ -340,7 +340,7 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                 currentMeasureIndex = nextMeasureIndex;
                 const auto nextSequenceTime = startTime;
                 if (nextSequenceTime < currentSequenceTime) {
-                    addError("Beam events are out of sequence", beam);
+                    addError("Beam events are out of sequence.", beam);
                 }
                 currentSequenceTime = nextSequenceTime;
                 if (event.value().isTremolo()) {

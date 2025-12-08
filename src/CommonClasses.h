@@ -268,14 +268,6 @@ public:
             return false;
         }
 
-        // If NumType is signed and someone passes a negative target denominator,
-        // treat its sign as purely representational and work with its magnitude.
-        if constexpr (std::is_signed<NumType>::value) {
-            if (targetDenominator < 0) {
-                targetDenominator = -targetDenominator;
-            }
-        }
-
         // Zero fraction: 0/d is expressible as 0/targetDenominator.
         if (m_num == 0) {
             m_den = targetDenominator;
@@ -301,6 +293,8 @@ public:
         // Apply the scaling to the reduced numerator and store the new form.
         m_num = numRed * factor;
         m_den = targetDenominator;
+
+        normalizeSign();
 
         return true;
     }

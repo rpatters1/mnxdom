@@ -65,6 +65,21 @@ private:
     NumType m_num = 0; ///< Numerator of the fraction (always non-negative).
     NumType m_den = 1; ///< Denominator of the fraction (must be > 0).
 
+    template<typename T = NumType,
+             typename std::enable_if_t<std::is_signed<T>::value, int> = 0>
+    constexpr void normalizeSign()
+    {
+        if (m_den < 0) {
+            m_den = -m_den;
+            m_num = -m_num;
+        }
+    }
+
+    // Unsigned case: no-op, never even sees m_den < 0
+    template<typename T = NumType,
+             typename std::enable_if_t<!std::is_signed<T>::value, int> = 0>
+    constexpr void normalizeSign() {}
+
 public:
     /**
      * @brief Default constructor initializes the value to 0/1.
@@ -89,12 +104,7 @@ public:
         if (m_den == 0) {
             throw std::invalid_argument("FractionValue: denominator must not be zero.");
         }
-        if constexpr (std::is_signed<NumType>::value) {
-            if (m_den < 0) {
-                m_den = -m_den;
-                m_num = -m_num;
-            }
-        }
+        normalizeSign();
     }
 
     /**
@@ -218,12 +228,7 @@ public:
             m_num /= g;
             m_den /= g;
         }
-        if constexpr (std::is_signed<NumType>::value) {
-            if (m_den < 0) {
-                m_den = -m_den;
-                m_num = -m_num;
-            }
-        }
+        normalizeSign();
     }
 
     /**

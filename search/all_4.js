@@ -16,5 +16,6 @@ var searchData=
   ['eventlyrics_13',['EventLyrics',['../classmnx_1_1sequence_1_1EventLyrics.html',1,'mnx::sequence']]],
   ['eventmarkingbase_14',['EventMarkingBase',['../classmnx_1_1sequence_1_1EventMarkingBase.html',1,'mnx::sequence']]],
   ['eventmarkings_15',['EventMarkings',['../classmnx_1_1sequence_1_1EventMarkings.html',1,'mnx::sequence']]],
-  ['exists_16',['exists',['../classmnx_1_1util_1_1IdMapping.html#abbea538acee7c03e6a33f4df0dc50597',1,'mnx::util::IdMapping']]]
+  ['exists_16',['exists',['../classmnx_1_1util_1_1IdMapping.html#abbea538acee7c03e6a33f4df0dc50597',1,'mnx::util::IdMapping']]],
+  ['expresswithdenominator_17',['expressWithDenominator',['../structmnx_1_1FractionValue.html#a2e403ca3c23b0d66e15c2ce135ddd04e',1,'mnx::FractionValue']]]
 ];

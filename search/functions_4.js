@@ -10,5 +10,6 @@ var searchData=
   ['error_7',['Error',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#a6f8c503d5a49c6d9f6aed7f8a4e91849',1,'mnx::validation::ValidationResult::Error']]],
   ['event_8',['event',['../classmnx_1_1sequence_1_1Event.html#a101ca1e93eafd55c2743833f6b9569b8',1,'mnx::sequence::Event::Event(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1sequence_1_1Event.html#a30657c26454f80b8580ed391d7a9dfb6',1,'mnx::sequence::Event::Event(Base &amp;parent, std::string_view key, std::optional&lt; NoteValue::Initializer &gt; noteValue=std::nullopt)']]],
   ['eventlyricline_9',['eventlyricline',['../classmnx_1_1sequence_1_1EventLyricLine.html#a88d3103562d8a58c2a74e48b880f4eb7',1,'mnx::sequence::EventLyricLine::EventLyricLine(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1sequence_1_1EventLyricLine.html#a951b5130b27dffd57da2a345db28aa3b',1,'mnx::sequence::EventLyricLine::EventLyricLine(Base &amp;parent, std::string_view key, const std::string &amp;syllableText)']]],
-  ['exists_10',['exists',['../classmnx_1_1util_1_1IdMapping.html#abbea538acee7c03e6a33f4df0dc50597',1,'mnx::util::IdMapping']]]
+  ['exists_10',['exists',['../classmnx_1_1util_1_1IdMapping.html#abbea538acee7c03e6a33f4df0dc50597',1,'mnx::util::IdMapping']]],
+  ['expresswithdenominator_11',['expressWithDenominator',['../structmnx_1_1FractionValue.html#a2e403ca3c23b0d66e15c2ce135ddd04e',1,'mnx::FractionValue']]]
 ];

@@ -25,6 +25,7 @@
 #include <numeric>
 #include <stdexcept>
 #include <limits>
+#include <type_traits>
 
 #include "BaseTypes.h"
 #include "Enumerations.h"
@@ -41,8 +42,8 @@ namespace mnx {
  * of the MNX DOM structure.
  *
  * A FractionValue constructed from a numerator and denominator preserves the
- * values exactly as provided. Arithmetic operations (+=, -=, *=, /=) normalize
- * the result to lowest terms using std::gcd. Call normalize() explicitly if
+ * values exactly as provided. Arithmetic operations (+=, -=, *=, /=) reduce
+ * the result to lowest terms using std::gcd. Call reduce() explicitly if
  * you need a reduced form immediately after construction.
  *
  * The class supports:
@@ -58,6 +59,7 @@ struct [[nodiscard]] FractionValue
 {
     /// @brief Unsigned integer type used for numerator and denominator.
     using NumType = unsigned;
+    static_assert(std::is_integral<NumType>::value, "FractionValue::NumType must be an integral type");
 
 private:
     NumType m_num = 0; ///< Numerator of the fraction (always non-negative).
@@ -67,24 +69,31 @@ public:
     /**
      * @brief Default constructor initializes the value to 0/1.
      */
-    FractionValue() = default;
+    constexpr FractionValue() = default;
 
     /**
      * @brief Constructs a fraction from a numerator and denominator.
      *
+     * The fraction is not automatically reduced. Use reduce() if you need
+     * the value in lowest terms. However, fractions *are* automatically reduced
+     * after arithmetical operations.
+     *
      * @param num The numerator.
      * @param den The denominator. Must not be zero.
-     *
      * @throws std::invalid_argument if @p den is zero.
-     *
-     * The fraction is not automatically reduced. Use normalize() if you need
-     * the value in lowest terms.
+     * @todo Make this constructor constexpr when we drop C++17 support.
      */
     FractionValue(NumType num, NumType den)
         : m_num(num), m_den(den)
     {
         if (m_den == 0) {
             throw std::invalid_argument("FractionValue: denominator must not be zero.");
+        }
+        if constexpr (std::is_signed<NumType>::value) {
+            if (m_den < 0) {
+                m_den = -m_den;
+                m_num = -m_num;
+            }
         }
     }
 
@@ -96,10 +105,31 @@ public:
     constexpr FractionValue(int value) : m_num(value), m_den(1) {}
 
     /// @brief Returns the numerator.
-    constexpr NumType numerator() const noexcept   { return m_num; }
+    constexpr NumType numerator() const noexcept { return m_num; }
 
     /// @brief Returns the denominator.
     constexpr NumType denominator() const noexcept { return m_den; }
+
+    /**
+     * @brief Returns the integer (whole number) part of the fraction.
+     * @return The integer part of the fraction.
+     */
+    constexpr NumType quotient() const
+    {
+        return m_num / m_den;
+    }
+
+    /**
+     * @brief Returns the fractional part of the fraction.
+     * @return The remainder as a fraction, satisfying -1 < remainder < 1.
+     */
+    FractionValue constexpr remainder() const
+    {
+        FractionValue result;
+        result.m_num = m_num % m_den;
+        result.m_den = m_den;
+        return result;
+    }
 
     /// @brief Constructs the max fractional value.
     static constexpr FractionValue max() noexcept
@@ -120,7 +150,7 @@ public:
         // a/b + c/d = (ad + bc)/bd
         m_num = m_num * rhs.m_den + rhs.m_num * m_den;
         m_den = m_den * rhs.m_den;
-        normalize();
+        reduce();
         return *this;
     }
 
@@ -137,7 +167,7 @@ public:
         // a/b - c/d = (ad - bc)/bd
         m_num = m_num * rhs.m_den - rhs.m_num * m_den;
         m_den = m_den * rhs.m_den;
-        normalize();
+        reduce();
         return *this;
     }
 
@@ -153,7 +183,7 @@ public:
     {
         m_num = m_num * rhs.m_num;
         m_den = m_den * rhs.m_den;
-        normalize();
+        reduce();
         return *this;
     }
 
@@ -174,23 +204,102 @@ public:
         }
         m_num = m_num * rhs.m_den;
         m_den = m_den * rhs.m_num;
-        normalize();
+        reduce();
         return *this;
     }
 
     /**
      * @brief Reduces the fraction to lowest terms using std::gcd.
      */
-    constexpr void normalize()
+    constexpr void reduce()
     {
         const NumType g = std::gcd(m_num, m_den);
         if (g > 1) {
             m_num /= g;
             m_den /= g;
         }
+        if constexpr (std::is_signed<NumType>::value) {
+            if (m_den < 0) {
+                m_den = -m_den;
+                m_num = -m_num;
+            }
+        }
+    }
+
+    /**
+     * @brief Attempts to express this fraction with the given denominator.
+     *
+     * If the current value can be written exactly with @p targetDenominator
+     * using an integer numerator, the numerator and denominator are updated
+     * to use that denominator and the function returns true. Otherwise, the
+     * fraction is left unchanged and the function returns false.
+     *
+     * This function does not require the fraction to be in reduced form. It
+     * computes a reduced logical form internally when determining whether
+     * the requested denominator is compatible.
+     *
+     * Examples:
+     * - 1/1 expressed with denominator 4 becomes 4/4 and returns true.
+     * - 3/2 expressed with denominator 4 becomes 6/4 and returns true.
+     * - 2/6 (i.e. 1/3) expressed with denominator 3 becomes 1/3 and returns true.
+     * - 1/3 expressed with denominator 4 cannot be represented exactly with
+     *   an integer numerator, so the call returns false and the fraction
+     *   remains 1/3.
+     *
+     * A zero fraction (0 / d) can always be expressed with any nonzero
+     * @p targetDenominator; in that case the result becomes
+     * 0 / targetDenominator.
+     *
+     * @param targetDenominator The desired denominator. If zero, the call
+     *        fails and the fraction is left unchanged.
+     * @return true if the fraction was successfully rewritten with the given
+     *         denominator; false if no exact integer representation exists
+     *         or if @p targetDenominator is zero.
+     */
+    constexpr bool expressWithDenominator(NumType targetDenominator)
+    {
+        if (targetDenominator == 0) {
+            // Cannot express anything with denominator 0.
+            return false;
+        }
+
+        // If NumType is signed and someone passes a negative target denominator,
+        // treat its sign as purely representational and work with its magnitude.
+        if constexpr (std::is_signed<NumType>::value) {
+            if (targetDenominator < 0) {
+                targetDenominator = -targetDenominator;
+            }
+        }
+
+        // Zero fraction: 0/d is expressible as 0/targetDenominator.
+        if (m_num == 0) {
+            m_den = targetDenominator;
+            return true;
+        }
+
+        // Reduce the fraction logically: m_num/m_den -> (numRed/denRed).
+        // We don't actually have to store the reduced form; just use it to
+        // check compatibility and compute the new numerator.
+        const NumType g = std::gcd(m_num, m_den);
+        const NumType denRed = m_den / g;
+        const NumType numRed = m_num / g;   // sign preserved
+
+        // For an integer representation with the requested denominator to exist
+        // (while preserving the value), the reduced denominator must divide
+        // targetDenominator exactly.
+        if (targetDenominator % denRed != 0) {
+            return false;  // No integer scaling factor exists.
+        }
+
+        const NumType factor = targetDenominator / denRed;
+
+        // Apply the scaling to the reduced numerator and store the new form.
+        m_num = numRed * factor;
+        m_den = targetDenominator;
+
+        return true;
     }
 };
-
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 // ------------------------------------------------------------
@@ -262,7 +371,7 @@ public:
 class Fraction : private Array<unsigned>
 {
 private:
-    using NumType = unsigned;
+    using NumType = FractionValue::NumType;
     using ArrayType = Array<NumType>;
 
     static constexpr size_t NUMERATOR_INDEX = 0;

@@ -221,8 +221,8 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             if (!result.lyricLines.empty()) { // only check lyric lines if the line ids were provided in global.lyrics()
                 if (auto lyrics = event.lyrics()) {
-                    if (const auto& lines = lyrics.value().lines()) {
-                        for (const auto line : lines.value()) {
+                    if (auto lines = lyrics.value().lines()) {
+                        for (const auto& line : lines.value()) {
                             if (result.lyricLines.find(line.first) == result.lyricLines.end()) {
                                 addError("ID \"" + line.first + "\" not found in ID mapping", line.second);
                             }

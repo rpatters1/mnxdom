@@ -43,7 +43,7 @@ TEST(Global, InvalidLyricLineIds)
     expectSemanticErrors(doc, inputPath, { "ID \"line1\" not found in ID mapping", "ID \"line2\" not found in ID mapping", });
 }
 
-TEST(Parts, MeasureIndices)
+TEST(Global, MeasureIndices)
 {
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "measures_mismatch.json";
@@ -55,4 +55,20 @@ TEST(Parts, MeasureIndices)
     for (const auto measure : measures) {
         EXPECT_EQ(measure.calcMeasureIndex(), firstIndex++);
     }
+}
+
+TEST(Global, TimeSigFraction)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "test_cases" / "time-6-8.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
+
+    auto measures = doc.global().measures();
+    ASSERT_FALSE(measures.empty());
+    auto measureTime = measures[0].calcCurrentTime();
+    ASSERT_TRUE(measureTime);
+    auto measureDura = mnx::FractionValue(measureTime.value());
+    EXPECT_EQ(measureDura.numerator(), 6);
+    EXPECT_EQ(measureDura.denominator(), 8);
 }

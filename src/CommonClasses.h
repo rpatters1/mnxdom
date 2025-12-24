@@ -112,7 +112,7 @@ public:
      * @param value The integer value of the fraction.
      * @throws std::invalid_argument if the m_denominator is zero.
      */
-    constexpr FractionValue(int value) : m_num(value), m_den(1) {}
+    constexpr FractionValue(NumType value) : m_num(value), m_den(1) {}
 
     /// @brief Returns the numerator.
     constexpr NumType numerator() const noexcept { return m_num; }
@@ -631,9 +631,10 @@ public:
     MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
     MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
 
-    /// @brief Implicit converter to FractionValue.
+    /// @brief Implicit converter to FractionValue. This function preserves the time signature values
+    /// rather than reducing to lowest common denominator.
     [[nodiscard]] operator FractionValue() const
-    { return count() * FractionValue(1, static_cast<unsigned>(unit())); }
+    { return FractionValue(static_cast<FractionValue::NumType>(count()), static_cast<FractionValue::NumType>(unit())); }
 };
 
 } // namespace mnx

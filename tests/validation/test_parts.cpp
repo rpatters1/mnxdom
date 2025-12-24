@@ -79,7 +79,7 @@ TEST(Parts, TieErrors)
 TEST(Parts, EnharmonicTies)
 {
     setupTestDataPaths();
-    std::filesystem::path inputPath = getInputPath() / "edge_cases" / "enharmonic_ties.json";
+    std::filesystem::path inputPath = getInputPath() / "test_cases" / "enharmonic_ties.json";
     auto doc = mnx::Document::create(inputPath);
     EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
 }

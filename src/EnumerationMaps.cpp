@@ -81,6 +81,12 @@ MNX_ENUM_MAPPING(ClefSign, {
     { "G",          ClefSign::GClef }
 });
 
+MNX_ENUM_MAPPING(GraceType, {
+    { "makeTime",       GraceType::MakeTime },
+    { "stealFollowing", GraceType::StealFollowing },
+    { "stealPrevious",  GraceType::StealPrevious }
+});
+
 MNX_ENUM_MAPPING(JumpType, {
     { "dsalfine",   JumpType::DsAlFine },
     { "segno",      JumpType::Segno }

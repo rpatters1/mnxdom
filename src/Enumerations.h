@@ -98,6 +98,17 @@ enum class ClefSign
 };
 
 /**
+ * @enum GraceType
+ * @brief Options for how to perform grace notes.
+ */
+enum class GraceType
+{
+    StealPrevious,      ///< steal time from the previous non-grace.
+    StealFollowing,     ///< steak time from the following non-grace.
+    MakeTime            ///< add extra time for the grace note.
+};
+
+/**
  * @enum JumpType
  * @brief The types of jumps.
  */

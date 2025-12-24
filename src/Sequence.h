@@ -234,7 +234,6 @@ public:
 
     /// @todo `perform`
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
     MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
 };
 
@@ -456,10 +455,9 @@ public:
         create_content();
     }
 
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class");  ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);                      ///< color to use when rendering the grace note sequence
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
-    /// @todo `graceType`
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(GraceType, graceType, GraceType::StealPrevious); ///< The playback type of the grace note.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, slash, true);          ///< whether to show a slash on the grace note
 
     inline static constexpr std::string_view ContentTypeValue = "grace";   ///< type value that identifies the type within the content array

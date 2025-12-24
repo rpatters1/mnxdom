@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jumptype_0',['JumpType',['../namespacemnx.html#a20eecc3eed798a3f30f6c488465deca8',1,'mnx']]]
+  ['gracetype_0',['GraceType',['../namespacemnx.html#acb425d5f036205992cc10fea3ea3870f',1,'mnx']]]
 ];

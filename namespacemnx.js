@@ -72,6 +72,11 @@ var namespacemnx =
       [ "FClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a0945e63d7277b87a5b01102815984c5e", null ],
       [ "GClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a9e1beb330f7d6cf5e497773713f81186", null ]
     ] ],
+    [ "GraceType", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870f", [
+      [ "StealPrevious", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870fa2a84f4241eab6f257fe571797ffe0683", null ],
+      [ "StealFollowing", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870fa2e8f815389e8cf3484317394f24d473d", null ],
+      [ "MakeTime", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870fae19e6e10aa8e2a392f93679d938f83e1", null ]
+    ] ],
     [ "JumpType", "namespacemnx.html#a20eecc3eed798a3f30f6c488465deca8", [
       [ "DsAlFine", "namespacemnx.html#a20eecc3eed798a3f30f6c488465deca8a933bfb3af38e7ee14267c5aefdc56ad1", null ],
       [ "Segno", "namespacemnx.html#a20eecc3eed798a3f30f6c488465deca8a6fc84132823756493e629bc57d118535", null ]

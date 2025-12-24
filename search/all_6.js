@@ -11,6 +11,7 @@ var searchData=
   ['getsequence_8',['getSequence',['../classmnx_1_1sequence_1_1Event.html#a620b9ae602e819af5e752cb94f4c4dc4',1,'mnx::sequence::Event']]],
   ['getsequenceindex_9',['getSequenceIndex',['../classmnx_1_1sequence_1_1Event.html#a8f9eb9b91448c54ebb066c19291591fa',1,'mnx::sequence::Event']]],
   ['global_10',['global',['../classmnx_1_1Global.html',1,'mnx::Global'],['../classmnx_1_1Global.html#aaeb1b6a1c49ce86aa3a9c3a66b44db61',1,'mnx::Global::Global()']]],
-  ['grace_11',['grace',['../classmnx_1_1sequence_1_1Grace.html#adaf017787733646d9c59931b4b9aa468',1,'mnx::sequence::Grace::Grace(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1sequence_1_1Grace.html#a72c92cc9dbfa2bac7ddfd1db78934c37',1,'mnx::sequence::Grace::Grace(Base &amp;parent, std::string_view key)'],['../classmnx_1_1sequence_1_1Grace.html',1,'mnx::sequence::Grace']]],
-  ['group_12',['group',['../classmnx_1_1layout_1_1Group.html#a84d843a885173fd0c6a42a849f373d36',1,'mnx::layout::Group::Group()'],['../classmnx_1_1layout_1_1Group.html',1,'mnx::layout::Group']]]
+  ['grace_11',['grace',['../classmnx_1_1sequence_1_1Grace.html',1,'mnx::sequence::Grace'],['../classmnx_1_1sequence_1_1Grace.html#a72c92cc9dbfa2bac7ddfd1db78934c37',1,'mnx::sequence::Grace::Grace(Base &amp;parent, std::string_view key)'],['../classmnx_1_1sequence_1_1Grace.html#adaf017787733646d9c59931b4b9aa468',1,'mnx::sequence::Grace::Grace(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)']]],
+  ['gracetype_12',['GraceType',['../namespacemnx.html#acb425d5f036205992cc10fea3ea3870f',1,'mnx']]],
+  ['group_13',['group',['../classmnx_1_1layout_1_1Group.html#a84d843a885173fd0c6a42a849f373d36',1,'mnx::layout::Group::Group()'],['../classmnx_1_1layout_1_1Group.html',1,'mnx::layout::Group']]]
 ];

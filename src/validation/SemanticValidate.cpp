@@ -86,7 +86,7 @@ void SemanticValidator::validateGlobal()
         // If both are present, validate that they match
         if (lineOrder) {
             size_t x = 0;
-            for (const auto lineId : lineOrder.value()) {
+            for (const auto& lineId : lineOrder.value()) {
                 if (auto rslt = result.lyricLines.emplace(lineId, lineOrder.value()[x].pointer()); !rslt.second) {
                     addError("ID \"" + lineId + "\" already exists at " + rslt.first->second.to_string(), lineOrder.value()[x]);
                 }
@@ -103,18 +103,16 @@ void SemanticValidator::validateGlobal()
                 }
             }
         } else if (lineMetadata) {
-            size_t x = 0;
-            for (const auto [lineId, instance] : lineMetadata.value()) {
+            for (const auto& [lineId, instance] : lineMetadata.value()) {
                 if (auto rslt = result.lyricLines.emplace(lineId, instance.pointer()); !rslt.second) {
                     addError("ID \"" + lineId + "\" already exists at " + rslt.first->second.to_string(), instance);
                 }
-                x++;
             }
         }
     }
 
     if (const auto sounds = global.sounds()) {
-        for (const auto [soundId, sound] : sounds.value()) {
+        for (const auto& [soundId, sound] : sounds.value()) {
             if (auto midiNumber = sound.midiNumber()) {
                 if (midiNumber.value() < 0 || midiNumber.value() > 127) {
                     addError("Invalid midi number: " + std::to_string(midiNumber.value()), sound);
@@ -135,7 +133,7 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
         return;
     }
 
-    for (const auto tie : ties) {
+    for (const auto& tie : ties) {
         if (auto target = tie.target()) {
             if (tie.lv()) {
                 addError("Tie has both a target and is an lv tie.", tie);
@@ -223,7 +221,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             if (!result.lyricLines.empty()) { // only check lyric lines if the line ids were provided in global.lyrics()
                 if (auto lyrics = event.lyrics()) {
-                    if (auto lines = lyrics.value().lines()) {
+                    if (const auto& lines = lyrics.value().lines()) {
                         for (const auto line : lines.value()) {
                             if (result.lyricLines.find(line.first) == result.lyricLines.end()) {
                                 addError("ID \"" + line.first + "\" not found in ID mapping", line.second);
@@ -233,7 +231,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 }
             }
             if (const auto slurs = event.slurs()) {
-                for (const auto slur : slurs.value()) {
+                for (const auto& slur : slurs.value()) {
                     const auto targetEvent = tryGetValue<mnx::sequence::Event>(slur.target(), slur);
                     if (slur.endNote()) {
                         bool foundNote = false;

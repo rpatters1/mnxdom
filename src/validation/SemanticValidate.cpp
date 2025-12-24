@@ -96,7 +96,7 @@ void SemanticValidator::validateGlobal()
                 if (result.lyricLines.size() != lineMetadata.value().size()) {
                     addError("Size of line metadata does not match size of line order.", lineMetadata.value());
                 }
-                for (const auto [lineId, instance] : lineMetadata.value()) {
+                for (const auto& [lineId, instance] : lineMetadata.value()) {
                     if (result.lyricLines.find(lineId) == result.lyricLines.end()) {
                         addError("ID \"" + lineId + "\" not found in ID mapping", instance);
                     }
@@ -406,7 +406,7 @@ void SemanticValidator::validateParts()
         }
         if (auto kit = part.kit()) {
             auto sounds = document.global().sounds();
-            for (const auto [kitElementId, kitElement] : kit.value()) {
+            for (const auto& [kitElementId, kitElement] : kit.value()) {
                 if (kitElement.sound()) {
                     if (!sounds || !sounds->contains(kitElement.sound().value())) {
                         addError("Sound ID " + kitElement.sound().value() + " is not defined in global.sounds.", kitElement);

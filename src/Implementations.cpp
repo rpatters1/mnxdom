@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#include <cassert>
+
 #include "mnxdom.h"
 #include "music_theory/music_theory.hpp"
 
@@ -31,8 +33,7 @@ namespace mnx {
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 template <typename T>
-struct EnclosingKey
-{
+struct EnclosingKey {
     static_assert(sizeof(T) == 0, "EnclosingKey<T> must be specialized.");
 };
 
@@ -84,7 +85,7 @@ std::optional<T> Base::getEnclosingElement() const
         if (slash == std::string::npos) {
             slash = ptrStr.size();
         }
-        if (slash == pos) {
+        MNX_ASSERT_IF(slash == pos) {
             break; // empty segment; shouldn't happen in valid pointers
         }
 

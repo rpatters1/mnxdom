@@ -523,8 +523,11 @@ void SemanticValidator::validateScores()
                         if (const auto layoutChanges = system.layoutChanges()) {
                             for (const auto layoutChange : layoutChanges.value()) {
                                 tryGetValue<mnx::Layout>(layoutChange.layout(), layoutChange); // adds error if index not found.
-                                tryGetValue<mnx::global::Measure>(layoutChange.location().measure(), layoutChange); // adds error if index not found.
-                                /// @todo perhaps eventually flag location.position.fraction if it is too large for the measure
+                                if (const auto globalMeasure = tryGetValue<mnx::global::Measure>(layoutChange.location().measure(), layoutChange)) { // adds error if index not found.
+                                    if (layoutChange.location().position().fraction() >= globalMeasure->calcCurrentTime()) {
+                                        addError("Layout \"" + layoutChange.id_or("<no-id>") + "\" starts at or past the end of the measure.", layoutChange);
+                                    }
+                                }
                             }
                         }
                     }

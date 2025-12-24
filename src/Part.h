@@ -88,7 +88,6 @@ public:
         }
     }
 
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the specific SMuFL glyph to use for rendering the clef
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(OttavaAmountOrZero, octave, OttavaAmountOrZero::NoTransposition);  ///< the number of octaves by which the clef transposes

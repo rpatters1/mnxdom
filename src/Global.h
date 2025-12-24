@@ -81,7 +81,6 @@ public:
         set_duration(duration);
     }
 
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the type of barline
     MNX_OPTIONAL_CHILD(Array<int>, numbers);        ///< ending numbers
@@ -111,9 +110,8 @@ public:
         create_location(position);
     }
 
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the fine direction
-    MNX_REQUIRED_CHILD(RhythmicPosition, location);              ///< the location of the fine direction
+    MNX_REQUIRED_CHILD(RhythmicPosition, location);             ///< the location of the fine direction
 };
 
 /**
@@ -191,7 +189,6 @@ public:
         create_location(position);
     }
 
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the SMuFL glyph name to be used when rendering this segno.
     MNX_REQUIRED_CHILD(RhythmicPosition, location); ///< location

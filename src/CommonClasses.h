@@ -518,7 +518,6 @@ public:
         set_fifths(fifths);
     }
 
-    MNX_OPTIONAL_NAMED_PROPERTY(std::string, styleClass, "class"); ///< style class
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the key signature
     MNX_REQUIRED_PROPERTY(int, fifths);                         ///< offset from signature with no accidentals
 };

@@ -66,7 +66,7 @@ public:
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)
     MNX_REQUIRED_PROPERTY(std::string, part);           ///< Id of the part to draw from
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< The staff number within the part.
-    MNX_OPTIONAL_PROPERTY(StemDirection, stem);   ///< The stem direction for this staff source.
+    MNX_OPTIONAL_PROPERTY(StemDirection, stem);         ///< The stem direction for this staff source.
     MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< The voice id to draw from.
 };
 
@@ -91,7 +91,7 @@ public:
 
     MNX_OPTIONAL_PROPERTY(std::string, label);                  ///< Label to be rendered to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);                  ///< The labelref to use (rather than label)
-    MNX_REQUIRED_CHILD(Array<StaffSource>, sources);      ///< The sources for this staff.
+    MNX_REQUIRED_CHILD(Array<StaffSource>, sources);            ///< The sources for this staff.
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);                ///< The symbol down the left side.
 
     inline static constexpr std::string_view ContentTypeValue = "staff"; ///< type value that identifies the type within the content array

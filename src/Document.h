@@ -144,6 +144,29 @@ public:
     }
 
     /**
+     * @brief Creates a Document from a data buffer containing JSON.
+     * @tparam Byte An 8-bit integer type (char, signed/unsigned char, std::uint8_t, etc.)
+     * @param data Pointer to the start of the JSON text buffer.
+     * @param size Number of bytes in the buffer.
+     * @return A Document instance populated with the parsed data.
+     * @throws std::invalid_argument if data is null and size is non-zero.
+     * @throws nlohmann::json::parse_error (or other nlohmann::json exceptions) on parse failure.
+     */
+    template <typename Byte,
+              typename = std::enable_if_t<
+                         std::is_integral_v<Byte> &&
+                         (sizeof(Byte) == 1) &&
+                         !std::is_same_v<std::remove_cv_t<Byte>, bool>>>
+    [[nodiscard]] static Document create(const Byte* data, std::size_t size)
+    {
+        if (!data && size != 0) {
+            throw std::invalid_argument("JSON buffer pointer is null.");
+        }
+        auto root = std::make_shared<json>(nlohmann::json::parse(data, data + size));
+        return Document(root);
+    }
+
+    /**
      * @brief Saves the MNX document to a file.
      * @param outputPath The file path to save the document.
      * @param indentSpaces Optional number of spaces for indentation; if not provided, no indentation is applied.

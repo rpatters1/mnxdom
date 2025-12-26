@@ -298,15 +298,6 @@ std::optional<TimeSignature> global::Measure::calcCurrentTime() const
     return next.time();
 }
 
-// ****************
-// ***** Part *****
-// ****************
-
-int Part::calcTransposedKeyFifthsFor(const mnx::KeySignature& concertKey) const
-{
-    return concertKey.fifths();
-}
-
 // *************************
 // ***** part::Measure *****
 // *************************
@@ -324,6 +315,32 @@ mnx::global::Measure part::Measure::getGlobalMeasure() const
 std::optional<TimeSignature> part::Measure::calcCurrentTime() const
 {
     return getGlobalMeasure().calcCurrentTime();
+}
+
+// ***********************************
+// ***** part::PartTransposition *****
+// ***********************************
+
+int part::PartTransposition::calcTransposedKeyFifthsFor(const mnx::KeySignature& concertKey) const
+{
+    const auto i = interval();
+    int alteration = music_theory::calcAlterationFrom12EdoHalfsteps(i.staffDistance(), i.halfSteps());
+    int result = concertKey.fifths() + music_theory::calcKeySigChangeFromInterval(i.staffDistance(), alteration);
+    if (const auto flipAt = keyFifthsFlipAt(); flipAt.has_value()) {
+        constexpr int FIFTHS_WRAP = 12; // enharmonic wrap in fifths-space
+        if (*flipAt >= 0) {
+            // "subtract 12 fifths"
+            if (result >= *flipAt) {
+                result -= FIFTHS_WRAP;
+            }
+        } else {
+            // negative flipAt means "add 12"
+            if (result <= *flipAt) {
+                result += FIFTHS_WRAP;
+            }
+        }
+    }
+    return result;
 }
 
 // ***************************

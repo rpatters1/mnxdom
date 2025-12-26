@@ -298,6 +298,15 @@ std::optional<TimeSignature> global::Measure::calcCurrentTime() const
     return next.time();
 }
 
+// ****************
+// ***** Part *****
+// ****************
+
+int Part::calcTransposedKeyFifthsFor(const mnx::KeySignature& concertKey) const
+{
+    return concertKey.fifths();
+}
+
 // *************************
 // ***** part::Measure *****
 // *************************

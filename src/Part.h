@@ -307,6 +307,10 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staves, 1); ///< The number of staves in this part.
     MNX_OPTIONAL_CHILD(part::PartTransposition, transposition); ///< the instrument transposition for the part
 
+    /// @brief Calculates and returns the transposed keyFifths value for the input key.
+    /// @param concertKey The concert key to calculate from.
+    int calcTransposedKeyFifthsFor(const mnx::KeySignature& concertKey) const;
+
     inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };
 

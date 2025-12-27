@@ -60,6 +60,43 @@ public:
      */
     explicit IdMapping(std::shared_ptr<json> documentRoot, const std::optional<ErrorHandler>& errorHandler = std::nullopt)
         : m_root(documentRoot), m_errorHandler(errorHandler) {}
+        
+    /**
+     * @brief Attempts to look up an object by string ID.
+     * @tparam T The expected type (e.g., mnx::Part, mnx::Layout, mnx::sequence::Note).
+     * @tparam IdType The type of @p id.
+     * @param id The ID to search for.
+     * @param errorLocation The location in the document for error reporting purposes.
+     * @return An instance of T if found; std::nullopt if the ID is not present.
+     *
+     * @throws mapping_error if the ID is found but has a different type than @p T
+     *         (release builds only; debug builds assert instead).
+     *
+     * @note A type mismatch indicates an internal logic error in the ID mapping.
+     *       This function only models the *absence* of an ID, not type ambiguity.
+     */
+    template <typename T, typename IdType>
+    std::optional<T> tryGet(
+        const IdType& id,
+        const std::optional<Base>& errorLocation = std::nullopt) const
+    {
+        const auto& map = getMap<T>();
+        auto it = map.find(id);
+        if (it == map.end()) {
+            return std::nullopt;
+        }
+        MNX_ASSERT_IF(it->second.typeName != T::JsonSchemaTypeName) {
+            mapping_error err(
+                "ID " + formatKeyString(id) + " has type \"" + std::string(it->second.typeName) +
+                "\", but the requested type is \"" + std::string(T::JsonSchemaTypeName) + "\"."
+            );
+            if (m_errorHandler) {
+                m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
+            }
+            throw err;
+        }
+        return T(m_root, it->second.location);
+    }
 
     /**
      * @brief Looks up an object by string ID.
@@ -73,24 +110,14 @@ public:
     template <typename T, typename IdType>
     T get(const IdType& id, const std::optional<Base>& errorLocation = std::nullopt) const
     {
-        const auto& map = getMap<T>();
-        auto it = map.find(id);
-        if (it == map.end()) {
-            mapping_error err("ID " + formatKeyString(id) + " not found in ID mapping");
-            if (m_errorHandler) {
-                m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
-            }
-            throw err;
+        if (auto v = tryGet<T>(id, errorLocation)) {
+            return *std::move(v);
         }
-        if (it->second.typeName != T::JsonSchemaTypeName) {
-            mapping_error err("ID " + formatKeyString(id) + " has type \"" + std::string(it->second.typeName)
-                + "\", but the requested type is \"" + std::string(T::JsonSchemaTypeName) + "\".");
-            if (m_errorHandler) {
-                m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
-            }
-            throw err;
+        mapping_error err("ID " + formatKeyString(id) + " not found in ID mapping");
+        if (m_errorHandler) {
+            m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
         }
-        return T(m_root, it->second.location);
+        throw err;
     }
 
     /// @brief Returns whether the specified ID exists in the mapping

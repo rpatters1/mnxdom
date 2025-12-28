@@ -120,6 +120,29 @@ public:
         throw err;
     }
 
+    /// @brief Returns the array index of an object identified by ID.
+    ///
+    /// Looks up an object of type @p T by its ID and returns the index of that
+    /// object within its owning array. This is equivalent to calling #get<T>()
+    /// followed by #ArrayElementObject::calcArrayIndex().
+    ///
+    /// @tparam T The expected object type. Must derive from ArrayElementObject.
+    /// @tparam IdType The type of the ID used for lookup.
+    /// @param id The ID of the object to locate.
+    /// @param errorLocation Optional document location used for error reporting.
+    /// @return The zero-based array index of the object.
+    /// @throws mapping_error if the ID is not found or does not refer to an object of type @p T.
+    template <typename T, typename IdType>
+    size_t getIndexOf(const IdType& id, const std::optional<Base>& errorLocation = std::nullopt) const
+    {
+        static_assert(std::is_base_of_v<ArrayElementObject, T>,
+                    "getIndexOf<T> requires T to derive from ArrayElementObject");
+
+        auto v = get<T>(id, errorLocation);
+        return v.calcArrayIndex();
+    }
+
+
     /// @brief Returns whether the specified ID exists in the mapping
     template <typename T, typename IdType>
     bool exists(const IdType& id) const

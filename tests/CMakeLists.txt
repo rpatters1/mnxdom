@@ -13,6 +13,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(mnxdom_tests
     test_document.cpp
     test_global.cpp
+    test_layouts.cpp
     test_main.cpp
     test_scores.cpp
     validation/test_examples.cpp

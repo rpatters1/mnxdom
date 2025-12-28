@@ -140,8 +140,8 @@ public:
         create_systems();
     }
 
-    MNX_OPTIONAL_PROPERTY(std::string, layout);         ///< Layout id, referring to an element in the root-level layouts array.
-    MNX_REQUIRED_CHILD(Array<System>, systems);    ///< and array systems on the page.
+    MNX_OPTIONAL_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
+    MNX_REQUIRED_CHILD(Array<System>, systems);     ///< and array systems on the page.
 };
 
 } // namespace score

@@ -191,6 +191,73 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
     }
 }
 
+std::optional<Layout> Document::findConventionalFullScoreLayout() const
+{
+    using StaffKey = util::StaffKey;
+    using StaffKeyHash = util::StaffKeyHash;
+
+    const auto layoutsOpt = layouts();
+    if (!layoutsOpt) {
+        return std::nullopt; // no layouts provided
+    }
+
+    // Build the expected (part, staff) sequence in the *part list order*.
+    // Wire these to your actual part/staff APIs.
+    std::vector<StaffKey> expected;
+
+    for (auto part : parts()) {
+        if (!part.id() || part.id()->empty()) {
+            return std::nullopt; // parts with no ID cannot appear in any layout, no full score layout is possible.
+        }
+        const std::string pid = *part.id();
+        const int staffCount = part.staves();
+        for (int s = 1; s <= staffCount; ++s) {
+            expected.push_back(StaffKey{pid, s});
+        }
+    }
+
+    for (auto layout : *layoutsOpt) {
+        const auto staves = util::flattenLayoutStaves(layout.content());
+        if (!staves) {
+            continue;
+        }
+        if (staves->size() != expected.size()) {
+            continue;
+        }
+        // Enforce uniqueness and ordering of (part, staff) across the layout.
+        std::unordered_set<StaffKey, StaffKeyHash> seen;
+        seen.reserve(staves->size());
+
+        bool ok = true;
+        for (size_t i = 0; i < staves->size(); ++i) {
+            const auto keys = util::analyzeLayoutStaff(staves.value()[i]);
+            if (!keys || keys->empty() || keys->size() > 1) {
+                ok = false;
+                break;
+            }
+            const auto& key = keys->begin();
+
+            // Must match part/staff order exactly.
+            if (key->partId != expected[i].partId || key->staffNo != expected[i].staffNo) {
+                ok = false;
+                break;
+            }
+
+            // Each part staff appears on exactly one layout staff.
+            if (!seen.emplace(*key).second) {
+                ok = false;
+                break;
+            }
+        }
+
+        if (ok) {
+            return layout;
+        }
+    }
+
+    return std::nullopt;
+}
+
 // *********************
 // ***** NoteValue *****
 // *********************

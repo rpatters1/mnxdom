@@ -452,13 +452,16 @@ void SemanticValidator::validateLayouts()
                         self(self, group.content());
                     } else if (element.type() == mnx::layout::Staff::ContentTypeValue) {
                         auto staff = element.get<mnx::layout::Staff>();
+                        if (!util::analyzeLayoutStaffVoices(staff)) {
+                            addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has one or more part voices specified multiple times.", staff);
+                        }
                         /// @todo validate "labelref"?
                         for (const auto source : staff.sources()) {
                             if (const auto part = tryGetValue<mnx::Part>(source.part(), source)) {
                                 int staffNum = source.staff();
                                 int numStaves = part.value().staves();
                                 if (staffNum > numStaves || staffNum < 1) {
-                                    addError("Layout \"" + layout.id_or("") + "\" has invalid staff number ("
+                                    addError("Layout \"" + layout.id_or("<no-id>") + "\" has invalid staff number ("
                                         + std::to_string(staffNum) + ") for part " + source.part(), source);
                                 }
                             }

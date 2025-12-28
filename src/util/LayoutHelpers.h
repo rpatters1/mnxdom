@@ -88,7 +88,7 @@ struct StaffKeyHash
 /// @return A set of StaffKey values if the staff is semantically valid;
 ///         std::nullopt otherwise.
 [[nodiscard]] inline std::optional<std::unordered_set<StaffKey, StaffKeyHash>>
-analyzeLayoutStaff(const layout::Staff& staff)
+analyzeLayoutStaffVoices(const layout::Staff& staff)
 {
     const auto sources = staff.sources();
     if (sources.empty()) {

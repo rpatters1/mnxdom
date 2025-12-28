@@ -201,9 +201,10 @@ public:
     /// @brief Returns whether am ID mapping currently exists
     [[nodiscard]] bool hasIdMapping() const { return static_cast<bool>(m_idMapping); }
 
-    /// @brief Finds a layout that matches the conventional full score layout, where each part staff
-    /// appears in order on a single layout staff.
-    [[nodiscard]] std::optional<Layout> findConventionalFullScoreLayout() const;
+    /// @brief Finds a layout that matches the canonical full score layout, where each part staff
+    /// appears in order on a single corresponding layout staff.
+    /// @return The layout if found or std::nullopt if not.
+    [[nodiscard]] std::optional<Layout> findFullScoreLayout() const;
 };
 
 static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");

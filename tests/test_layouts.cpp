@@ -30,11 +30,11 @@ using namespace mnx;
 TEST(Layouts, FullScoreDetect)
 {
     setupTestDataPaths();
-    std::filesystem::path inputPath = getInputPath() / "examples" / "orchestral_layout.json";
+    std::filesystem::path inputPath = getInputPath() / "test_cases" / "chamberorch.json";
     auto doc = mnx::Document::create(inputPath);
     EXPECT_TRUE(fullValidate(doc, inputPath));
 
-    auto fullScoreLayout = doc.findConventionalFullScoreLayout();
+    auto fullScoreLayout = doc.findFullScoreLayout();
     ASSERT_TRUE(fullScoreLayout);
-    EXPECT_EQ(fullScoreLayout->id_or(""), "fullScore");
+    EXPECT_EQ(fullScoreLayout->id_or(""), "S0-ScrVw");
 }

@@ -191,7 +191,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
     }
 }
 
-std::optional<Layout> Document::findConventionalFullScoreLayout() const
+std::optional<Layout> Document::findFullScoreLayout() const
 {
     using StaffKey = util::StaffKey;
     using StaffKeyHash = util::StaffKeyHash;
@@ -230,7 +230,7 @@ std::optional<Layout> Document::findConventionalFullScoreLayout() const
 
         bool ok = true;
         for (size_t i = 0; i < staves->size(); ++i) {
-            const auto keys = util::analyzeLayoutStaff(staves.value()[i]);
+            const auto keys = util::analyzeLayoutStaffVoices(staves.value()[i]);
             if (!keys || keys->empty() || keys->size() > 1) {
                 ok = false;
                 break;

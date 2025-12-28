@@ -281,6 +281,8 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             auto space = content.get<mnx::sequence::Space>();
             elapsedTime += space.duration();
+        } else {
+            addError("Unknown content type \"" + content.type() + "\" encounterd in layout.", content);
         }
     }
     if (expectedDuration != 0) {
@@ -449,6 +451,9 @@ void SemanticValidator::validateLayouts()
                 for (const auto element : content) {
                     if (element.type() == mnx::layout::Group::ContentTypeValue) {
                         auto group = element.get<mnx::layout::Group>();
+                        if (group.content().empty()) {
+                            addError("Layout group contains no content.", group);
+                        }
                         self(self, group.content());
                     } else if (element.type() == mnx::layout::Staff::ContentTypeValue) {
                         auto staff = element.get<mnx::layout::Staff>();
@@ -468,6 +473,8 @@ void SemanticValidator::validateLayouts()
                             /// @todo validate "labelref"?
                             /// @todo validate "voice"?
                         }
+                    } else {
+                        addError("Unknown content type \"" + element.type() + "\" encounterd in layout.", element);
                     }
                 }
             };

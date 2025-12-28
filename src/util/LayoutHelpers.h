@@ -75,6 +75,9 @@ struct StaffKeyHash
     }
 };
 
+/// @brief The set of staff keys contained in a single layout staff.
+using LayoutStaffKeySet = std::unordered_set<StaffKey, StaffKeyHash>;
+
 /// @brief Analyzes a single layout staff for semantic voice usage.
 ///
 /// For each distinct StaffKey (partId + staffNo) referenced by this staff:
@@ -87,7 +90,7 @@ struct StaffKeyHash
 /// @param staff The layout staff to analyze.
 /// @return A set of StaffKey values if the staff is semantically valid;
 ///         std::nullopt otherwise.
-[[nodiscard]] inline std::optional<std::unordered_set<StaffKey, StaffKeyHash>>
+[[nodiscard]] inline std::optional<LayoutStaffKeySet>
 analyzeLayoutStaffVoices(const layout::Staff& staff)
 {
     const auto sources = staff.sources();
@@ -140,7 +143,7 @@ analyzeLayoutStaffVoices(const layout::Staff& staff)
         }
     }
 
-    std::unordered_set<StaffKey, StaffKeyHash> result;
+    LayoutStaffKeySet result;
     result.reserve(stateByKey.size());
     for (const auto& kv : stateByKey) {
         result.insert(kv.first);
@@ -180,6 +183,215 @@ flattenLayoutStaves(const ContentArray& content)
     }
 
     return result;
+}
+
+/**
+ * @struct LayoutSpan
+ * @brief Describes a visual span in a flattened MNX layout.
+ *
+ * A LayoutSpan represents either a single staff or a group of staves
+ * after the layout hierarchy has been flattened. Each span records
+ * the range of staff indices it covers in the flattened staff list,
+ * its nesting depth in the layout hierarchy, and any visual metadata
+ * (label, label reference, or symbol) associated with it.
+ *
+ * Spans are typically sorted by ascending startIndex and then by
+ * ascending depth, so that outer groups precede inner groups and
+ * staff spans appear at the deepest level.
+ */
+struct LayoutSpan
+{
+    /**
+     * @enum Kind
+     * @brief Identifies whether this span represents a staff or a group.
+     */
+    enum class Kind
+    {
+        Staff,  ///< Span represents a single staff.
+        Group   ///< Span represents a group of staves.
+    };
+
+    Kind kind{}; ///< The kind of layout element represented by this span.
+
+    /**
+     * @brief Index of the first staff covered by this span.
+     *
+     * This index refers to the position of the staff in the flattened
+     * staff sequence produced by depth-first traversal of the layout.
+     */
+    size_t startIndex{};
+
+    /**
+     * @brief Index of the last staff covered by this span.
+     *
+     * For staff spans, endIndex is equal to startIndex. For group spans,
+     * this is the index of the final staff contained anywhere within
+     * the group.
+     */
+    size_t endIndex{};
+
+    /**
+     * @brief Nesting depth of this span within the layout hierarchy.
+     *
+     * Depth increases with each level of group nesting. For a given
+     * startIndex, group spans always have a smaller depth than the
+     * staff span they contain, ensuring staff spans sort last.
+     */
+    size_t depth{};
+
+    /**
+     * @brief Optional label text associated with this span.
+     *
+     * For staff spans, this corresponds to Staff::label. For group
+     * spans, it corresponds to Group::label.
+     */
+    std::optional<std::string> label;
+
+    /**
+     * @brief Optional label reference associated with this span.
+     *
+     * When present, this refers to a shared or externally defined
+     * label and is used instead of #label.
+     */
+    std::optional<LabelRef> labelref;
+
+    /**
+     * @brief Optional layout symbol associated with this span.
+     *
+     * For staff spans, this corresponds to Staff::symbol. For group
+     * spans, it corresponds to Group::symbol.
+     */
+    std::optional<LayoutSymbol> symbol;
+
+    /**
+     * @brief Optional staff sources associated with this span.
+     *
+     * For staff spans, this corresponds to Staff::sources. For group
+     * spans, it is std::nullopt.
+     */
+    std::optional<LayoutStaffKeySet> sources;
+};
+
+/**
+ * @brief Builds a sorted list of staff and group spans for a layout.
+ *
+ * Traverses a layout content array depth-first, computing flattened staff indices as it encounters
+ * staff elements. For each staff, a span covering exactly one staff index is produced. For each
+ * group, a span covering the inclusive range of staff indices contained anywhere within that group
+ * is produced. Groups that contain no staves (directly or indirectly) are skipped.
+ *
+ * The returned spans are sorted by ascending #LayoutSpan::startIndex and then by ascending
+ * #LayoutSpan::depth. This ordering places outer groups before inner groups when they start at the
+ * same staff, and places the staff span at the deepest depth for its start index.
+ *
+ * If an unsupported content element is encountered, traversal fails and the function returns
+ * std::nullopt.
+ *
+ * @param content The layout content array to traverse.
+ * @return A sorted vector of LayoutSpan entries on success; std::nullopt if traversal fails due to
+ *         an unsupported content element.
+ */
+[[nodiscard]] inline std::optional<std::vector<LayoutSpan>>
+buildLayoutSpans(const ContentArray& content)
+{
+    std::vector<LayoutSpan> spans;
+    spans.reserve(content.size()); // lower bound
+
+    size_t staffIndex = 0;
+    size_t encounter  = 0; // stable tiebreaker
+
+    struct SortKey { size_t start, depth, encounter; };
+
+    struct TaggedSpan {
+        LayoutSpan span;
+        SortKey key;
+    };
+
+    std::vector<TaggedSpan> tagged;
+    tagged.reserve(content.size());
+
+    // Return value:
+    // - outer std::optional: hard failure (unsupported element) if empty
+    // - inner std::optional: no staves in subtree if empty; otherwise first/last staff indices
+    const auto walk =
+        [&](auto&& self, const ContentArray& arr, size_t depth)
+            -> std::optional<std::optional<std::pair<size_t,size_t>>>
+    {
+        std::optional<size_t> first;
+        std::optional<size_t> last;
+
+        for (auto elem : arr) {
+            if (elem.type() == layout::Staff::ContentTypeValue) {
+                layout::Staff s = elem.get<layout::Staff>();
+
+                const size_t i = staffIndex++;
+
+                LayoutSpan span;
+                span.kind       = LayoutSpan::Kind::Staff;
+                span.depth      = depth + 1; // staff spans must be at the deepest depth
+                span.startIndex = i;
+                span.endIndex   = i;
+                span.symbol     = s.symbol();
+                span.label      = s.label();
+                span.labelref   = s.labelref();
+                span.sources    = util::analyzeLayoutStaffVoices(s);
+
+                tagged.push_back({ std::move(span), SortKey{i, depth + 1, encounter++} });
+
+                first = first.value_or(i);
+                last  = i;
+            } else if (elem.type() == layout::Group::ContentTypeValue) {
+                layout::Group g = elem.get<layout::Group>();
+
+                auto childRange = self(self, g.content(), depth + 1);
+                if (!childRange) {
+                    return std::nullopt; // hard failure
+                }
+                if (!*childRange) {
+                    continue; // skip groups with no staves anywhere in their subtree
+                }
+                const auto [cFirst, cLast] = **childRange;
+
+                LayoutSpan span;
+                span.kind       = LayoutSpan::Kind::Group;
+                span.depth      = depth;
+                span.startIndex = cFirst;
+                span.endIndex   = cLast;
+                span.symbol     = g.symbol();
+                span.label      = g.label();
+
+                tagged.push_back({ std::move(span), SortKey{cFirst, depth, encounter++} });
+
+                first = first.value_or(cFirst);
+                last  = cLast;
+            } else {
+                return std::nullopt; // unsupported content element
+            }
+        }
+
+        if (!first || !last) {
+            return std::optional<std::pair<size_t,size_t>>{}; // success, but no staves
+        }
+        return std::make_pair(*first, *last);
+    };
+
+    auto rootRange = walk(walk, content, /*depth*/0);
+    if (!rootRange) {
+        return std::nullopt;
+    }
+    // Empty root content is allowed; it simply produces an empty spans vector.
+
+    std::stable_sort(tagged.begin(), tagged.end(),
+        [](const TaggedSpan& a, const TaggedSpan& b)
+        {
+            if (a.key.start != b.key.start) return a.key.start < b.key.start;
+            if (a.key.depth != b.key.depth) return a.key.depth < b.key.depth;
+            return a.key.encounter < b.key.encounter;
+        });
+
+    spans.reserve(tagged.size());
+    for (auto& t : tagged) spans.push_back(std::move(t.span));
+    return spans;
 }
 
 } // namespace mnx::util

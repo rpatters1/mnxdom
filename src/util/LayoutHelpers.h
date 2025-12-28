@@ -152,36 +152,42 @@ analyzeLayoutStaffVoices(const layout::Staff& staff)
     return result;
 }
 
-/// @brief Flattens layout content into a linear sequence of staves.
+/// @brief Flattens a layout hierarchy into a linear sequence of staves.
 ///
-/// Traverses a layout content array depth-first, recursively expanding groups
-/// and appending staff elements in encounter order. The resulting sequence
-/// preserves the visual staff order implied by the layout.
+/// Traverses the layout's content depth-first, recursively expanding groups and
+/// appending staff elements in encounter order. The resulting sequence preserves
+/// the visual staff order implied by the layout.
 ///
-/// @param content The layout content array to traverse.
-/// @return A vector of layout::Staff elements in encounter order if traversal
-///         succeeds; std::nullopt if an unsupported content element is encountered.
+/// @param layout The layout whose content should be traversed.
+/// @return A vector of layout::Staff elements in encounter order if traversal succeeds;
+///         std::nullopt if an unsupported content element is encountered.
 [[nodiscard]] inline std::optional<std::vector<layout::Staff>>
-flattenLayoutStaves(const ContentArray& content)
+flattenLayoutStaves(const Layout& layout)
 {
+    auto content = layout.content();
     std::vector<layout::Staff> result;
     result.reserve(content.size()); // lower bound; groups may expand further
 
-    for (auto elem : content) {
-        if (elem.type() == layout::Group::ContentTypeValue) {
-            layout::Group g = elem.get<layout::Group>();
-            auto nested = flattenLayoutStaves(g.content());
-            if (!nested) {
+    const auto walk = [&](auto&& self, const ContentArray& content) -> std::optional<bool> {
+        for (auto elem : content) {
+            if (elem.type() == layout::Group::ContentTypeValue) {
+                layout::Group g = elem.get<layout::Group>();
+                auto ok = self(self, g.content());
+                if (!ok) {
+                    return std::nullopt;
+                }
+            } else if (elem.type() == layout::Staff::ContentTypeValue) {
+                result.push_back(elem.get<layout::Staff>());
+            } else {
                 return std::nullopt;
             }
-            result.insert(result.end(), nested->begin(), nested->end());
-        } else if (elem.type() == layout::Staff::ContentTypeValue) {
-            result.push_back(elem.get<layout::Staff>());
-        } else {
-            return std::nullopt;
         }
-    }
+        return true;
+    };
 
+    if (!walk(walk, content)) {
+        return std::nullopt;
+    }
     return result;
 }
 
@@ -272,28 +278,27 @@ struct LayoutSpan
     std::optional<LayoutStaffKeySet> sources;
 };
 
-/**
- * @brief Builds a sorted list of staff and group spans for a layout.
- *
- * Traverses a layout content array depth-first, computing flattened staff indices as it encounters
- * staff elements. For each staff, a span covering exactly one staff index is produced. For each
- * group, a span covering the inclusive range of staff indices contained anywhere within that group
- * is produced. Groups that contain no staves (directly or indirectly) are skipped.
- *
- * The returned spans are sorted by ascending #LayoutSpan::startIndex and then by ascending
- * #LayoutSpan::depth. This ordering places outer groups before inner groups when they start at the
- * same staff, and places the staff span at the deepest depth for its start index.
- *
- * If an unsupported content element is encountered, traversal fails and the function returns
- * std::nullopt.
- *
- * @param content The layout content array to traverse.
- * @return A sorted vector of LayoutSpan entries on success; std::nullopt if traversal fails due to
- *         an unsupported content element.
- */
+/// @brief Builds a sorted list of staff and group spans for a layout.
+///
+/// Traverses the layout’s content depth-first, computing flattened staff indices as staff elements
+/// are encountered. For each staff, a span covering exactly one staff index is produced. For each
+/// group, a span covering the inclusive range of staff indices contained anywhere within that group
+/// is produced. Groups that contain no staves (directly or indirectly) are skipped.
+///
+/// The returned spans are sorted by ascending #LayoutSpan::startIndex and then by ascending
+/// #LayoutSpan::depth. This ordering places outer groups before inner groups when they start at the
+/// same staff, and places the staff span at the deepest depth for its start index.
+///
+/// If an unsupported content element is encountered during traversal, the function fails and
+/// returns std::nullopt.
+///
+/// @param layout The layout whose content hierarchy should be traversed.
+/// @return A sorted vector of LayoutSpan entries on success; std::nullopt if traversal fails due to
+///         an unsupported content element.
 [[nodiscard]] inline std::optional<std::vector<LayoutSpan>>
-buildLayoutSpans(const ContentArray& content)
+buildLayoutSpans(const mnx::Layout& layout)
 {
+    const auto content = layout.content();
     std::vector<LayoutSpan> spans;
     spans.reserve(content.size()); // lower bound
 

@@ -217,7 +217,7 @@ std::optional<Layout> Document::findFullScoreLayout() const
     }
 
     for (auto layout : *layoutsOpt) {
-        const auto staves = util::flattenLayoutStaves(layout.content());
+        const auto staves = util::flattenLayoutStaves(layout);
         if (!staves) {
             continue;
         }

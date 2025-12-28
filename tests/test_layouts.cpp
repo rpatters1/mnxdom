@@ -50,7 +50,7 @@ TEST(Layouts, BuildLayoutSpans)
     auto layout = doc.getIdMapping().tryGet<mnx::Layout>("S0-ScrVw");
     ASSERT_TRUE(layout);
 
-    auto spans = util::buildLayoutSpans(layout->content());
+    auto spans = util::buildLayoutSpans(layout.value());
     // Expected (after sorting):
     // Group A: [0,3], depth 0
     // Staff S0: [0,0], depth 2

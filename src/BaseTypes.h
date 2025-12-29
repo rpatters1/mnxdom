@@ -503,6 +503,12 @@ private:
         mutable size_t m_idx;
 
     public:
+        using iterator_category = std::input_iterator_tag;
+        using value_type        = T;
+        using difference_type   = std::ptrdiff_t;
+        using pointer           = void; // not meaningful for proxy/value-returning iterators
+        using reference         = T;    // since operator* returns by value
+
         iter(ArrayType* ptr, size_t idx) : m_ptr(ptr), m_idx(idx) {}
         T operator*() const { return (*m_ptr)[m_idx]; }
         iter& operator++() { ++m_idx; return *this; }

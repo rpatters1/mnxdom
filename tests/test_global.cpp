@@ -23,6 +23,8 @@
 
 #include "mnxdom.h"
 
+#include "test_utils.h"
+
 using namespace mnx;
 
 TEST(Global, LyricLineMetadata)
@@ -135,4 +137,24 @@ TEST(Global, LyricLineMetadata)
 
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
     //std::cout << doc.dump(4) << std::endl;
+}
+
+TEST(Global, EndingTest)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "examples" / "repeate_endings_adv.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validatation failed"; // empty group means semantic fails: tested elsewhere
+
+    auto measures = doc.global().measures();
+    ASSERT_GE(measures.size(), 2);
+    {
+        auto measure = measures[1];
+        ASSERT_TRUE(measure.ending());
+        auto ending = measure.ending().value();
+        ASSERT_TRUE(ending.numbers());
+        std::vector<int> nums = ending.numbers()->toStdVector();
+        std::vector<int> expectedNums = { 1, 2 };
+        EXPECT_EQ(nums, expectedNums);
+    }
 }

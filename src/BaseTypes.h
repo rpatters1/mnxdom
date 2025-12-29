@@ -600,6 +600,15 @@ public:
         ref().erase(ref().begin() + index);
     }
 
+    /// @brief Converts the Array to an owning std::vector.
+    /// @details Intended only for value-like element types. The returned vector
+    ///          is detached from the document and may be used as a grouped
+    ///          snapshot of values (e.g., for passing to external APIs).
+    template <typename U = T>
+    std::enable_if_t<!std::is_base_of_v<Base, U>, std::vector<U>>
+    toStdVector() const
+    { return std::vector<U>(begin(), end()); }
+
     /// @brief Returns an iterator to the beginning of the array.
     [[nodiscard]] auto begin() { return iterator(this, 0); }
 

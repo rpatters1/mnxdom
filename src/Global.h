@@ -252,7 +252,8 @@ public:
     MNX_OPTIONAL_PROPERTY(int, index);              ///< the measure index which is used to refer to this measure by other classes in the MNX document
     MNX_OPTIONAL_CHILD(Jump, jump);                 ///< optional jump direction for this measure
     MNX_OPTIONAL_CHILD(KeySignature, key);          ///< optional key signature/key change for this measure
-    MNX_OPTIONAL_PROPERTY(int, number);             ///< visible measure number. Use #calcMeasureIndex to get the default value.
+    MNX_OPTIONAL_PROPERTY(int, number);             ///< visible measure number. Use #calcVisibleNumber to get the correct value,
+                                                    ///< as defined in the MNX specification, since it may be omitted here.
     MNX_OPTIONAL_CHILD(RepeatEnd, repeatEnd);       ///< if present, indicates that there is backwards repeat
     MNX_OPTIONAL_CHILD(RepeatStart, repeatStart);   ///< if present, indicates that a repeated section starts here
     MNX_OPTIONAL_CHILD(Segno, segno);               ///< if present, indicates that a segno marker is here
@@ -266,6 +267,10 @@ public:
     /// @brief Calculates the measure index for this measure.
     /// @return index() if it has a value or the default value (defined in the MNX specification) if it does not.
     [[nodiscard]] int calcMeasureIndex() const;
+
+    /// @brief Calculates the visible measure number for this measure.
+    /// @return The visible measure number. MNX currenty does not provide a mechanism to exclude a measure from numbering.
+    [[nodiscard]] int calcVisibleNumber() const;
 
     /// @brief Calculates the current time signature by searching backwards.
     /// @return The current time signature or std::nullopt if none found.
@@ -300,33 +305,6 @@ public:
     MNX_OPTIONAL_CHILD(Array<std::string>, lineOrder);              ///< Lyric line IDs used in the document (e.g. verse numbers)
 };
 
-/**
- * @class StyleGlobal
- * @brief Visual styling selectors for this MNX document
- */
-class StyleGlobal : public ArrayElementObject
-{
-public:
-    /// @brief Constructor for existing StyleGlobal objects
-    StyleGlobal(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ArrayElementObject(root, pointer)
-    {
-    }
-
-    /// @brief Creates a new Jump class as a child of a JSON element
-    /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding in parent.
-    /// @param selector The CSS-style selector that specifies which MNX object(s) this style applies to.
-    StyleGlobal(Base& parent, std::string_view key, const std::string& selector)
-        : ArrayElementObject(parent, key)
-    {
-        set_selector(selector);
-    }
-
-    MNX_OPTIONAL_PROPERTY(std::string, color);      ///< the JumpType
-    MNX_REQUIRED_PROPERTY(std::string, selector);   ///< the location of the jump
-};
-
 } // namespace global
 
 /**
@@ -350,7 +328,6 @@ public:
     MNX_OPTIONAL_CHILD(global::LyricsGlobal, lyrics);       ///< lyrics metadata
     MNX_REQUIRED_CHILD(Array<global::Measure>, measures);   ///< array of global measures.
     MNX_OPTIONAL_CHILD(Dictionary<global::Sound>, sounds);  ///< dictionary of sounds with user-defined keys
-    MNX_OPTIONAL_CHILD(Array<global::StyleGlobal>, styles); ///< array of styles
 };
 
 } // namespace mnx

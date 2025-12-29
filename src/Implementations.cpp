@@ -350,6 +350,11 @@ int global::Measure::calcMeasureIndex() const
     return prevIndex.value_or(prev.calcMeasureIndex()) + 1;
 }
 
+int global::Measure::calcVisibleNumber() const
+{
+    return number_or(calcArrayIndex());
+}
+
 std::optional<TimeSignature> global::Measure::calcCurrentTime() const
 {
     auto measures = parent<Array<global::Measure>>();

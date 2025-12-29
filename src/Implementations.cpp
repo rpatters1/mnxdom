@@ -352,7 +352,7 @@ int global::Measure::calcMeasureIndex() const
 
 int global::Measure::calcVisibleNumber() const
 {
-    return number_or(calcArrayIndex());
+    return number_or(calcMeasureIndex());
 }
 
 std::optional<TimeSignature> global::Measure::calcCurrentTime() const

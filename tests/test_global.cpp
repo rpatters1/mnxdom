@@ -158,3 +158,18 @@ TEST(Global, EndingTest)
         EXPECT_EQ(nums, expectedNums);
     }
 }
+
+TEST(Global, VisibleMeasureNumberBasic)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "examples" / "hello_world.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validatation failed"; // empty group means semantic fails: tested elsewhere
+
+    auto measures = doc.global().measures();
+    ASSERT_GE(measures.size(), 1);
+    {
+        auto measure = measures[0];
+        EXPECT_EQ(measure.calcVisibleNumber(), 1);
+    }
+}

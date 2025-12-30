@@ -62,11 +62,11 @@ struct SequenceWalkHooks
 };
 
 /// @brief Walk an MNX sequence content tree, applying canonical timing semantics.
-/// @param content The content array to traverse.
+/// @param sequence The sequence traverse.
 /// @param hooks Optional callbacks to observe/handle items.
 /// @param ctx Optional in/out context (elapsed time and time ratio).
 /// @return true if traversal completed; false if aborted by a hook.
-inline bool walkSequenceContent(ContentArray content,
+inline bool walkSequenceContent(Sequence sequence,
                                 const SequenceWalkHooks& hooks,
                                 SequenceWalkContext* ctx = nullptr)
 {
@@ -154,11 +154,11 @@ inline bool walkSequenceContent(ContentArray content,
         return true;
     };
 
-    return walkImpl(content, c, walkImpl);
+    return walkImpl(sequence.content(), c, walkImpl);
 }
 
 /// @brief Iterate all the events in a sequence content tree in order as they come.
-/// @param content The content array to traverse.
+/// @param sequence The sequence to traverse.
 /// @param iterator Callback function invoked for each event.
 ///     The callback must have signature:
 ///     `bool(sequence::Event event,
@@ -172,7 +172,7 @@ inline bool walkSequenceContent(ContentArray content,
 /// @todo Multi-note tremolos are currently treated as a span whose outer()
 ///       value advances time. Inner tremolo notes have zero actual duration until
 ///       the MNX spec clarifies how their durations should be distributed.
-inline bool iterateSequenceEvents(ContentArray content,
+inline bool iterateSequenceEvents(Sequence sequence,
                                   std::function<bool(const sequence::Event& event,
                                                      const FractionValue& startDuration,
                                                      const FractionValue& actualDuration)> iterator)
@@ -187,7 +187,7 @@ inline bool iterateSequenceEvents(ContentArray content,
         return iterator(event, startDuration, actualDuration);
     };
 
-    return walkSequenceContent(content, hooks);
+    return walkSequenceContent(sequence, hooks);
 }
 
 } // namespace mnx::util

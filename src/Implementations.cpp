@@ -495,9 +495,9 @@ FractionValue sequence::Event::calcStartTime() const
 
     auto retval = std::optional<FractionValue>();
     auto thisPtr = pointer();
-    util::iterateSequenceEvents(sequence->content(), [&](const sequence::Event& event, 
-                                                         const FractionValue& startDuration,
-                                                         const FractionValue& /*actualDuration*/) -> bool {
+    util::iterateSequenceEvents(sequence.value(), [&](const sequence::Event& event, 
+                                                      const FractionValue& startDuration,
+                                                      const FractionValue& /*actualDuration*/) -> bool {
         if (event.pointer() == thisPtr) {
             retval = startDuration;
             return false;

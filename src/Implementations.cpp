@@ -38,28 +38,28 @@ struct EnclosingKey {
 };
 
 template <>
-struct EnclosingKey<mnx::Part> {
+struct EnclosingKey<Part> {
     static constexpr std::array<std::string_view, 1> value = { "parts" };
 };
-template std::optional<mnx::Part> Base::getEnclosingElement<mnx::Part>() const;
+template std::optional<Part> Base::getEnclosingElement<Part>() const;
 
 template <>
-struct EnclosingKey<mnx::part::Measure> {
+struct EnclosingKey<part::Measure> {
     static constexpr std::array<std::string_view, 3> value = { "parts", "*", "measures" };
 };
-template std::optional<mnx::part::Measure> Base::getEnclosingElement<mnx::part::Measure>() const;
+template std::optional<part::Measure> Base::getEnclosingElement<part::Measure>() const;
 
 template <>
-struct EnclosingKey<mnx::Sequence> {
+struct EnclosingKey<Sequence> {
     static constexpr std::array<std::string_view, 5> value = { "parts", "*", "measures", "*", "sequences" };
 };
-template std::optional<mnx::Sequence> Base::getEnclosingElement<mnx::Sequence>() const;
+template std::optional<Sequence> Base::getEnclosingElement<Sequence>() const;
 
 template <>
-struct EnclosingKey<mnx::sequence::ContentObject> {
+struct EnclosingKey<sequence::ContentObject> {
     static constexpr std::array<std::string_view, 7> value = { "parts", "*", "measures", "*", "sequences", "*", "content" };
 };
-template std::optional<mnx::sequence::ContentObject> Base::getEnclosingElement<mnx::sequence::ContentObject>() const;
+template std::optional<sequence::ContentObject> Base::getEnclosingElement<sequence::ContentObject>() const;
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
@@ -374,7 +374,7 @@ std::optional<TimeSignature> global::Measure::calcCurrentTime() const
 // ***** part::Measure *****
 // *************************
 
-mnx::global::Measure part::Measure::getGlobalMeasure() const
+global::Measure part::Measure::getGlobalMeasure() const
 {
     const size_t measureIndex = calcArrayIndex();
     auto globalMeasures = document().global().measures();
@@ -393,7 +393,7 @@ std::optional<TimeSignature> part::Measure::calcCurrentTime() const
 // ***** part::PartTransposition *****
 // ***********************************
 
-int part::PartTransposition::calcTransposedKeyFifthsFor(const mnx::KeySignature& concertKey) const
+int part::PartTransposition::calcTransposedKeyFifthsFor(const KeySignature& concertKey) const
 {
     const auto i = interval();
     int alteration = music_theory::calcAlterationFrom12EdoHalfsteps(i.staffDistance(), i.halfSteps());
@@ -437,8 +437,8 @@ bool sequence::Event::isGrace() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "grace" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::sequence::ContentObject>();
-    return container.type() == mnx::sequence::Grace::ContentTypeValue;
+    auto container = this->container<sequence::ContentObject>();
+    return container.type() == sequence::Grace::ContentTypeValue;
 }
 
 bool sequence::Event::isTremolo() const
@@ -447,8 +447,8 @@ bool sequence::Event::isTremolo() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "tremolo" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::sequence::ContentObject>();
-    return container.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue;
+    auto container = this->container<sequence::ContentObject>();
+    return container.type() == sequence::MultiNoteTremolo::ContentTypeValue;
 }
 
 Sequence sequence::Event::getSequence() const
@@ -462,7 +462,7 @@ Sequence sequence::Event::getSequence() const
 
 size_t sequence::Event::getSequenceIndex() const
 {
-    auto result = getEnclosingElement<mnx::sequence::ContentObject>();
+    auto result = getEnclosingElement<sequence::ContentObject>();
     MNX_ASSERT_IF(!result.has_value()) {
         throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
     }
@@ -472,7 +472,7 @@ size_t sequence::Event::getSequenceIndex() const
 FractionValue sequence::Event::calcDuration() const
 {
     if (measure()) {
-        auto partMeasure = getEnclosingElement<mnx::part::Measure>();
+        auto partMeasure = getEnclosingElement<part::Measure>();
         MNX_ASSERT_IF(!partMeasure) {
             throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a part measure.");
         }
@@ -488,7 +488,7 @@ FractionValue sequence::Event::calcDuration() const
 
 FractionValue sequence::Event::calcStartTime() const
 {
-    auto sequence = getEnclosingElement<mnx::Sequence>();
+    auto sequence = getEnclosingElement<Sequence>();
     MNX_ASSERT_IF(!sequence) {
         throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a sequence.");
     }
@@ -530,48 +530,17 @@ bool sequence::Pitch::isSamePitch(const Pitch& src) const
 
 bool Sequence::iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const
 {
-    auto elapsedTime = FractionValue{0};
-
-    auto processContent = [&](ContentArray content, FractionValue timeRatio, auto&& self) -> bool {
-        for (const auto item : content) {
-            if (item.type() == mnx::sequence::Event::ContentTypeValue) {
-                auto event = item.get<mnx::sequence::Event>();
-                auto actualDuration = event.calcDuration() * timeRatio;
-                if (!iterator(event, elapsedTime, actualDuration)) {
-                    return false;
-                }
-                elapsedTime += actualDuration;
-            } else if (item.type() == mnx::sequence::Grace::ContentTypeValue) {
-                auto grace = item.get<mnx::sequence::Grace>();
-                if (!self(grace.content(), 0, self)) {
-                    return false;
-                }
-            } else if (item.type() == mnx::sequence::Tuplet::ContentTypeValue) {
-                auto tuplet = item.get<mnx::sequence::Tuplet>();
-                if (!self(tuplet.content(), timeRatio * tuplet.ratio(), self)) {
-                    return false;
-                }
-            } else if (item.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
-                auto tremolo = item.get<mnx::sequence::MultiNoteTremolo>();
-                /// @todo: MNX tremolo durations.
-                // Currently, inner tremolo notes are treated as time-neutral and only
-                // tremolo.outer() * timeRatio advances elapsedTime. Once the MNX spec
-                // clarifies per-note duration semantics for multi-note tremolos, this
-                // iterator should be updated so each event gets an appropriate share of
-                // the tremolo duration pie.
-                if (!self(tremolo.content(), 0, self)) {
-                    return false;
-                }
-                elapsedTime += tremolo.outer() * timeRatio;
-            } else if (item.type() == mnx::sequence::Space::ContentTypeValue) {
-                auto space = item.get<mnx::sequence::Space>();
-                elapsedTime += space.duration() * timeRatio;
-            }
-        }
-        return true;
+    util::SequenceWalkHooks hooks;
+    hooks.onEvent = [&](const sequence::Event& event,
+                        const FractionValue& startDuration,
+                        const FractionValue& actualDuration,
+                        util::SequenceWalkContext&) -> bool
+    {
+        // Preserve your original signature: pass Event by value.
+        return iterator(event, startDuration, actualDuration);
     };
 
-    return processContent(content(), 1, processContent);
+    return util::walkSequenceContent(content(), hooks);
 }
 
 } // namespace mnx

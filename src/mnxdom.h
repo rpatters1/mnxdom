@@ -62,3 +62,4 @@
 #include "validation/Validation.h"
 #include "util/IdMapping.h"
 #include "util/LayoutHelpers.h"
+#include "util/WalkSequenceContent.h"

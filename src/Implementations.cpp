@@ -495,7 +495,7 @@ FractionValue sequence::Event::calcStartTime() const
 
     auto retval = std::optional<FractionValue>();
     auto thisPtr = pointer();
-    sequence->iterateEvents([&](sequence::Event event, FractionValue startDuration, FractionValue /*actualDuration*/) -> bool {
+    util::iterateSequenceEvents(sequence->content(), [&](sequence::Event event, FractionValue startDuration, FractionValue /*actualDuration*/) -> bool {
         if (event.pointer() == thisPtr) {
             retval = startDuration;
             return false;
@@ -522,25 +522,6 @@ bool sequence::Pitch::isSamePitch(const Pitch& src) const
     }
     music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter_or(0));
     return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter_or(0));
-}
-
-// ********************
-// ***** Sequence *****
-// ********************
-
-bool Sequence::iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const
-{
-    util::SequenceWalkHooks hooks;
-    hooks.onEvent = [&](const sequence::Event& event,
-                        const FractionValue& startDuration,
-                        const FractionValue& actualDuration,
-                        util::SequenceWalkContext&) -> bool
-    {
-        // Preserve your original signature: pass Event by value.
-        return iterator(event, startDuration, actualDuration);
-    };
-
-    return util::walkSequenceContent(content(), hooks);
 }
 
 } // namespace mnx

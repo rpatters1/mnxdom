@@ -152,4 +152,37 @@ inline bool walkSequenceContent(ContentArray content,
     return walkImpl(content, c, walkImpl);
 }
 
+/// @brief Iterate all the events in a sequence content tree in order as they come.
+/// @param content The content array to traverse.
+/// @param iterator Callback function invoked for each event.
+///     The callback must have signature:
+///     `bool(sequence::Event event,
+///           FractionValue startDuration,
+///           FractionValue actualDuration)`.
+///     - `event`: the current event in the sequence.
+///     - `startDuration`: total elapsed metric time before this event.
+///     - `actualDuration`: the event’s real performed duration.
+///     - return @c true to continue iterating.
+/// @return true if iteration completed without interruption; false if it exited early.
+/// @todo Multi-note tremolos are currently treated as a span whose outer()
+///       value advances time. Inner tremolo notes have zero actual duration until
+///       the MNX spec clarifies how their durations should be distributed.
+inline bool iterateSequenceEvents(ContentArray content,
+                                  std::function<bool(sequence::Event event,
+                                                     FractionValue startDuration,
+                                                     FractionValue actualDuration)> iterator)
+{
+    SequenceWalkHooks hooks;
+    hooks.onEvent = [&](const sequence::Event& event,
+                        const FractionValue& startDuration,
+                        const FractionValue& actualDuration,
+                        SequenceWalkContext&) -> bool
+    {
+        // Preserve the public callback signature: pass Event by value.
+        return iterator(event, startDuration, actualDuration);
+    };
+
+    return walkSequenceContent(content, hooks);
+}
+
 } // namespace mnx::util

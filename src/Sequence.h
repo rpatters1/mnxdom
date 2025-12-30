@@ -572,22 +572,6 @@ public:
     /// @todo `orient` property
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number for this sequence
     MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< the unique (per measure) voice label for this sequence.
-
-    /// @brief Iterate all the events in this sequence in order as they come.
-    /// @param iterator Callback function invoked for each event.
-    ///     The callback must have signature:
-    ///     `bool(sequence::Event event,
-    ///           FractionValue elapsedTime,
-    ///           FractionValue actualDuration)`.
-    ///     - `event`: the current event in the sequence.
-    ///     - `startDuration`: total elapsed metric time before this event.
-    ///     - `actualDuration`: the event’s real performed duration.
-    ///     - return @c true to continue iterating.
-    /// @return true if iteration completed without interruption; false if it exited early.
-    /// @todo Multi-note tremolos are currently treated as a span whose outer()
-    ///       value advances time. Inner tremolo notes have zero actual duration until
-    ///       the MNX spec clarifies how their durations should be distributed.
-    bool iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const;
 };
 
 } // namespace mnx

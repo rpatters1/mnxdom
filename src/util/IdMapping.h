@@ -58,7 +58,7 @@ public:
      * @param documentRoot Shared pointer to the document's JSON root.
      * @param errorHandler A optional callback function for handling errors.
      */
-    explicit IdMapping(std::shared_ptr<json> documentRoot, const std::optional<ErrorHandler>& errorHandler = std::nullopt)
+    explicit IdMapping(std::weak_ptr<json> documentRoot, const std::optional<ErrorHandler>& errorHandler = std::nullopt)
         : m_root(documentRoot), m_errorHandler(errorHandler) {}
         
     /**
@@ -91,11 +91,11 @@ public:
                 "\", but the requested type is \"" + std::string(T::JsonSchemaTypeName) + "\"."
             );
             if (m_errorHandler) {
-                m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
+                m_errorHandler.value()(err.what(), errorLocation.value_or(Document(root())));
             }
             throw err;
         }
-        return T(m_root, it->second.location);
+        return T(root(), it->second.location);
     }
 
     /**
@@ -115,7 +115,7 @@ public:
         }
         mapping_error err("ID " + formatKeyString(id) + " not found in ID mapping");
         if (m_errorHandler) {
-            m_errorHandler.value()(err.what(), errorLocation.value_or(Document(m_root)));
+            m_errorHandler.value()(err.what(), errorLocation.value_or(Document(root())));
         }
         throw err;
     }
@@ -171,10 +171,68 @@ public:
             }
         }
     }
+
+    /// @brief Get the beam for an event, if it is mapped.
+    /// @param event The event to search for.
+    /// @return The beam or std::nullopt if not found.
+    std::optional<part::Beam> tryGetBeam(const sequence::Event& event) const
+    {
+        if (const auto& eventId = event.id()) {
+            const auto it = m_eventsInBeams.find(eventId.value());
+            if (it != m_eventsInBeams.end()) {
+                MNX_ASSERT_IF(it->second.typeName != part::Beam::JsonSchemaTypeName) {
+                    mapping_error err(
+                        "The beam mapping for eventId " + formatKeyString(eventId.value())
+                        + " was mapped to an object of type \"" + std::string(it->second.typeName) + "\"."
+                    );
+                    if (m_errorHandler) {
+                        m_errorHandler.value()(err.what(), event);
+                    }
+                    throw err;
+                }
+                return part::Beam(root(), it->second.location);
+            }
+        }
+        return std::nullopt;
+    }
     
+    /// @brief Map an event's id to its beam
+    /// @param eventId The id of the event to map.
+    /// @param beam The beam that includes the event.
+    void addEventToBeam(const std::string& eventId, const part::Beam& beam)
+    {
+        auto result = m_eventsInBeams.emplace(eventId, MappedLocation{ beam.pointer(), part::Beam::JsonSchemaTypeName });
+        if (!result.second) {
+            mapping_error err("ID " + formatKeyString(eventId) + " already exists in beam "
+                + result.first->second.location.to_string());
+            if (m_errorHandler) {
+                m_errorHandler.value()(err.what(), beam);
+            } else {
+                throw err;
+            }
+        }
+    }
+
+    /// @brief Clears all mapped items.
+    void clear()
+    {
+        m_objectMap.clear();
+        m_globalMeasures.clear();
+        m_eventsInBeams.clear();
+    }
+
 private:
-    std::shared_ptr<json> m_root;
+    std::weak_ptr<json> m_root;
     std::optional<ErrorHandler> m_errorHandler;
+
+    std::shared_ptr<json> root() const
+    {
+        std::shared_ptr<json> result = m_root.lock();
+        if (!result) {
+            throw std::runtime_error("ID mapping is invalid because the document was destroyed.");
+        }
+        return result;
+    }
 
     using MappedLocation = struct
     {
@@ -183,10 +241,11 @@ private:
     };
     std::unordered_map<std::string, MappedLocation> m_objectMap;
     std::unordered_map<int, MappedLocation> m_globalMeasures;
+    std::unordered_map<std::string, MappedLocation> m_eventsInBeams;
     
     template <typename T, typename Self>
     static auto& getMapImpl(Self& self) {
-        if constexpr (std::is_same_v<T, mnx::global::Measure>) {
+        if constexpr (std::is_same_v<T, global::Measure>) {
             return self.m_globalMeasures;
         } else {
             return self.m_objectMap;

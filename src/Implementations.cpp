@@ -178,6 +178,13 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                     };
                     processContent(sequence.content(), processContent);
                 }
+                if (const auto& beams = measure.beams()) {
+                    for (const auto& beam : beams.value()) {
+                        for (const auto& eventId : beam.events()) {
+                            m_idMapping->addEventToBeam(eventId, beam);
+                        }
+                    }
+                }
             }
         }
     }

@@ -57,6 +57,8 @@ public:
     MNX_OPTIONAL_CHILD(Array<Beam>, beams);                 ///< the beams that comprise the next beam level (may be omitted)
     MNX_OPTIONAL_PROPERTY(BeamHookDirection, direction);    ///< the forced direction of a beam hook (if this beam contains one event).
     MNX_REQUIRED_CHILD(Array<std::string>, events);         ///< the events that comprise this beam level
+
+    inline static constexpr std::string_view JsonSchemaTypeName = "beam";     ///< required for mapping
 };
 
 /**

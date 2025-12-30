@@ -168,9 +168,9 @@ inline bool walkSequenceContent(ContentArray content,
 ///       value advances time. Inner tremolo notes have zero actual duration until
 ///       the MNX spec clarifies how their durations should be distributed.
 inline bool iterateSequenceEvents(ContentArray content,
-                                  std::function<bool(sequence::Event event,
-                                                     FractionValue startDuration,
-                                                     FractionValue actualDuration)> iterator)
+                                  std::function<bool(const sequence::Event& event,
+                                                     const FractionValue& startDuration,
+                                                     const FractionValue& actualDuration)> iterator)
 {
     SequenceWalkHooks hooks;
     hooks.onEvent = [&](const sequence::Event& event,

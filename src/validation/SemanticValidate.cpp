@@ -426,6 +426,10 @@ void SemanticValidator::validateParts()
                     return FractionValue(4, 4);
                 }();
                 for (const auto sequence : measure.sequences()) {
+                    if (sequence.staff() > part.staves()) {
+                        addError("Sequence references non-existent part staff for part " + part.id_or("<no-id>") + ".", sequence);
+                        continue;
+                    }
                     /// @todo check voice uniqueness
                     validateSequenceContent(sequence.content(), sequence, measureTime);
                 }

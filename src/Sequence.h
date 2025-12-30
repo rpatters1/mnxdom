@@ -568,10 +568,10 @@ public:
         create_content();
     }
 
-    MNX_REQUIRED_CHILD(ContentArray, content);      ///< the content of the sequence
+    MNX_REQUIRED_CHILD(ContentArray, content);          ///< the content of the sequence
     /// @todo `orient` property
-    MNX_OPTIONAL_PROPERTY(int, staff);              ///< the staff number for this sequence
-    MNX_OPTIONAL_PROPERTY(std::string, voice);      ///< the unique (per measure) voice label for this sequence.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number for this sequence
+    MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< the unique (per measure) voice label for this sequence.
 
     /// @brief Iterate all the events in this sequence in order as they come.
     /// @param iterator Callback function invoked for each event.

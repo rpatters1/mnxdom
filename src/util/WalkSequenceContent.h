@@ -112,8 +112,8 @@ inline bool walkSequenceContent(ContentArray content,
                     // Grace is time-neutral: elapsedTime does not change.
                 }
             } else if (item.type() == sequence::Tuplet::ContentTypeValue) {
+                const auto tuplet = item.get<sequence::Tuplet>();
                 if (allowChildren) {
-                    const auto tuplet = item.get<sequence::Tuplet>();
                     SequenceWalkContext child = ctxRef;
                     child.timeRatio = ctxRef.timeRatio * tuplet.ratio();
                     if (!self(tuplet.content(), child, self)) {
@@ -121,6 +121,9 @@ inline bool walkSequenceContent(ContentArray content,
                     }
                     // Propagate elapsedTime back to the parent context.
                     ctxRef.elapsedTime = child.elapsedTime;
+                } else {
+                    // Children skipped: assume well-formed tuplet content.
+                    ctxRef.elapsedTime += tuplet.outer() * ctxRef.timeRatio;
                 }
             } else if (item.type() == sequence::MultiNoteTremolo::ContentTypeValue) {
                 const auto tremolo = item.get<sequence::MultiNoteTremolo>();

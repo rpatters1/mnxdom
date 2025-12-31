@@ -273,7 +273,15 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 addError("Content array contains multi-note tremolo object, which is not permitted for type " + content.type(), content);
             }
             auto tremolo = content.get<mnx::sequence::MultiNoteTremolo>();
-            validateSequenceContent(tremolo.content(), tremolo, 0, /*allowEventsOnly*/true); // true => error on content other than events
+            const auto multiple = tremolo.outer().multiple();
+            if (multiple < 2) {
+                addError("Multi-note tremolo has " + std::to_string(tremolo.outer().multiple()) + " events.", tremolo);
+            }
+            if (multiple > 0) {
+                FractionValue tremoloElapsed;
+                const FractionValue expectedInner = tremolo.outer() * multiple;
+                validateSequenceContent(tremolo.content(), tremolo, expectedInner, /*allowEventsOnly*/true, /*requireExactDuration*/true, &tremoloElapsed);
+            }
             elapsedTime += tremolo.outer();
         } else if (content.type() == mnx::sequence::Space::ContentTypeValue) {
             if (allowEventsOnly) {

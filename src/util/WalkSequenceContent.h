@@ -127,20 +127,24 @@ inline bool walkSequenceContent(Sequence sequence,
                 }
             } else if (item.type() == sequence::MultiNoteTremolo::ContentTypeValue) {
                 const auto tremolo = item.get<sequence::MultiNoteTremolo>();
-                /// @todo: MNX tremolo durations.
-                // Currently, inner tremolo notes are treated as time-neutral and only
-                // tremolo.outer() * timeRatio advances elapsedTime. Once the MNX spec
-                // clarifies per-note duration semantics for multi-note tremolos, this
-                // iterator should be updated so each event gets an appropriate share of
-                // the tremolo duration pie.
-                if (allowChildren) {
+                const auto multiple = tremolo.outer().multiple();
+                if (allowChildren && multiple > 0) {
+                    const auto startTime = ctxRef.elapsedTime;
+                    const auto expectedDuration = tremolo.outer() * ctxRef.timeRatio;
                     SequenceWalkContext child = ctxRef;
-                    child.timeRatio = 0;
+                    child.timeRatio = mnx::FractionValue(1, multiple) * ctxRef.timeRatio;
                     if (!self(tremolo.content(), child, self)) {
                         return false;
                     }
+                    const auto actualDuration = child.elapsedTime - startTime;
+                    if (actualDuration != expectedDuration) {
+                        // Silently recover for now. Ultimately, we will have to revisit this if (when) MNX revises tremolos.
+                        child.elapsedTime = startTime + expectedDuration;
+                    }
+                    ctxRef.elapsedTime = child.elapsedTime;
+                } else {
+                    ctxRef.elapsedTime += tremolo.outer() * ctxRef.timeRatio;
                 }
-                ctxRef.elapsedTime += tremolo.outer() * ctxRef.timeRatio;
             } else if (item.type() == sequence::Space::ContentTypeValue) {
                 const auto space = item.get<sequence::Space>();
                 ctxRef.elapsedTime += space.duration() * ctxRef.timeRatio;

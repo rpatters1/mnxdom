@@ -406,6 +406,9 @@ void SemanticValidator::validateParts()
                 return; // cannot continue because can't get current time for part measures greater than global measures
             }
         }
+        if (part.staves() < 1) {
+            addError("Part" + partName + " contains no staves (" + std::to_string(part.staves()) + ")", part);
+        }
         if (auto kit = part.kit()) {
             auto sounds = document.global().sounds();
             for (const auto& [kitElementId, kitElement] : kit.value()) {

@@ -399,4 +399,60 @@ buildLayoutSpans(const mnx::Layout& layout)
     return spans;
 }
 
+/// @brief Builds a default set of layout spans when no explicit layout is available.
+///
+/// Constructs a fallback layout by grouping staves by part and assigning flattened staff indices
+/// in part order. Each part contributes one or more staff spans, and parts with multiple staves
+/// also contribute a group span covering all of their staves. Group spans use a brace symbol as a
+/// reasonable default in the absence of an explicit layout definition.
+///
+/// Staff spans are assigned the deepest depth within their part so that they sort after their
+/// enclosing group span when spans are ordered by start index and depth. For single-staff parts,
+/// only a staff span is produced, and the part name is applied directly to that staff.
+///
+/// Parts that declare zero staves are ignored.
+///
+/// @param parts The array of parts from which to construct the default layout.
+/// @return A vector of LayoutSpan entries representing the synthesized default layout.
+[[nodiscard]] inline std::vector<LayoutSpan>
+buildDefaultLayoutSpans(const Array<Part>& parts)
+{
+    std::vector<LayoutSpan> result;
+    size_t staffIdx = 0;
+
+    for (const auto& part : parts) {
+        const size_t numStaves = static_cast<size_t>(part.staves());
+        if (numStaves == 0) {
+            continue;
+        }
+        size_t staffDepth = 1;
+        bool staffNameNeeded = true;
+        if (numStaves > 1) {
+            LayoutSpan groupSpan;
+            groupSpan.depth = staffDepth++;
+            groupSpan.kind = LayoutSpan::Kind::Group;
+            groupSpan.symbol = LayoutSymbol::Brace;
+            groupSpan.startIndex = staffIdx;
+            groupSpan.endIndex = staffIdx + numStaves - 1;
+            groupSpan.label = part.name();
+            staffNameNeeded = false;
+            result.emplace_back(std::move(groupSpan));
+        }
+        for (size_t x = 0; x < numStaves; x++) {
+            LayoutSpan staffSpan;
+            staffSpan.depth = staffDepth;
+            staffSpan.kind = LayoutSpan::Kind::Staff;
+            staffSpan.startIndex = staffIdx;
+            staffSpan.endIndex = staffIdx;
+            if (staffNameNeeded) {
+                staffSpan.label = part.name();
+            }
+            result.emplace_back(std::move(staffSpan));
+            staffIdx++;
+        }
+    }
+
+    return result;
+}
+
 } // namespace mnx::util

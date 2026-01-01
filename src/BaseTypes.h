@@ -205,6 +205,17 @@ namespace validation {
 class SemanticValidator;
 }; // namespace validation
 
+#ifndef DOXYGEN_SHOULD_IGNOR_THIS
+
+namespace scope {
+struct Default {};
+struct SequenceContent {};
+struct LayoutContent {};
+} // namespace scope
+
+#endif
+
+
 /**
  * @brief Base class wrapper for all MNX JSON nodes.
  */
@@ -264,10 +275,10 @@ public:
     }
 
     /// @brief Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. ContentObject), the highest
-    /// level instance is returned. (To get the lowest level immediate container, use #ArrayElementObject::container.)
+    /// level instance is returned. (To get the lowest level immediate container, use #ContentObject::container.)
     /// @tparam T The type to find. A limited list of types are supported, including @ref Part and @ref Sequence. Others may be added as needed.
     /// @return the enclosing element, or std::nullopt if not found.
-    template <typename T>
+    template <typename T, typename Scope = scope::Default>
     [[nodiscard]] std::optional<T> getEnclosingElement() const;
 
     /// @brief Returns the json_pointer for this node.
@@ -652,17 +663,6 @@ public:
     {
         return std::stoul(pointer().back());
     }
-
-    /// @brief Returns the container of the array this element belongs to wrapped as the specified template type.
-    ///
-    /// No error checking is performed beyond verifying that ContainerType matches being an array or object with the json node.
-    ///
-    /// @tparam ContainerType The type to wrap around the container
-    template <typename ContainerType>
-    ContainerType container() const
-    {
-        return parent<Array<ArrayElementObject>>().parent<ContainerType>();
-    }
 };
 
 class ContentArray;
@@ -684,7 +684,27 @@ public:
         return getTypedObject<T>();
     }
 
-private:
+    /// @brief Returns the object that owns the content array this element belongs to wrapped as the specified template type.
+    /// @tparam ContainerType The type to wrap around the container.
+    /// @throws std::invalid_argument If @p ContainerType is not #ContentObject and its
+    ///         #ContentTypeValue does not match the retrieved object's `type` field.
+    template <typename ContainerType>
+    ContainerType container() const
+    {
+        static_assert(std::is_base_of_v<ContentObject, ContainerType>,
+                      "ContainerType must derive from ContentObject");
+        const auto obj = parent<Array<ArrayElementObject>>().template parent<ContentObject>();
+        if constexpr (std::is_same_v<ContainerType, ContentObject>) {
+            return obj;
+        } else {
+            MNX_ASSERT_IF(obj.type() != ContainerType::ContentTypeValue) {
+                throw std::invalid_argument(
+                    "container(): requested type does not match underlying content object type");
+            }
+            return obj.template get<ContainerType>();
+        }
+    }
+
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>

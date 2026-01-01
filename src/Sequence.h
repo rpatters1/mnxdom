@@ -36,13 +36,6 @@ class Sequence; // forward declaration
  */
 namespace sequence {
 
-/// @brief Base class for objects that are elements of sequence content arrays
-class ContentObject : public mnx::ContentObject
-{
-public:
-    using mnx::ContentObject::ContentObject;
-};
-
 /**
  * @class AccidentalEnclosure
  * @brief Represents the enclosure on an accidental.

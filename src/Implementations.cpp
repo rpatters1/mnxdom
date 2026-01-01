@@ -32,42 +32,42 @@ namespace mnx {
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
-template <typename T>
+template <typename T, typename Scope>
 struct EnclosingKey {
     static_assert(sizeof(T) == 0, "EnclosingKey<T> must be specialized.");
 };
 
 template <>
-struct EnclosingKey<Part> {
+struct EnclosingKey<Part, scope::Default> {
     static constexpr std::array<std::string_view, 1> value = { "parts" };
 };
 template std::optional<Part> Base::getEnclosingElement<Part>() const;
 
 template <>
-struct EnclosingKey<part::Measure> {
+struct EnclosingKey<part::Measure, scope::Default> {
     static constexpr std::array<std::string_view, 3> value = { "parts", "*", "measures" };
 };
 template std::optional<part::Measure> Base::getEnclosingElement<part::Measure>() const;
 
 template <>
-struct EnclosingKey<Sequence> {
+struct EnclosingKey<Sequence, scope::Default> {
     static constexpr std::array<std::string_view, 5> value = { "parts", "*", "measures", "*", "sequences" };
 };
 template std::optional<Sequence> Base::getEnclosingElement<Sequence>() const;
 
 template <>
-struct EnclosingKey<sequence::ContentObject> {
+struct EnclosingKey<ContentObject, scope::SequenceContent> {
     static constexpr std::array<std::string_view, 7> value = { "parts", "*", "measures", "*", "sequences", "*", "content" };
 };
-template std::optional<sequence::ContentObject> Base::getEnclosingElement<sequence::ContentObject>() const;
+template std::optional<ContentObject> Base::getEnclosingElement<ContentObject, scope::SequenceContent>() const;
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
-template <typename T>
+template <typename T, typename Scope>
 std::optional<T> Base::getEnclosingElement() const
 {
     // Compile-time pattern like {"parts"}, {"parts","*","measures"}, etc.
-    constexpr auto& key = EnclosingKey<T>::value;
+    constexpr auto& key = EnclosingKey<T, Scope>::value;
     constexpr std::size_t keySize = key.size();
 
     const std::string ptrStr = m_pointer.to_string();
@@ -444,7 +444,7 @@ bool sequence::Event::isGrace() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "grace" in that case, which is all
     // that matters here.
-    auto container = this->container<sequence::ContentObject>();
+    auto container = this->container<ContentObject>();
     return container.type() == sequence::Grace::ContentTypeValue;
 }
 
@@ -454,7 +454,7 @@ bool sequence::Event::isTremolo() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "tremolo" in that case, which is all
     // that matters here.
-    auto container = this->container<sequence::ContentObject>();
+    auto container = this->container<ContentObject>();
     return container.type() == sequence::MultiNoteTremolo::ContentTypeValue;
 }
 
@@ -469,7 +469,7 @@ Sequence sequence::Event::getSequence() const
 
 size_t sequence::Event::getSequenceIndex() const
 {
-    auto result = getEnclosingElement<sequence::ContentObject>();
+    auto result = getEnclosingElement<Sequence>();
     MNX_ASSERT_IF(!result.has_value()) {
         throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
     }

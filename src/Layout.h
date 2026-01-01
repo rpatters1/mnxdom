@@ -32,13 +32,6 @@ namespace mnx {
  */
 namespace layout {
 
-/// @brief Base class for objects that are elements of layout content arrays
-class ContentObject : public mnx::ContentObject
-{
-public:
-    using mnx::ContentObject::ContentObject;
-};
-
 /**
 * @class StaffSource
  * @brief Represents a staff source for a staff in a layout in a score.

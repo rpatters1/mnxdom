@@ -663,6 +663,13 @@ public:
     {
         return std::stoul(pointer().back());
     }
+
+    /// @brief Returns the object that owns the content array this element belongs to wrapped as the specified template type.
+    /// @tparam ContainerType The type to wrap around the container.
+    /// @throws std::invalid_argument If @p ContainerType is derived from @ref ContentObject and its
+    ///         @c ContentTypeValue does not match the retrieved object's `type` field.
+    template <typename ContainerType>
+    ContainerType container() const;
 };
 
 class ContentArray;
@@ -684,27 +691,6 @@ public:
         return getTypedObject<T>();
     }
 
-    /// @brief Returns the object that owns the content array this element belongs to wrapped as the specified template type.
-    /// @tparam ContainerType The type to wrap around the container.
-    /// @throws std::invalid_argument If @p ContainerType is not @ref ContentObject and its
-    ///         @c ContentTypeValue does not match the retrieved object's `type` field.
-    template <typename ContainerType>
-    ContainerType container() const
-    {
-        static_assert(std::is_base_of_v<ContentObject, ContainerType>,
-                      "ContainerType must derive from ContentObject");
-        const auto obj = parent<Array<ArrayElementObject>>().template parent<ContentObject>();
-        if constexpr (std::is_same_v<ContainerType, ContentObject>) {
-            return obj;
-        } else {
-            MNX_ASSERT_IF(obj.type() != ContainerType::ContentTypeValue) {
-                throw std::invalid_argument(
-                    "container(): requested type does not match underlying content object type");
-            }
-            return obj.template get<ContainerType>();
-        }
-    }
-
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
@@ -719,6 +705,25 @@ public:
 
     friend class ContentArray;
 };
+
+template <typename ContainerType>
+inline ContainerType ArrayElementObject::container() const
+{
+    if constexpr (std::is_base_of_v<ContainerType, ContentObject>) {
+        const auto obj = parent<Array<ArrayElementObject>>().template parent<ContentObject>();
+        if constexpr (std::is_same_v<ContainerType, ContentObject>) {
+            return obj;
+        } else {
+            MNX_ASSERT_IF(obj.type() != ContainerType::ContentTypeValue) {
+                throw std::invalid_argument(
+                    "container(): requested type does not match underlying content object type");
+            }
+            return obj.template get<ContainerType>();
+        }
+    } else {
+        return parent<Array<ArrayElementObject>>().template parent<ContainerType>();
+    }
+}
 
 /**
  * @class ContentArray

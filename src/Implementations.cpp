@@ -552,7 +552,7 @@ sequence::Pitch::Fields sequence::Pitch::calcTransposed() const
     MNX_ASSERT_IF(!sequence) {
         throw std::logic_error("unable to find enclosing sequence for pitch.");
     }
-    auto partMeasure = sequence->parent<part::Measure>();
+    auto partMeasure = sequence->container<part::Measure>();
     auto globalMeasure = partMeasure.getGlobalMeasure();
     auto part = partMeasure.getEnclosingElement<Part>();
     MNX_ASSERT_IF(!part) {

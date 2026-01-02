@@ -276,6 +276,10 @@ public:
     /// @return The current time signature or std::nullopt if none found.
     [[nodiscard]] std::optional<TimeSignature> calcCurrentTime() const;
 
+    /// @brief Calculates the current key signature by searching backwards.
+    /// @return The current key signature or or std::nullopt if none found.
+    [[nodiscard]] std::optional<KeySignature> calcCurrentKey() const;
+
     inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };
 

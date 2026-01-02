@@ -521,20 +521,32 @@ public:
 class KeySignature : public Object
 {
 public:
+    /// @brief initializer class for #KeySignature
+    struct Fields
+    {
+        int fifths{};           ///< offset from signature with no accidentals
+
+        /// @brief Implicit constructor allows int to intialize it.
+        Fields(int f = 0) : fifths(f) {}
+    };
+
     /// @brief Constructor for existing KeySignature objects
     KeySignature(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
     }
 
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { fifths() }; }
+
     /// @brief Creates a new KeySignature class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fifths The number of fifths distance from a signature with no accidentals.
-    KeySignature(Base& parent, std::string_view key, int fifths)
+    /// @param fields The fields to create 
+    KeySignature(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_fifths(fifths);
+        set_fifths(fields.fifths);
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the key signature

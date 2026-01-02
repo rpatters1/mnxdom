@@ -111,7 +111,7 @@ class TransposeWritten : public Object
 public:
     using Object::Object;
 
-    MNX_OPTIONAL_PROPERTY(int, diatonicDelta);  ///< the number of enharmonic transpositions to apply
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, diatonicDelta, 0);  ///< the number of enharmonic transpositions to apply
 };
 
 /**
@@ -158,6 +158,10 @@ public:
     /// @param src The value to compare with
     /// @return true if they are the same or enharmonically equivalent
     [[nodiscard]] bool isSamePitch(const Fields& src) const;
+
+    /// @brief Calculates the transposed version of this pitch, taking into account the part transposition
+    /// for the part that contains this pitch.
+    [[nodiscard]] Fields calcTransposed() const;
 };
 
 /**

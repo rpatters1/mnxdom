@@ -367,14 +367,27 @@ std::optional<TimeSignature> global::Measure::calcCurrentTime() const
     auto measures = parent<Array<global::Measure>>();
     global::Measure next = *this;
     size_t currentIndex = next.calcArrayIndex();
-    while (!next.time())
-    {
+    while (!next.time()) {
         if (currentIndex == 0) {
             return std::nullopt;
         }
         next = measures[--currentIndex];
     }
     return next.time();
+}
+
+std::optional<KeySignature> global::Measure::calcCurrentKey() const
+{
+    auto measures = parent<Array<global::Measure>>();
+    global::Measure next = *this;
+    size_t currentIndex = next.calcArrayIndex();
+    while (!next.key()) {
+        if (currentIndex == 0) {
+            return std::nullopt;
+        }
+        next = measures[--currentIndex];
+    }
+    return next.key();
 }
 
 // *************************
@@ -400,11 +413,11 @@ std::optional<TimeSignature> part::Measure::calcCurrentTime() const
 // ***** part::PartTransposition *****
 // ***********************************
 
-int part::PartTransposition::calcTransposedKeyFifthsFor(const KeySignature& concertKey) const
+KeySignature::Fields part::PartTransposition::calcTransposedKey(const KeySignature::Fields& concertKey) const
 {
     const auto i = interval();
     int alteration = music_theory::calcAlterationFrom12EdoHalfsteps(i.staffDistance(), i.halfSteps());
-    int result = concertKey.fifths() + music_theory::calcKeySigChangeFromInterval(i.staffDistance(), alteration);
+    int result = concertKey.fifths + music_theory::calcKeySigChangeFromInterval(i.staffDistance(), alteration);
     if (const auto flipAt = keyFifthsFlipAt(); flipAt.has_value()) {
         constexpr int FIFTHS_WRAP = 12; // enharmonic wrap in fifths-space
         if (*flipAt >= 0) {
@@ -531,6 +544,48 @@ bool sequence::Pitch::isSamePitch(const Pitch::Fields& src) const
     }
     music_theory::Transposer t(music_theory::calcDisplacement(int(src.step), src.octave), src.alter);
     return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter());
+}
+
+sequence::Pitch::Fields sequence::Pitch::calcTransposed() const
+{
+    auto sequence = getEnclosingElement<Sequence>();
+    MNX_ASSERT_IF(!sequence) {
+        throw std::logic_error("unable to find enclosing sequence for pitch.");
+    }
+    auto partMeasure = sequence->parent<part::Measure>();
+    auto globalMeasure = partMeasure.getGlobalMeasure();
+    auto part = partMeasure.getEnclosingElement<Part>();
+    MNX_ASSERT_IF(!part) {
+        throw std::logic_error("unable to find enclosing part for pitch.");
+    }
+
+    if (auto partTrans = part->transposition()) {
+        music_theory::Transposer t(music_theory::calcDisplacement(int(step()), octave()), alter());
+        const auto interval = partTrans->interval();
+        const int intervalDisp = interval.staffDistance();
+        const int intervalAlt = music_theory::calcKeySigChangeFromInterval(intervalDisp, interval.halfSteps());
+        t.chromaticTranspose(intervalDisp, intervalAlt);
+        int expectedKeyFifths = music_theory::calcKeySigChangeFromInterval(intervalDisp, intervalAlt);
+        KeySignature::Fields currKey;
+        if (auto key = globalMeasure.calcCurrentKey()) {
+            currKey = key.value();
+        }
+        auto actualTransKey = partTrans->calcTransposedKey(currKey);
+        const int fifthsDiff = expectedKeyFifths - actualTransKey.fifths;
+        const int wraps = fifthsDiff / 12;          // trunc toward zero
+        if (wraps != 0) {
+            t.enharmonicTranspose(-wraps);
+        }
+        auto note = parent<sequence::Note>();
+        if (auto written = note.written()) {
+            t.enharmonicTranspose(written->diatonicDelta());
+        }
+        int newHalfSteps = music_theory::calc12EdoHalfstepsInInterval(t.displacement(), t.alteration());
+        int newOctaves{};
+        int newNoteType = music_theory::positiveModulus(t.displacement(), music_theory::STANDARD_DIATONIC_STEPS, &newOctaves);
+        return { NoteStep(newNoteType), newOctaves, newHalfSteps };
+    }
+    return *this;
 }
 
 } // namespace mnx

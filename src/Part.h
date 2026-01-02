@@ -224,7 +224,7 @@ public:
 
     /// @brief Calculates and returns the transposed keyFifths value for the input key.
     /// @param concertKey The concert key to calculate from.
-    int calcTransposedKeyFifthsFor(const mnx::KeySignature& concertKey) const;
+    KeySignature::Fields calcTransposedKey(const KeySignature::Fields& concertKey) const;
 };
 
 /**

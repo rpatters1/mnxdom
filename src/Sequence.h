@@ -473,14 +473,13 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param numberOfMarks The number of marks (beams) in the tremolo
-    /// @param noteCount The number of events in the tremolo (usually 2)
-    /// @param noteValue The duration of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
-    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, unsigned noteCount, const NoteValue::Fields& noteValue)
+    /// @param noteValueQuant The note value quantity of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
+    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, const NoteValueQuantity::Fields& noteValueQuant)
         : ContentObject(parent, key)
     {
         create_content();
         set_marks(numberOfMarks);
-        create_outer(noteCount, noteValue);
+        create_outer(noteValueQuant);
     }
 
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
@@ -507,17 +506,14 @@ public:
     /// @brief Creates a new Tuplet class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param innerCount The inner count: **3** quarters in the time of 2 quarters
-    /// @param innerNoteValue The inner amount: 3 **quarters** in the time of 2 quarters
-    /// @param outerCount The outer count: 3 quarters in the time of **2** quarters
-    /// @param outerNoteValue The outer amount: 3 quarters in the time of 2 **quarters**
-    Tuplet(Base& parent, std::string_view key,
-        unsigned innerCount, const NoteValue::Fields& innerNoteValue,
-        unsigned outerCount, const NoteValue::Fields& outerNoteValue)
+    /// @param innerNoteValueQuant The inner amount: 3 **quarters** in the time of 2 quarters
+    /// @param outerNoteValueQuant The outer amount: 3 quarters in the time of 2 **quarters**
+    Tuplet(Base& parent, std::string_view key, const NoteValueQuantity::Fields& innerNoteValueQuant,
+                    const NoteValueQuantity::Fields& outerNoteValueQuant)
         : ContentObject(parent, key)
     {
-        create_inner(innerCount, innerNoteValue);
-        create_outer(outerCount, outerNoteValue);
+        create_inner(innerNoteValueQuant);
+        create_outer(outerNoteValueQuant);
         create_content();
     }
 

@@ -582,6 +582,13 @@ public:
 class NoteValueQuantity : public Object
 {
 public:
+    /// @brief initializer class for #NoteValueQuantity
+    struct Fields
+    {
+        unsigned count;                 ///< The quantity of note values
+        NoteValue::Fields noteValue;    ///< the note value base to initialize
+    };
+
     /// @brief Constructor for existing NoteValue instances
     NoteValueQuantity(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -591,13 +598,12 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param count The quantity of note value units
-    /// @param noteValue The note value
-    NoteValueQuantity(Base& parent, std::string_view key, unsigned count, const NoteValue::Fields& noteValue)
+    /// @param noteValueQuant The note value fields.
+    NoteValueQuantity(Base& parent, std::string_view key, const NoteValueQuantity::Fields& noteValueQuant)
         : Object(parent, key)
     {
-        set_multiple(count);
-        create_duration(noteValue);
+        set_multiple(noteValueQuant.count);
+        create_duration(noteValueQuant.noteValue);
     }
 
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.

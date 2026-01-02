@@ -346,7 +346,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value. If omitted, the event is set to full measure.
-    Event(Base& parent, std::string_view key, std::optional<NoteValue::Initializer> noteValue = std::nullopt)
+    Event(Base& parent, std::string_view key, std::optional<NoteValue::Fields> noteValue = std::nullopt)
         : ContentObject(parent, key)
     {
         // per the specification, either noteValue or the full-measure boolean *must* be supplied.
@@ -475,7 +475,7 @@ public:
     /// @param numberOfMarks The number of marks (beams) in the tremolo
     /// @param noteCount The number of events in the tremolo (usually 2)
     /// @param noteValue The duration of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
-    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, unsigned noteCount, const NoteValue::Initializer& noteValue)
+    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, unsigned noteCount, const NoteValue::Fields& noteValue)
         : ContentObject(parent, key)
     {
         create_content();
@@ -512,8 +512,8 @@ public:
     /// @param outerCount The outer count: 3 quarters in the time of **2** quarters
     /// @param outerNoteValue The outer amount: 3 quarters in the time of 2 **quarters**
     Tuplet(Base& parent, std::string_view key,
-        unsigned innerCount, const NoteValue::Initializer& innerNoteValue,
-        unsigned outerCount, const NoteValue::Initializer& outerNoteValue)
+        unsigned innerCount, const NoteValue::Fields& innerNoteValue,
+        unsigned outerCount, const NoteValue::Fields& outerNoteValue)
         : ContentObject(parent, key)
     {
         create_inner(innerCount, innerNoteValue);

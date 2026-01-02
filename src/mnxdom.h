@@ -40,7 +40,7 @@
  * by the property name). The boilerplate macros are defined in `BaseTypes.h` and have extensive documentation in the comments.
  *
  * A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed
- * from scratch. They can be subsequently changed if need be. Many classes have `Initializer` types to facilitate passing
+ * from scratch. They can be subsequently changed if need be. Many classes have `Fields` types to facilitate passing
  * all the required data for a child object.
  *
  * @warning Avoid using references for instances returned by the methods in this library. Because classes are so lightweight,

@@ -540,14 +540,10 @@ class NoteValue : public Object
 {
 public:
     /// @brief initializer class for #NoteValue
-    class Initializer
+    struct Fields
     {
-    public:
         NoteValueBase base;     ///< the note value base to initialize
         unsigned dots;          ///< the number of dots to initialize
-
-        /// @brief constructor
-        Initializer(NoteValueBase inBase, unsigned inDots = 0) : base(inBase), dots(inDots) {}
     };
 
     /// @brief Constructor for existing NoteValue instances
@@ -560,7 +556,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value
-    NoteValue(Base& parent, std::string_view key, const Initializer& noteValue)
+    NoteValue(Base& parent, std::string_view key, const Fields& noteValue)
         : Object(parent, key)
     {
         set_base(noteValue.base);
@@ -597,7 +593,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param count The quantity of note value units
     /// @param noteValue The note value
-    NoteValueQuantity(Base& parent, std::string_view key, unsigned count, const NoteValue::Initializer& noteValue)
+    NoteValueQuantity(Base& parent, std::string_view key, unsigned count, const NoteValue::Fields& noteValue)
         : Object(parent, key)
     {
         set_multiple(count);

@@ -225,7 +225,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param bpm The number of beats per minutes
     /// @param noteValue The note value
-    Tempo(Base& parent, std::string_view key, int bpm, const NoteValue::Initializer& noteValue)
+    Tempo(Base& parent, std::string_view key, int bpm, const NoteValue::Fields& noteValue)
         : ArrayElementObject(parent, key)
     {
         set_bpm(bpm);

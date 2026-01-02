@@ -327,7 +327,7 @@ NoteValue::operator FractionValue() const
         den *= factorDen;
     }
 
-    return FractionValue(num, den);  // FractionValue will normalize internally
+    return FractionValue(num, den).reduced();
 }
 
 // ***************************

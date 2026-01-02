@@ -232,6 +232,16 @@ public:
     }
 
     /**
+     * @brief Returns a copy of the fraction reduced to lowest terms using std::gcd.
+     */
+    constexpr FractionValue reduced() const
+    {
+        auto result = *this;
+        result.reduce();
+        return result;
+    }
+
+    /**
      * @brief Attempts to express this fraction with the given denominator.
      *
      * If the current value can be written exactly with @p targetDenominator
@@ -559,14 +569,14 @@ public:
         }
     }
 
+    /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
+    [[nodiscard]] operator FractionValue() const;
+
     MNX_REQUIRED_PROPERTY(NoteValueBase, base);                 ///< the type ("base") of note
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
 
     /// @brief Calculates the number of flags or beams required by this note value
     [[nodiscard]] unsigned calcNumberOfFlags() const;
-
-    /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
-    [[nodiscard]] operator FractionValue() const;
 };
 
 /**
@@ -594,13 +604,12 @@ public:
         create_duration(noteValue);
     }
 
-    MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
-    MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
-
-
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const
     { return multiple() * duration(); }
+
+    MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
+    MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
 };
 
 /**
@@ -628,13 +637,13 @@ public:
         set_unit(unit);
     }
 
-    MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
-    MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
-
     /// @brief Implicit converter to FractionValue. This function preserves the time signature values
     /// rather than reducing to lowest common denominator.
     [[nodiscard]] operator FractionValue() const
     { return FractionValue(static_cast<FractionValue::NumType>(count()), static_cast<FractionValue::NumType>(unit())); }
+
+    MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
+    MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
 };
 
 } // namespace mnx

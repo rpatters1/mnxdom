@@ -522,15 +522,15 @@ FractionValue sequence::Event::calcStartTime() const
 // ***** sequence::Pitch *****
 // ***************************
 
-bool sequence::Pitch::isSamePitch(const Pitch& src) const
+bool sequence::Pitch::isSamePitch(const Pitch::Fields& src) const
 {
-    if (src.alter_or(0) == alter_or(0)
-        && src.octave() == octave()
-        && src.step() == step()) {
+    if (src.alter == alter()
+        && src.octave == octave()
+        && src.step == step()) {
         return true;
     }
-    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter_or(0));
-    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter_or(0));
+    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step), src.octave), src.alter);
+    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter());
 }
 
 } // namespace mnx

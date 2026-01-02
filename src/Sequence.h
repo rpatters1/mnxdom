@@ -121,6 +121,14 @@ public:
 class Pitch : public Object
 {
 public:
+    /// @brief initializer class for #NoteValue
+    struct Fields
+    {
+        NoteStep step{};    ///< the letter spelling of the note.
+        int octave{};       ///< the octave number of the note (where C4 is middle C).
+        int alter{};        ///< the chromatic alteration of the note (positive for sharp, negative for flat).
+    };
+
     /// @brief Constructor for existing Pitch objects
     Pitch(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -133,24 +141,25 @@ public:
     /// @param inpStep The letter spelling of the note.
     /// @param inpOctave The octave number of the note (where C4 is middle C).
     /// @param inpAlter The chromatic alteration of the note (positive for sharp, negative for flat)
-    Pitch(Base& parent, std::string_view key, NoteStep inpStep, int inpOctave, std::optional<int> inpAlter = std::nullopt)
+    Pitch(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_step(inpStep);
-        set_octave(inpOctave);
-        if (inpAlter) {
-            set_alter(inpAlter.value());
-        }
+        set_step(fields.step);
+        set_octave(fields.octave);
+        set_or_clear_alter(fields.alter);
     }
 
-    MNX_OPTIONAL_PROPERTY(int, alter);          ///< chromatic alteration
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { step(), octave(), alter() }; }
+
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, alter, 0);  ///< chromatic alteration
     MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
     MNX_REQUIRED_PROPERTY(NoteStep, step);      ///< the note step, (i.e., "A".."G")
 
     /// @brief Checks if the input pitch is the same as this pitch, including enharmonic equivalents
     /// @param src The value to compare with
     /// @return true if they are the same or enharmonically equivalent
-    [[nodiscard]] bool isSamePitch(const Pitch& src) const;
+    [[nodiscard]] bool isSamePitch(const Fields& src) const;
 };
 
 /**
@@ -274,13 +283,11 @@ public:
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param step The letter spelling of the note.
-    /// @param octave The octave number of the note (where C4 is middle C).
-    /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat)
-    Note(Base& parent, std::string_view key, NoteStep step, int octave, std::optional<int> alter = std::nullopt)
+    /// @param pitch The pitch of the note.
+    Note(Base& parent, std::string_view key, const Pitch::Fields& pitch)
         : NoteBase(parent, key)
     {
-        create_pitch(step, octave, alter);
+        create_pitch(pitch);
     }
 
     MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental

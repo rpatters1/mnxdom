@@ -210,12 +210,12 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param diatonic The number of diatonic steps in the interval (negative is down)
+    /// @param interval The transposition interval for the part.
     /// @param chromatic The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    PartTransposition(Base& parent, std::string_view key, int diatonic, int chromatic)
+    PartTransposition(Base& parent, std::string_view key, const Interval::Fields& interval)
         : Object(parent, key)
     {
-        create_interval(diatonic, chromatic);
+        create_interval(interval);
     }
 
     MNX_REQUIRED_CHILD(Interval, interval);         ///< the transposition interval

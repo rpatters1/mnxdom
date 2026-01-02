@@ -200,7 +200,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             if (const auto notes = event.notes()) {
                 for (const auto note : notes.value()) {
-                    const int noteAlter = note.pitch().alter_or(0);
+                    const int noteAlter = note.pitch().alter();
                     if (std::abs(noteAlter) > 3) {
                         addError("Note \"" + note.id_or("<no-id>") + "\" has alteration value " + std::to_string(noteAlter) + ". MNX files are limited to +/-3.", note);
                     }

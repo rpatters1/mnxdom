@@ -483,6 +483,13 @@ public:
 class Interval : public Object
 {
 public:
+    /// @brief initializer class for #NoteValue
+    struct Fields
+    {
+        int staffDistance{};    ///< the number of diatonic steps in the interval (negative is down)
+        int halfSteps{};        ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    };
+
     /// @brief Constructor for existing NoteValue instances
     Interval(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -492,14 +499,16 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param staffDistance The number of diatonic steps in the interval (negative is down)
-    /// @param halfSteps The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    Interval(Base& parent, std::string_view key, int staffDistance, int halfSteps)
+    /// @param fields The fields to contruct the interval.
+    Interval(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_halfSteps(halfSteps);
-        set_staffDistance(staffDistance);
+        set_halfSteps(fields.halfSteps);
+        set_staffDistance(fields.staffDistance);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { halfSteps(), staffDistance() }; }
 
     MNX_REQUIRED_PROPERTY(int, halfSteps);      ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
     MNX_REQUIRED_PROPERTY(int, staffDistance);  ///< the number of diatonic steps in the interval (negative is down)
@@ -542,8 +551,8 @@ public:
     /// @brief initializer class for #NoteValue
     struct Fields
     {
-        NoteValueBase base;     ///< the note value base to initialize
-        unsigned dots;          ///< the number of dots to initialize
+        NoteValueBase base{};   ///< the note value base to initialize
+        unsigned dots{};        ///< the number of dots to initialize
     };
 
     /// @brief Constructor for existing NoteValue instances
@@ -556,14 +565,17 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value
-    NoteValue(Base& parent, std::string_view key, const Fields& noteValue)
+    NoteValue(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_base(noteValue.base);
-        if (noteValue.dots) {
-            set_dots(noteValue.dots);
+        set_base(fields.base);
+        if (fields.dots) {
+            set_dots(fields.dots);
         }
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { base(), dots() }; }
 
     /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const;
@@ -585,8 +597,8 @@ public:
     /// @brief initializer class for #NoteValueQuantity
     struct Fields
     {
-        unsigned count;                 ///< The quantity of note values
-        NoteValue::Fields noteValue;    ///< the note value base to initialize
+        unsigned count{};               ///< The quantity of note values
+        NoteValue::Fields noteValue{};  ///< the note value base to initialize
     };
 
     /// @brief Constructor for existing NoteValue instances
@@ -598,13 +610,16 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param noteValueQuant The note value fields.
-    NoteValueQuantity(Base& parent, std::string_view key, const NoteValueQuantity::Fields& noteValueQuant)
+    /// @param fields The note value fields.
+    NoteValueQuantity(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_multiple(noteValueQuant.count);
-        create_duration(noteValueQuant.noteValue);
+        set_multiple(fields.count);
+        create_duration(fields.noteValue);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { multiple(), duration() }; }
 
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const

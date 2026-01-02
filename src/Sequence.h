@@ -121,7 +121,7 @@ public:
 class Pitch : public Object
 {
 public:
-    /// @brief initializer class for #NoteValue
+    /// @brief initializer class for #Pitch
     struct Fields
     {
         NoteStep step{};    ///< the letter spelling of the note.
@@ -138,9 +138,7 @@ public:
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param inpStep The letter spelling of the note.
-    /// @param inpOctave The octave number of the note (where C4 is middle C).
-    /// @param inpAlter The chromatic alteration of the note (positive for sharp, negative for flat)
+    /// @param fields The fields to initialize the instance.
     Pitch(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {

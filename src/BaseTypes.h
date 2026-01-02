@@ -686,8 +686,8 @@ public:
 
     /// @brief Returns the object that owns the content array this element belongs to wrapped as the specified template type.
     /// @tparam ContainerType The type to wrap around the container.
-    /// @throws std::invalid_argument If @p ContainerType is not #ContentObject and its
-    ///         #ContentTypeValue does not match the retrieved object's `type` field.
+    /// @throws std::invalid_argument If @p ContainerType is not @ref ContentObject and its
+    ///         @c ContentTypeValue does not match the retrieved object's `type` field.
     template <typename ContainerType>
     ContainerType container() const
     {

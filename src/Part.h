@@ -211,7 +211,6 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param interval The transposition interval for the part.
-    /// @param chromatic The number of 12-EDO chromatic halfsteps in the interval (negative is down)
     PartTransposition(Base& parent, std::string_view key, const Interval::Fields& interval)
         : Object(parent, key)
     {

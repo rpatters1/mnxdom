@@ -32,7 +32,7 @@ struct SequenceWalkContext
 {
     FractionValue elapsedTime { 0 };    ///< current elapsed time.
     FractionValue timeRatio { 1 };      ///< accumulated tuplet time ratio.
-    bool inGrace { false };             //< true while descending through grace note content
+    bool inGrace { false };             ///< true while descending through grace note content
 };
 
 /// @brief Control flow returned by hooks invoked during walkSequenceContent.

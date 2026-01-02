@@ -483,7 +483,7 @@ public:
 class Interval : public Object
 {
 public:
-    /// @brief initializer class for #NoteValue
+    /// @brief initializer class for #Interval
     struct Fields
     {
         int staffDistance{};    ///< the number of diatonic steps in the interval (negative is down)
@@ -564,7 +564,7 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param noteValue The note value
+    /// @param fields The note value fields.
     NoteValue(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {

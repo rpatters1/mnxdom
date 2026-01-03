@@ -390,6 +390,14 @@ std::optional<KeySignature> global::Measure::calcCurrentKey() const
     return next.key();
 }
 
+KeySignature::Fields global::Measure::calcCurrentKeyFields() const
+{
+    if (auto currentKey = calcCurrentKey()) {
+        return currentKey.value();
+    }
+    return 0;
+}
+
 // *************************
 // ***** part::Measure *****
 // *************************
@@ -563,27 +571,24 @@ sequence::Pitch::Fields sequence::Pitch::calcTransposed() const
         music_theory::Transposer t(music_theory::calcDisplacement(int(step()), octave()), alter());
         const auto interval = partTrans->interval();
         const int intervalDisp = interval.staffDistance();
-        const int intervalAlt = music_theory::calcKeySigChangeFromInterval(intervalDisp, interval.halfSteps());
+        const int intervalAlt = music_theory::calcAlterationFrom12EdoHalfsteps(intervalDisp, interval.halfSteps());
         t.chromaticTranspose(intervalDisp, intervalAlt);
-        int expectedKeyFifths = music_theory::calcKeySigChangeFromInterval(intervalDisp, intervalAlt);
-        KeySignature::Fields currKey;
-        if (auto key = globalMeasure.calcCurrentKey()) {
-            currKey = key.value();
-        }
-        auto actualTransKey = partTrans->calcTransposedKey(currKey);
+        int expectedKeyFifths = music_theory::calcKeySigChangeFromInterval(intervalDisp, intervalAlt)
+                                    + globalMeasure.calcCurrentKeyFields().fifths;
+        auto actualTransKey = partTrans->calcTransposedKey(globalMeasure.calcCurrentKeyFields());
         const int fifthsDiff = expectedKeyFifths - actualTransKey.fifths;
         const int wraps = fifthsDiff / 12;          // trunc toward zero
         if (wraps != 0) {
-            t.enharmonicTranspose(-wraps);
+            t.enharmonicTranspose(wraps);
         }
         auto note = parent<sequence::Note>();
         if (auto written = note.written()) {
             t.enharmonicTranspose(written->diatonicDelta());
         }
-        int newHalfSteps = music_theory::calc12EdoHalfstepsInInterval(t.displacement(), t.alteration());
+        int newAlter = t.alteration();
         int newOctaves{};
         int newNoteType = music_theory::positiveModulus(t.displacement(), music_theory::STANDARD_DIATONIC_STEPS, &newOctaves);
-        return { NoteStep(newNoteType), newOctaves, newHalfSteps };
+        return { NoteStep(newNoteType), newOctaves + 4, newAlter };
     }
     return *this;
 }

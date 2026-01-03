@@ -280,6 +280,10 @@ public:
     /// @return The current key signature or or std::nullopt if none found.
     [[nodiscard]] std::optional<KeySignature> calcCurrentKey() const;
 
+    /// @brief Get the fields of the current key signature.
+    /// @return The current key fields if found, otherwise the fields for key with no accidentals.
+    [[nodiscard]] KeySignature::Fields calcCurrentKeyFields() const;
+
     inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };
 

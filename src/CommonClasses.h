@@ -98,7 +98,7 @@ public:
      * @throws std::invalid_argument if @p den is zero.
      * @todo Make this constructor constexpr when we drop C++17 support.
      */
-    FractionValue(NumType num, NumType den)
+    constexpr FractionValue(NumType num, NumType den)
         : m_num(num), m_den(den)
     {
         if (m_den == 0) {
@@ -133,7 +133,7 @@ public:
      * @brief Returns the fractional part of the fraction.
      * @return The remainder as a fraction, satisfying -1 < remainder < 1.
      */
-    FractionValue constexpr remainder() const
+    constexpr FractionValue remainder() const
     {
         FractionValue result;
         result.m_num = m_num % m_den;
@@ -207,7 +207,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator/=(const FractionValue& rhs)
+    constexpr FractionValue& operator/=(const FractionValue& rhs)
     {
         if (rhs.m_num == 0) {
             throw std::invalid_argument("Division by zero FractionValue.");
@@ -333,7 +333,7 @@ public:
     return lhs;
 }
 
-[[nodiscard]] inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
 {
     lhs /= rhs;
     return lhs;

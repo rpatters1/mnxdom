@@ -143,40 +143,35 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
         if (const auto measures = part.measures()) {
             for (const auto measure : measures.value()) {
                 for (const auto sequence : measure.sequences()) {
-                    auto processContent = [&](const ContentArray& contentArray, auto&& self) -> void {
-                        for (const auto content : contentArray) {
-                            if (content.type() == sequence::Event::ContentTypeValue) {
-                                const auto event = content.get<sequence::Event>();
-                                if (event.id()) {
-                                    m_idMapping->add(event.id().value(), event);
+                    util::SequenceWalkHooks hooks;
+                    hooks.onEvent = [&](const sequence::Event& event,
+                                        const FractionValue&,
+                                        const FractionValue&,
+                                        util::SequenceWalkContext&) -> bool {
+                        if (event.id()) {
+                            m_idMapping->add(event.id().value(), event);
+                        }
+                        if (auto notes = event.notes()) {
+                            for (const auto note : notes.value()) {
+                                if (note.id()) {
+                                    m_idMapping->add(note.id().value(), note);
                                 }
-                                if (auto notes = event.notes()) {
-                                    for (const auto note : notes.value()) {
-                                        if (note.id()) {
-                                            m_idMapping->add(note.id().value(), note);
-                                        }
-                                    }
-                                }
-                                if (auto kitNotes = event.kitNotes()) {
-                                    for (const auto kitNote : kitNotes.value()) {
-                                        if (kitNote.id()) {
-                                            m_idMapping->add(kitNote.id().value(), kitNote);
-                                        }
-                                    }
-                                }
-                            } else if (content.type() == sequence::Tuplet::ContentTypeValue) {
-                                const auto tuplet = content.get<sequence::Tuplet>();
-                                self(tuplet.content(), self);
-                            } else if (content.type() == sequence::Grace::ContentTypeValue) {
-                                const auto grace = content.get<sequence::Grace>();
-                                self(grace.content(), self);
-                            } else if (content.type() == sequence::MultiNoteTremolo::ContentTypeValue) {
-                                const auto tremolo = content.get<sequence::MultiNoteTremolo>();
-                                self(tremolo.content(), self);
                             }
                         }
+                        if (auto kitNotes = event.kitNotes()) {
+                            for (const auto kitNote : kitNotes.value()) {
+                                if (kitNote.id()) {
+                                    m_idMapping->add(kitNote.id().value(), kitNote);
+                                }
+                            }
+                        }
+                        return true;
                     };
-                    processContent(sequence.content(), processContent);
+
+                    const bool walked = util::walkSequenceContent(sequence, hooks);
+                    MNX_ASSERT_IF(!walked) {
+                        throw std::logic_error("Sequence walk aborted unexpectedly while building ID mapping.");
+                    }
                 }
                 if (const auto& beams = measure.beams()) {
                     for (const auto& beam : beams.value()) {

@@ -1,0 +1,133 @@
+{
+   "mnx": {
+      "version": 1
+   },
+   "global": {
+      "measures": [
+         {
+            "time": {
+               "count": 4,
+               "unit": 4
+            }
+         },
+         {}
+      ]
+   },
+   "parts": [
+      {
+         "measures": [
+            {
+               "ottavas": [
+                  {
+                     "position": {
+                        "fraction": [
+                           1,
+                           2
+                        ]
+                     },
+                     "end": {
+                        "measure": 2,
+                        "position": {
+                           "fraction": [
+                              0,
+                              1
+                           ]
+                        }
+                     },
+                     "value": 1
+                  }
+               ],
+               "sequences": [
+                  {
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "tie_start",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "E"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "tie_end",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "E"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            },
+            {
+               "sequences": [
+                  {
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "cont1",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "E"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "cont2",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "F"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "cont3",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "G"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

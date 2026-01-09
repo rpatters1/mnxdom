@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 #include <cassert>
+#include <utility>
 
 #include "mnxdom.h"
 #include "music_theory/music_theory.hpp"
@@ -128,6 +129,13 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
 {
     m_idMapping.reset();
     m_idMapping = std::make_shared<util::IdMapping>(root(), errorHandler);
+    struct EventOttavaEntry
+    {
+        util::IdMapping::OttavaTarget target;
+        util::IdMapping::OttavaPosition position;
+        std::string pointer;
+    };
+    std::vector<EventOttavaEntry> ottavaEventEntries;
     // global measures
     const auto globalMeasures = global().measures();
     int measureId = 0;
@@ -140,14 +148,62 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
         if (part.id()) {
             m_idMapping->add(part.id().value(), part);
         }
+        const std::string partPointer = part.pointer().to_string();
         if (const auto measures = part.measures()) {
             for (const auto measure : measures.value()) {
+                const int measureIndex = static_cast<int>(measure.calcArrayIndex());
                 for (const auto sequence : measure.sequences()) {
+                    struct PendingGraceEvent
+                    {
+                        sequence::Event event;
+                        FractionValue startTime;
+                        int staff;
+                        std::optional<std::string> voice;
+                    };
+
+                    std::vector<PendingGraceEvent> pendingGraceEvents;
+                    const auto sequenceVoice = sequence.voice();
+                    const int sequenceStaff = sequence.staff();
+
+                    auto recordOttavaEvent = [&](const sequence::Event& event,
+                                                 const FractionValue& start,
+                                                 unsigned graceIndex,
+                                                 int staffNumber,
+                                                 const std::optional<std::string>& voiceLabel) {
+                        util::IdMapping::OttavaTarget target{
+                            partPointer,
+                            std::optional<int>(staffNumber),
+                            voiceLabel
+                        };
+                        util::IdMapping::OttavaPosition position{
+                            measureIndex,
+                            start,
+                            std::optional<unsigned>(graceIndex)
+                        };
+                        ottavaEventEntries.push_back(EventOttavaEntry{
+                            std::move(target),
+                            std::move(position),
+                            event.pointer().to_string()
+                        });
+                    };
+
+                    auto flushPendingGraceEvents = [&]() {
+                        if (pendingGraceEvents.empty()) {
+                            return;
+                        }
+                        unsigned graceIndex = 1;
+                        for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
+                            recordOttavaEvent(it->event, it->startTime, graceIndex, it->staff, it->voice);
+                            ++graceIndex;
+                        }
+                        pendingGraceEvents.clear();
+                    };
+
                     util::SequenceWalkHooks hooks;
                     hooks.onEvent = [&](const sequence::Event& event,
+                                        const FractionValue& startTime,
                                         const FractionValue&,
-                                        const FractionValue&,
-                                        util::SequenceWalkContext&) -> bool {
+                                        util::SequenceWalkContext& ctx) -> bool {
                         if (event.id()) {
                             m_idMapping->add(event.id().value(), event);
                         }
@@ -165,6 +221,18 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                                 }
                             }
                         }
+                        const int eventStaff = event.staff().value_or(sequenceStaff);
+                        if (ctx.inGrace) {
+                            pendingGraceEvents.push_back(PendingGraceEvent{
+                                event,
+                                startTime,
+                                eventStaff,
+                                sequenceVoice
+                            });
+                            return true;
+                        }
+                        flushPendingGraceEvents();
+                        recordOttavaEvent(event, startTime, 0, eventStaff, sequenceVoice);
                         return true;
                     };
 
@@ -172,6 +240,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                     MNX_ASSERT_IF(!walked) {
                         throw std::logic_error("Sequence walk aborted unexpectedly while building ID mapping.");
                     }
+                    flushPendingGraceEvents();
                 }
                 if (const auto& beams = measure.beams()) {
                     for (const auto& beam : beams.value()) {
@@ -180,8 +249,38 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                         }
                     }
                 }
+                if (const auto& ottavas = measure.ottavas()) {
+                    for (const auto& ottava : ottavas.value()) {
+                        util::IdMapping::OttavaPosition startPosition{
+                            measureIndex,
+                            ottava.position().fraction(),
+                            ottava.position().graceIndex()
+                        };
+                        const auto endMeasure = m_idMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
+                        util::IdMapping::OttavaPosition endPosition{
+                            static_cast<int>(endMeasure.calcArrayIndex()),
+                            ottava.end().position().fraction(),
+                            ottava.end().position().graceIndex()
+                        };
+                        std::optional<int> staff = ottava.staff();
+                        std::optional<std::string> voice;
+                        if (auto voiceProp = ottava.voice()) {
+                            voice = voiceProp.value();
+                        }
+                        util::IdMapping::OttavaTarget target{
+                            partPointer,
+                            staff,
+                            voice
+                        };
+                        m_idMapping->addOttavaSpan(target, startPosition, endPosition, static_cast<int>(ottava.value()));
+                    }
+                }
             }
         }
+    }
+    m_idMapping->finalizeOttavaMappings();
+    for (const auto& entry : ottavaEventEntries) {
+        m_idMapping->storeEventOttavaShift(entry.pointer, entry.target, entry.position);
     }
     // layouts
     if (const auto layoutArray = layouts()) {

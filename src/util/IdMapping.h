@@ -21,14 +21,16 @@
  */
 #pragma once
 
-#include <unordered_map>
+#include <algorithm>
+#include <functional>
 #include <memory>
-#include <string>
-#include <tuple>
-#include <stdexcept>
-#include <type_traits>
 #include <optional>
 #include <sstream>
+#include <string>
+#include <tuple>
+#include <type_traits>
+#include <unordered_map>
+#include <vector>
 
 #include "BaseTypes.h"
 #include "Global.h"
@@ -53,6 +55,24 @@ class mapping_error : public std::runtime_error
  */
 class IdMapping {
 public:
+    /// @brief Key describing the part/staff/voice scope of an ottava.
+    struct OttavaTarget
+    {
+        std::string partPointer;                         ///< Unique pointer string for the owning part.
+        std::optional<int> staff;                        ///< Optional staff number (1-based) this target applies to.
+        std::optional<std::string> voice;                ///< Optional voice label the target applies to.
+
+        bool operator==(const OttavaTarget& other) const = default;
+    };
+
+    /// @brief A rhythmic location used for ottava lookups.
+    struct OttavaPosition
+    {
+        int measureIndex{};                              ///< Zero-based global measure index.
+        FractionValue beat{};                            ///< Beat within the measure.
+        std::optional<unsigned> graceIndex;              ///< Grace index (0 = main note, higher = further left). std::nullopt => before all grace notes.
+    };
+
     /**
      * @brief Constructs the index for a given document.
      * @param documentRoot Shared pointer to the document's JSON root.
@@ -219,6 +239,88 @@ public:
         m_objectMap.clear();
         m_globalMeasures.clear();
         m_eventsInBeams.clear();
+        m_ottavaBoundaries.clear();
+        m_ottavaTimelines.clear();
+        m_eventOttavaShift.clear();
+    }
+
+    /// @brief Add an ottava span for a target key.
+    /// @param target Part/staff/voice scope the ottava applies to.
+    /// @param start Start position of the ottava (inclusive).
+    /// @param endInclusive End position of the ottava (inclusive).
+    /// @param shiftAmount The octave displacement in octaves.
+    void addOttavaSpan(const OttavaTarget& target,
+                       const OttavaPosition& start,
+                       const OttavaPosition& endInclusive,
+                       int shiftAmount)
+    {
+        if (shiftAmount == 0) {
+            return;
+        }
+        auto toTimelinePosition = [](const OttavaPosition& position, bool after) {
+            return TimelinePosition{ position.measureIndex, position.beat, position.graceIndex, after };
+        };
+
+        auto& boundaries = m_ottavaBoundaries[target];
+        boundaries.push_back(TimelineBoundary{ toTimelinePosition(start, false), shiftAmount });
+        boundaries.push_back(TimelineBoundary{ toTimelinePosition(endInclusive, true), -shiftAmount });
+    }
+
+    /// @brief Finalize all ottava mappings once spans have been recorded.
+    void finalizeOttavaMappings()
+    {
+        m_ottavaTimelines.clear();
+        for (auto& [target, boundaries] : m_ottavaBoundaries) {
+            if (boundaries.empty()) {
+                continue;
+            }
+            std::sort(boundaries.begin(), boundaries.end(), [](const TimelineBoundary& lhs, const TimelineBoundary& rhs) {
+                return lessThan(lhs.position, rhs.position);
+            });
+
+            int running = 0;
+            auto& samples = m_ottavaTimelines[target];
+            samples.reserve(boundaries.size());
+            for (const auto& boundary : boundaries) {
+                running += boundary.delta;
+                if (!samples.empty()
+                    && !lessThan(samples.back().position, boundary.position)
+                    && !lessThan(boundary.position, samples.back().position)) {
+                    samples.back().cumulative = running;
+                } else {
+                    samples.push_back(TimelineSample{ boundary.position, running });
+                }
+            }
+        }
+        m_ottavaBoundaries.clear();
+    }
+
+    /// @brief Cache the ottava shift for a specific event pointer.
+    void storeEventOttavaShift(const std::string& eventPointer,
+                               const OttavaTarget& target,
+                               const OttavaPosition& position)
+    {
+        const int shift = calculateOttavaShift(target.partPointer, target.staff, target.voice, position);
+        m_eventOttavaShift[eventPointer] = shift;
+    }
+
+    /// @brief Retrieve the ottava shift for an event (if known).
+    [[nodiscard]] std::optional<int> tryGetOttavaShift(const sequence::Event& event) const
+    {
+        const auto it = m_eventOttavaShift.find(event.pointer().to_string());
+        if (it == m_eventOttavaShift.end()) {
+            return std::nullopt;
+        }
+        return it->second;
+    }
+
+    /// @brief Retrieve the ottava shift for an event. Returns 0 if not cached.
+    [[nodiscard]] int getOttavaShift(const sequence::Event& event) const
+    {
+        if (auto shift = tryGetOttavaShift(event)) {
+            return shift.value();
+        }
+        return 0;
     }
 
 private:
@@ -239,9 +341,43 @@ private:
         json_pointer location;          ///< location of instance in JSON
         std::string_view typeName;      ///< schema name of type for this instance
     };
+    struct TimelinePosition
+    {
+        int measureIndex{};
+        FractionValue beat{};
+        std::optional<unsigned> graceIndex;
+        bool after{};
+    };
+
+    struct TimelineBoundary
+    {
+        TimelinePosition position;
+        int delta{};
+    };
+
+    struct TimelineSample
+    {
+        TimelinePosition position;
+        int cumulative{};
+    };
+
+    struct OttavaTargetHash
+    {
+        size_t operator()(const OttavaTarget& target) const noexcept
+        {
+            size_t seed = std::hash<std::string>{}(target.partPointer);
+            seed = hashCombine(seed, target.staff ? std::hash<int>{}(*target.staff) : 0x9e3779b97f4a7c15ULL);
+            seed = hashCombine(seed, target.voice ? std::hash<std::string>{}(*target.voice) : 0x85ebca6b);
+            return seed;
+        }
+    };
+
     std::unordered_map<std::string, MappedLocation> m_objectMap;
     std::unordered_map<int, MappedLocation> m_globalMeasures;
     std::unordered_map<std::string, MappedLocation> m_eventsInBeams;
+    std::unordered_map<OttavaTarget, std::vector<TimelineBoundary>, OttavaTargetHash> m_ottavaBoundaries;
+    std::unordered_map<OttavaTarget, std::vector<TimelineSample>, OttavaTargetHash> m_ottavaTimelines;
+    std::unordered_map<std::string, int> m_eventOttavaShift;
     
     template <typename T, typename Self>
     static auto& getMapImpl(Self& self) {
@@ -269,6 +405,103 @@ private:
             oss << key;
             return oss.str();
         }
+    }
+
+    [[nodiscard]] int calculateOttavaShift(const std::string& partPointer,
+                                           const std::optional<int>& staff,
+                                           const std::optional<std::string>& voice,
+                                           const OttavaPosition& position) const
+    {
+        std::vector<OttavaTarget> targets;
+        targets.reserve(4);
+        auto pushUnique = [&](const std::optional<int>& staffOpt,
+                              const std::optional<std::string>& voiceOpt) {
+            OttavaTarget candidate{ partPointer, staffOpt, voiceOpt };
+            if (std::find(targets.begin(), targets.end(), candidate) == targets.end()) {
+                targets.push_back(std::move(candidate));
+            }
+        };
+
+        pushUnique(staff, voice);
+        pushUnique(staff, std::nullopt);
+        pushUnique(std::nullopt, voice);
+        pushUnique(std::nullopt, std::nullopt);
+
+        int total = 0;
+        for (const auto& candidate : targets) {
+            total += lookupOttavaValue(candidate, position);
+        }
+        return total;
+    }
+
+    [[nodiscard]] int lookupOttavaValue(const OttavaTarget& target, const OttavaPosition& position) const
+    {
+        const auto it = m_ottavaTimelines.find(target);
+        if (it == m_ottavaTimelines.end()) {
+            return 0;
+        }
+        const auto& samples = it->second;
+        if (samples.empty()) {
+            return 0;
+        }
+
+        TimelinePosition query{ position.measureIndex, position.beat, position.graceIndex, false };
+        const auto upper = std::upper_bound(
+            samples.begin(),
+            samples.end(),
+            query,
+            [](const TimelinePosition& value, const TimelineSample& sample) {
+                return lessThan(value, sample.position);
+            });
+
+        if (upper == samples.begin()) {
+            return 0;
+        }
+        auto iter = upper;
+        --iter;
+        return iter->cumulative;
+    }
+
+    [[nodiscard]] static bool lessThan(const TimelinePosition& lhs, const TimelinePosition& rhs)
+    {
+        if (lhs.measureIndex != rhs.measureIndex) {
+            return lhs.measureIndex < rhs.measureIndex;
+        }
+        if (lhs.beat != rhs.beat) {
+            return lhs.beat < rhs.beat;
+        }
+        const int graceCmp = compareGrace(lhs.graceIndex, rhs.graceIndex);
+        if (graceCmp != 0) {
+            return graceCmp < 0;
+        }
+        if (lhs.after != rhs.after) {
+            return lhs.after < rhs.after;
+        }
+        return false;
+    }
+
+    [[nodiscard]] static int compareGrace(const std::optional<unsigned>& lhs,
+                                          const std::optional<unsigned>& rhs)
+    {
+        if (!lhs && !rhs) {
+            return 0;
+        }
+        if (!lhs) {
+            return -1;
+        }
+        if (!rhs) {
+            return 1;
+        }
+        if (*lhs == *rhs) {
+            return 0;
+        }
+        return *lhs > *rhs ? -1 : 1;
+    }
+
+    [[nodiscard]] static size_t hashCombine(size_t seed, size_t value)
+    {
+        seed ^= value + 0x9e3779b97f4a7c15ULL + (seed << 6) + (seed >> 2);
+        return seed;
     }
 };
 

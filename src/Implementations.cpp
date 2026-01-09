@@ -129,13 +129,37 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
 {
     m_idMapping.reset();
     m_idMapping = std::make_shared<util::IdMapping>(root(), errorHandler);
-    struct EventOttavaEntry
+    struct Position
     {
-        util::IdMapping::OttavaTarget target;
-        util::IdMapping::OttavaPosition position;
-        std::string pointer;
+        int measureIndex{};
+        FractionValue beat{};
+        std::optional<unsigned> graceIndex;
     };
-    std::vector<EventOttavaEntry> ottavaEventEntries;
+    auto compareGrace = [](const std::optional<unsigned>& lhs,
+                           const std::optional<unsigned>& rhs) -> int {
+        if (!lhs && !rhs) {
+            return 0;
+        }
+        if (!lhs) {
+            return -1;
+        }
+        if (!rhs) {
+            return 1;
+        }
+        if (*lhs == *rhs) {
+            return 0;
+        }
+        return *lhs < *rhs ? -1 : 1;
+    };
+    auto comparePosition = [&](const Position& lhs, const Position& rhs) -> int {
+        if (lhs.measureIndex != rhs.measureIndex) {
+            return lhs.measureIndex < rhs.measureIndex ? -1 : 1;
+        }
+        if (lhs.beat != rhs.beat) {
+            return lhs.beat < rhs.beat ? -1 : 1;
+        }
+        return compareGrace(lhs.graceIndex, rhs.graceIndex);
+    };
     // global measures
     const auto globalMeasures = global().measures();
     int measureId = 0;
@@ -148,10 +172,63 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
         if (part.id()) {
             m_idMapping->add(part.id().value(), part);
         }
-        const std::string partPointer = part.pointer().to_string();
+        struct OttavaSpan
+        {
+            std::optional<int> staff;
+            std::optional<std::string> voice;
+            int startMeasure{};
+            FractionValue startBeat{};
+            std::optional<unsigned> startGraceIndex;
+            int endMeasure{};
+            FractionValue endBeat{};
+            std::optional<unsigned> endGraceIndex;
+            int value{};
+        };
+        std::vector<OttavaSpan> ottavaSpans;
+        const auto calcOttavaShift = [&](int staff,
+                                         const std::optional<std::string>& voice,
+                                         const Position& position) {
+            int total = 0;
+            for (const auto& span : ottavaSpans) {
+                if (span.staff && staff != *span.staff) {
+                    continue;
+                }
+                if (span.voice && (!voice || *voice != *span.voice)) {
+                    continue;
+                }
+                Position start{ span.startMeasure, span.startBeat, span.startGraceIndex };
+                if (comparePosition(position, start) < 0) {
+                    continue;
+                }
+                Position end{ span.endMeasure, span.endBeat, span.endGraceIndex };
+                if (comparePosition(position, end) > 0) {
+                    continue;
+                }
+                total += span.value;
+            }
+            return total;
+        };
         if (const auto measures = part.measures()) {
             for (const auto measure : measures.value()) {
                 const int measureIndex = static_cast<int>(measure.calcArrayIndex());
+                if (const auto& ottavas = measure.ottavas()) {
+                    for (const auto& ottava : ottavas.value()) {
+                        OttavaSpan span;
+                        span.staff = ottava.staff();
+                        if (auto voiceProp = ottava.voice()) {
+                            span.voice = voiceProp.value();
+                        }
+                        span.startMeasure = measureIndex;
+                        span.startBeat = ottava.position().fraction();
+                        span.startGraceIndex = ottava.position().graceIndex();
+                        const auto endMeasure = m_idMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
+                        span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
+                        span.endBeat = ottava.end().position().fraction();
+                        span.endGraceIndex = ottava.end().position().graceIndex();
+                        span.value = static_cast<int>(ottava.value());
+                        ottavaSpans.push_back(std::move(span));
+                    }
+                }
                 for (const auto sequence : measure.sequences()) {
                     struct PendingGraceEvent
                     {
@@ -165,26 +242,14 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                     const auto sequenceVoice = sequence.voice();
                     const int sequenceStaff = sequence.staff();
 
-                    auto recordOttavaEvent = [&](const sequence::Event& event,
-                                                 const FractionValue& start,
-                                                 unsigned graceIndex,
-                                                 int staffNumber,
-                                                 const std::optional<std::string>& voiceLabel) {
-                        util::IdMapping::OttavaTarget target{
-                            partPointer,
-                            std::optional<int>(staffNumber),
-                            voiceLabel
-                        };
-                        util::IdMapping::OttavaPosition position{
-                            measureIndex,
-                            start,
-                            std::optional<unsigned>(graceIndex)
-                        };
-                        ottavaEventEntries.push_back(EventOttavaEntry{
-                            std::move(target),
-                            std::move(position),
-                            event.pointer().to_string()
-                        });
+                    auto storeOttavaShift = [&](const sequence::Event& event,
+                                                const FractionValue& start,
+                                                unsigned graceIndex,
+                                                int staffNumber,
+                                                const std::optional<std::string>& voiceLabel) {
+                        Position position{ measureIndex, start, std::optional<unsigned>(graceIndex) };
+                        const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
+                        m_idMapping->setEventOttavaShift(event.pointer().to_string(), shift);
                     };
 
                     auto flushPendingGraceEvents = [&]() {
@@ -193,7 +258,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                         }
                         unsigned graceIndex = 1;
                         for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
-                            recordOttavaEvent(it->event, it->startTime, graceIndex, it->staff, it->voice);
+                            storeOttavaShift(it->event, it->startTime, graceIndex, it->staff, it->voice);
                             ++graceIndex;
                         }
                         pendingGraceEvents.clear();
@@ -232,7 +297,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                             return true;
                         }
                         flushPendingGraceEvents();
-                        recordOttavaEvent(event, startTime, 0, eventStaff, sequenceVoice);
+                        storeOttavaShift(event, startTime, 0, eventStaff, sequenceVoice);
                         return true;
                     };
 
@@ -249,38 +314,8 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                         }
                     }
                 }
-                if (const auto& ottavas = measure.ottavas()) {
-                    for (const auto& ottava : ottavas.value()) {
-                        util::IdMapping::OttavaPosition startPosition{
-                            measureIndex,
-                            ottava.position().fraction(),
-                            ottava.position().graceIndex()
-                        };
-                        const auto endMeasure = m_idMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
-                        util::IdMapping::OttavaPosition endPosition{
-                            static_cast<int>(endMeasure.calcArrayIndex()),
-                            ottava.end().position().fraction(),
-                            ottava.end().position().graceIndex()
-                        };
-                        std::optional<int> staff = ottava.staff();
-                        std::optional<std::string> voice;
-                        if (auto voiceProp = ottava.voice()) {
-                            voice = voiceProp.value();
-                        }
-                        util::IdMapping::OttavaTarget target{
-                            partPointer,
-                            staff,
-                            voice
-                        };
-                        m_idMapping->addOttavaSpan(target, startPosition, endPosition, static_cast<int>(ottava.value()));
-                    }
-                }
             }
         }
-    }
-    m_idMapping->finalizeOttavaMappings();
-    for (const auto& entry : ottavaEventEntries) {
-        m_idMapping->storeEventOttavaShift(entry.pointer, entry.target, entry.position);
     }
     // layouts
     if (const auto layoutArray = layouts()) {

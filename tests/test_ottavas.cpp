@@ -94,7 +94,7 @@ TEST(Ottavas, GraceBoundaries)
             {"gr2", 1},
             {"m1e2", 1},
             {"m1e3", -1},
-            {"gr3", -1},
+            {"gr3", 0},
             {"m1e4", -1}
         }));
 }

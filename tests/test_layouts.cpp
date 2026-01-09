@@ -46,8 +46,8 @@ TEST(Layouts, BuildLayoutSpans)
     auto doc = mnx::Document::create(inputPath);
     EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validatation failed"; // empty group means semantic fails: tested elsewhere
 
-    doc.buildIdMapping();
-    auto layout = doc.getIdMapping().tryGet<mnx::Layout>("S0-ScrVw");
+    doc.buildEntityMap();
+    auto layout = doc.getEntityMap().tryGet<mnx::Layout>("S0-ScrVw");
     ASSERT_TRUE(layout);
 
     auto spans = util::buildLayoutSpans(layout.value());

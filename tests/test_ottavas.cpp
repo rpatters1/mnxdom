@@ -43,7 +43,7 @@ void expectOttavaShifts(const std::filesystem::path& relativePath,
 {
     const auto inputPath = getInputPath() / relativePath;
     auto doc = mnx::Document::create(inputPath);
-    doc.buildIdMapping();
+    doc.buildEntityMap();
     int seen = 0;
     for (const auto& part : doc.parts()) {
         if (const auto measures = part.measures()) {
@@ -66,7 +66,7 @@ void expectOttavaShifts(const std::filesystem::path& relativePath,
                                                    return exp.id == eventId;
                                                });
                         if (it != expectations.end()) {
-                            const int actual = doc.getIdMapping().getOttavaShift(event);
+                            const int actual = doc.getEntityMap().getOttavaShift(event);
                             EXPECT_EQ(actual, it->expectedShift) << "Event " << eventId
                                 << " in " << pathString(relativePath);
                             ++seen;
@@ -90,12 +90,12 @@ TEST(Ottavas, GraceBoundaries)
     expectOttavaShifts(
         std::filesystem::path("test_cases") / "ottavas_grace_boundaries.json",
         makeExpectations({
-            {"gr1", 1},
-            {"gr2", 1},
-            {"m1e2", 1},
-            {"m1e3", -1},
+            {"gr1", -1},
+            {"gr2", -1},
+            {"m1e2", -1},
+            {"m1e3", 1},
             {"gr3", 0},
-            {"m1e4", -1}
+            {"m1e4", 1}
         }));
 }
 
@@ -104,14 +104,14 @@ TEST(Ottavas, StaffVoiceSpecific)
     expectOttavaShifts(
         std::filesystem::path("test_cases") / "ottavas_staff_voice_specific.json",
         makeExpectations({
-            {"rh1", 1},
-            {"rh2", 1},
-            {"rh3", 1},
-            {"rh4", 3},
-            {"mel1", 1},
-            {"mel2", 1},
+            {"rh1", -1},
+            {"rh2", -1},
+            {"rh3", -1},
+            {"rh4", -3},
+            {"mel1", -1},
+            {"mel2", -1},
             {"lh1", 0},
-            {"lh2", -1}
+            {"lh2", 1}
         }));
 }
 
@@ -120,11 +120,11 @@ TEST(Ottavas, Overlapping)
     expectOttavaShifts(
         std::filesystem::path("test_cases") / "ottavas_overlapping.json",
         makeExpectations({
-            {"m1e1", 1},
-            {"m1e2", 1},
-            {"m1e3", 1},
-            {"m1e4", 3},
-            {"m2e1", 1},
+            {"m1e1", -1},
+            {"m1e2", -1},
+            {"m1e3", -1},
+            {"m1e4", -3},
+            {"m2e1", -1},
             {"m2e2", 0},
             {"m2e3", 0},
             {"m2e4", 0}
@@ -137,7 +137,7 @@ TEST(Ottavas, CrossMeasureInclusive)
         std::filesystem::path("test_cases") / "ottavas_cross_measure_ties.json",
         makeExpectations({
             {"tie_start", 0},
-            {"tie_end", 1},
+            {"tie_end", -1},
             {"cont1", 0},
             {"cont2", 0},
             {"cont3", 0}
@@ -150,20 +150,20 @@ TEST(Ottavas, ComplexScore)
         std::filesystem::path("test_cases") / "ottavas_complex.json",
         makeExpectations({
             {"fl1", 0},
-            {"fl2", 1},
-            {"fl3", 1},
-            {"fl4", 1},
-            {"fl5", 1},
-            {"fl6", 1},
-            {"fl7", -1},
+            {"fl2", -1},
+            {"fl3", -1},
+            {"fl4", -1},
+            {"fl5", -1},
+            {"fl6", -1},
+            {"fl7", 1},
             {"pn1", 0},
-            {"pn3", 1},
-            {"pn4", 1},
+            {"pn3", -1},
+            {"pn4", -1},
             {"pn5", 0},
             {"pn7", 0},
-            {"pn9", 2},
-            {"pn10", -1},
+            {"pn9", -2},
+            {"pn10", 1},
             {"pn13", 0},
-            {"pn17", -1}
+            {"pn17", 1}
         }));
 }

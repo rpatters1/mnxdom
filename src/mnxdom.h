@@ -60,6 +60,6 @@
 #include "Document.h"
 
 #include "validation/Validation.h"
-#include "util/IdMapping.h"
+#include "util/EntityMap.h"
 #include "util/LayoutHelpers.h"
 #include "util/WalkSequenceContent.h"

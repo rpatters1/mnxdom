@@ -67,7 +67,7 @@ template <typename T, typename KeyType>
 std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& errorLocation)
 {
     try {
-        return document.getIdMapping().get<T>(key, errorLocation);
+        return document.getEntityMap().get<T>(key, errorLocation);
     } catch (const util::mapping_error&) {
         // already reported error, so fall through
     }
@@ -565,7 +565,7 @@ void SemanticValidator::validateScores()
 SemanticValidationResult semanticValidate(const Document& document)
 {
     SemanticValidator validator(document);
-    validator.document.buildIdMapping([&](const std::string& message, const Base& location) {
+    validator.document.buildEntityMap([&](const std::string& message, const Base& location) {
         validator.addError(message, location);
     });
 

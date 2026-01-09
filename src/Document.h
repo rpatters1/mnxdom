@@ -33,7 +33,7 @@
 namespace mnx {
 
 namespace util {
-class IdMapping;
+class EntityMap;
 }
 
 /**
@@ -87,7 +87,7 @@ class Document : public Object
 {
 private:
     /// @brief Not really shared, but std::unique_ptr creates unacceptable dependencies in the headers
-    std::shared_ptr<util::IdMapping> m_idMapping;
+    std::shared_ptr<util::EntityMap> m_entityMapping;
 
 public:
     /**
@@ -107,7 +107,7 @@ public:
     Document(const std::shared_ptr<json>& root) : Object(root, json_pointer{}) {}
 
     /// @brief Copy constructor that zaps the id mapping, if any
-    Document(const Document& src) : Object(src), m_idMapping(nullptr) {}
+    Document(const Document& src) : Object(src), m_entityMapping(nullptr) {}
 
     using Base::root;
 
@@ -187,19 +187,19 @@ public:
     /// @brief Builds or rebuilds the ID mapping for the document, replacing any existing mapping.
     /// @param errorHandler An optional error handler. If provided, the function does not throw on duplicate keys added.
     /// @throws util::mapping_error on duplicate keys if no @p errorHandler is provided.
-    void buildIdMapping(const std::optional<ErrorHandler>& errorHandler = std::nullopt);
+    void buildEntityMap(const std::optional<ErrorHandler>& errorHandler = std::nullopt);
 
-    /// @brief Gets a reference to the ID mapping instance for the document.
-    [[nodiscard]] const util::IdMapping& getIdMapping() const
+    /// @brief Gets a reference to the entity mapping instance for the document.
+    [[nodiscard]] const util::EntityMap& getEntityMap() const
     {
-        MNX_ASSERT_IF(!m_idMapping) {
-            throw std::logic_error("Call buildIdMapping before calling getIdMapping.");
+        MNX_ASSERT_IF(!m_entityMapping) {
+            throw std::logic_error("Call buildEntityMap before calling getEntityMap.");
         }
-        return *m_idMapping;
+        return *m_entityMapping;
     }
 
-    /// @brief Returns whether am ID mapping currently exists
-    [[nodiscard]] bool hasIdMapping() const { return static_cast<bool>(m_idMapping); }
+    /// @brief Returns whether an entity mapping currently exists
+    [[nodiscard]] bool hasEntityMap() const { return static_cast<bool>(m_entityMapping); }
 
     /// @brief Finds a layout that matches the canonical full score layout, where each part staff
     /// appears in order on a single corresponding layout staff.

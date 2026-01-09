@@ -125,10 +125,10 @@ Document Base::document() const
 // ***** Document *****
 // ********************
 
-void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
+void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
 {
-    m_idMapping.reset();
-    m_idMapping = std::make_shared<util::IdMapping>(root(), errorHandler);
+    m_entityMapping.reset();
+    m_entityMapping = std::make_shared<util::EntityMap>(root(), errorHandler);
     struct Position
     {
         int measureIndex{};
@@ -165,12 +165,12 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
     int measureId = 0;
     for (const auto globalMeasure : global().measures()) {
         measureId = globalMeasure.index_or(measureId + 1);
-        m_idMapping->add(measureId, globalMeasure);
+        m_entityMapping->add(measureId, globalMeasure);
     }
     // parts, events, notes
     for (const auto part : parts()) {
         if (part.id()) {
-            m_idMapping->add(part.id().value(), part);
+            m_entityMapping->add(part.id().value(), part);
         }
         struct OttavaSpan
         {
@@ -221,7 +221,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                         span.startMeasure = measureIndex;
                         span.startBeat = ottava.position().fraction();
                         span.startGraceIndex = ottava.position().graceIndex();
-                        const auto endMeasure = m_idMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
+                        const auto endMeasure = m_entityMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
                         span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
                         span.endBeat = ottava.end().position().fraction();
                         span.endGraceIndex = ottava.end().position().graceIndex();
@@ -249,7 +249,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                                                 const std::optional<std::string>& voiceLabel) {
                         Position position{ measureIndex, start, std::optional<unsigned>(graceIndex) };
                         const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
-                        m_idMapping->setEventOttavaShift(event.pointer().to_string(), shift);
+                        m_entityMapping->setEventOttavaShift(event.pointer().to_string(), shift);
                     };
 
                     auto flushPendingGraceEvents = [&]() {
@@ -270,19 +270,19 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                                         const FractionValue&,
                                         util::SequenceWalkContext& ctx) -> bool {
                         if (event.id()) {
-                            m_idMapping->add(event.id().value(), event);
+                            m_entityMapping->add(event.id().value(), event);
                         }
                         if (auto notes = event.notes()) {
                             for (const auto note : notes.value()) {
                                 if (note.id()) {
-                                    m_idMapping->add(note.id().value(), note);
+                                    m_entityMapping->add(note.id().value(), note);
                                 }
                             }
                         }
                         if (auto kitNotes = event.kitNotes()) {
                             for (const auto kitNote : kitNotes.value()) {
                                 if (kitNote.id()) {
-                                    m_idMapping->add(kitNote.id().value(), kitNote);
+                                    m_entityMapping->add(kitNote.id().value(), kitNote);
                                 }
                             }
                         }
@@ -310,7 +310,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                 if (const auto& beams = measure.beams()) {
                     for (const auto& beam : beams.value()) {
                         for (const auto& eventId : beam.events()) {
-                            m_idMapping->addEventToBeam(eventId, beam);
+                            m_entityMapping->addEventToBeam(eventId, beam);
                         }
                     }
                 }
@@ -321,7 +321,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
     if (const auto layoutArray = layouts()) {
         for (const auto layout : layoutArray.value()) {
             if (layout.id().has_value()) {
-                m_idMapping->add(layout.id().value(), layout);
+                m_entityMapping->add(layout.id().value(), layout);
             }
         }
     }

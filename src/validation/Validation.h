@@ -25,7 +25,7 @@
 #include <vector>
 #include <unordered_set>
 
-#include "util/IdMapping.h"
+#include "util/EntityMap.h"
 
 namespace mnx {
 

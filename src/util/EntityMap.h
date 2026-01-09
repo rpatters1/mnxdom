@@ -44,20 +44,20 @@ class mapping_error : public std::runtime_error
 };
 
 /**
- * @class IdMapping
+ * @class EntityMap
  * @brief Provides type-safe ID-based lookup for elements in an MNX document.
  *
- * Constructed from an mnx::Document, the IdMapping scans the document to index
+ * Constructed from an mnx::Document, the EntityMap scans the document to index
  * all identifiable elements by ID or number. Supports lookup by type.
  */
-class IdMapping {
+class EntityMap {
 public:
     /**
      * @brief Constructs the index for a given document.
      * @param documentRoot Shared pointer to the document's JSON root.
      * @param errorHandler A optional callback function for handling errors.
      */
-    explicit IdMapping(std::weak_ptr<json> documentRoot, const std::optional<ErrorHandler>& errorHandler = std::nullopt)
+    explicit EntityMap(std::weak_ptr<json> documentRoot, const std::optional<ErrorHandler>& errorHandler = std::nullopt)
         : m_root(documentRoot), m_errorHandler(errorHandler) {}
         
     /**
@@ -234,7 +234,7 @@ public:
         if (it == m_eventOttavaShift.end()) {
             return std::nullopt;
         }
-        return it->second;
+        return -it->second;
     }
 
     /// @brief Retrieve the ottava shift for an event. Returns 0 if not cached.

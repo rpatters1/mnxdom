@@ -174,7 +174,7 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
         }
         struct OttavaSpan
         {
-            std::optional<int> staff;
+            int staff{ 1 };
             std::optional<std::string> voice;
             int startMeasure{};
             FractionValue startBeat{};
@@ -190,7 +190,7 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
                                          const Position& position) {
             int total = 0;
             for (const auto& span : ottavaSpans) {
-                if (span.staff && staff != *span.staff) {
+                if (staff != span.staff) {
                     continue;
                 }
                 if (span.voice && (!voice || *voice != *span.voice)) {

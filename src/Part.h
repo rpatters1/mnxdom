@@ -134,7 +134,7 @@ public:
  * @class Ottava
  * @brief Represents an ottava starting with the next event in the sequence
  */
-class Ottava : public ArrayElementObject
+class       Ottava : public ArrayElementObject
 {
 public:
     /// @brief Constructor for existing Space objects
@@ -161,7 +161,7 @@ public:
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
     /// @todo orient
     MNX_REQUIRED_CHILD(RhythmicPosition, position);                 ///< The start position of the ottava
-    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);              ///< The staff (within the part) this ottava applies to
     MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this ottava applies to.
 };

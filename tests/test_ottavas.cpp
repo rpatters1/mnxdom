@@ -111,7 +111,7 @@ TEST(Ottavas, StaffVoiceSpecific)
             {"mel1", -1},
             {"mel2", -1},
             {"lh1", 0},
-            {"lh2", 1}
+            {"lh2", 0}
         }));
 }
 

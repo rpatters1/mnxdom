@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 #include <cassert>
+#include <utility>
 
 #include "mnxdom.h"
 #include "music_theory/music_theory.hpp"
@@ -128,6 +129,37 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
 {
     m_idMapping.reset();
     m_idMapping = std::make_shared<util::IdMapping>(root(), errorHandler);
+    struct Position
+    {
+        int measureIndex{};
+        FractionValue beat{};
+        std::optional<unsigned> graceIndex;
+    };
+    auto compareGrace = [](const std::optional<unsigned>& lhs,
+                           const std::optional<unsigned>& rhs) -> int {
+        if (!lhs && !rhs) {
+            return 0;
+        }
+        if (!lhs) {
+            return -1;
+        }
+        if (!rhs) {
+            return 1;
+        }
+        if (*lhs == *rhs) {
+            return 0;
+        }
+        return *lhs < *rhs ? -1 : 1;
+    };
+    auto comparePosition = [&](const Position& lhs, const Position& rhs) -> int {
+        if (lhs.measureIndex != rhs.measureIndex) {
+            return lhs.measureIndex < rhs.measureIndex ? -1 : 1;
+        }
+        if (lhs.beat != rhs.beat) {
+            return lhs.beat < rhs.beat ? -1 : 1;
+        }
+        return compareGrace(lhs.graceIndex, rhs.graceIndex);
+    };
     // global measures
     const auto globalMeasures = global().measures();
     int measureId = 0;
@@ -140,14 +172,103 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
         if (part.id()) {
             m_idMapping->add(part.id().value(), part);
         }
+        struct OttavaSpan
+        {
+            std::optional<int> staff;
+            std::optional<std::string> voice;
+            int startMeasure{};
+            FractionValue startBeat{};
+            std::optional<unsigned> startGraceIndex;
+            int endMeasure{};
+            FractionValue endBeat{};
+            std::optional<unsigned> endGraceIndex;
+            int value{};
+        };
+        std::vector<OttavaSpan> ottavaSpans;
+        const auto calcOttavaShift = [&](int staff,
+                                         const std::optional<std::string>& voice,
+                                         const Position& position) {
+            int total = 0;
+            for (const auto& span : ottavaSpans) {
+                if (span.staff && staff != *span.staff) {
+                    continue;
+                }
+                if (span.voice && (!voice || *voice != *span.voice)) {
+                    continue;
+                }
+                Position start{ span.startMeasure, span.startBeat, span.startGraceIndex };
+                if (comparePosition(position, start) < 0) {
+                    continue;
+                }
+                Position end{ span.endMeasure, span.endBeat, span.endGraceIndex };
+                if (comparePosition(position, end) > 0) {
+                    continue;
+                }
+                total += span.value;
+            }
+            return total;
+        };
         if (const auto measures = part.measures()) {
             for (const auto measure : measures.value()) {
+                const int measureIndex = static_cast<int>(measure.calcArrayIndex());
+                if (const auto& ottavas = measure.ottavas()) {
+                    for (const auto& ottava : ottavas.value()) {
+                        OttavaSpan span;
+                        span.staff = ottava.staff();
+                        if (auto voiceProp = ottava.voice()) {
+                            span.voice = voiceProp.value();
+                        }
+                        span.startMeasure = measureIndex;
+                        span.startBeat = ottava.position().fraction();
+                        span.startGraceIndex = ottava.position().graceIndex();
+                        const auto endMeasure = m_idMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
+                        span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
+                        span.endBeat = ottava.end().position().fraction();
+                        span.endGraceIndex = ottava.end().position().graceIndex();
+                        span.value = static_cast<int>(ottava.value());
+                        ottavaSpans.push_back(std::move(span));
+                    }
+                }
                 for (const auto sequence : measure.sequences()) {
+                    struct PendingGraceEvent
+                    {
+                        sequence::Event event;
+                        FractionValue startTime;
+                        int staff;
+                        std::optional<std::string> voice;
+                    };
+
+                    std::vector<PendingGraceEvent> pendingGraceEvents;
+                    const auto sequenceVoice = sequence.voice();
+                    const int sequenceStaff = sequence.staff();
+
+                    auto storeOttavaShift = [&](const sequence::Event& event,
+                                                const FractionValue& start,
+                                                unsigned graceIndex,
+                                                int staffNumber,
+                                                const std::optional<std::string>& voiceLabel) {
+                        Position position{ measureIndex, start, std::optional<unsigned>(graceIndex) };
+                        const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
+                        m_idMapping->setEventOttavaShift(event.pointer().to_string(), shift);
+                    };
+
+                    auto flushPendingGraceEvents = [&]() {
+                        if (pendingGraceEvents.empty()) {
+                            return;
+                        }
+                        unsigned graceIndex = 1;
+                        for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
+                            storeOttavaShift(it->event, it->startTime, graceIndex, it->staff, it->voice);
+                            ++graceIndex;
+                        }
+                        pendingGraceEvents.clear();
+                    };
+
                     util::SequenceWalkHooks hooks;
                     hooks.onEvent = [&](const sequence::Event& event,
+                                        const FractionValue& startTime,
                                         const FractionValue&,
-                                        const FractionValue&,
-                                        util::SequenceWalkContext&) -> bool {
+                                        util::SequenceWalkContext& ctx) -> bool {
                         if (event.id()) {
                             m_idMapping->add(event.id().value(), event);
                         }
@@ -165,6 +286,18 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                                 }
                             }
                         }
+                        const int eventStaff = event.staff().value_or(sequenceStaff);
+                        if (ctx.inGrace) {
+                            pendingGraceEvents.push_back(PendingGraceEvent{
+                                event,
+                                startTime,
+                                eventStaff,
+                                sequenceVoice
+                            });
+                            return true;
+                        }
+                        flushPendingGraceEvents();
+                        storeOttavaShift(event, startTime, 0, eventStaff, sequenceVoice);
                         return true;
                     };
 
@@ -172,6 +305,7 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
                     MNX_ASSERT_IF(!walked) {
                         throw std::logic_error("Sequence walk aborted unexpectedly while building ID mapping.");
                     }
+                    flushPendingGraceEvents();
                 }
                 if (const auto& beams = measure.beams()) {
                     for (const auto& beam : beams.value()) {

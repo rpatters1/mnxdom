@@ -17,6 +17,7 @@ add_executable(mnxdom_tests
     test_main.cpp
     test_scores.cpp
     test_sequences.cpp
+    test_ottavas.cpp
     validation/test_examples.cpp
     validation/test_global.cpp
     validation/test_layouts.cpp

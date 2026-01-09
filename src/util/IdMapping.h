@@ -21,14 +21,13 @@
  */
 #pragma once
 
-#include <unordered_map>
 #include <memory>
-#include <string>
-#include <tuple>
-#include <stdexcept>
-#include <type_traits>
 #include <optional>
 #include <sstream>
+#include <string>
+#include <tuple>
+#include <type_traits>
+#include <unordered_map>
 
 #include "BaseTypes.h"
 #include "Global.h"
@@ -219,6 +218,32 @@ public:
         m_objectMap.clear();
         m_globalMeasures.clear();
         m_eventsInBeams.clear();
+        m_eventOttavaShift.clear();
+    }
+
+    /// @brief Cache the ottava shift for a specific event pointer.
+    void setEventOttavaShift(const std::string& eventPointer, int shift)
+    {
+        m_eventOttavaShift[eventPointer] = shift;
+    }
+
+    /// @brief Retrieve the ottava shift for an event (if known).
+    [[nodiscard]] std::optional<int> tryGetOttavaShift(const sequence::Event& event) const
+    {
+        const auto it = m_eventOttavaShift.find(event.pointer().to_string());
+        if (it == m_eventOttavaShift.end()) {
+            return std::nullopt;
+        }
+        return it->second;
+    }
+
+    /// @brief Retrieve the ottava shift for an event. Returns 0 if not cached.
+    [[nodiscard]] int getOttavaShift(const sequence::Event& event) const
+    {
+        if (auto shift = tryGetOttavaShift(event)) {
+            return shift.value();
+        }
+        return 0;
     }
 
 private:
@@ -242,6 +267,7 @@ private:
     std::unordered_map<std::string, MappedLocation> m_objectMap;
     std::unordered_map<int, MappedLocation> m_globalMeasures;
     std::unordered_map<std::string, MappedLocation> m_eventsInBeams;
+    std::unordered_map<std::string, int> m_eventOttavaShift;
     
     template <typename T, typename Self>
     static auto& getMapImpl(Self& self) {
@@ -270,6 +296,7 @@ private:
             return oss.str();
         }
     }
+
 };
 
 } // namespace mnx::util

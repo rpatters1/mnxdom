@@ -1,0 +1,224 @@
+{
+   "mnx": {
+      "version": 1
+   },
+   "global": {
+      "measures": [
+         {
+            "time": {
+               "count": 4,
+               "unit": 4
+            }
+         }
+      ]
+   },
+   "parts": [
+      {
+         "staves": 2,
+         "measures": [
+            {
+               "ottavas": [
+                  {
+                     "staff": 1,
+                     "position": {
+                        "fraction": [
+                           0,
+                           1
+                        ]
+                     },
+                     "end": {
+                        "measure": 1,
+                        "position": {
+                           "fraction": [
+                              1,
+                              1
+                           ]
+                        }
+                     },
+                     "value": 1
+                  },
+                  {
+                     "staff": 1,
+                     "voice": "RH",
+                     "position": {
+                        "fraction": [
+                           3,
+                           4
+                        ]
+                     },
+                     "end": {
+                        "measure": 1,
+                        "position": {
+                           "fraction": [
+                              1,
+                              1
+                           ]
+                        }
+                     },
+                     "value": 2
+                  },
+                  {
+                     "voice": "LH",
+                     "position": {
+                        "fraction": [
+                           1,
+                           2
+                        ]
+                     },
+                     "end": {
+                        "measure": 1,
+                        "position": {
+                           "fraction": [
+                              1,
+                              1
+                           ]
+                        }
+                     },
+                     "value": -1
+                  }
+               ],
+               "sequences": [
+                  {
+                     "staff": 1,
+                     "voice": "RH",
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "rh1",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 5,
+                                    "step": "G"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "rh2",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 5,
+                                    "step": "A"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "rh3",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 5,
+                                    "step": "B"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "rh4",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 6,
+                                    "step": "C"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  {
+                     "staff": 1,
+                     "voice": "melody",
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "mel1",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 5,
+                                    "step": "E"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "mel2",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 5,
+                                    "step": "D"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  {
+                     "staff": 2,
+                     "voice": "LH",
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "lh1",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 3,
+                                    "step": "C"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "lh2",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 2,
+                                    "step": "G"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

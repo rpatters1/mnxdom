@@ -125,7 +125,8 @@ Document Base::document() const
 // ***** Document *****
 // ********************
 
-void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
+void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler,
+                              EntityMapPolicies policies)
 {
     m_entityMapping.reset();
     m_entityMapping = std::make_shared<util::EntityMap>(root(), errorHandler);
@@ -136,7 +137,11 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
         std::optional<unsigned> graceIndex;
     };
     auto compareGrace = [](const std::optional<unsigned>& lhs,
-                           const std::optional<unsigned>& rhs) -> int {
+                           const std::optional<unsigned>& rhs,
+                           bool rhsIncludesTrailingMeasureGrace) -> int {
+        if (rhsIncludesTrailingMeasureGrace && rhs && rhs.value() == 0 && lhs && lhs.value() > 0) {
+            return 0;
+        }
         if (!lhs && !rhs) {
             return 0;
         }
@@ -151,21 +156,41 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
         }
         return *lhs < *rhs ? -1 : 1;
     };
-    auto comparePosition = [&](const Position& lhs, const Position& rhs) -> int {
+    auto comparePosition = [&](const Position& lhs,
+                               const Position& rhs,
+                               bool rhsIncludesTrailingGrace) -> int {
         if (lhs.measureIndex != rhs.measureIndex) {
             return lhs.measureIndex < rhs.measureIndex ? -1 : 1;
         }
         if (lhs.beat != rhs.beat) {
             return lhs.beat < rhs.beat ? -1 : 1;
         }
-        return compareGrace(lhs.graceIndex, rhs.graceIndex);
+        return compareGrace(lhs.graceIndex, rhs.graceIndex, rhsIncludesTrailingGrace);
+    };
+    auto adaptGraceIndex = [&](std::optional<unsigned> value) -> std::optional<unsigned> {
+        if (!policies.ottavasRespectGraceTargets) {
+            return std::nullopt;
+        }
+        return value;
+    };
+    auto adaptVoiceTarget = [&](const std::optional<std::string>& voice) -> std::optional<std::string> {
+        if (!policies.ottavasRespectVoiceTargets) {
+            return std::nullopt;
+        }
+        return voice;
     };
     // global measures
     const auto globalMeasures = global().measures();
+    std::vector<FractionValue> measureDurations(globalMeasures.size(), FractionValue(1, 1));
     int measureId = 0;
-    for (const auto globalMeasure : global().measures()) {
+    for (const auto globalMeasure : globalMeasures) {
         measureId = globalMeasure.index_or(measureId + 1);
         m_entityMapping->add(measureId, globalMeasure);
+        FractionValue duration(1, 1);
+        if (const auto time = globalMeasure.calcCurrentTime()) {
+            duration = static_cast<FractionValue>(*time);
+        }
+        measureDurations[globalMeasure.calcArrayIndex()] = duration;
     }
     // parts, events, notes
     for (const auto part : parts()) {
@@ -183,6 +208,7 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
             FractionValue endBeat{};
             std::optional<unsigned> endGraceIndex;
             int value{};
+            bool endsAtMeasureEnd{ false };
         };
         std::vector<OttavaSpan> ottavaSpans;
         const auto calcOttavaShift = [&](int staff,
@@ -197,11 +223,11 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
                     continue;
                 }
                 Position start{ span.startMeasure, span.startBeat, span.startGraceIndex };
-                if (comparePosition(position, start) < 0) {
+                if (comparePosition(position, start, false) < 0) {
                     continue;
                 }
                 Position end{ span.endMeasure, span.endBeat, span.endGraceIndex };
-                if (comparePosition(position, end) > 0) {
+                if (comparePosition(position, end, span.endsAtMeasureEnd) > 0) {
                     continue;
                 }
                 total += span.value;
@@ -215,17 +241,21 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
                     for (const auto& ottava : ottavas.value()) {
                         OttavaSpan span;
                         span.staff = ottava.staff();
-                        if (auto voiceProp = ottava.voice()) {
-                            span.voice = voiceProp.value();
-                        }
+                        span.voice = adaptVoiceTarget(ottava.voice());
                         span.startMeasure = measureIndex;
                         span.startBeat = ottava.position().fraction();
-                        span.startGraceIndex = ottava.position().graceIndex();
+                        span.startGraceIndex = adaptGraceIndex(ottava.position().graceIndex());
                         const auto endMeasure = m_entityMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
                         span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
                         span.endBeat = ottava.end().position().fraction();
-                        span.endGraceIndex = ottava.end().position().graceIndex();
+                        span.endGraceIndex = adaptGraceIndex(ottava.end().position().graceIndex());
                         span.value = static_cast<int>(ottava.value());
+                        if (span.endMeasure >= 0) {
+                            const auto measureIdx = static_cast<size_t>(span.endMeasure);
+                            if (measureIdx < measureDurations.size()) {
+                                span.endsAtMeasureEnd = span.endBeat == measureDurations[measureIdx];
+                            }
+                        }
                         ottavaSpans.push_back(std::move(span));
                     }
                 }
@@ -244,10 +274,10 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
 
                     auto storeOttavaShift = [&](const sequence::Event& event,
                                                 const FractionValue& start,
-                                                unsigned graceIndex,
+                                                std::optional<unsigned> graceIndex,
                                                 int staffNumber,
                                                 const std::optional<std::string>& voiceLabel) {
-                        Position position{ measureIndex, start, std::optional<unsigned>(graceIndex) };
+                        Position position{ measureIndex, start, adaptGraceIndex(graceIndex) };
                         const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
                         m_entityMapping->setEventOttavaShift(event.pointer().to_string(), shift);
                     };
@@ -258,7 +288,11 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
                         }
                         unsigned graceIndex = 1;
                         for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
-                            storeOttavaShift(it->event, it->startTime, graceIndex, it->staff, it->voice);
+                            storeOttavaShift(it->event,
+                                             it->startTime,
+                                             std::optional<unsigned>(graceIndex),
+                                             it->staff,
+                                             it->voice);
                             ++graceIndex;
                         }
                         pendingGraceEvents.clear();
@@ -297,7 +331,11 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler)
                             return true;
                         }
                         flushPendingGraceEvents();
-                        storeOttavaShift(event, startTime, 0, eventStaff, sequenceVoice);
+                        storeOttavaShift(event,
+                                         startTime,
+                                         std::optional<unsigned>(0),
+                                         eventStaff,
+                                         sequenceVoice);
                         return true;
                     };
 

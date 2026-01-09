@@ -39,11 +39,16 @@ std::vector<EventExpectation> makeExpectations(const std::vector<EventExpectatio
 }
 
 void expectOttavaShifts(const std::filesystem::path& relativePath,
-                        const std::vector<EventExpectation>& expectations)
+                        const std::vector<EventExpectation>& expectations,
+                        const mnx::EntityMapPolicies* policies = nullptr)
 {
     const auto inputPath = getInputPath() / relativePath;
     auto doc = mnx::Document::create(inputPath);
-    doc.buildEntityMap();
+    if (policies) {
+        doc.buildEntityMap(std::nullopt, *policies);
+    } else {
+        doc.buildEntityMap();
+    }
     int seen = 0;
     for (const auto& part : doc.parts()) {
         if (const auto measures = part.measures()) {
@@ -166,4 +171,61 @@ TEST(Ottavas, ComplexScore)
             {"pn13", 0},
             {"pn17", 1}
         }));
+}
+
+TEST(Ottavas, GraceAtMeasureEnd)
+{
+    const auto relative = std::filesystem::path("test_cases") / "ottavas_grace_measure_end.json";
+    expectOttavaShifts(
+        relative,
+        makeExpectations({
+            {"end_gr1", -1},
+            {"end_gr2", -1}
+        }));
+
+    mnx::EntityMapPolicies policies;
+    policies.ottavasRespectGraceTargets = false;
+    expectOttavaShifts(
+        relative,
+        makeExpectations({
+            {"end_gr1", -1},
+            {"end_gr2", -1}
+        }),
+        &policies);
+}
+
+TEST(Ottavas, GraceWithSpaceHost)
+{
+    expectOttavaShifts(
+        std::filesystem::path("test_cases") / "ottavas_space_host.json",
+        makeExpectations({
+            {"grs1", -1},
+            {"grs2", -1}
+        }));
+}
+
+TEST(Ottavas, PolicyGraceFallback)
+{
+    mnx::EntityMapPolicies policies;
+    policies.ottavasRespectGraceTargets = false;
+    expectOttavaShifts(
+        std::filesystem::path("test_cases") / "ottavas_grace_boundaries.json",
+        makeExpectations({
+            {"gr3", 1}
+        }),
+        &policies);
+}
+
+TEST(Ottavas, PolicyVoiceFallback)
+{
+    mnx::EntityMapPolicies policies;
+    policies.ottavasRespectVoiceTargets = false;
+    expectOttavaShifts(
+        std::filesystem::path("test_cases") / "ottavas_voice_policy.json",
+        makeExpectations({
+            {"up1", -1},
+            {"low1", -1},
+            {"low2", -1}
+        }),
+        &policies);
 }

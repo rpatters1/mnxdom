@@ -37,6 +37,21 @@ class EntityMap;
 }
 
 /**
+ * @struct EntityMapPolicies
+ * @brief Controls optional behaviors when building an EntityMap.
+ *
+ * These policies allow consumers to relax certain MNX capabilities that they
+ * might not support while still obtaining a useful ottava map.
+ */
+struct EntityMapPolicies
+{
+    /// @brief When false, ottava spans ignore grace-note targeting (graces follow the main event).
+    bool ottavasRespectGraceTargets { true };
+    /// @brief When false, ottava spans ignore voice-specific targeting (ottavas apply to the entire staff).
+    bool ottavasRespectVoiceTargets { true };
+};
+
+/**
  * @class MnxMetaData
  * @brief Represents metadata for an MNX document.
  */
@@ -186,8 +201,10 @@ public:
 
     /// @brief Builds or rebuilds the ID mapping for the document, replacing any existing mapping.
     /// @param errorHandler An optional error handler. If provided, the function does not throw on duplicate keys added.
+    /// @param policies Optional controls for how supplemental mappings (like ottavas) are constructed.
     /// @throws util::mapping_error on duplicate keys if no @p errorHandler is provided.
-    void buildEntityMap(const std::optional<ErrorHandler>& errorHandler = std::nullopt);
+    void buildEntityMap(const std::optional<ErrorHandler>& errorHandler = std::nullopt,
+                        EntityMapPolicies policies = {});
 
     /// @brief Gets a reference to the entity mapping instance for the document.
     [[nodiscard]] const util::EntityMap& getEntityMap() const

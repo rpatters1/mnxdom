@@ -1,0 +1,119 @@
+{
+   "mnx": {
+      "version": 1
+   },
+   "global": {
+      "measures": [
+         {
+            "time": {
+               "count": 4,
+               "unit": 4
+            }
+         }
+      ]
+   },
+   "parts": [
+      {
+         "measures": [
+            {
+               "ottavas": [
+                  {
+                     "staff": 1,
+                     "voice": "upper",
+                     "position": {
+                        "fraction": [
+                           0,
+                           1
+                        ]
+                     },
+                     "end": {
+                        "measure": 1,
+                        "position": {
+                           "fraction": [
+                              1,
+                              1
+                           ]
+                        }
+                     },
+                     "value": 1
+                  }
+               ],
+               "sequences": [
+                  {
+                     "staff": 1,
+                     "voice": "upper",
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "up1",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 5,
+                                    "step": "C"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "up2",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 5,
+                                    "step": "D"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  {
+                     "staff": 1,
+                     "voice": "lower",
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "low1",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "E"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "low2",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "F"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

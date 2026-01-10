@@ -15,6 +15,28 @@
             "staves": 3,
             "measures": [
                 {
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "sign": "F",
+                                "staffPosition": 2
+                            }
+                        },
+                        {
+                            "staff": 3,
+                            "clef": {
+                                "sign": "F",
+                                "staffPosition": 2
+                            }
+                        }
+                    ],
                     "sequences": []
                 }
             ]
@@ -26,6 +48,21 @@
             "staves": 2,
             "measures": [
                 {
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "sign": "F",
+                                "staffPosition": 2
+                            }
+                        }
+                    ],
                     "sequences": []
                 }
             ]

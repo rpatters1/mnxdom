@@ -17,6 +17,21 @@
          "staves": 2,
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  },
+                  {
+                     "staff": 2,
+                     "clef": {
+                        "sign": "F",
+                        "staffPosition": 2
+                     }
+                  }
+               ],
                "ottavas": [
                   {
                      "staff": 1,

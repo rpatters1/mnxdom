@@ -298,6 +298,14 @@
        {
           "measures": [
              {
+                "clefs": [
+                   {
+                      "clef": {
+                         "sign": "G",
+                         "staffPosition": -2
+                      }
+                   }
+                ],
                 "sequences": []
              },
              {
@@ -312,6 +320,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -326,6 +342,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -340,6 +364,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -354,6 +386,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -368,6 +408,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -382,6 +430,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -396,6 +452,21 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  },
+                  {
+                     "staff": 2,
+                     "clef": {
+                        "sign": "F",
+                        "staffPosition": 2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -411,6 +482,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -425,6 +504,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -439,6 +526,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "C",
+                        "staffPosition": 0
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -453,6 +548,14 @@
        {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "F",
+                        "staffPosition": 2
+                     }
+                  }
+               ],
                "sequences": []
             },
             {
@@ -467,6 +570,14 @@
        {
           "measures": [
              {
+                "clefs": [
+                   {
+                      "clef": {
+                         "sign": "F",
+                         "staffPosition": 2
+                      }
+                   }
+                ],
                 "sequences": []
              },
              {

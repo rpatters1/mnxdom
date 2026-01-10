@@ -17,6 +17,14 @@
       {
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "ottavas": [
                   {
                      "position": {

@@ -46,7 +46,7 @@ void expectOttavaShifts(const std::filesystem::path& relativePath,
     auto doc = mnx::Document::create(inputPath);
     fullValidate(doc, inputPath);
     if (policies) {
-        doc.buildEntityMap(std::nullopt, *policies);
+        doc.buildEntityMap(*policies);
     } else {
         doc.buildEntityMap();
     }

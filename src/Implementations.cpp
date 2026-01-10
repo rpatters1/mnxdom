@@ -125,8 +125,8 @@ Document Base::document() const
 // ***** Document *****
 // ********************
 
-void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler,
-                              EntityMapPolicies policies)
+void Document::buildEntityMap(EntityMapPolicies policies,
+                              const std::optional<ErrorHandler>& errorHandler)
 {
     m_entityMapping.reset();
     m_entityMapping = std::make_shared<util::EntityMap>(root(), errorHandler);

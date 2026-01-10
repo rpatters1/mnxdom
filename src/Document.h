@@ -200,11 +200,11 @@ public:
     }
 
     /// @brief Builds or rebuilds the ID mapping for the document, replacing any existing mapping.
-    /// @param errorHandler An optional error handler. If provided, the function does not throw on duplicate keys added.
     /// @param policies Optional controls for how supplemental mappings (like ottavas) are constructed.
+    /// @param errorHandler An optional error handler. If provided, the function does not throw on duplicate keys added.
     /// @throws util::mapping_error on duplicate keys if no @p errorHandler is provided.
-    void buildEntityMap(const std::optional<ErrorHandler>& errorHandler = std::nullopt,
-                        EntityMapPolicies policies = {});
+    void buildEntityMap(EntityMapPolicies policies = {},
+                        const std::optional<ErrorHandler>& errorHandler = std::nullopt);
 
     /// @brief Gets a reference to the entity mapping instance for the document.
     [[nodiscard]] const util::EntityMap& getEntityMap() const

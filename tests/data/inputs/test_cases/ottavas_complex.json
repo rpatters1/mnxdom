@@ -29,6 +29,14 @@
          "name": "Flute",
          "measures": [
             {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
                "ottavas": [
                   {
                      "voice": "lead",
@@ -291,9 +299,24 @@
       },
       {
          "name": "Piano",
-         "staves": 2,
-         "measures": [
-            {
+        "staves": 2,
+        "measures": [
+           {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  },
+                  {
+                     "staff": 2,
+                     "clef": {
+                        "sign": "F",
+                        "staffPosition": 2
+                     }
+                  }
+               ],
                "ottavas": [
                   {
                      "staff": 1,

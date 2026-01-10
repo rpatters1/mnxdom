@@ -24,6 +24,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "mnxdom.h"
 
@@ -427,9 +428,49 @@ void SemanticValidator::validateParts()
                 }
             }
         }
+        const int staffCount = part.staves();
+        if (numPartMeasures > 0) {
+            const auto firstMeasure = part.measures()->at(0);
+            std::vector<bool> staffHasInitialClef(static_cast<size_t>(staffCount) + 1, false);
+            if (auto clefs = firstMeasure.clefs()) {
+                for (const auto clef : clefs.value()) {
+                    const int staffNumber = clef.staff();
+                    if (staffNumber < 1 || staffNumber > staffCount) {
+                        continue;
+                    }
+                    bool atMeasureStart = true;
+                    if (const auto position = clef.position()) {
+                        const FractionValue offset = position->fraction();
+                        if (offset != FractionValue(0, 1)) {
+                            atMeasureStart = false;
+                        }
+                    }
+                    if (atMeasureStart) {
+                        staffHasInitialClef[static_cast<size_t>(staffNumber)] = true;
+                    }
+                }
+            }
+            for (int staffNumber = 1; staffNumber <= staffCount; ++staffNumber) {
+                if (!staffHasInitialClef[static_cast<size_t>(staffNumber)]) {
+                    addError("Missing clef at the beginning of staff " + std::to_string(staffNumber) +
+                                 " in part " + part.id_or("<no-id>") + " (first measure).",
+                             firstMeasure);
+                }
+            }
+        }
         if (auto measures = part.measures()) {
             // first pass: validateSequenceContent creates the eventList and the noteList
             for (const auto measure : measures.value()) {
+                if (auto clefs = measure.clefs()) {
+                    for (const auto clef : clefs.value()) {
+                        const int staffNumber = clef.staff();
+                        if (staffNumber < 1 || staffNumber > staffCount) {
+                            addError("Clef references non-existent staff " + std::to_string(staffNumber) +
+                                         " in part " + part.id_or("<no-id>") + ".",
+                                     clef);
+                        }
+                    }
+                }
                 auto measureTime = [&]() -> FractionValue {
                     if (auto time = measure.calcCurrentTime()) {
                         return time.value();
@@ -565,7 +606,7 @@ void SemanticValidator::validateScores()
 SemanticValidationResult semanticValidate(const Document& document)
 {
     SemanticValidator validator(document);
-    validator.document.buildEntityMap([&](const std::string& message, const Base& location) {
+    validator.document.buildEntityMap({}, [&](const std::string& message, const Base& location) {
         validator.addError(message, location);
     });
 

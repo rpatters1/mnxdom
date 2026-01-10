@@ -10,13 +10,15 @@
             "id": "P1",
             "name": "Organ",
             "shortName": "Org.",
-            "staves": 3
+            "staves": 3,
+            "measures": []
         },
         {
             "id": "P1",
             "name": "Harpsichord 1",
             "shortName": "Hpschd. 1",
-            "staves": 2
+            "staves": 2,
+            "measures": []
         }
     ]
 }

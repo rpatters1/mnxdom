@@ -52,36 +52,34 @@ void expectOttavaShifts(const std::filesystem::path& relativePath,
     }
     int seen = 0;
     for (const auto& part : doc.parts()) {
-        if (const auto measures = part.measures()) {
-            for (const auto measure : measures.value()) {
-                for (const auto sequence : measure.sequences()) {
-                    auto hooks = mnx::util::SequenceWalkHooks{};
-                    hooks.onEvent = [&](const mnx::sequence::Event& event,
-                                        const mnx::FractionValue& start,
-                                        const mnx::FractionValue& duration,
-                                        mnx::util::SequenceWalkContext& ctx) {
-                        (void)start;
-                        (void)duration;
-                        (void)ctx;
-                        if (!event.id()) {
-                            return true;
-                        }
-                        const auto eventId = event.id().value();
-                        auto it = std::find_if(expectations.begin(), expectations.end(),
-                                               [&](const EventExpectation& exp) {
-                                                   return exp.id == eventId;
-                                               });
-                        if (it != expectations.end()) {
-                            const int actual = doc.getEntityMap().getOttavaShift(event);
-                            EXPECT_EQ(actual, it->expectedShift) << "Event " << eventId
-                                << " in " << pathString(relativePath);
-                            ++seen;
-                        }
+        for (const auto measure : part.measures()) {
+            for (const auto sequence : measure.sequences()) {
+                auto hooks = mnx::util::SequenceWalkHooks{};
+                hooks.onEvent = [&](const mnx::sequence::Event& event,
+                                    const mnx::FractionValue& start,
+                                    const mnx::FractionValue& duration,
+                                    mnx::util::SequenceWalkContext& ctx) {
+                    (void)start;
+                    (void)duration;
+                    (void)ctx;
+                    if (!event.id()) {
                         return true;
-                    };
-                    auto walked = mnx::util::walkSequenceContent(sequence, hooks);
-                    ASSERT_TRUE(walked);
-                }
+                    }
+                    const auto eventId = event.id().value();
+                    auto it = std::find_if(expectations.begin(), expectations.end(),
+                                           [&](const EventExpectation& exp) {
+                                               return exp.id == eventId;
+                                           });
+                    if (it != expectations.end()) {
+                        const int actual = doc.getEntityMap().getOttavaShift(event);
+                        EXPECT_EQ(actual, it->expectedShift) << "Event " << eventId
+                            << " in " << pathString(relativePath);
+                        ++seen;
+                    }
+                    return true;
+                };
+                auto walked = mnx::util::walkSequenceContent(sequence, hooks);
+                ASSERT_TRUE(walked);
             }
         }
     }

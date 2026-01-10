@@ -65,23 +65,23 @@ TEST(TestSequences, TransposedPitches)
 
     {
         auto part = doc.parts()[0];
-        checkSequence(part.measures().value()[0], 0, +7, { NoteStep::G, 4, +1 });
-        checkSequence(part.measures().value()[1], 0, -7, { NoteStep::C, 5, -1 });
+        checkSequence(part.measures()[0], 0, +7, { NoteStep::G, 4, +1 });
+        checkSequence(part.measures()[1], 0, -7, { NoteStep::C, 5, -1 });
     }
     {
         auto part = doc.parts()[1];
-        checkSequence(part.measures().value()[0], 0, -3, { NoteStep::G, 4, 0 });
-        checkSequence(part.measures().value()[1], 0, -5, { NoteStep::B, 4, -1 });
+        checkSequence(part.measures()[0], 0, -3, { NoteStep::G, 4, 0 });
+        checkSequence(part.measures()[1], 0, -5, { NoteStep::B, 4, -1 });
     }
     {
         auto part = doc.parts()[2];
-        checkSequence(part.measures().value()[0], 0, +4, { NoteStep::A, 4, 0 });
-        checkSequence(part.measures().value()[1], 0, +2, { NoteStep::D, 5, 0 });
+        checkSequence(part.measures()[0], 0, +4, { NoteStep::A, 4, 0 });
+        checkSequence(part.measures()[1], 0, +2, { NoteStep::D, 5, 0 });
     }
     {
         auto part = doc.parts()[3];
-        checkSequence(part.measures().value()[0], 0, -2, { NoteStep::B, 4, -1 });
-        checkSequence(part.measures().value()[1], 0, -4, { NoteStep::B, 4, -1 });
+        checkSequence(part.measures()[0], 0, -2, { NoteStep::B, 4, -1 });
+        checkSequence(part.measures()[1], 0, -4, { NoteStep::B, 4, -1 });
     }
 }
 
@@ -97,22 +97,22 @@ TEST(TestSequences, TransposedPitchesNoWrap)
 
     {
         auto part = doc.parts()[0];
-        checkSequence(part.measures().value()[0], 0, +7, { NoteStep::C, 5, +1 });
-        checkSequence(part.measures().value()[1], 0, -7, { NoteStep::C, 5, -1 });
+        checkSequence(part.measures()[0], 0, +7, { NoteStep::C, 5, +1 });
+        checkSequence(part.measures()[1], 0, -7, { NoteStep::C, 5, -1 });
     }
     {
         auto part = doc.parts()[1];
-        checkSequence(part.measures().value()[0], 2, +9, { NoteStep::F, 5, +2 });
-        checkSequence(part.measures().value()[1], 0, -5, { NoteStep::D, 5, -1 });
+        checkSequence(part.measures()[0], 2, +9, { NoteStep::F, 5, +2 });
+        checkSequence(part.measures()[1], 0, -5, { NoteStep::D, 5, -1 });
     }
     {
         auto part = doc.parts()[2];
-        checkSequence(part.measures().value()[0], 0, +4, { NoteStep::E, 5, 0 });
-        checkSequence(part.measures().value()[1], 0, -10, { NoteStep::E, 5, -2 });
+        checkSequence(part.measures()[0], 0, +4, { NoteStep::E, 5, 0 });
+        checkSequence(part.measures()[1], 0, -10, { NoteStep::E, 5, -2 });
     }
     {
         auto part = doc.parts()[3];
-        checkSequence(part.measures().value()[0], 2, -2, { NoteStep::D, 6, 0 });
-        checkSequence(part.measures().value()[1], 0, -4, { NoteStep::A, 5, -1 });
+        checkSequence(part.measures()[0], 2, -2, { NoteStep::D, 6, 0 });
+        checkSequence(part.measures()[1], 0, -4, { NoteStep::A, 5, -1 });
     }
 }

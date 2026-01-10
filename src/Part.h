@@ -304,8 +304,18 @@ class Part : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
+    /// @brief Creates a new Part class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    Part(Base& parent, std::string_view key)
+        : ArrayElementObject(parent, key)
+    {
+        // required children
+        create_measures();
+    }
+
     MNX_OPTIONAL_CHILD(Dictionary<part::KitComponent>, kit); ///< The definition of a kit of (usually percussion) instruments that are used by the part.
-    MNX_OPTIONAL_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
+    MNX_REQUIRED_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
     MNX_OPTIONAL_PROPERTY(std::string, name);           ///< Specifies the user-facing full name of this part
     MNX_OPTIONAL_PROPERTY(std::string, shortName);      ///< Specifies the user-facing abbreviated name of this part
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);      ///< Name of SMuFL-font for notation elements in the part (can be overridden by children)

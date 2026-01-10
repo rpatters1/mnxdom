@@ -406,7 +406,8 @@ void SemanticValidator::validateParts()
     for (const auto part : document.parts()) {
         size_t x = part.calcArrayIndex();
         std::string partName = "[" + std::to_string(x) + "]";
-        size_t numPartMeasures = part.measures() ? part.measures().value().size() : 0;
+        const auto measures = part.measures();
+        size_t numPartMeasures = measures.size();
         size_t numGlobalMeasures = document.global().measures().size();
         if (numPartMeasures != numGlobalMeasures) {
             addError("Part" + partName + " contains a different number of measures (" + std::to_string(numPartMeasures)
@@ -430,7 +431,7 @@ void SemanticValidator::validateParts()
         }
         const int staffCount = part.staves();
         if (numPartMeasures > 0) {
-            const auto firstMeasure = part.measures()->at(0);
+            const auto firstMeasure = measures[0];
             std::vector<bool> staffHasInitialClef(static_cast<size_t>(staffCount) + 1, false);
             if (auto clefs = firstMeasure.clefs()) {
                 for (const auto clef : clefs.value()) {
@@ -458,42 +459,40 @@ void SemanticValidator::validateParts()
                 }
             }
         }
-        if (auto measures = part.measures()) {
-            // first pass: validateSequenceContent creates the eventList and the noteList
-            for (const auto measure : measures.value()) {
-                if (auto clefs = measure.clefs()) {
-                    for (const auto clef : clefs.value()) {
-                        const int staffNumber = clef.staff();
-                        if (staffNumber < 1 || staffNumber > staffCount) {
-                            addError("Clef references non-existent staff " + std::to_string(staffNumber) +
-                                         " in part " + part.id_or("<no-id>") + ".",
-                                     clef);
-                        }
+        // first pass: validateSequenceContent creates the eventList and the noteList
+        for (const auto measure : measures) {
+            if (auto clefs = measure.clefs()) {
+                for (const auto clef : clefs.value()) {
+                    const int staffNumber = clef.staff();
+                    if (staffNumber < 1 || staffNumber > staffCount) {
+                        addError("Clef references non-existent staff " + std::to_string(staffNumber) +
+                                     " in part " + part.id_or("<no-id>") + ".",
+                                 clef);
                     }
-                }
-                auto measureTime = [&]() -> FractionValue {
-                    if (auto time = measure.calcCurrentTime()) {
-                        return time.value();
-                    }
-                    return FractionValue(4, 4);
-                }();
-                for (const auto sequence : measure.sequences()) {
-                    if (sequence.staff() > part.staves()) {
-                        addError("Sequence references non-existent part staff for part " + part.id_or("<no-id>") + ".", sequence);
-                        continue;
-                    }
-                    /// @todo check voice uniqueness
-                    validateSequenceContent(sequence.content(), sequence, measureTime);
                 }
             }
-            // second pass: validate other items that need a complete list of events and notes
-            for (const auto measure : measures.value()) {
-                if (auto beams = measure.beams()) {
-                    validateBeams(beams.value(), 1);
+            auto measureTime = [&]() -> FractionValue {
+                if (auto time = measure.calcCurrentTime()) {
+                    return time.value();
                 }
-                if (auto ottavas = measure.ottavas()) {
-                    validateOttavas(measure, ottavas.value());
+                return FractionValue(4, 4);
+            }();
+            for (const auto sequence : measure.sequences()) {
+                if (sequence.staff() > part.staves()) {
+                    addError("Sequence references non-existent part staff for part " + part.id_or("<no-id>") + ".", sequence);
+                    continue;
                 }
+                /// @todo check voice uniqueness
+                validateSequenceContent(sequence.content(), sequence, measureTime);
+            }
+        }
+        // second pass: validate other items that need a complete list of events and notes
+        for (const auto measure : measures) {
+            if (auto beams = measure.beams()) {
+                validateBeams(beams.value(), 1);
+            }
+            if (auto ottavas = measure.ottavas()) {
+                validateOttavas(measure, ottavas.value());
             }
         }
     }

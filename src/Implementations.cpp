@@ -234,137 +234,135 @@ void Document::buildEntityMap(EntityMapPolicies policies,
             }
             return total;
         };
-        if (const auto measures = part.measures()) {
-            for (const auto measure : measures.value()) {
-                const int measureIndex = static_cast<int>(measure.calcArrayIndex());
-                if (const auto& ottavas = measure.ottavas()) {
-                    for (const auto& ottava : ottavas.value()) {
-                        OttavaSpan span;
-                        span.staff = ottava.staff();
-                        span.voice = adaptVoiceTarget(ottava.voice());
-                        span.startMeasure = measureIndex;
-                        span.startBeat = ottava.position().fraction();
-                        span.startGraceIndex = adaptGraceIndex(ottava.position().graceIndex());
-                        const auto endMeasure = m_entityMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
-                        span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
-                        span.endBeat = ottava.end().position().fraction();
-                        span.endGraceIndex = adaptGraceIndex(ottava.end().position().graceIndex());
-                        span.value = static_cast<int>(ottava.value());
-                        if (span.endMeasure >= 0) {
-                            const auto measureIdx = static_cast<size_t>(span.endMeasure);
-                            if (measureIdx < measureDurations.size()) {
-                                span.endsAtMeasureEnd = span.endBeat == measureDurations[measureIdx];
-                            }
+        for (const auto measure : part.measures()) {
+            const int measureIndex = static_cast<int>(measure.calcArrayIndex());
+            if (const auto& ottavas = measure.ottavas()) {
+                for (const auto& ottava : ottavas.value()) {
+                    OttavaSpan span;
+                    span.staff = ottava.staff();
+                    span.voice = adaptVoiceTarget(ottava.voice());
+                    span.startMeasure = measureIndex;
+                    span.startBeat = ottava.position().fraction();
+                    span.startGraceIndex = adaptGraceIndex(ottava.position().graceIndex());
+                    const auto endMeasure = m_entityMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
+                    span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
+                    span.endBeat = ottava.end().position().fraction();
+                    span.endGraceIndex = adaptGraceIndex(ottava.end().position().graceIndex());
+                    span.value = static_cast<int>(ottava.value());
+                    if (span.endMeasure >= 0) {
+                        const auto measureIdx = static_cast<size_t>(span.endMeasure);
+                        if (measureIdx < measureDurations.size()) {
+                            span.endsAtMeasureEnd = span.endBeat == measureDurations[measureIdx];
                         }
-                        ottavaSpans.push_back(std::move(span));
                     }
+                    ottavaSpans.push_back(std::move(span));
                 }
-                for (const auto sequence : measure.sequences()) {
-                    struct PendingGraceEvent
-                    {
-                        sequence::Event event;
-                        FractionValue startTime;
-                        int staff;
-                        std::optional<std::string> voice;
-                    };
+            }
+            for (const auto sequence : measure.sequences()) {
+                struct PendingGraceEvent
+                {
+                    sequence::Event event;
+                    FractionValue startTime;
+                    int staff;
+                    std::optional<std::string> voice;
+                };
 
-                    std::vector<PendingGraceEvent> pendingGraceEvents;
-                    const auto sequenceVoice = sequence.voice();
-                    const int sequenceStaff = sequence.staff();
+                std::vector<PendingGraceEvent> pendingGraceEvents;
+                const auto sequenceVoice = sequence.voice();
+                const int sequenceStaff = sequence.staff();
 
-                    auto storeOttavaShift = [&](const sequence::Event& event,
-                                                const FractionValue& start,
-                                                std::optional<unsigned> graceIndex,
-                                                int staffNumber,
-                                                const std::optional<std::string>& voiceLabel) {
-                        Position position{ measureIndex, start, adaptGraceIndex(graceIndex) };
-                        const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
-                        m_entityMapping->setEventOttavaShift(event.pointer().to_string(), shift);
-                    };
+                auto storeOttavaShift = [&](const sequence::Event& event,
+                                            const FractionValue& start,
+                                            std::optional<unsigned> graceIndex,
+                                            int staffNumber,
+                                            const std::optional<std::string>& voiceLabel) {
+                    Position position{ measureIndex, start, adaptGraceIndex(graceIndex) };
+                    const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
+                    m_entityMapping->setEventOttavaShift(event.pointer().to_string(), shift);
+                };
 
-                    auto flushPendingGraceEvents = [&]() {
-                        if (pendingGraceEvents.empty()) {
-                            return;
-                        }
-                        unsigned graceIndex = 1;
-                        for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
-                            storeOttavaShift(it->event,
-                                             it->startTime,
-                                             std::optional<unsigned>(graceIndex),
-                                             it->staff,
-                                             it->voice);
-                            ++graceIndex;
-                        }
-                        pendingGraceEvents.clear();
-                    };
+                auto flushPendingGraceEvents = [&]() {
+                    if (pendingGraceEvents.empty()) {
+                        return;
+                    }
+                    unsigned graceIndex = 1;
+                    for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
+                        storeOttavaShift(it->event,
+                                         it->startTime,
+                                         std::optional<unsigned>(graceIndex),
+                                         it->staff,
+                                         it->voice);
+                        ++graceIndex;
+                    }
+                    pendingGraceEvents.clear();
+                };
 
-                    util::SequenceWalkHooks hooks;
-                    hooks.onEvent = [&](const sequence::Event& event,
-                                        const FractionValue& startTime,
-                                        const FractionValue&,
-                                        util::SequenceWalkContext& ctx) -> bool {
-                        if (event.id()) {
-                            m_entityMapping->add(event.id().value(), event);
-                        }
-                        if (auto notes = event.notes()) {
-                            for (const auto note : notes.value()) {
-                                if (note.id()) {
-                                    m_entityMapping->add(note.id().value(), note);
-                                }
+                util::SequenceWalkHooks hooks;
+                hooks.onEvent = [&](const sequence::Event& event,
+                                    const FractionValue& startTime,
+                                    const FractionValue&,
+                                    util::SequenceWalkContext& ctx) -> bool {
+                    if (event.id()) {
+                        m_entityMapping->add(event.id().value(), event);
+                    }
+                    if (auto notes = event.notes()) {
+                        for (const auto note : notes.value()) {
+                            if (note.id()) {
+                                m_entityMapping->add(note.id().value(), note);
                             }
                         }
-                        if (auto kitNotes = event.kitNotes()) {
-                            for (const auto kitNote : kitNotes.value()) {
-                                if (kitNote.id()) {
-                                    m_entityMapping->add(kitNote.id().value(), kitNote);
-                                }
+                    }
+                    if (auto kitNotes = event.kitNotes()) {
+                        for (const auto kitNote : kitNotes.value()) {
+                            if (kitNote.id()) {
+                                m_entityMapping->add(kitNote.id().value(), kitNote);
                             }
                         }
-                        const int eventStaff = event.staff().value_or(sequenceStaff);
-                        if (ctx.inGrace) {
-                            pendingGraceEvents.push_back(PendingGraceEvent{
-                                event,
-                                startTime,
-                                eventStaff,
-                                sequenceVoice
-                            });
-                            return true;
-                        }
-                        flushPendingGraceEvents();
-                        storeOttavaShift(event,
-                                         startTime,
-                                         std::optional<unsigned>(0),
-                                         eventStaff,
-                                         sequenceVoice);
+                    }
+                    const int eventStaff = event.staff().value_or(sequenceStaff);
+                    if (ctx.inGrace) {
+                        pendingGraceEvents.push_back(PendingGraceEvent{
+                            event,
+                            startTime,
+                            eventStaff,
+                            sequenceVoice
+                        });
                         return true;
-                    };
-
-                    const bool walked = util::walkSequenceContent(sequence, hooks);
-                    MNX_ASSERT_IF(!walked) {
-                        throw std::logic_error("Sequence walk aborted unexpectedly while building ID mapping.");
                     }
                     flushPendingGraceEvents();
+                    storeOttavaShift(event,
+                                     startTime,
+                                     std::optional<unsigned>(0),
+                                     eventStaff,
+                                     sequenceVoice);
+                    return true;
+                };
+
+                const bool walked = util::walkSequenceContent(sequence, hooks);
+                MNX_ASSERT_IF(!walked) {
+                    throw std::logic_error("Sequence walk aborted unexpectedly while building ID mapping.");
                 }
-                if (const auto& beams = measure.beams()) {
-                    auto walkBeamLevels = [&](const part::Beam& beam,
-                                              int level,
-                                              const auto& selfRef) -> void {
-                        const auto events = beam.events();
-                        if (!events.empty()) {
-                            m_entityMapping->setEventBeamStartLevel(events[0], level);
-                        }
-                        if (const auto childBeams = beam.beams()) {
-                            for (const auto& child : childBeams.value()) {
-                                selfRef(child, level + 1, selfRef);
-                            }
-                        }
-                    };
-                    for (const auto& beam : beams.value()) {
-                        for (const auto& eventId : beam.events()) {
-                            m_entityMapping->addEventToBeam(eventId, beam);
-                        }
-                        walkBeamLevels(beam, 1, walkBeamLevels);
+                flushPendingGraceEvents();
+            }
+            if (const auto& beams = measure.beams()) {
+                auto walkBeamLevels = [&](const part::Beam& beam,
+                                          int level,
+                                          const auto& selfRef) -> void {
+                    const auto events = beam.events();
+                    if (!events.empty()) {
+                        m_entityMapping->setEventBeamStartLevel(events[0], level);
                     }
+                    if (const auto childBeams = beam.beams()) {
+                        for (const auto& child : childBeams.value()) {
+                            selfRef(child, level + 1, selfRef);
+                        }
+                    }
+                };
+                for (const auto& beam : beams.value()) {
+                    for (const auto& eventId : beam.events()) {
+                        m_entityMapping->addEventToBeam(eventId, beam);
+                    }
+                    walkBeamLevels(beam, 1, walkBeamLevels);
                 }
             }
         }

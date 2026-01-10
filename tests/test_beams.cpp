@@ -47,37 +47,35 @@ TEST(Beams, SecondaryStartLevels)
 
     int seen = 0;
     for (const auto part : doc.parts()) {
-        if (const auto measures = part.measures()) {
-            for (const auto measure : measures.value()) {
-                for (const auto sequence : measure.sequences()) {
-                    mnx::util::SequenceWalkHooks hooks;
-                    hooks.onEvent = [&](const mnx::sequence::Event& event,
-                                        const mnx::FractionValue&,
-                                        const mnx::FractionValue&,
-                                        mnx::util::SequenceWalkContext&) -> bool {
-                        if (!event.id()) {
-                            return true;
-                        }
-                        if (!event.id()) {
-                            ADD_FAILURE() << "Encountered unnamed event.";
-                            return false;
-                        }
-                        const auto beam = doc.getEntityMap().tryGetBeam(event);
-                        EXPECT_TRUE(beam.has_value()) << "Expected beam mapping for " << event.id().value();
-                        const std::string eventId = event.id().value();
-                        const int actual = doc.getEntityMap().getBeamStartLevel(eventId);
-                        const auto it = expectedLevels.find(eventId);
-                        if (it == expectedLevels.end()) {
-                            ADD_FAILURE() << "Unexpected event " << eventId;
-                            return false;
-                        }
-                        EXPECT_EQ(actual, it->second) << "Unexpected start level for " << eventId;
-                        ++seen;
+        for (const auto measure : part.measures()) {
+            for (const auto sequence : measure.sequences()) {
+                mnx::util::SequenceWalkHooks hooks;
+                hooks.onEvent = [&](const mnx::sequence::Event& event,
+                                    const mnx::FractionValue&,
+                                    const mnx::FractionValue&,
+                                    mnx::util::SequenceWalkContext&) -> bool {
+                    if (!event.id()) {
                         return true;
-                    };
-                    const bool walked = mnx::util::walkSequenceContent(sequence, hooks);
-                    ASSERT_TRUE(walked);
-                }
+                    }
+                    if (!event.id()) {
+                        ADD_FAILURE() << "Encountered unnamed event.";
+                        return false;
+                    }
+                    const auto beam = doc.getEntityMap().tryGetBeam(event);
+                    EXPECT_TRUE(beam.has_value()) << "Expected beam mapping for " << event.id().value();
+                    const std::string eventId = event.id().value();
+                    const int actual = doc.getEntityMap().getBeamStartLevel(eventId);
+                    const auto it = expectedLevels.find(eventId);
+                    if (it == expectedLevels.end()) {
+                        ADD_FAILURE() << "Unexpected event " << eventId;
+                        return false;
+                    }
+                    EXPECT_EQ(actual, it->second) << "Unexpected start level for " << eventId;
+                    ++seen;
+                    return true;
+                };
+                const bool walked = mnx::util::walkSequenceContent(sequence, hooks);
+                ASSERT_TRUE(walked);
             }
         }
     }

@@ -115,16 +115,16 @@ public:
     constexpr FractionValue(NumType value) : m_num(value), m_den(1) {}
 
     /// @brief Returns the numerator.
-    constexpr NumType numerator() const noexcept { return m_num; }
+    [[nodiscard]] constexpr NumType numerator() const noexcept { return m_num; }
 
     /// @brief Returns the denominator.
-    constexpr NumType denominator() const noexcept { return m_den; }
+    [[nodiscard]] constexpr NumType denominator() const noexcept { return m_den; }
 
     /**
      * @brief Returns the integer (whole number) part of the fraction.
      * @return The integer part of the fraction.
      */
-    constexpr NumType quotient() const
+    [[nodiscard]] constexpr NumType quotient() const
     {
         return m_num / m_den;
     }
@@ -145,6 +145,11 @@ public:
     static constexpr FractionValue max() noexcept
     {
         return FractionValue((std::numeric_limits<NumType>::max)());
+    }
+
+    /// @brief Converts the fraction to floating point double.
+    [[nodiscard]] constexpr double toDouble() const {
+        return double(m_num) / double(m_den);
     }
 
     /**

@@ -346,10 +346,24 @@ void Document::buildEntityMap(const std::optional<ErrorHandler>& errorHandler,
                     flushPendingGraceEvents();
                 }
                 if (const auto& beams = measure.beams()) {
+                    auto walkBeamLevels = [&](const part::Beam& beam,
+                                              int level,
+                                              const auto& selfRef) -> void {
+                        const auto events = beam.events();
+                        if (!events.empty()) {
+                            m_entityMapping->setEventBeamStartLevel(events[0], level);
+                        }
+                        if (const auto childBeams = beam.beams()) {
+                            for (const auto& child : childBeams.value()) {
+                                selfRef(child, level + 1, selfRef);
+                            }
+                        }
+                    };
                     for (const auto& beam : beams.value()) {
                         for (const auto& eventId : beam.events()) {
                             m_entityMapping->addEventToBeam(eventId, beam);
                         }
+                        walkBeamLevels(beam, 1, walkBeamLevels);
                     }
                 }
             }

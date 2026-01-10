@@ -21,6 +21,7 @@
  */
 #pragma once
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <sstream>
@@ -179,17 +180,17 @@ public:
         if (const auto& eventId = event.id()) {
             const auto it = m_eventsInBeams.find(eventId.value());
             if (it != m_eventsInBeams.end()) {
-                MNX_ASSERT_IF(it->second.typeName != part::Beam::JsonSchemaTypeName) {
+                MNX_ASSERT_IF(it->second.location.typeName != part::Beam::JsonSchemaTypeName) {
                     mapping_error err(
                         "The beam mapping for eventId " + formatKeyString(eventId.value())
-                        + " was mapped to an object of type \"" + std::string(it->second.typeName) + "\"."
+                        + " was mapped to an object of type \"" + std::string(it->second.location.typeName) + "\"."
                     );
                     if (m_errorHandler) {
                         m_errorHandler.value()(err.what(), event);
                     }
                     throw err;
                 }
-                return part::Beam(root(), it->second.location);
+                return part::Beam(root(), it->second.location.location);
             }
         }
         return std::nullopt;
@@ -200,16 +201,49 @@ public:
     /// @param beam The beam that includes the event.
     void addEventToBeam(const std::string& eventId, const part::Beam& beam)
     {
-        auto result = m_eventsInBeams.emplace(eventId, MappedLocation{ beam.pointer(), part::Beam::JsonSchemaTypeName });
+        auto result = m_eventsInBeams.emplace(eventId, BeamMappingEntry{ MappedLocation{ beam.pointer(), part::Beam::JsonSchemaTypeName }, 0 });
         if (!result.second) {
             mapping_error err("ID " + formatKeyString(eventId) + " already exists in beam "
-                + result.first->second.location.to_string());
+                + result.first->second.location.location.to_string());
             if (m_errorHandler) {
                 m_errorHandler.value()(err.what(), beam);
             } else {
                 throw err;
             }
         }
+    }
+
+    /// @brief Record (or lower) the beam depth that starts at an event.
+    void setEventBeamStartLevel(const std::string& eventId, int level)
+    {
+        auto it = m_eventsInBeams.find(eventId);
+        if (it == m_eventsInBeams.end()) {
+            throw std::logic_error("Attempted to assign a beam start level to unmapped event " + eventId);
+        }
+        if (it->second.startLevel == 0) {
+            it->second.startLevel = level;
+        } else {
+            it->second.startLevel = std::min(it->second.startLevel, level);
+        }
+    }
+
+    /// @brief Return the secondary beam depth that starts at an event ID, if any.
+    [[nodiscard]] std::optional<int> tryGetBeamStartLevel(const std::string& eventId) const
+    {
+        const auto it = m_eventsInBeams.find(eventId);
+        if (it == m_eventsInBeams.end()) {
+            return std::nullopt;
+        }
+        return it->second.startLevel;
+    }
+
+    /// @brief Return the beam start level for an event ID or 0 if none.
+    [[nodiscard]] int getBeamStartLevel(const std::string& eventId) const
+    {
+        if (const auto level = tryGetBeamStartLevel(eventId)) {
+            return *level;
+        }
+        return 0;
     }
 
     /// @brief Clears all mapped items.
@@ -266,7 +300,12 @@ private:
     };
     std::unordered_map<std::string, MappedLocation> m_objectMap;
     std::unordered_map<int, MappedLocation> m_globalMeasures;
-    std::unordered_map<std::string, MappedLocation> m_eventsInBeams;
+    struct BeamMappingEntry
+    {
+        MappedLocation location;
+        int startLevel{0};
+    };
+    std::unordered_map<std::string, BeamMappingEntry> m_eventsInBeams;
     std::unordered_map<std::string, int> m_eventOttavaShift;
     
     template <typename T, typename Self>

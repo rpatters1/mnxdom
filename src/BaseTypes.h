@@ -338,7 +338,7 @@ protected:
 
         json_pointer childPointer = m_pointer / std::string(key);
         if (!checkKeyIsValid<T>(childPointer)) {
-            throw std::runtime_error("Missing required child node: " + std::string(key));
+            throw std::out_of_range("Child node not found: " + std::string(key));
         }
 
         return T(m_root, childPointer);
@@ -844,7 +844,7 @@ private:
         void update_pair() const {
             m_pair.reset();
             if (m_it != m_ptr->ref().end()) {
-                m_pair = std::make_unique<value_type>(m_it.key(), m_ptr->operator[](m_it.key()));
+                m_pair = std::make_unique<value_type>(m_it.key(), m_ptr->valueForKey(m_it.key()));
             }
         }
     
@@ -892,31 +892,11 @@ public:
     /** @brief Clear all elements. */
     void clear() { ref().clear(); }
 
-    /** @brief Direct getter for a particular element. */
+    /** @brief Direct getter for a particular element.
+     *  @throws std::out_of_range when the key does not exist.
+     */
     [[nodiscard]] T at(std::string_view key) const
-    {
-        return operator[](key);
-    }
-
-    /// @brief const operator[]
-    [[nodiscard]] auto operator[](std::string_view key) const
-    {
-        if constexpr (std::is_base_of_v<Base, T>) {
-            return getChild<T>(key);
-        } else {
-            return getChild<SimpleType<T>>(key);
-        }
-    }
-
-    /// @brief non-const operator[]
-    [[nodiscard]] auto operator[](std::string_view key)
-    {
-        if constexpr (std::is_base_of_v<Base, T>) {
-            return getChild<T>(key);
-        } else {
-            return getChild<SimpleType<T>>(key);
-        }
-    }
+    { return valueForKey(key); }
 
     /** @brief Add a new value to the dictonary. (Available only for primitive types) */
     template <typename U = T>
@@ -982,6 +962,17 @@ public:
 
     /// @brief Returns a const iterator to the end of the dictionary.
     [[nodiscard]] auto end() const { return const_iterator(this, ref().end()); }
+
+private:
+    /// @brief Returns the dictionary element for the given key.
+    [[nodiscard]] T valueForKey(std::string_view key) const
+    {
+        if constexpr (std::is_base_of_v<Base, T>) {
+            return getChild<T>(key);
+        } else {
+            return getChild<SimpleType<T>>(key);
+        }
+    }
 };
 
 } // namespace mnx

@@ -127,7 +127,7 @@ TEST(Document, MissingRequiredFields)
     EXPECT_FALSE(validation::schemaValidate(doc)) << "after adding version, schema should still not validate";
 
     auto global = doc.global();
-    EXPECT_THROW(static_cast<void>(global.measures()), std::runtime_error);
+    EXPECT_THROW(static_cast<void>(global.measures()), std::out_of_range);
     global.create_measures();
     EXPECT_EQ(doc.global().measures().size(), 0u);
     EXPECT_TRUE(validation::schemaValidate(doc)) << "after adding global, schema should validate";

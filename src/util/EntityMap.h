@@ -51,7 +51,69 @@ class mapping_error : public std::runtime_error
  * Constructed from an mnx::Document, the EntityMap scans the document to index
  * all identifiable elements by ID or number. Supports lookup by type.
  */
-class EntityMap {
+class EntityMap
+{
+private:
+    /// @brief Adds a key to the mapping. If there is no error handler, it throws @ref mapping_error if there is a duplicate key.
+    /// @tparam T The type to add
+    /// @tparam IdType The type of @p id
+    /// @param id The ID to add.
+    /// @param value The value to index.
+    /// @throws mapping_error if the ID is a duplicate and there is no error handler.
+    template <typename T, typename IdType>
+    void add(const IdType& id, const T& value)
+    {
+        auto result = getMap<T>().emplace(id, MappedLocation{ value.pointer(), T::JsonSchemaTypeName });
+        if (!result.second) {
+            mapping_error err("ID " + formatKeyString(id) + " already exists for type \"" + std::string(result.first->second.typeName)
+                + "\" at " + result.first->second.location.to_string());
+            if (m_errorHandler) {
+                m_errorHandler.value()(err.what(), value);
+            } else {
+                throw err;
+            }
+        }
+    }
+    
+    /// @brief Map an event's id to its beam
+    /// @param eventId The id of the event to map.
+    /// @param beam The beam that includes the event.
+    void addEventToBeam(const std::string& eventId, const part::Beam& beam)
+    {
+        auto result = m_eventsInBeams.emplace(eventId, BeamMappingEntry{ MappedLocation{ beam.pointer(), part::Beam::JsonSchemaTypeName }, 0 });
+        if (!result.second) {
+            mapping_error err("ID " + formatKeyString(eventId) + " already exists in beam "
+                + result.first->second.location.location.to_string());
+            if (m_errorHandler) {
+                m_errorHandler.value()(err.what(), beam);
+            } else {
+                throw err;
+            }
+        }
+    }
+
+    /// @brief Record (or lower) the beam depth that starts at an event.
+    void setEventBeamStartLevel(const std::string& eventId, int level)
+    {
+        auto it = m_eventsInBeams.find(eventId);
+        if (it == m_eventsInBeams.end()) {
+            throw std::logic_error("Attempted to assign a beam start level to unmapped event " + eventId);
+        }
+        if (it->second.startLevel == 0) {
+            it->second.startLevel = level;
+        } else {
+            it->second.startLevel = std::min(it->second.startLevel, level);
+        }
+    }
+
+    /// @brief Cache the ottava shift for a specific event pointer.
+    void setEventOttavaShift(const std::string& eventPointer, int shift)
+    {
+        m_eventOttavaShift[eventPointer] = shift;
+    }
+
+    friend class mnx::Document;
+
 public:
     /**
      * @brief Constructs the index for a given document.
@@ -151,27 +213,6 @@ public:
         return map.find(id) != map.end();
     }
 
-    /// @brief Adds a key to the mapping. If there is no error handler, it throws @ref mapping_error if there is a duplicate key.
-    /// @tparam T The type to add
-    /// @tparam IdType The type of @p id
-    /// @param id The ID to add.
-    /// @param value The value to index.
-    /// @throws mapping_error if the ID is a duplicate and there is no error handler.
-    template <typename T, typename IdType>
-    void add(const IdType& id, const T& value)
-    {
-        auto result = getMap<T>().emplace(id, MappedLocation{ value.pointer(), T::JsonSchemaTypeName });
-        if (!result.second) {
-            mapping_error err("ID " + formatKeyString(id) + " already exists for type \"" + std::string(result.first->second.typeName)
-                + "\" at " + result.first->second.location.to_string());
-            if (m_errorHandler) {
-                m_errorHandler.value()(err.what(), value);
-            } else {
-                throw err;
-            }
-        }
-    }
-
     /// @brief Get the beam for an event, if it is mapped.
     /// @param event The event to search for.
     /// @return The beam or std::nullopt if not found.
@@ -194,37 +235,6 @@ public:
             }
         }
         return std::nullopt;
-    }
-    
-    /// @brief Map an event's id to its beam
-    /// @param eventId The id of the event to map.
-    /// @param beam The beam that includes the event.
-    void addEventToBeam(const std::string& eventId, const part::Beam& beam)
-    {
-        auto result = m_eventsInBeams.emplace(eventId, BeamMappingEntry{ MappedLocation{ beam.pointer(), part::Beam::JsonSchemaTypeName }, 0 });
-        if (!result.second) {
-            mapping_error err("ID " + formatKeyString(eventId) + " already exists in beam "
-                + result.first->second.location.location.to_string());
-            if (m_errorHandler) {
-                m_errorHandler.value()(err.what(), beam);
-            } else {
-                throw err;
-            }
-        }
-    }
-
-    /// @brief Record (or lower) the beam depth that starts at an event.
-    void setEventBeamStartLevel(const std::string& eventId, int level)
-    {
-        auto it = m_eventsInBeams.find(eventId);
-        if (it == m_eventsInBeams.end()) {
-            throw std::logic_error("Attempted to assign a beam start level to unmapped event " + eventId);
-        }
-        if (it->second.startLevel == 0) {
-            it->second.startLevel = level;
-        } else {
-            it->second.startLevel = std::min(it->second.startLevel, level);
-        }
     }
 
     /// @brief Return the secondary beam depth that starts at an event ID, if any.
@@ -253,12 +263,7 @@ public:
         m_globalMeasures.clear();
         m_eventsInBeams.clear();
         m_eventOttavaShift.clear();
-    }
-
-    /// @brief Cache the ottava shift for a specific event pointer.
-    void setEventOttavaShift(const std::string& eventPointer, int shift)
-    {
-        m_eventOttavaShift[eventPointer] = shift;
+        m_lyricLineOrder.clear();
     }
 
     /// @brief Retrieve the ottava shift for an event (if known).
@@ -279,6 +284,10 @@ public:
         }
         return 0;
     }
+
+    /// @brief Retrieve the lyric line order.
+    [[nodiscard]] const std::vector<std::string>& getLyricLineOrder() const
+    { return m_lyricLineOrder; }
 
 private:
     std::weak_ptr<json> m_root;
@@ -307,7 +316,8 @@ private:
     };
     std::unordered_map<std::string, BeamMappingEntry> m_eventsInBeams;
     std::unordered_map<std::string, int> m_eventOttavaShift;
-    
+    std::vector<std::string> m_lyricLineOrder;
+
     template <typename T, typename Self>
     static auto& getMapImpl(Self& self) {
         if constexpr (std::is_same_v<T, global::Measure>) {

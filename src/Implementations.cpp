@@ -21,6 +21,7 @@
  */
 #include <cassert>
 #include <utility>
+#include <set>
 
 #include "mnxdom.h"
 #include "music_theory/music_theory.hpp"
@@ -179,6 +180,14 @@ void Document::buildEntityMap(EntityMapPolicies policies,
         }
         return voice;
     };
+    // global settings
+    std::vector<std::string>& docLyricLines = m_entityMapping->m_lyricLineOrder;
+    std::set<std::string> foundLyricLines;
+    if (const auto lyrics = global().lyrics()) {
+        if (const auto lineOrder = lyrics->lineOrder()) {
+            docLyricLines = lineOrder->toStdVector();
+        }
+    }
     // global measures
     const auto globalMeasures = global().measures();
     std::vector<FractionValue> measureDurations(globalMeasures.size(), FractionValue(1, 1));
@@ -319,6 +328,15 @@ void Document::buildEntityMap(EntityMapPolicies policies,
                             }
                         }
                     }
+                    if (docLyricLines.empty()) {
+                        if (const auto lyrics = event.lyrics()) {
+                            if (const auto lines = lyrics->lines()) {
+                                for (const auto& line : lines.value()) {
+                                    foundLyricLines.emplace(line.first);
+                                }
+                            }
+                        }
+                    }
                     const int eventStaff = event.staff().value_or(sequenceStaff);
                     if (ctx.inGrace) {
                         pendingGraceEvents.push_back(PendingGraceEvent{
@@ -373,6 +391,12 @@ void Document::buildEntityMap(EntityMapPolicies policies,
             if (layout.id().has_value()) {
                 m_entityMapping->add(layout.id().value(), layout);
             }
+        }
+    }
+    // lyric lines
+    if (docLyricLines.empty()) {
+        for (const auto& line : foundLyricLines) {
+            docLyricLines.emplace_back(std::move(line));
         }
     }
 }

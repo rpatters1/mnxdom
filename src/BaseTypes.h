@@ -893,13 +893,13 @@ public:
     void clear() { ref().clear(); }
 
     /** @brief Direct getter for a particular element. */
-    [[nodiscard]] T at(size_t index) const
+    [[nodiscard]] T at(std::string_view key) const
     {
-        return operator[](index);
+        return operator[](key);
     }
 
     /// @brief const operator[]
-    [[nodiscard]] auto operator[](const std::string& key) const
+    [[nodiscard]] auto operator[](std::string_view key) const
     {
         if constexpr (std::is_base_of_v<Base, T>) {
             return getChild<T>(key);
@@ -909,7 +909,7 @@ public:
     }
 
     /// @brief non-const operator[]
-    [[nodiscard]] auto operator[](const std::string& key)
+    [[nodiscard]] auto operator[](std::string_view key)
     {
         if constexpr (std::is_base_of_v<Base, T>) {
             return getChild<T>(key);
@@ -921,7 +921,7 @@ public:
     /** @brief Add a new value to the dictonary. (Available only for primitive types) */
     template <typename U = T>
     std::enable_if_t<!std::is_base_of_v<Base, U>, void>
-    emplace(const std::string& key, const U& value)
+    emplace(std::string_view key, const U& value)
     {
         ref()[key] = value;
     }
@@ -932,7 +932,7 @@ public:
     */
     template <typename U = T, typename... Args,
               std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
-    U append(const std::string& key, Args&&... args)
+    U append(std::string_view key, Args&&... args)
     {
         if constexpr (std::is_base_of_v<Object, U>) {
             ref()[key] = json::object();
@@ -943,7 +943,7 @@ public:
     }
 
     /** @brief Remove an element at a given key. */
-    void erase(const std::string& key)
+    void erase(std::string_view key)
     {
         ref().erase(key);
     }
@@ -951,7 +951,7 @@ public:
     /// @brief Finds an element by key and returns an iterator.
     /// @param key The key to search for.
     /// @return Iterator to the found element or end() if not found.
-    [[nodiscard]] auto find(const std::string& key)
+    [[nodiscard]] auto find(std::string_view key)
     {
         auto it = ref().find(key);
         return (it != ref().end()) ? iterator(this, it) : end();
@@ -960,7 +960,7 @@ public:
     /// @brief Finds an element by key and returns a const iterator.
     /// @param key The key to search for.
     /// @return Const iterator to the found element or end() if not found.
-    [[nodiscard]] auto find(const std::string& key) const
+    [[nodiscard]] auto find(std::string_view key) const
     {
         auto it = ref().find(key);
         return (it != ref().end()) ? const_iterator(this, it) : end();
@@ -968,7 +968,7 @@ public:
 
     /// @brief Returns true if the key exists in in the dictionary.
     /// @param key  The key to search for.
-    [[nodiscard]] bool contains(const std::string& key) const
+    [[nodiscard]] bool contains(std::string_view key) const
     { return find(key) != end(); }
 
     /// @brief Returns an iterator to the beginning of the dictionary.

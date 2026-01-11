@@ -323,7 +323,7 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(std::string, text);           ///< the syllable text
-    MNX_OPTIONAL_PROPERTY(LyricLineType, type);         ///< the type of syllable (in relation to the complete word)
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(LyricLineType, type, LyricLineType::Whole);  ///< the type of syllable (in relation to the complete word)
 };
 
 /**

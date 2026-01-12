@@ -452,7 +452,8 @@ void SemanticValidator::validateParts()
                 }
             }
             for (int staffNumber = 1; staffNumber <= staffCount; ++staffNumber) {
-                if (!staffHasInitialClef[static_cast<size_t>(staffNumber)]) {
+                /// @todo eventually we should not skip part.kit, but mnx currently has no percussion clef.
+                if (!part.kit() && !staffHasInitialClef[static_cast<size_t>(staffNumber)]) {
                     addError("Missing clef at the beginning of staff " + std::to_string(staffNumber) +
                                  " in part " + part.id_or("<no-id>") + " (first measure).",
                              firstMeasure);

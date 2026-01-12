@@ -22,6 +22,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <memory>
 #include <optional>
 #include <sstream>
@@ -35,8 +36,59 @@
 #include "Layout.h"
 #include "Part.h"
 #include "Score.h"
+#include "Sequence.h"
 
 namespace mnx::util {
+
+namespace detail {
+
+template <typename T>
+struct JsonSchemaTypeNames
+{
+    static constexpr std::array<std::string_view, 1> value{ T::JsonSchemaTypeName };
+};
+
+template <>
+struct JsonSchemaTypeNames<sequence::NoteBase>
+{
+    static constexpr std::array<std::string_view, 2> value{
+        sequence::Note::JsonSchemaTypeName,
+        sequence::KitNote::JsonSchemaTypeName
+    };
+};
+
+template <typename T>
+bool matchesTypeName(std::string_view typeName)
+{
+    for (const auto name : JsonSchemaTypeNames<T>::value) {
+        if (name == typeName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template <typename T>
+std::string typeNamesExpectationString()
+{
+    std::ostringstream oss;
+    const auto& names = JsonSchemaTypeNames<T>::value;
+    const auto count = names.size();
+    if (count > 1) {
+        oss << "expected one of ";
+    } else {
+        oss << "expected ";
+    }
+    for (size_t i = 0; i < count; ++i) {
+        if (i > 0) {
+            oss << ", ";
+        }
+        oss << "\"" << names[i] << "\"";
+    }
+    return oss.str();
+}
+
+} // namespace detail
 
 /// @brief base class for mapping error exceptions
 class mapping_error : public std::runtime_error
@@ -147,10 +199,10 @@ public:
         if (it == map.end()) {
             return std::nullopt;
         }
-        MNX_ASSERT_IF(it->second.typeName != T::JsonSchemaTypeName) {
+        MNX_ASSERT_IF(!detail::matchesTypeName<T>(it->second.typeName)) {
             mapping_error err(
                 "ID " + formatKeyString(id) + " has type \"" + std::string(it->second.typeName) +
-                "\", but the requested type is \"" + std::string(T::JsonSchemaTypeName) + "\"."
+                "\", but " + detail::typeNamesExpectationString<T>() + "."
             );
             if (m_errorHandler) {
                 m_errorHandler.value()(err.what(), errorLocation.value_or(Document(root())));

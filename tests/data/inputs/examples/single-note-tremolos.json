@@ -16,22 +16,13 @@
     {
       "measures": [
         {
-          "_x": {
-            "mnxdocs": {
-              "highlight": ["dynamics"]
-            }
-          },
           "clefs": [
             {
               "clef": {
-                "sign": "G",
-                "staffPosition": -2
+                "staffPosition": -2,
+                "sign": "G"
               }
             }
-          ],
-          "dynamics": [
-            {"position": {"fraction": [0, 1]}, "value": "ff"},
-            {"position": {"fraction": [3, 4]}, "value": "ppp"}
           ],
           "sequences": [
             {
@@ -43,7 +34,7 @@
                   "notes": [
                     {
                       "pitch": {
-                        "octave": 4,
+                        "octave": 5,
                         "step": "C"
                       }
                     }
@@ -53,51 +44,57 @@
                   "duration": {
                     "base": "quarter"
                   },
-                  "notes": [
-                    {
-                      "pitch": {
-                        "octave": 4,
-                        "step": "E"
+                  "markings": {
+                    "_x": {
+                      "mnxdocs": {
+                        "highlight": ["tremolo"]
                       }
-                    }
-                  ]
-                },
-                {
-                  "duration": {
-                    "base": "quarter"
+                    },
+                    "tremolo": {"marks": 1}
                   },
                   "notes": [
                     {
                       "pitch": {
-                        "octave": 4,
-                        "step": "G"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "duration": {
-                    "base": "quarter"
-                  },
-                  "notes": [
-                    {
-                      "pitch": {
-                        "octave": 4,
+                        "octave": 5,
                         "step": "C"
                       }
-                    },
-                    {
-                      "pitch": {
-                        "octave": 4,
-                        "step": "E"
+                    }
+                  ]
+                },
+                {
+                  "duration": {
+                    "base": "quarter"
+                  },
+                  "markings": {
+                    "_x": {
+                      "mnxdocs": {
+                        "highlight": ["tremolo"]
                       }
                     },
+                    "tremolo": {"marks": 2}
+                  },
+                  "notes": [
                     {
                       "pitch": {
-                        "octave": 4,
-                        "step": "G"
+                        "octave": 5,
+                        "step": "C"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "duration": {
+                    "base": "quarter"
+                  },
+                  "markings": {
+                    "_x": {
+                      "mnxdocs": {
+                        "highlight": ["tremolo"]
                       }
                     },
+                    "tremolo": {"marks": 3}
+                  },
+                  "notes": [
                     {
                       "pitch": {
                         "octave": 5,

@@ -142,7 +142,7 @@ TEST(Global, LyricLineMetadata)
 TEST(Global, EndingTest)
 {
     setupTestDataPaths();
-    std::filesystem::path inputPath = getInputPath() / "examples" / "repeate_endings_adv.json";
+    std::filesystem::path inputPath = getInputPath() / "examples" / "repeats-alternate-endings-advanced.json";
     auto doc = mnx::Document::create(inputPath);
     EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validatation failed"; // empty group means semantic fails: tested elsewhere
 
@@ -162,7 +162,7 @@ TEST(Global, EndingTest)
 TEST(Global, VisibleMeasureNumberBasic)
 {
     setupTestDataPaths();
-    std::filesystem::path inputPath = getInputPath() / "examples" / "hello_world.json";
+    std::filesystem::path inputPath = getInputPath() / "examples" / "hello-world.json";
     auto doc = mnx::Document::create(inputPath);
     EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validatation failed"; // empty group means semantic fails: tested elsewhere
 

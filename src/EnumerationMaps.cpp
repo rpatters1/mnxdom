@@ -152,19 +152,21 @@ MNX_ENUM_MAPPING(NoteValueBase, {
     { "duplexMaxima", NoteValueBase::DuplexMaxima }
 });
 
+MNX_ENUM_MAPPING(SlurTieSide, {
+    { "down",       SlurTieSide::Down },
+    { "up",         SlurTieSide::Up }
+});
+
 MNX_ENUM_MAPPING(StemDirection, {
     { "down",       StemDirection::Down },
     { "up",         StemDirection::Up }
 });
 
-MNX_ENUM_MAPPING(SlurTieEndLocation, {
-    { "outgoing",   SlurTieEndLocation::Outgoing },
-    { "incoming",   SlurTieEndLocation::Incoming }
-});
-
-MNX_ENUM_MAPPING(SlurTieSide, {
-    { "down",       SlurTieSide::Down },
-    { "up",         SlurTieSide::Up }
+MNX_ENUM_MAPPING(TieTargetType, {
+    { "nextNote",   TieTargetType::NextNote },
+    { "crossVoice", TieTargetType::CrossVoice },
+    { "arpeggio",   TieTargetType::Arpeggio },
+    { "crossJump",  TieTargetType::CrossJump }
 });
 
 MNX_ENUM_MAPPING(TupletDisplaySetting, {

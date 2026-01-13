@@ -1,12 +1,18 @@
 {
-  "mnx": {"version": 1, "support": {"useAccidentalDisplay": true}},
+"mnx": {"version": 1},
   "global": {
     "measures": [
       {
-        "key": {"fifths": -2},
-        "time": {"count": 4, "unit": 4}
+        "_x": {
+          "mnxdocs": {
+            "highlight": ["tempos"]
+          }
+        },
+        "time": {"count": 4, "unit": 4},
+        "tempos": [
+          {"value": {"base": "quarter"}, "bpm": 200}
+        ]
       },
-      {},
       {}
     ]
   },
@@ -23,7 +29,13 @@
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {"pitch": {"step": "F", "octave": 4}}
+                    {"pitch": {"step": "C", "octave": 5}}
+                  ]
+                },
+                {
+                  "duration": {"base": "quarter"},
+                  "notes": [
+                    {"pitch": {"step": "E", "octave": 5}}
                   ]
                 },
                 {
@@ -35,16 +47,7 @@
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {
-                      "pitch": {"step": "G", "octave": 4, "alter": 1},
-                      "accidentalDisplay": {"show": true}
-                    }
-                  ]
-                },
-                {
-                  "duration": {"base": "quarter"},
-                  "notes": [
-                    {"pitch": {"step": "A", "octave": 4}}
+                    {"pitch": {"step": "E", "octave": 5}}
                   ]
                 }
               ]
@@ -56,41 +59,27 @@
             {
               "content": [
                 {
-                  "duration": {"base": "half"},
+                  "duration": {"base": "quarter"},
                   "notes": [
-                    {"pitch": {"step": "B", "octave": 4, "alter": -1}}
+                    {"pitch": {"step": "C", "octave": 5}}
                   ]
                 },
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {
-                      "pitch": {"step": "D", "octave": 5, "alter": -1},
-                      "accidentalDisplay": {"show": true}
-                    }
+                    {"pitch": {"step": "E", "octave": 5}}
                   ]
                 },
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {"_c": "This note doesn't use accidentalDisplay.", "pitch": {"step": "D", "octave": 5, "alter": -1}}
+                    {"pitch": {"step": "G", "octave": 5}}
                   ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "sequences": [
-            {
-              "content": [
+                },
                 {
-                  "duration": {"base": "whole"},
+                  "duration": {"base": "quarter"},
                   "notes": [
-                    {
-                      "pitch": {"step": "D", "octave": 5},
-                      "accidentalDisplay": {"show": true}
-                    }
+                    {"pitch": {"step": "C", "octave": 6}}
                   ]
                 }
               ]

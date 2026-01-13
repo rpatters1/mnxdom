@@ -30,7 +30,7 @@ measure.create_clefs().append(mnx::ClefSign::GClef, -2);
 auto event = measure.sequences().append<mnx::sequence::Event>(mnx::NoteValueBase::Whole);
 event.create_notes().append(mnx::NoteStep::C, 4);
 // save to file
-doc.save("hello_world.json", 4); // indent with 4 spaces
+doc.save("hello-world.json", 4); // indent with 4 spaces
 ```
 
 Note that this code never uses references. Since every MNX class in the model is a lightweight wrapper around a root JSON object and a pointer to its location, copying them is extremely cheap. The class instance returned by any method is a temporary instance. Using references on return values can result in undefined behavior.

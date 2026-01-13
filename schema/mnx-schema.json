@@ -1988,6 +1988,9 @@
         },
         "target": {
           "$ref": "#/$defs/id"
+        },
+        "targetType": {
+          "$ref": "#/$defs/tie-target-type"
         }
       },
       "type": "object",
@@ -1998,6 +2001,15 @@
         "$ref": "#/$defs/tie"
       },
       "type": "array"
+    },
+    "tie-target-type": {
+      "enum": [
+        "nextNote",
+        "crossVoice",
+        "arpeggio",
+        "crossJump"
+      ],
+      "type": "string"
     },
     "time": {
       "allOf": [

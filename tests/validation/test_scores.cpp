@@ -56,7 +56,7 @@ TEST(Scores, InvalidScoreLayoutChangeLayoutId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "score_layoutchange_bad_layout.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticErrors(doc, inputPath, { "ID 1 not found ", "ID \"does-not-exist\" not found" });
+    expectSemanticError(doc, inputPath, "ID \"does-not-exist\" not found");
 }
 
 TEST(Scores, InvalidMMRestStartMeasure)

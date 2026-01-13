@@ -3,7 +3,14 @@
         "version": 1
     },
     "global": {
-        "measures": []
+        "measures": [
+            {
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                }
+            }
+        ]
     },
     "parts": [
         {
@@ -11,14 +18,61 @@
             "name": "Organ",
             "shortName": "Org.",
             "staves": 3,
-            "measures": []
+            "measures": [
+                {
+                    "clefs": [
+                        {
+                            "staff": 1,
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 3,
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        }
+                    ],
+                    "sequences": []
+                }
+            ]
         },
         {
             "id": "P2",
             "name": "Harpsichord 1",
             "shortName": "Hpschd. 1",
             "staves": 2,
-            "measures": []
+            "measures": [
+                {
+                    "clefs": [
+                        {
+                            "staff": 1,
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        }
+                    ],
+                    "sequences": []
+                }
+            ]
         }
     ],
     "layouts": [

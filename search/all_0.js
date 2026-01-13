@@ -8,11 +8,12 @@ var searchData=
   ['alter_5',['alter',['../structmnx_1_1sequence_1_1Pitch_1_1Fields.html#a371d7943b0a82f9bbf91d0f950ba9a69',1,'mnx::sequence::Pitch::Fields']]],
   ['alteration_6',['alteration',['../classmusic__theory_1_1Transposer.html#a550fc30dbc918d850cd12599248b001c',1,'music_theory::Transposer']]],
   ['append_7',['append',['../classmnx_1_1Array.html#acd647a4134be81ddd63f99ae82f1baa5',1,'mnx::Array::append()'],['../classmnx_1_1ContentArray.html#aa984aeefe202bca42c98ea6967415fd7',1,'mnx::ContentArray::append()'],['../classmnx_1_1Dictionary.html#a78ea1a274019eabf91a792bbb24dc125',1,'mnx::Dictionary::append()']]],
-  ['array_8',['array',['../classmnx_1_1Array.html#abe20cb3f95cee1491a0fe46a11cb1bfd',1,'mnx::Array::Array(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1Array.html#a3fc676b2d5484d189bd905ad6bd1ec4d',1,'mnx::Array::Array(Base &amp;parent, std::string_view key)'],['../classmnx_1_1Array.html',1,'mnx::Array&lt; T &gt;']]],
-  ['array_3c_20contentobject_20_3e_9',['Array&lt; ContentObject &gt;',['../classmnx_1_1Array.html',1,'mnx']]],
-  ['array_3c_20unsigned_20_3e_10',['Array&lt; unsigned &gt;',['../classmnx_1_1Array.html',1,'mnx']]],
-  ['arrayelementobject_11',['ArrayElementObject',['../classmnx_1_1ArrayElementObject.html',1,'mnx']]],
-  ['at_12',['at',['../classmnx_1_1Array.html#ad3f9afe3548f6babc1664c31e5ed80bb',1,'mnx::Array::at()'],['../classmnx_1_1Dictionary.html#acdf2d49204da7be43ba75656f5839b96',1,'mnx::Dictionary::at()']]],
-  ['auto_13',['Auto',['../namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a06b9281e396db002010bde1de57262eb',1,'mnx']]],
-  ['autoyesno_14',['AutoYesNo',['../namespacemnx.html#a80e8e06e1c1d79c1b9fb8305c2184940',1,'mnx']]]
+  ['arpeggio_8',['Arpeggio',['../namespacemnx.html#a961d9beb0e598614b7157949964d33efae30c0ef84d87ecf9870662a879a36a46',1,'mnx']]],
+  ['array_9',['array',['../classmnx_1_1Array.html#abe20cb3f95cee1491a0fe46a11cb1bfd',1,'mnx::Array::Array(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1Array.html#a3fc676b2d5484d189bd905ad6bd1ec4d',1,'mnx::Array::Array(Base &amp;parent, std::string_view key)'],['../classmnx_1_1Array.html',1,'mnx::Array&lt; T &gt;']]],
+  ['array_3c_20contentobject_20_3e_10',['Array&lt; ContentObject &gt;',['../classmnx_1_1Array.html',1,'mnx']]],
+  ['array_3c_20unsigned_20_3e_11',['Array&lt; unsigned &gt;',['../classmnx_1_1Array.html',1,'mnx']]],
+  ['arrayelementobject_12',['ArrayElementObject',['../classmnx_1_1ArrayElementObject.html',1,'mnx']]],
+  ['at_13',['at',['../classmnx_1_1Array.html#ad3f9afe3548f6babc1664c31e5ed80bb',1,'mnx::Array::at()'],['../classmnx_1_1Dictionary.html#acdf2d49204da7be43ba75656f5839b96',1,'mnx::Dictionary::at()']]],
+  ['auto_14',['Auto',['../namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a06b9281e396db002010bde1de57262eb',1,'mnx']]],
+  ['autoyesno_15',['AutoYesNo',['../namespacemnx.html#a80e8e06e1c1d79c1b9fb8305c2184940',1,'mnx']]]
 ];

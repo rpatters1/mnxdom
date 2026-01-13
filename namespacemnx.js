@@ -152,10 +152,6 @@ var namespacemnx =
       [ "TwoOctavesUp", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a962c3ff88330f1f80321975efddcd744", null ],
       [ "ThreeOctavesUp", "namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a3cbfeb45aff39f7d69abcb551d2badb7", null ]
     ] ],
-    [ "SlurTieEndLocation", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858d", [
-      [ "Outgoing", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858dae60340c5328bd1bdc50cd8f3efd83c88", null ],
-      [ "Incoming", "namespacemnx.html#ade6c177e704dee113ccc27d47b6f858da589ab34e870b80c8c7d035805452df19", null ]
-    ] ],
     [ "SlurTieSide", "namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64", [
       [ "Down", "namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64a08a38277b0309070706f6652eeae9a53", null ],
       [ "Up", "namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64a258f49887ef8d14ac268c92b02503aaa", null ]
@@ -163,6 +159,12 @@ var namespacemnx =
     [ "StemDirection", "namespacemnx.html#acf37722bc87abf052775661825640121", [
       [ "Down", "namespacemnx.html#acf37722bc87abf052775661825640121a08a38277b0309070706f6652eeae9a53", null ],
       [ "Up", "namespacemnx.html#acf37722bc87abf052775661825640121a258f49887ef8d14ac268c92b02503aaa", null ]
+    ] ],
+    [ "TieTargetType", "namespacemnx.html#a961d9beb0e598614b7157949964d33ef", [
+      [ "NextNote", "namespacemnx.html#a961d9beb0e598614b7157949964d33efada34e2b724bdb42347569c86723e76f0", null ],
+      [ "Arpeggio", "namespacemnx.html#a961d9beb0e598614b7157949964d33efae30c0ef84d87ecf9870662a879a36a46", null ],
+      [ "CrossJump", "namespacemnx.html#a961d9beb0e598614b7157949964d33efacc517bad3a0101ca47b6933a5ad22ee0", null ],
+      [ "CrossVoice", "namespacemnx.html#a961d9beb0e598614b7157949964d33efac5dc1837e20fc639f037002606f064bd", null ]
     ] ],
     [ "TimeSignatureUnit", "namespacemnx.html#aa17c3a6f2b681e4c8e401dd6691dc8b3", [
       [ "Whole", "namespacemnx.html#aa17c3a6f2b681e4c8e401dd6691dc8b3ac8d2fc8ed10b21e647d7f58d4436b050", null ],

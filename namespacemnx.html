@@ -377,11 +377,6 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a70be29bf5b4e51a04312d21a6353e4e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Valid values for octave displacment amount, including zero for no transposition.  <a href="namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9">More...</a><br /></td></tr>
 <tr class="separator:a70be29bf5b4e51a04312d21a6353e4e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade6c177e704dee113ccc27d47b6f858d" id="r_ade6c177e704dee113ccc27d47b6f858d"><td class="memItemLeft" align="right" valign="top"><a id="ade6c177e704dee113ccc27d47b6f858d" name="ade6c177e704dee113ccc27d47b6f858d"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#ade6c177e704dee113ccc27d47b6f858d">SlurTieEndLocation</a> { <b>Outgoing</b>
-, <b>Incoming</b>
- }</td></tr>
-<tr class="memdesc:ade6c177e704dee113ccc27d47b6f858d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the location of the end of a slur or tie, if it doesn't have a target. <br /></td></tr>
-<tr class="separator:ade6c177e704dee113ccc27d47b6f858d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ed98bf9309c8a441c873e4763429a64" id="r_a9ed98bf9309c8a441c873e4763429a64"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64">SlurTieSide</a> { <a class="el" href="namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64a08a38277b0309070706f6652eeae9a53">Down</a>
 , <a class="el" href="namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64a258f49887ef8d14ac268c92b02503aaa">Up</a>
  }</td></tr>
@@ -392,6 +387,13 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:acf37722bc87abf052775661825640121"><td class="mdescLeft">&#160;</td><td class="mdescRight">The values available in a labelref.  <a href="namespacemnx.html#acf37722bc87abf052775661825640121">More...</a><br /></td></tr>
 <tr class="separator:acf37722bc87abf052775661825640121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a961d9beb0e598614b7157949964d33ef" id="r_a961d9beb0e598614b7157949964d33ef"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#a961d9beb0e598614b7157949964d33ef">TieTargetType</a> { <a class="el" href="namespacemnx.html#a961d9beb0e598614b7157949964d33efada34e2b724bdb42347569c86723e76f0">NextNote</a>
+, <a class="el" href="namespacemnx.html#a961d9beb0e598614b7157949964d33efae30c0ef84d87ecf9870662a879a36a46">Arpeggio</a>
+, <a class="el" href="namespacemnx.html#a961d9beb0e598614b7157949964d33efacc517bad3a0101ca47b6933a5ad22ee0">CrossJump</a>
+, <a class="el" href="namespacemnx.html#a961d9beb0e598614b7157949964d33efac5dc1837e20fc639f037002606f064bd">CrossVoice</a>
+ }</td></tr>
+<tr class="memdesc:a961d9beb0e598614b7157949964d33ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">The values that describe the target of a tie.  <a href="namespacemnx.html#a961d9beb0e598614b7157949964d33ef">More...</a><br /></td></tr>
+<tr class="separator:a961d9beb0e598614b7157949964d33ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa17c3a6f2b681e4c8e401dd6691dc8b3" id="r_aa17c3a6f2b681e4c8e401dd6691dc8b3"><td class="memItemLeft" align="right" valign="top"><a id="aa17c3a6f2b681e4c8e401dd6691dc8b3" name="aa17c3a6f2b681e4c8e401dd6691dc8b3"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#aa17c3a6f2b681e4c8e401dd6691dc8b3">TimeSignatureUnit</a> : int { <br />
 &#160;&#160;<b>Whole</b> = 1
 , <b>Half</b> = 2
@@ -981,6 +983,40 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_VERSION<
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acf37722bc87abf052775661825640121a08a38277b0309070706f6652eeae9a53" name="acf37722bc87abf052775661825640121a08a38277b0309070706f6652eeae9a53"></a>Down&#160;</td><td class="fielddoc"><p>stems down (default) </p>
 </td></tr>
 <tr><td class="fieldname"><a id="acf37722bc87abf052775661825640121a258f49887ef8d14ac268c92b02503aaa" name="acf37722bc87abf052775661825640121a258f49887ef8d14ac268c92b02503aaa"></a>Up&#160;</td><td class="fielddoc"><p>stems up </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a961d9beb0e598614b7157949964d33ef" name="a961d9beb0e598614b7157949964d33ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a961d9beb0e598614b7157949964d33ef">&#9670;&#160;</a></span>TieTargetType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacemnx.html#a961d9beb0e598614b7157949964d33ef">mnx::TieTargetType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The values that describe the target of a tie. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a961d9beb0e598614b7157949964d33efada34e2b724bdb42347569c86723e76f0" name="a961d9beb0e598614b7157949964d33efada34e2b724bdb42347569c86723e76f0"></a>NextNote&#160;</td><td class="fielddoc"><p>The tie ends on the next adjacent note in the same voice. This is the most common case. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a961d9beb0e598614b7157949964d33efae30c0ef84d87ecf9870662a879a36a46" name="a961d9beb0e598614b7157949964d33efae30c0ef84d87ecf9870662a879a36a46"></a>Arpeggio&#160;</td><td class="fielddoc"><p>The tie is part of an arpeggio notated as consecutive ties. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a961d9beb0e598614b7157949964d33efacc517bad3a0101ca47b6933a5ad22ee0" name="a961d9beb0e598614b7157949964d33efacc517bad3a0101ca47b6933a5ad22ee0"></a>CrossJump&#160;</td><td class="fielddoc"><p>The tie crosses to a different ending or jump location. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a961d9beb0e598614b7157949964d33efac5dc1837e20fc639f037002606f064bd" name="a961d9beb0e598614b7157949964d33efac5dc1837e20fc639f037002606f064bd"></a>CrossVoice&#160;</td><td class="fielddoc"><p>The tie end on the next adjacent note in a different voice. </p>
 </td></tr>
 </table>
 

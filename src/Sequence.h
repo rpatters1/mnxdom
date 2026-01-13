@@ -36,13 +36,6 @@ class Sequence; // forward declaration
  */
 namespace sequence {
 
-/// @brief Base class for objects that are elements of sequence content arrays
-class ContentObject : public mnx::ContentObject
-{
-public:
-    using mnx::ContentObject::ContentObject;
-};
-
 /**
  * @class AccidentalEnclosure
  * @brief Represents the enclosure on an accidental.
@@ -118,7 +111,7 @@ class TransposeWritten : public Object
 public:
     using Object::Object;
 
-    MNX_OPTIONAL_PROPERTY(int, diatonicDelta);  ///< the number of enharmonic transpositions to apply
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, diatonicDelta, 0);  ///< the number of enharmonic transpositions to apply
 };
 
 /**
@@ -128,6 +121,14 @@ public:
 class Pitch : public Object
 {
 public:
+    /// @brief initializer class for #Pitch
+    struct Fields
+    {
+        NoteStep step{};    ///< the letter spelling of the note.
+        int octave{};       ///< the octave number of the note (where C4 is middle C).
+        int alter{};        ///< the chromatic alteration of the note (positive for sharp, negative for flat).
+    };
+
     /// @brief Constructor for existing Pitch objects
     Pitch(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -137,27 +138,30 @@ public:
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param inpStep The letter spelling of the note.
-    /// @param inpOctave The octave number of the note (where C4 is middle C).
-    /// @param inpAlter The chromatic alteration of the note (positive for sharp, negative for flat)
-    Pitch(Base& parent, std::string_view key, NoteStep inpStep, int inpOctave, std::optional<int> inpAlter = std::nullopt)
+    /// @param fields The fields to initialize the instance.
+    Pitch(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_step(inpStep);
-        set_octave(inpOctave);
-        if (inpAlter) {
-            set_alter(inpAlter.value());
-        }
+        set_step(fields.step);
+        set_octave(fields.octave);
+        set_or_clear_alter(fields.alter);
     }
 
-    MNX_OPTIONAL_PROPERTY(int, alter);          ///< chromatic alteration
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { step(), octave(), alter() }; }
+
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, alter, 0);  ///< chromatic alteration
     MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
     MNX_REQUIRED_PROPERTY(NoteStep, step);      ///< the note step, (i.e., "A".."G")
 
     /// @brief Checks if the input pitch is the same as this pitch, including enharmonic equivalents
     /// @param src The value to compare with
     /// @return true if they are the same or enharmonically equivalent
-    [[nodiscard]] bool isSamePitch(const Pitch& src) const;
+    [[nodiscard]] bool isSamePitch(const Fields& src) const;
+
+    /// @brief Calculates the transposed version of this pitch, taking into account the part transposition
+    /// for the part that contains this pitch.
+    [[nodiscard]] Fields calcTransposed() const;
 };
 
 /**
@@ -281,13 +285,11 @@ public:
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param step The letter spelling of the note.
-    /// @param octave The octave number of the note (where C4 is middle C).
-    /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat)
-    Note(Base& parent, std::string_view key, NoteStep step, int octave, std::optional<int> alter = std::nullopt)
+    /// @param pitch The pitch of the note.
+    Note(Base& parent, std::string_view key, const Pitch::Fields& pitch)
         : NoteBase(parent, key)
     {
-        create_pitch(step, octave, alter);
+        create_pitch(pitch);
     }
 
     MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental
@@ -321,7 +323,7 @@ public:
     }
 
     MNX_REQUIRED_PROPERTY(std::string, text);           ///< the syllable text
-    MNX_OPTIONAL_PROPERTY(LyricLineType, type);         ///< the type of syllable (in relation to the complete word)
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(LyricLineType, type, LyricLineType::Whole);  ///< the type of syllable (in relation to the complete word)
 };
 
 /**
@@ -353,7 +355,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param noteValue The note value. If omitted, the event is set to full measure.
-    Event(Base& parent, std::string_view key, std::optional<NoteValue::Initializer> noteValue = std::nullopt)
+    Event(Base& parent, std::string_view key, std::optional<NoteValue::Fields> noteValue = std::nullopt)
         : ContentObject(parent, key)
     {
         // per the specification, either noteValue or the full-measure boolean *must* be supplied.
@@ -480,14 +482,13 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param numberOfMarks The number of marks (beams) in the tremolo
-    /// @param noteCount The number of events in the tremolo (usually 2)
-    /// @param noteValue The duration of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
-    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, unsigned noteCount, const NoteValue::Initializer& noteValue)
+    /// @param noteValueQuant The note value quantity of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
+    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, const NoteValueQuantity::Fields& noteValueQuant)
         : ContentObject(parent, key)
     {
         create_content();
         set_marks(numberOfMarks);
-        create_outer(noteCount, noteValue);
+        create_outer(noteValueQuant);
     }
 
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
@@ -514,17 +515,14 @@ public:
     /// @brief Creates a new Tuplet class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param innerCount The inner count: **3** quarters in the time of 2 quarters
-    /// @param innerNoteValue The inner amount: 3 **quarters** in the time of 2 quarters
-    /// @param outerCount The outer count: 3 quarters in the time of **2** quarters
-    /// @param outerNoteValue The outer amount: 3 quarters in the time of 2 **quarters**
-    Tuplet(Base& parent, std::string_view key,
-        unsigned innerCount, const NoteValue::Initializer& innerNoteValue,
-        unsigned outerCount, const NoteValue::Initializer& outerNoteValue)
+    /// @param innerNoteValueQuant The inner amount: 3 **quarters** in the time of 2 quarters
+    /// @param outerNoteValueQuant The outer amount: 3 quarters in the time of 2 **quarters**
+    Tuplet(Base& parent, std::string_view key, const NoteValueQuantity::Fields& innerNoteValueQuant,
+                    const NoteValueQuantity::Fields& outerNoteValueQuant)
         : ContentObject(parent, key)
     {
-        create_inner(innerCount, innerNoteValue);
-        create_outer(outerCount, outerNoteValue);
+        create_inner(innerNoteValueQuant);
+        create_outer(outerNoteValueQuant);
         create_content();
     }
 
@@ -568,26 +566,10 @@ public:
         create_content();
     }
 
-    MNX_REQUIRED_CHILD(ContentArray, content);      ///< the content of the sequence
+    MNX_REQUIRED_CHILD(ContentArray, content);          ///< the content of the sequence
     /// @todo `orient` property
-    MNX_OPTIONAL_PROPERTY(int, staff);              ///< the staff number for this sequence
-    MNX_OPTIONAL_PROPERTY(std::string, voice);      ///< the unique (per measure) voice label for this sequence.
-
-    /// @brief Iterate all the events in this sequence in order as they come.
-    /// @param iterator Callback function invoked for each event.
-    ///     The callback must have signature:
-    ///     `bool(sequence::Event event,
-    ///           FractionValue elapsedTime,
-    ///           FractionValue actualDuration)`.
-    ///     - `event`: the current event in the sequence.
-    ///     - `startDuration`: total elapsed metric time before this event.
-    ///     - `actualDuration`: the event’s real performed duration.
-    ///     - return @c true to continue iterating.
-    /// @return true if iteration completed without interruption; false if it exited early.
-    /// @todo Multi-note tremolos are currently treated as a span whose outer()
-    ///       value advances time. Inner tremolo notes have zero actual duration until
-    ///       the MNX spec clarifies how their durations should be distributed.
-    bool iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const;
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number for this sequence
+    MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< the unique (per measure) voice label for this sequence.
 };
 
 } // namespace mnx

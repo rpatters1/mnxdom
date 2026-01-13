@@ -23,6 +23,8 @@
 
 #include "mnxdom.h"
 
+#include "test_utils.h"
+
 using namespace mnx;
 
 TEST(Global, LyricLineMetadata)
@@ -72,8 +74,8 @@ TEST(Global, LyricLineMetadata)
     auto lineMetaData = lyrics.value().lineMetadata();
     ASSERT_TRUE(lineMetaData.has_value()) << "lineMetaData should have a value";
 
-    EXPECT_EQ(lineMetaData.value()["2"].lang(), "de");
-    EXPECT_EQ(lineMetaData.value()["3"].label(), "日本語");
+    EXPECT_EQ(lineMetaData->at("2").lang(), "de");
+    EXPECT_EQ(lineMetaData->at("3").label(), "日本語");
 
     size_t index = 0;
     bool got1 = false;
@@ -94,45 +96,80 @@ TEST(Global, LyricLineMetadata)
     }
     EXPECT_TRUE(got1 && got4) << "missing either item 1 or item 4";
 
-    auto newLine = lineMetaData.value().append("15");
+    auto newLine = lineMetaData->append("15");
     newLine.set_label("Italiano");
     newLine.set_lang("it");
-    EXPECT_EQ(lineMetaData.value().size(), 5u);
-    EXPECT_EQ(lineMetaData.value()["15"].label(), "Italiano");
-    EXPECT_EQ(lineMetaData.value()["15"].lang(), "it");
+    EXPECT_EQ(lineMetaData->size(), 5u);
+    EXPECT_EQ(lineMetaData->at("15").label(), "Italiano");
+    EXPECT_EQ(lineMetaData->at("15").lang(), "it");
 
-    for (auto it : lineMetaData.value()) {
+    for (auto it : *lineMetaData) {
         if (it.first == "3") {
             it.second.set_label("Nederlands");
             it.second.set_lang("nl");
         }
     }
-    EXPECT_EQ(lineMetaData.value()["3"].label(), "Nederlands");
-    EXPECT_EQ(lineMetaData.value()["3"].lang(), "nl");
+    EXPECT_EQ(lineMetaData->at("3").label(), "Nederlands");
+    EXPECT_EQ(lineMetaData->at("3").lang(), "nl");
 
     {
-        const auto it = lineMetaData.value().find("222");
-        EXPECT_EQ(it, lineMetaData.value().end()) << "find invalid key";
+        const auto it = lineMetaData->find("222");
+        EXPECT_EQ(it, lineMetaData->end()) << "find invalid key";
     }
     {
-        const auto it = lineMetaData.value().find("2");
-        EXPECT_NE(it, lineMetaData.value().end()) << "find valid key";
+        const auto it = lineMetaData->find("2");
+        EXPECT_NE(it, lineMetaData->end()) << "find valid key";
         EXPECT_EQ(it->second.label(), "Deutsch");
         EXPECT_EQ(it->second.lang(), "de");
     }
     {
-        auto it = lineMetaData.value().find("222");
-        EXPECT_EQ(it, lineMetaData.value().end()) << "find invalid key";
+        auto it = lineMetaData->find("222");
+        EXPECT_EQ(it, lineMetaData->end()) << "find invalid key";
     }
     {
-        auto it = lineMetaData.value().find("15");
-        EXPECT_NE(it, lineMetaData.value().end()) << "find valid key";
+        auto it = lineMetaData->find("15");
+        EXPECT_NE(it, lineMetaData->end()) << "find valid key";
         it->second.set_label("Français");
         it->second.set_lang("fr");
     }
-    EXPECT_EQ(lineMetaData.value()["15"].label(), "Français");
-    EXPECT_EQ(lineMetaData.value()["15"].lang(), "fr");
+    EXPECT_EQ(lineMetaData->at("15").label(), "Français");
+    EXPECT_EQ(lineMetaData->at("15").lang(), "fr");
 
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
     //std::cout << doc.dump(4) << std::endl;
+}
+
+TEST(Global, EndingTest)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "examples" / "repeate_endings_adv.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validatation failed"; // empty group means semantic fails: tested elsewhere
+
+    auto measures = doc.global().measures();
+    ASSERT_GE(measures.size(), 2);
+    {
+        auto measure = measures[1];
+        ASSERT_TRUE(measure.ending());
+        auto ending = measure.ending().value();
+        ASSERT_TRUE(ending.numbers());
+        std::vector<int> nums = ending.numbers()->toStdVector();
+        std::vector<int> expectedNums = { 1, 2 };
+        EXPECT_EQ(nums, expectedNums);
+    }
+}
+
+TEST(Global, VisibleMeasureNumberBasic)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "examples" / "hello_world.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validatation failed"; // empty group means semantic fails: tested elsewhere
+
+    auto measures = doc.global().measures();
+    ASSERT_GE(measures.size(), 1);
+    {
+        auto measure = measures[0];
+        EXPECT_EQ(measure.calcVisibleNumber(), 1);
+    }
 }

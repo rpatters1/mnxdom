@@ -98,7 +98,7 @@ public:
      * @throws std::invalid_argument if @p den is zero.
      * @todo Make this constructor constexpr when we drop C++17 support.
      */
-    FractionValue(NumType num, NumType den)
+    constexpr FractionValue(NumType num, NumType den)
         : m_num(num), m_den(den)
     {
         if (m_den == 0) {
@@ -115,16 +115,16 @@ public:
     constexpr FractionValue(NumType value) : m_num(value), m_den(1) {}
 
     /// @brief Returns the numerator.
-    constexpr NumType numerator() const noexcept { return m_num; }
+    [[nodiscard]] constexpr NumType numerator() const noexcept { return m_num; }
 
     /// @brief Returns the denominator.
-    constexpr NumType denominator() const noexcept { return m_den; }
+    [[nodiscard]] constexpr NumType denominator() const noexcept { return m_den; }
 
     /**
      * @brief Returns the integer (whole number) part of the fraction.
      * @return The integer part of the fraction.
      */
-    constexpr NumType quotient() const
+    [[nodiscard]] constexpr NumType quotient() const
     {
         return m_num / m_den;
     }
@@ -133,7 +133,7 @@ public:
      * @brief Returns the fractional part of the fraction.
      * @return The remainder as a fraction, satisfying -1 < remainder < 1.
      */
-    FractionValue constexpr remainder() const
+    constexpr FractionValue remainder() const
     {
         FractionValue result;
         result.m_num = m_num % m_den;
@@ -145,6 +145,11 @@ public:
     static constexpr FractionValue max() noexcept
     {
         return FractionValue((std::numeric_limits<NumType>::max)());
+    }
+
+    /// @brief Converts the fraction to floating point double.
+    [[nodiscard]] constexpr double toDouble() const {
+        return double(m_num) / double(m_den);
     }
 
     /**
@@ -207,7 +212,7 @@ public:
      *
      * The result is normalized.
      */
-    FractionValue& operator/=(const FractionValue& rhs)
+    constexpr FractionValue& operator/=(const FractionValue& rhs)
     {
         if (rhs.m_num == 0) {
             throw std::invalid_argument("Division by zero FractionValue.");
@@ -229,6 +234,16 @@ public:
             m_den /= g;
         }
         normalizeSign();
+    }
+
+    /**
+     * @brief Returns a copy of the fraction reduced to lowest terms using std::gcd.
+     */
+    constexpr FractionValue reduced() const
+    {
+        auto result = *this;
+        result.reduce();
+        return result;
     }
 
     /**
@@ -323,7 +338,7 @@ public:
     return lhs;
 }
 
-[[nodiscard]] inline FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
+[[nodiscard]] constexpr FractionValue operator/(FractionValue lhs, const FractionValue& rhs)
 {
     lhs /= rhs;
     return lhs;
@@ -473,6 +488,13 @@ public:
 class Interval : public Object
 {
 public:
+    /// @brief initializer class for #Interval
+    struct Fields
+    {
+        int staffDistance{};    ///< the number of diatonic steps in the interval (negative is down)
+        int halfSteps{};        ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    };
+
     /// @brief Constructor for existing NoteValue instances
     Interval(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -482,14 +504,16 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param staffDistance The number of diatonic steps in the interval (negative is down)
-    /// @param halfSteps The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    Interval(Base& parent, std::string_view key, int staffDistance, int halfSteps)
+    /// @param fields The fields to contruct the interval.
+    Interval(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_halfSteps(halfSteps);
-        set_staffDistance(staffDistance);
+        set_halfSteps(fields.halfSteps);
+        set_staffDistance(fields.staffDistance);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { halfSteps(), staffDistance() }; }
 
     MNX_REQUIRED_PROPERTY(int, halfSteps);      ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
     MNX_REQUIRED_PROPERTY(int, staffDistance);  ///< the number of diatonic steps in the interval (negative is down)
@@ -502,20 +526,32 @@ public:
 class KeySignature : public Object
 {
 public:
+    /// @brief initializer class for #KeySignature
+    struct Fields
+    {
+        int fifths{};           ///< offset from signature with no accidentals
+
+        /// @brief Implicit constructor allows int to intialize it.
+        Fields(int f = 0) : fifths(f) {}
+    };
+
     /// @brief Constructor for existing KeySignature objects
     KeySignature(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
     {
     }
 
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { fifths() }; }
+
     /// @brief Creates a new KeySignature class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fifths The number of fifths distance from a signature with no accidentals.
-    KeySignature(Base& parent, std::string_view key, int fifths)
+    /// @param fields The fields to create 
+    KeySignature(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_fifths(fifths);
+        set_fifths(fields.fifths);
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the key signature
@@ -530,14 +566,10 @@ class NoteValue : public Object
 {
 public:
     /// @brief initializer class for #NoteValue
-    class Initializer
+    struct Fields
     {
-    public:
-        NoteValueBase base;     ///< the note value base to initialize
-        unsigned dots;          ///< the number of dots to initialize
-
-        /// @brief constructor
-        Initializer(NoteValueBase inBase, unsigned inDots = 0) : base(inBase), dots(inDots) {}
+        NoteValueBase base{};   ///< the note value base to initialize
+        unsigned dots{};        ///< the number of dots to initialize
     };
 
     /// @brief Constructor for existing NoteValue instances
@@ -549,24 +581,27 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param noteValue The note value
-    NoteValue(Base& parent, std::string_view key, const Initializer& noteValue)
+    /// @param fields The note value fields.
+    NoteValue(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_base(noteValue.base);
-        if (noteValue.dots) {
-            set_dots(noteValue.dots);
+        set_base(fields.base);
+        if (fields.dots) {
+            set_dots(fields.dots);
         }
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { base(), dots() }; }
+
+    /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
+    [[nodiscard]] operator FractionValue() const;
 
     MNX_REQUIRED_PROPERTY(NoteValueBase, base);                 ///< the type ("base") of note
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(unsigned, dots, 0);      ///< the number of dots
 
     /// @brief Calculates the number of flags or beams required by this note value
     [[nodiscard]] unsigned calcNumberOfFlags() const;
-
-    /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
-    [[nodiscard]] operator FractionValue() const;
 };
 
 /**
@@ -576,6 +611,13 @@ public:
 class NoteValueQuantity : public Object
 {
 public:
+    /// @brief initializer class for #NoteValueQuantity
+    struct Fields
+    {
+        unsigned count{};               ///< The quantity of note values
+        NoteValue::Fields noteValue{};  ///< the note value base to initialize
+    };
+
     /// @brief Constructor for existing NoteValue instances
     NoteValueQuantity(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -585,22 +627,23 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param count The quantity of note value units
-    /// @param noteValue The note value
-    NoteValueQuantity(Base& parent, std::string_view key, unsigned count, const NoteValue::Initializer& noteValue)
+    /// @param fields The note value fields.
+    NoteValueQuantity(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_multiple(count);
-        create_duration(noteValue);
+        set_multiple(fields.count);
+        create_duration(fields.noteValue);
     }
 
-    MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
-    MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
-
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { multiple(), duration() }; }
 
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const
     { return multiple() * duration(); }
+
+    MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
+    MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
 };
 
 /**
@@ -628,13 +671,13 @@ public:
         set_unit(unit);
     }
 
-    MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
-    MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
-
     /// @brief Implicit converter to FractionValue. This function preserves the time signature values
     /// rather than reducing to lowest common denominator.
     [[nodiscard]] operator FractionValue() const
     { return FractionValue(static_cast<FractionValue::NumType>(count()), static_cast<FractionValue::NumType>(unit())); }
+
+    MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
+    MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
 };
 
 } // namespace mnx

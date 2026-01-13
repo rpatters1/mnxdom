@@ -24,6 +24,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "mnxdom.h"
 
@@ -67,7 +68,7 @@ template <typename T, typename KeyType>
 std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& errorLocation)
 {
     try {
-        return document.getIdMapping().get<T>(key, errorLocation);
+        return document.getEntityMap().get<T>(key, errorLocation);
     } catch (const util::mapping_error&) {
         // already reported error, so fall through
     }
@@ -86,7 +87,7 @@ void SemanticValidator::validateGlobal()
         // If both are present, validate that they match
         if (lineOrder) {
             size_t x = 0;
-            for (const auto lineId : lineOrder.value()) {
+            for (const auto& lineId : lineOrder.value()) {
                 if (auto rslt = result.lyricLines.emplace(lineId, lineOrder.value()[x].pointer()); !rslt.second) {
                     addError("ID \"" + lineId + "\" already exists at " + rslt.first->second.to_string(), lineOrder.value()[x]);
                 }
@@ -96,25 +97,23 @@ void SemanticValidator::validateGlobal()
                 if (result.lyricLines.size() != lineMetadata.value().size()) {
                     addError("Size of line metadata does not match size of line order.", lineMetadata.value());
                 }
-                for (const auto [lineId, instance] : lineMetadata.value()) {
+                for (const auto& [lineId, instance] : lineMetadata.value()) {
                     if (result.lyricLines.find(lineId) == result.lyricLines.end()) {
                         addError("ID \"" + lineId + "\" not found in ID mapping", instance);
                     }
                 }
             }
         } else if (lineMetadata) {
-            size_t x = 0;
-            for (const auto [lineId, instance] : lineMetadata.value()) {
+            for (const auto& [lineId, instance] : lineMetadata.value()) {
                 if (auto rslt = result.lyricLines.emplace(lineId, instance.pointer()); !rslt.second) {
                     addError("ID \"" + lineId + "\" already exists at " + rslt.first->second.to_string(), instance);
                 }
-                x++;
             }
         }
     }
 
     if (const auto sounds = global.sounds()) {
-        for (const auto [soundId, sound] : sounds.value()) {
+        for (const auto& [soundId, sound] : sounds.value()) {
             if (auto midiNumber = sound.midiNumber()) {
                 if (midiNumber.value() < 0 || midiNumber.value() > 127) {
                     addError("Invalid midi number: " + std::to_string(midiNumber.value()), sound);
@@ -135,7 +134,7 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
         return;
     }
 
-    for (const auto tie : ties) {
+    for (const auto& tie : ties) {
         if (auto target = tie.target()) {
             if (tie.lv()) {
                 addError("Tie has both a target and is an lv tie.", tie);
@@ -202,7 +201,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             if (const auto notes = event.notes()) {
                 for (const auto note : notes.value()) {
-                    const int noteAlter = note.pitch().alter_or(0);
+                    const int noteAlter = note.pitch().alter();
                     if (std::abs(noteAlter) > 3) {
                         addError("Note \"" + note.id_or("<no-id>") + "\" has alteration value " + std::to_string(noteAlter) + ". MNX files are limited to +/-3.", note);
                     }
@@ -224,7 +223,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             if (!result.lyricLines.empty()) { // only check lyric lines if the line ids were provided in global.lyrics()
                 if (auto lyrics = event.lyrics()) {
                     if (auto lines = lyrics.value().lines()) {
-                        for (const auto line : lines.value()) {
+                        for (const auto& line : lines.value()) {
                             if (result.lyricLines.find(line.first) == result.lyricLines.end()) {
                                 addError("ID \"" + line.first + "\" not found in ID mapping", line.second);
                             }
@@ -233,7 +232,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 }
             }
             if (const auto slurs = event.slurs()) {
-                for (const auto slur : slurs.value()) {
+                for (const auto& slur : slurs.value()) {
                     const auto targetEvent = tryGetValue<mnx::sequence::Event>(slur.target(), slur);
                     if (slur.endNote()) {
                         bool foundNote = false;
@@ -275,7 +274,15 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
                 addError("Content array contains multi-note tremolo object, which is not permitted for type " + content.type(), content);
             }
             auto tremolo = content.get<mnx::sequence::MultiNoteTremolo>();
-            validateSequenceContent(tremolo.content(), tremolo, 0, /*allowEventsOnly*/true); // true => error on content other than events
+            const auto multiple = tremolo.outer().multiple();
+            if (multiple < 2) {
+                addError("Multi-note tremolo has " + std::to_string(tremolo.outer().multiple()) + " events.", tremolo);
+            }
+            if (multiple > 0) {
+                FractionValue tremoloElapsed;
+                const FractionValue expectedInner = tremolo.outer() * multiple;
+                validateSequenceContent(tremolo.content(), tremolo, expectedInner, /*allowEventsOnly*/true, /*requireExactDuration*/true, &tremoloElapsed);
+            }
             elapsedTime += tremolo.outer();
         } else if (content.type() == mnx::sequence::Space::ContentTypeValue) {
             if (allowEventsOnly) {
@@ -283,6 +290,8 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
             }
             auto space = content.get<mnx::sequence::Space>();
             elapsedTime += space.duration();
+        } else {
+            addError("Unknown content type \"" + content.type() + "\" encounterd in layout.", content);
         }
     }
     if (expectedDuration != 0) {
@@ -397,7 +406,8 @@ void SemanticValidator::validateParts()
     for (const auto part : document.parts()) {
         size_t x = part.calcArrayIndex();
         std::string partName = "[" + std::to_string(x) + "]";
-        size_t numPartMeasures = part.measures() ? part.measures().value().size() : 0;
+        const auto measures = part.measures();
+        size_t numPartMeasures = measures.size();
         size_t numGlobalMeasures = document.global().measures().size();
         if (numPartMeasures != numGlobalMeasures) {
             addError("Part" + partName + " contains a different number of measures (" + std::to_string(numPartMeasures)
@@ -406,9 +416,12 @@ void SemanticValidator::validateParts()
                 return; // cannot continue because can't get current time for part measures greater than global measures
             }
         }
+        if (part.staves() < 1) {
+            addError("Part" + partName + " contains no staves (" + std::to_string(part.staves()) + ")", part);
+        }
         if (auto kit = part.kit()) {
             auto sounds = document.global().sounds();
-            for (const auto [kitElementId, kitElement] : kit.value()) {
+            for (const auto& [kitElementId, kitElement] : kit.value()) {
                 if (kitElement.sound()) {
                     if (!sounds || !sounds->contains(kitElement.sound().value())) {
                         addError("Sound ID " + kitElement.sound().value() + " is not defined in global.sounds.", kitElement);
@@ -416,28 +429,71 @@ void SemanticValidator::validateParts()
                 }
             }
         }
-        if (auto measures = part.measures()) {
-            // first pass: validateSequenceContent creates the eventList and the noteList
-            for (const auto measure : measures.value()) {
-                auto measureTime = [&]() -> FractionValue {
-                    if (auto time = measure.calcCurrentTime()) {
-                        return time.value();
+        const int staffCount = part.staves();
+        if (numPartMeasures > 0) {
+            const auto firstMeasure = measures[0];
+            std::vector<bool> staffHasInitialClef(static_cast<size_t>(staffCount) + 1, false);
+            if (auto clefs = firstMeasure.clefs()) {
+                for (const auto clef : clefs.value()) {
+                    const int staffNumber = clef.staff();
+                    if (staffNumber < 1 || staffNumber > staffCount) {
+                        continue;
                     }
-                    return FractionValue(4, 4);
-                }();
-                for (const auto sequence : measure.sequences()) {
-                    /// @todo check voice uniqueness
-                    validateSequenceContent(sequence.content(), sequence, measureTime);
+                    bool atMeasureStart = true;
+                    if (const auto position = clef.position()) {
+                        const FractionValue offset = position->fraction();
+                        if (offset != FractionValue(0, 1)) {
+                            atMeasureStart = false;
+                        }
+                    }
+                    if (atMeasureStart) {
+                        staffHasInitialClef[static_cast<size_t>(staffNumber)] = true;
+                    }
                 }
             }
-            // second pass: validate other items that need a complete list of events and notes
-            for (const auto measure : measures.value()) {
-                if (auto beams = measure.beams()) {
-                    validateBeams(beams.value(), 1);
+            for (int staffNumber = 1; staffNumber <= staffCount; ++staffNumber) {
+                /// @todo eventually we should not skip part.kit, but mnx currently has no percussion clef.
+                if (!part.kit() && !staffHasInitialClef[static_cast<size_t>(staffNumber)]) {
+                    addError("Missing clef at the beginning of staff " + std::to_string(staffNumber) +
+                                 " in part " + part.id_or("<no-id>") + " (first measure).",
+                             firstMeasure);
                 }
-                if (auto ottavas = measure.ottavas()) {
-                    validateOttavas(measure, ottavas.value());
+            }
+        }
+        // first pass: validateSequenceContent creates the eventList and the noteList
+        for (const auto measure : measures) {
+            if (auto clefs = measure.clefs()) {
+                for (const auto clef : clefs.value()) {
+                    const int staffNumber = clef.staff();
+                    if (staffNumber < 1 || staffNumber > staffCount) {
+                        addError("Clef references non-existent staff " + std::to_string(staffNumber) +
+                                     " in part " + part.id_or("<no-id>") + ".",
+                                 clef);
+                    }
                 }
+            }
+            auto measureTime = [&]() -> FractionValue {
+                if (auto time = measure.calcCurrentTime()) {
+                    return time.value();
+                }
+                return FractionValue(4, 4);
+            }();
+            for (const auto sequence : measure.sequences()) {
+                if (sequence.staff() > part.staves()) {
+                    addError("Sequence references non-existent part staff for part " + part.id_or("<no-id>") + ".", sequence);
+                    continue;
+                }
+                /// @todo check voice uniqueness
+                validateSequenceContent(sequence.content(), sequence, measureTime);
+            }
+        }
+        // second pass: validate other items that need a complete list of events and notes
+        for (const auto measure : measures) {
+            if (auto beams = measure.beams()) {
+                validateBeams(beams.value(), 1);
+            }
+            if (auto ottavas = measure.ottavas()) {
+                validateOttavas(measure, ottavas.value());
             }
         }
     }
@@ -451,22 +507,30 @@ void SemanticValidator::validateLayouts()
                 for (const auto element : content) {
                     if (element.type() == mnx::layout::Group::ContentTypeValue) {
                         auto group = element.get<mnx::layout::Group>();
+                        if (group.content().empty()) {
+                            addError("Layout group contains no content.", group);
+                        }
                         self(self, group.content());
                     } else if (element.type() == mnx::layout::Staff::ContentTypeValue) {
                         auto staff = element.get<mnx::layout::Staff>();
+                        if (!util::analyzeLayoutStaffVoices(staff)) {
+                            addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has one or more part voices specified multiple times.", staff);
+                        }
                         /// @todo validate "labelref"?
                         for (const auto source : staff.sources()) {
                             if (const auto part = tryGetValue<mnx::Part>(source.part(), source)) {
                                 int staffNum = source.staff();
                                 int numStaves = part.value().staves();
                                 if (staffNum > numStaves || staffNum < 1) {
-                                    addError("Layout \"" + layout.id_or("") + "\" has invalid staff number ("
+                                    addError("Layout \"" + layout.id_or("<no-id>") + "\" has invalid staff number ("
                                         + std::to_string(staffNum) + ") for part " + source.part(), source);
                                 }
                             }
                             /// @todo validate "labelref"?
                             /// @todo validate "voice"?
                         }
+                    } else {
+                        addError("Unknown content type \"" + element.type() + "\" encounterd in layout.", element);
                     }
                 }
             };
@@ -542,7 +606,7 @@ void SemanticValidator::validateScores()
 SemanticValidationResult semanticValidate(const Document& document)
 {
     SemanticValidator validator(document);
-    validator.document.buildIdMapping([&](const std::string& message, const Base& location) {
+    validator.document.buildEntityMap({}, [&](const std::string& message, const Base& location) {
         validator.addError(message, location);
     });
 

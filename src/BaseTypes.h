@@ -205,6 +205,17 @@ namespace validation {
 class SemanticValidator;
 }; // namespace validation
 
+#ifndef DOXYGEN_SHOULD_IGNOR_THIS
+
+namespace scope {
+struct Default {};
+struct SequenceContent {};
+struct LayoutContent {};
+} // namespace scope
+
+#endif
+
+
 /**
  * @brief Base class wrapper for all MNX JSON nodes.
  */
@@ -264,10 +275,10 @@ public:
     }
 
     /// @brief Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. ContentObject), the highest
-    /// level instance is returned. (To get the lowest level immediate container, use #ArrayElementObject::container.)
+    /// level instance is returned. (To get the lowest level immediate container, use #ContentObject::container.)
     /// @tparam T The type to find. A limited list of types are supported, including @ref Part and @ref Sequence. Others may be added as needed.
     /// @return the enclosing element, or std::nullopt if not found.
-    template <typename T>
+    template <typename T, typename Scope = scope::Default>
     [[nodiscard]] std::optional<T> getEnclosingElement() const;
 
     /// @brief Returns the json_pointer for this node.
@@ -327,7 +338,7 @@ protected:
 
         json_pointer childPointer = m_pointer / std::string(key);
         if (!checkKeyIsValid<T>(childPointer)) {
-            throw std::runtime_error("Missing required child node: " + std::string(key));
+            throw std::out_of_range("Child node not found: " + std::string(key));
         }
 
         return T(m_root, childPointer);
@@ -503,6 +514,12 @@ private:
         mutable size_t m_idx;
 
     public:
+        using iterator_category = std::input_iterator_tag;
+        using value_type        = T;
+        using difference_type   = std::ptrdiff_t;
+        using pointer           = void; // not meaningful for proxy/value-returning iterators
+        using reference         = T;    // since operator* returns by value
+
         iter(ArrayType* ptr, size_t idx) : m_ptr(ptr), m_idx(idx) {}
         T operator*() const { return (*m_ptr)[m_idx]; }
         iter& operator++() { ++m_idx; return *this; }
@@ -600,6 +617,15 @@ public:
         ref().erase(ref().begin() + index);
     }
 
+    /// @brief Converts the Array to an owning std::vector.
+    /// @details Intended only for value-like element types. The returned vector
+    ///          is detached from the document and may be used as a grouped
+    ///          snapshot of values (e.g., for passing to external APIs).
+    template <typename U = T>
+    std::enable_if_t<!std::is_base_of_v<Base, U>, std::vector<U>>
+    toStdVector() const
+    { return std::vector<U>(begin(), end()); }
+
     /// @brief Returns an iterator to the beginning of the array.
     [[nodiscard]] auto begin() { return iterator(this, 0); }
 
@@ -638,16 +664,12 @@ public:
         return std::stoul(pointer().back());
     }
 
-    /// @brief Returns the container of the array this element belongs to wrapped as the specified template type.
-    ///
-    /// No error checking is performed beyond verifying that ContainerType matches being an array or object with the json node.
-    ///
-    /// @tparam ContainerType The type to wrap around the container
+    /// @brief Returns the object that owns the content array this element belongs to wrapped as the specified template type.
+    /// @tparam ContainerType The type to wrap around the container.
+    /// @throws std::invalid_argument If @p ContainerType is derived from @ref ContentObject and its
+    ///         @c ContentTypeValue does not match the retrieved object's `type` field.
     template <typename ContainerType>
-    ContainerType container() const
-    {
-        return parent<Array<ArrayElementObject>>().parent<ContainerType>();
-    }
+    ContainerType container() const;
 };
 
 class ContentArray;
@@ -669,7 +691,6 @@ public:
         return getTypedObject<T>();
     }
 
-private:
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
@@ -684,6 +705,25 @@ private:
 
     friend class ContentArray;
 };
+
+template <typename ContainerType>
+inline ContainerType ArrayElementObject::container() const
+{
+    if constexpr (std::is_base_of_v<ContainerType, ContentObject>) {
+        const auto obj = parent<Array<ArrayElementObject>>().template parent<ContentObject>();
+        if constexpr (std::is_same_v<ContainerType, ContentObject>) {
+            return obj;
+        } else {
+            MNX_ASSERT_IF(obj.type() != ContainerType::ContentTypeValue) {
+                throw std::invalid_argument(
+                    "container(): requested type does not match underlying content object type");
+            }
+            return obj.template get<ContainerType>();
+        }
+    } else {
+        return parent<Array<ArrayElementObject>>().template parent<ContainerType>();
+    }
+}
 
 /**
  * @class ContentArray
@@ -804,7 +844,7 @@ private:
         void update_pair() const {
             m_pair.reset();
             if (m_it != m_ptr->ref().end()) {
-                m_pair = std::make_unique<value_type>(m_it.key(), m_ptr->operator[](m_it.key()));
+                m_pair = std::make_unique<value_type>(m_it.key(), m_ptr->valueForKey(m_it.key()));
             }
         }
     
@@ -852,36 +892,16 @@ public:
     /** @brief Clear all elements. */
     void clear() { ref().clear(); }
 
-    /** @brief Direct getter for a particular element. */
-    [[nodiscard]] T at(size_t index) const
-    {
-        return operator[](index);
-    }
-
-    /// @brief const operator[]
-    [[nodiscard]] auto operator[](const std::string& key) const
-    {
-        if constexpr (std::is_base_of_v<Base, T>) {
-            return getChild<T>(key);
-        } else {
-            return getChild<SimpleType<T>>(key);
-        }
-    }
-
-    /// @brief non-const operator[]
-    [[nodiscard]] auto operator[](const std::string& key)
-    {
-        if constexpr (std::is_base_of_v<Base, T>) {
-            return getChild<T>(key);
-        } else {
-            return getChild<SimpleType<T>>(key);
-        }
-    }
+    /** @brief Direct getter for a particular element.
+     *  @throws std::out_of_range when the key does not exist.
+     */
+    [[nodiscard]] T at(std::string_view key) const
+    { return valueForKey(key); }
 
     /** @brief Add a new value to the dictonary. (Available only for primitive types) */
     template <typename U = T>
     std::enable_if_t<!std::is_base_of_v<Base, U>, void>
-    emplace(const std::string& key, const U& value)
+    emplace(std::string_view key, const U& value)
     {
         ref()[key] = value;
     }
@@ -892,7 +912,7 @@ public:
     */
     template <typename U = T, typename... Args,
               std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
-    U append(const std::string& key, Args&&... args)
+    U append(std::string_view key, Args&&... args)
     {
         if constexpr (std::is_base_of_v<Object, U>) {
             ref()[key] = json::object();
@@ -903,7 +923,7 @@ public:
     }
 
     /** @brief Remove an element at a given key. */
-    void erase(const std::string& key)
+    void erase(std::string_view key)
     {
         ref().erase(key);
     }
@@ -911,7 +931,7 @@ public:
     /// @brief Finds an element by key and returns an iterator.
     /// @param key The key to search for.
     /// @return Iterator to the found element or end() if not found.
-    [[nodiscard]] auto find(const std::string& key)
+    [[nodiscard]] auto find(std::string_view key)
     {
         auto it = ref().find(key);
         return (it != ref().end()) ? iterator(this, it) : end();
@@ -920,7 +940,7 @@ public:
     /// @brief Finds an element by key and returns a const iterator.
     /// @param key The key to search for.
     /// @return Const iterator to the found element or end() if not found.
-    [[nodiscard]] auto find(const std::string& key) const
+    [[nodiscard]] auto find(std::string_view key) const
     {
         auto it = ref().find(key);
         return (it != ref().end()) ? const_iterator(this, it) : end();
@@ -928,7 +948,7 @@ public:
 
     /// @brief Returns true if the key exists in in the dictionary.
     /// @param key  The key to search for.
-    [[nodiscard]] bool contains(const std::string& key) const
+    [[nodiscard]] bool contains(std::string_view key) const
     { return find(key) != end(); }
 
     /// @brief Returns an iterator to the beginning of the dictionary.
@@ -942,6 +962,17 @@ public:
 
     /// @brief Returns a const iterator to the end of the dictionary.
     [[nodiscard]] auto end() const { return const_iterator(this, ref().end()); }
+
+private:
+    /// @brief Returns the dictionary element for the given key.
+    [[nodiscard]] T valueForKey(std::string_view key) const
+    {
+        if constexpr (std::is_base_of_v<Base, T>) {
+            return getChild<T>(key);
+        } else {
+            return getChild<SimpleType<T>>(key);
+        }
+    }
 };
 
 } // namespace mnx

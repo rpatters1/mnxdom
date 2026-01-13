@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 #include <cassert>
+#include <utility>
+#include <set>
 
 #include "mnxdom.h"
 #include "music_theory/music_theory.hpp"
@@ -32,42 +34,42 @@ namespace mnx {
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
-template <typename T>
+template <typename T, typename Scope>
 struct EnclosingKey {
     static_assert(sizeof(T) == 0, "EnclosingKey<T> must be specialized.");
 };
 
 template <>
-struct EnclosingKey<mnx::Part> {
+struct EnclosingKey<Part, scope::Default> {
     static constexpr std::array<std::string_view, 1> value = { "parts" };
 };
-template std::optional<mnx::Part> Base::getEnclosingElement<mnx::Part>() const;
+template std::optional<Part> Base::getEnclosingElement<Part>() const;
 
 template <>
-struct EnclosingKey<mnx::part::Measure> {
+struct EnclosingKey<part::Measure, scope::Default> {
     static constexpr std::array<std::string_view, 3> value = { "parts", "*", "measures" };
 };
-template std::optional<mnx::part::Measure> Base::getEnclosingElement<mnx::part::Measure>() const;
+template std::optional<part::Measure> Base::getEnclosingElement<part::Measure>() const;
 
 template <>
-struct EnclosingKey<mnx::Sequence> {
+struct EnclosingKey<Sequence, scope::Default> {
     static constexpr std::array<std::string_view, 5> value = { "parts", "*", "measures", "*", "sequences" };
 };
-template std::optional<mnx::Sequence> Base::getEnclosingElement<mnx::Sequence>() const;
+template std::optional<Sequence> Base::getEnclosingElement<Sequence>() const;
 
 template <>
-struct EnclosingKey<mnx::sequence::ContentObject> {
+struct EnclosingKey<ContentObject, scope::SequenceContent> {
     static constexpr std::array<std::string_view, 7> value = { "parts", "*", "measures", "*", "sequences", "*", "content" };
 };
-template std::optional<mnx::sequence::ContentObject> Base::getEnclosingElement<mnx::sequence::ContentObject>() const;
+template std::optional<ContentObject> Base::getEnclosingElement<ContentObject, scope::SequenceContent>() const;
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
-template <typename T>
+template <typename T, typename Scope>
 std::optional<T> Base::getEnclosingElement() const
 {
     // Compile-time pattern like {"parts"}, {"parts","*","measures"}, etc.
-    constexpr auto& key = EnclosingKey<T>::value;
+    constexpr auto& key = EnclosingKey<T, Scope>::value;
     constexpr std::size_t keySize = key.size();
 
     const std::string ptrStr = m_pointer.to_string();
@@ -124,59 +126,261 @@ Document Base::document() const
 // ***** Document *****
 // ********************
 
-void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
+void Document::buildEntityMap(EntityMapPolicies policies,
+                              const std::optional<ErrorHandler>& errorHandler)
 {
-    m_idMapping.reset();
-    m_idMapping = std::make_shared<util::IdMapping>(root(), errorHandler);
+    m_entityMapping.reset();
+    m_entityMapping = std::make_shared<util::EntityMap>(root(), errorHandler);
+    struct Position
+    {
+        int measureIndex{};
+        FractionValue beat{};
+        std::optional<unsigned> graceIndex;
+    };
+    auto compareGrace = [](const std::optional<unsigned>& lhs,
+                           const std::optional<unsigned>& rhs,
+                           bool rhsIncludesTrailingMeasureGrace) -> int {
+        if (rhsIncludesTrailingMeasureGrace && rhs && rhs.value() == 0 && lhs && lhs.value() > 0) {
+            return 0;
+        }
+        if (!lhs && !rhs) {
+            return 0;
+        }
+        if (!lhs) {
+            return -1;
+        }
+        if (!rhs) {
+            return 1;
+        }
+        if (*lhs == *rhs) {
+            return 0;
+        }
+        return *lhs < *rhs ? -1 : 1;
+    };
+    auto comparePosition = [&](const Position& lhs,
+                               const Position& rhs,
+                               bool rhsIncludesTrailingGrace) -> int {
+        if (lhs.measureIndex != rhs.measureIndex) {
+            return lhs.measureIndex < rhs.measureIndex ? -1 : 1;
+        }
+        if (lhs.beat != rhs.beat) {
+            return lhs.beat < rhs.beat ? -1 : 1;
+        }
+        return compareGrace(lhs.graceIndex, rhs.graceIndex, rhsIncludesTrailingGrace);
+    };
+    auto adaptGraceIndex = [&](std::optional<unsigned> value) -> std::optional<unsigned> {
+        if (!policies.ottavasRespectGraceTargets) {
+            return std::nullopt;
+        }
+        return value;
+    };
+    auto adaptVoiceTarget = [&](const std::optional<std::string>& voice) -> std::optional<std::string> {
+        if (!policies.ottavasRespectVoiceTargets) {
+            return std::nullopt;
+        }
+        return voice;
+    };
+    // global settings
+    std::vector<std::string>& docLyricLines = m_entityMapping->m_lyricLineOrder;
+    std::set<std::string> foundLyricLines;
+    if (const auto lyrics = global().lyrics()) {
+        if (const auto lineOrder = lyrics->lineOrder()) {
+            docLyricLines = lineOrder->toStdVector();
+        }
+    }
     // global measures
     const auto globalMeasures = global().measures();
+    std::vector<FractionValue> measureDurations(globalMeasures.size(), FractionValue(1, 1));
     int measureId = 0;
-    for (const auto globalMeasure : global().measures()) {
+    for (const auto globalMeasure : globalMeasures) {
         measureId = globalMeasure.index_or(measureId + 1);
-        m_idMapping->add(measureId, globalMeasure);
+        m_entityMapping->add(measureId, globalMeasure);
+        FractionValue duration(1, 1);
+        if (const auto time = globalMeasure.calcCurrentTime()) {
+            duration = static_cast<FractionValue>(*time);
+        }
+        measureDurations[globalMeasure.calcArrayIndex()] = duration;
     }
     // parts, events, notes
     for (const auto part : parts()) {
         if (part.id()) {
-            m_idMapping->add(part.id().value(), part);
+            m_entityMapping->add(part.id().value(), part);
         }
-        if (const auto measures = part.measures()) {
-            for (const auto measure : measures.value()) {
-                for (const auto sequence : measure.sequences()) {
-                    auto processContent = [&](const ContentArray& contentArray, auto&& self) -> void {
-                        for (const auto content : contentArray) {
-                            if (content.type() == sequence::Event::ContentTypeValue) {
-                                const auto event = content.get<sequence::Event>();
-                                if (event.id()) {
-                                    m_idMapping->add(event.id().value(), event);
-                                }
-                                if (auto notes = event.notes()) {
-                                    for (const auto note : notes.value()) {
-                                        if (note.id()) {
-                                            m_idMapping->add(note.id().value(), note);
-                                        }
-                                    }
-                                }
-                                if (auto kitNotes = event.kitNotes()) {
-                                    for (const auto kitNote : kitNotes.value()) {
-                                        if (kitNote.id()) {
-                                            m_idMapping->add(kitNote.id().value(), kitNote);
-                                        }
-                                    }
-                                }
-                            } else if (content.type() == sequence::Tuplet::ContentTypeValue) {
-                                const auto tuplet = content.get<sequence::Tuplet>();
-                                self(tuplet.content(), self);
-                            } else if (content.type() == sequence::Grace::ContentTypeValue) {
-                                const auto grace = content.get<sequence::Grace>();
-                                self(grace.content(), self);
-                            } else if (content.type() == sequence::MultiNoteTremolo::ContentTypeValue) {
-                                const auto tremolo = content.get<sequence::MultiNoteTremolo>();
-                                self(tremolo.content(), self);
+        struct OttavaSpan
+        {
+            int staff{ 1 };
+            std::optional<std::string> voice;
+            int startMeasure{};
+            FractionValue startBeat{};
+            std::optional<unsigned> startGraceIndex;
+            int endMeasure{};
+            FractionValue endBeat{};
+            std::optional<unsigned> endGraceIndex;
+            int value{};
+            bool endsAtMeasureEnd{ false };
+        };
+        std::vector<OttavaSpan> ottavaSpans;
+        const auto calcOttavaShift = [&](int staff,
+                                         const std::optional<std::string>& voice,
+                                         const Position& position) {
+            int total = 0;
+            for (const auto& span : ottavaSpans) {
+                if (staff != span.staff) {
+                    continue;
+                }
+                if (span.voice && (!voice || *voice != *span.voice)) {
+                    continue;
+                }
+                Position start{ span.startMeasure, span.startBeat, span.startGraceIndex };
+                if (comparePosition(position, start, false) < 0) {
+                    continue;
+                }
+                Position end{ span.endMeasure, span.endBeat, span.endGraceIndex };
+                if (comparePosition(position, end, span.endsAtMeasureEnd) > 0) {
+                    continue;
+                }
+                total += span.value;
+            }
+            return total;
+        };
+        for (const auto measure : part.measures()) {
+            const int measureIndex = static_cast<int>(measure.calcArrayIndex());
+            if (const auto& ottavas = measure.ottavas()) {
+                for (const auto& ottava : ottavas.value()) {
+                    OttavaSpan span;
+                    span.staff = ottava.staff();
+                    span.voice = adaptVoiceTarget(ottava.voice());
+                    span.startMeasure = measureIndex;
+                    span.startBeat = ottava.position().fraction();
+                    span.startGraceIndex = adaptGraceIndex(ottava.position().graceIndex());
+                    const auto endMeasure = m_entityMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
+                    span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
+                    span.endBeat = ottava.end().position().fraction();
+                    span.endGraceIndex = adaptGraceIndex(ottava.end().position().graceIndex());
+                    span.value = static_cast<int>(ottava.value());
+                    if (span.endMeasure >= 0) {
+                        const auto measureIdx = static_cast<size_t>(span.endMeasure);
+                        if (measureIdx < measureDurations.size()) {
+                            span.endsAtMeasureEnd = span.endBeat == measureDurations[measureIdx];
+                        }
+                    }
+                    ottavaSpans.push_back(std::move(span));
+                }
+            }
+            for (const auto sequence : measure.sequences()) {
+                struct PendingGraceEvent
+                {
+                    sequence::Event event;
+                    FractionValue startTime;
+                    int staff;
+                    std::optional<std::string> voice;
+                };
+
+                std::vector<PendingGraceEvent> pendingGraceEvents;
+                const auto sequenceVoice = sequence.voice();
+                const int sequenceStaff = sequence.staff();
+
+                auto storeOttavaShift = [&](const sequence::Event& event,
+                                            const FractionValue& start,
+                                            std::optional<unsigned> graceIndex,
+                                            int staffNumber,
+                                            const std::optional<std::string>& voiceLabel) {
+                    Position position{ measureIndex, start, adaptGraceIndex(graceIndex) };
+                    const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
+                    m_entityMapping->setEventOttavaShift(event.pointer().to_string(), shift);
+                };
+
+                auto flushPendingGraceEvents = [&]() {
+                    if (pendingGraceEvents.empty()) {
+                        return;
+                    }
+                    unsigned graceIndex = 1;
+                    for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
+                        storeOttavaShift(it->event,
+                                         it->startTime,
+                                         std::optional<unsigned>(graceIndex),
+                                         it->staff,
+                                         it->voice);
+                        ++graceIndex;
+                    }
+                    pendingGraceEvents.clear();
+                };
+
+                util::SequenceWalkHooks hooks;
+                hooks.onEvent = [&](const sequence::Event& event,
+                                    const FractionValue& startTime,
+                                    const FractionValue&,
+                                    util::SequenceWalkContext& ctx) -> bool {
+                    if (event.id()) {
+                        m_entityMapping->add(event.id().value(), event);
+                    }
+                    if (auto notes = event.notes()) {
+                        for (const auto note : notes.value()) {
+                            if (note.id()) {
+                                m_entityMapping->add(note.id().value(), note);
                             }
                         }
-                    };
-                    processContent(sequence.content(), processContent);
+                    }
+                    if (auto kitNotes = event.kitNotes()) {
+                        for (const auto kitNote : kitNotes.value()) {
+                            if (kitNote.id()) {
+                                m_entityMapping->add(kitNote.id().value(), kitNote);
+                            }
+                        }
+                    }
+                    if (docLyricLines.empty()) {
+                        if (const auto lyrics = event.lyrics()) {
+                            if (const auto lines = lyrics->lines()) {
+                                for (const auto& line : lines.value()) {
+                                    foundLyricLines.emplace(line.first);
+                                }
+                            }
+                        }
+                    }
+                    const int eventStaff = event.staff().value_or(sequenceStaff);
+                    if (ctx.inGrace) {
+                        pendingGraceEvents.push_back(PendingGraceEvent{
+                            event,
+                            startTime,
+                            eventStaff,
+                            sequenceVoice
+                        });
+                        return true;
+                    }
+                    flushPendingGraceEvents();
+                    storeOttavaShift(event,
+                                     startTime,
+                                     std::optional<unsigned>(0),
+                                     eventStaff,
+                                     sequenceVoice);
+                    return true;
+                };
+
+                const bool walked = util::walkSequenceContent(sequence, hooks);
+                MNX_ASSERT_IF(!walked) {
+                    throw std::logic_error("Sequence walk aborted unexpectedly while building ID mapping.");
+                }
+                flushPendingGraceEvents();
+            }
+            if (const auto& beams = measure.beams()) {
+                auto walkBeamLevels = [&](const part::Beam& beam,
+                                          int level,
+                                          const auto& selfRef) -> void {
+                    const auto events = beam.events();
+                    if (!events.empty()) {
+                        m_entityMapping->setEventBeamStartLevel(events[0], level);
+                    }
+                    if (const auto childBeams = beam.beams()) {
+                        for (const auto& child : childBeams.value()) {
+                            selfRef(child, level + 1, selfRef);
+                        }
+                    }
+                };
+                for (const auto& beam : beams.value()) {
+                    for (const auto& eventId : beam.events()) {
+                        m_entityMapping->addEventToBeam(eventId, beam);
+                    }
+                    walkBeamLevels(beam, 1, walkBeamLevels);
                 }
             }
         }
@@ -185,10 +389,83 @@ void Document::buildIdMapping(const std::optional<ErrorHandler>& errorHandler)
     if (const auto layoutArray = layouts()) {
         for (const auto layout : layoutArray.value()) {
             if (layout.id().has_value()) {
-                m_idMapping->add(layout.id().value(), layout);
+                m_entityMapping->add(layout.id().value(), layout);
             }
         }
     }
+    // lyric lines
+    if (docLyricLines.empty()) {
+        for (const auto& line : foundLyricLines) {
+            docLyricLines.emplace_back(std::move(line));
+        }
+    }
+}
+
+std::optional<Layout> Document::findFullScoreLayout() const
+{
+    using StaffKey = util::StaffKey;
+    using StaffKeyHash = util::StaffKeyHash;
+
+    const auto layoutsOpt = layouts();
+    if (!layoutsOpt) {
+        return std::nullopt; // no layouts provided
+    }
+
+    // Build the expected (part, staff) sequence in the *part list order*.
+    // Wire these to your actual part/staff APIs.
+    std::vector<StaffKey> expected;
+
+    for (auto part : parts()) {
+        if (!part.id() || part.id()->empty()) {
+            return std::nullopt; // parts with no ID cannot appear in any layout, no full score layout is possible.
+        }
+        const std::string pid = *part.id();
+        const int staffCount = part.staves();
+        for (int s = 1; s <= staffCount; ++s) {
+            expected.push_back(StaffKey{pid, s});
+        }
+    }
+
+    for (auto layout : *layoutsOpt) {
+        const auto staves = util::flattenLayoutStaves(layout);
+        if (!staves) {
+            continue;
+        }
+        if (staves->size() != expected.size()) {
+            continue;
+        }
+        // Enforce uniqueness and ordering of (part, staff) across the layout.
+        std::unordered_set<StaffKey, StaffKeyHash> seen;
+        seen.reserve(staves->size());
+
+        bool ok = true;
+        for (size_t i = 0; i < staves->size(); ++i) {
+            const auto keys = util::analyzeLayoutStaffVoices(staves.value()[i]);
+            if (!keys || keys->empty() || keys->size() > 1) {
+                ok = false;
+                break;
+            }
+            const auto& key = keys->begin();
+
+            // Must match part/staff order exactly.
+            if (key->partId != expected[i].partId || key->staffNo != expected[i].staffNo) {
+                ok = false;
+                break;
+            }
+
+            // Each part staff appears on exactly one layout staff.
+            if (!seen.emplace(*key).second) {
+                ok = false;
+                break;
+            }
+        }
+
+        if (ok) {
+            return layout;
+        }
+    }
+
+    return std::nullopt;
 }
 
 // *********************
@@ -253,7 +530,7 @@ NoteValue::operator FractionValue() const
         den *= factorDen;
     }
 
-    return FractionValue(num, den);  // FractionValue will normalize internally
+    return FractionValue(num, den).reduced();
 }
 
 // ***************************
@@ -283,13 +560,17 @@ int global::Measure::calcMeasureIndex() const
     return prevIndex.value_or(prev.calcMeasureIndex()) + 1;
 }
 
+int global::Measure::calcVisibleNumber() const
+{
+    return number_or(calcMeasureIndex());
+}
+
 std::optional<TimeSignature> global::Measure::calcCurrentTime() const
 {
     auto measures = parent<Array<global::Measure>>();
     global::Measure next = *this;
     size_t currentIndex = next.calcArrayIndex();
-    while (!next.time())
-    {
+    while (!next.time()) {
         if (currentIndex == 0) {
             return std::nullopt;
         }
@@ -298,11 +579,33 @@ std::optional<TimeSignature> global::Measure::calcCurrentTime() const
     return next.time();
 }
 
+std::optional<KeySignature> global::Measure::calcCurrentKey() const
+{
+    auto measures = parent<Array<global::Measure>>();
+    global::Measure next = *this;
+    size_t currentIndex = next.calcArrayIndex();
+    while (!next.key()) {
+        if (currentIndex == 0) {
+            return std::nullopt;
+        }
+        next = measures[--currentIndex];
+    }
+    return next.key();
+}
+
+KeySignature::Fields global::Measure::calcCurrentKeyFields() const
+{
+    if (auto currentKey = calcCurrentKey()) {
+        return currentKey.value();
+    }
+    return 0;
+}
+
 // *************************
 // ***** part::Measure *****
 // *************************
 
-mnx::global::Measure part::Measure::getGlobalMeasure() const
+global::Measure part::Measure::getGlobalMeasure() const
 {
     const size_t measureIndex = calcArrayIndex();
     auto globalMeasures = document().global().measures();
@@ -315,6 +618,32 @@ mnx::global::Measure part::Measure::getGlobalMeasure() const
 std::optional<TimeSignature> part::Measure::calcCurrentTime() const
 {
     return getGlobalMeasure().calcCurrentTime();
+}
+
+// ***********************************
+// ***** part::PartTransposition *****
+// ***********************************
+
+KeySignature::Fields part::PartTransposition::calcTransposedKey(const KeySignature::Fields& concertKey) const
+{
+    const auto i = interval();
+    int alteration = music_theory::calcAlterationFrom12EdoHalfsteps(i.staffDistance(), i.halfSteps());
+    int result = concertKey.fifths + music_theory::calcKeySigChangeFromInterval(i.staffDistance(), alteration);
+    if (const auto flipAt = keyFifthsFlipAt(); flipAt.has_value()) {
+        constexpr int FIFTHS_WRAP = 12; // enharmonic wrap in fifths-space
+        if (*flipAt >= 0) {
+            // "subtract 12 fifths"
+            if (result >= *flipAt) {
+                result -= FIFTHS_WRAP;
+            }
+        } else {
+            // negative flipAt means "add 12"
+            if (result <= *flipAt) {
+                result += FIFTHS_WRAP;
+            }
+        }
+    }
+    return result;
 }
 
 // ***************************
@@ -339,8 +668,8 @@ bool sequence::Event::isGrace() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "grace" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::sequence::ContentObject>();
-    return container.type() == mnx::sequence::Grace::ContentTypeValue;
+    auto container = this->container<ContentObject>();
+    return container.type() == sequence::Grace::ContentTypeValue;
 }
 
 bool sequence::Event::isTremolo() const
@@ -349,8 +678,8 @@ bool sequence::Event::isTremolo() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "tremolo" in that case, which is all
     // that matters here.
-    auto container = this->container<mnx::sequence::ContentObject>();
-    return container.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue;
+    auto container = this->container<ContentObject>();
+    return container.type() == sequence::MultiNoteTremolo::ContentTypeValue;
 }
 
 Sequence sequence::Event::getSequence() const
@@ -364,7 +693,7 @@ Sequence sequence::Event::getSequence() const
 
 size_t sequence::Event::getSequenceIndex() const
 {
-    auto result = getEnclosingElement<mnx::sequence::ContentObject>();
+    auto result = getEnclosingElement<Sequence>();
     MNX_ASSERT_IF(!result.has_value()) {
         throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
     }
@@ -374,7 +703,7 @@ size_t sequence::Event::getSequenceIndex() const
 FractionValue sequence::Event::calcDuration() const
 {
     if (measure()) {
-        auto partMeasure = getEnclosingElement<mnx::part::Measure>();
+        auto partMeasure = getEnclosingElement<part::Measure>();
         MNX_ASSERT_IF(!partMeasure) {
             throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a part measure.");
         }
@@ -390,14 +719,16 @@ FractionValue sequence::Event::calcDuration() const
 
 FractionValue sequence::Event::calcStartTime() const
 {
-    auto sequence = getEnclosingElement<mnx::Sequence>();
+    auto sequence = getEnclosingElement<Sequence>();
     MNX_ASSERT_IF(!sequence) {
         throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a sequence.");
     }
 
     auto retval = std::optional<FractionValue>();
     auto thisPtr = pointer();
-    sequence->iterateEvents([&](sequence::Event event, FractionValue startDuration, FractionValue /*actualDuration*/) -> bool {
+    util::iterateSequenceEvents(sequence.value(), [&](const sequence::Event& event, 
+                                                      const FractionValue& startDuration,
+                                                      const FractionValue& /*actualDuration*/) -> bool {
         if (event.pointer() == thisPtr) {
             retval = startDuration;
             return false;
@@ -415,65 +746,54 @@ FractionValue sequence::Event::calcStartTime() const
 // ***** sequence::Pitch *****
 // ***************************
 
-bool sequence::Pitch::isSamePitch(const Pitch& src) const
+bool sequence::Pitch::isSamePitch(const Pitch::Fields& src) const
 {
-    if (src.alter_or(0) == alter_or(0)
-        && src.octave() == octave()
-        && src.step() == step()) {
+    if (src.alter == alter()
+        && src.octave == octave()
+        && src.step == step()) {
         return true;
     }
-    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step()), src.octave()), src.alter_or(0));
-    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter_or(0));
+    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step), src.octave), src.alter);
+    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter());
 }
 
-// ********************
-// ***** Sequence *****
-// ********************
-
-bool Sequence::iterateEvents(std::function<bool(sequence::Event event, FractionValue startDuration, FractionValue actualDuration)> iterator) const
+sequence::Pitch::Fields sequence::Pitch::calcTransposed() const
 {
-    auto elapsedTime = FractionValue{0};
+    auto sequence = getEnclosingElement<Sequence>();
+    MNX_ASSERT_IF(!sequence) {
+        throw std::logic_error("unable to find enclosing sequence for pitch.");
+    }
+    auto partMeasure = sequence->container<part::Measure>();
+    auto globalMeasure = partMeasure.getGlobalMeasure();
+    auto part = partMeasure.getEnclosingElement<Part>();
+    MNX_ASSERT_IF(!part) {
+        throw std::logic_error("unable to find enclosing part for pitch.");
+    }
 
-    auto processContent = [&](ContentArray content, FractionValue timeRatio, auto&& self) -> bool {
-        for (const auto item : content) {
-            if (item.type() == mnx::sequence::Event::ContentTypeValue) {
-                auto event = item.get<mnx::sequence::Event>();
-                auto actualDuration = event.calcDuration() * timeRatio;
-                if (!iterator(event, elapsedTime, actualDuration)) {
-                    return false;
-                }
-                elapsedTime += actualDuration;
-            } else if (item.type() == mnx::sequence::Grace::ContentTypeValue) {
-                auto grace = item.get<mnx::sequence::Grace>();
-                if (!self(grace.content(), 0, self)) {
-                    return false;
-                }
-            } else if (item.type() == mnx::sequence::Tuplet::ContentTypeValue) {
-                auto tuplet = item.get<mnx::sequence::Tuplet>();
-                if (!self(tuplet.content(), timeRatio * tuplet.ratio(), self)) {
-                    return false;
-                }
-            } else if (item.type() == mnx::sequence::MultiNoteTremolo::ContentTypeValue) {
-                auto tremolo = item.get<mnx::sequence::MultiNoteTremolo>();
-                /// @todo: MNX tremolo durations.
-                // Currently, inner tremolo notes are treated as time-neutral and only
-                // tremolo.outer() * timeRatio advances elapsedTime. Once the MNX spec
-                // clarifies per-note duration semantics for multi-note tremolos, this
-                // iterator should be updated so each event gets an appropriate share of
-                // the tremolo duration pie.
-                if (!self(tremolo.content(), 0, self)) {
-                    return false;
-                }
-                elapsedTime += tremolo.outer() * timeRatio;
-            } else if (item.type() == mnx::sequence::Space::ContentTypeValue) {
-                auto space = item.get<mnx::sequence::Space>();
-                elapsedTime += space.duration() * timeRatio;
-            }
+    if (auto partTrans = part->transposition()) {
+        music_theory::Transposer t(music_theory::calcDisplacement(int(step()), octave()), alter());
+        const auto interval = partTrans->interval();
+        const int intervalDisp = interval.staffDistance();
+        const int intervalAlt = music_theory::calcAlterationFrom12EdoHalfsteps(intervalDisp, interval.halfSteps());
+        t.chromaticTranspose(intervalDisp, intervalAlt);
+        int expectedKeyFifths = music_theory::calcKeySigChangeFromInterval(intervalDisp, intervalAlt)
+                                    + globalMeasure.calcCurrentKeyFields().fifths;
+        auto actualTransKey = partTrans->calcTransposedKey(globalMeasure.calcCurrentKeyFields());
+        const int fifthsDiff = expectedKeyFifths - actualTransKey.fifths;
+        const int wraps = fifthsDiff / 12;          // trunc toward zero
+        if (wraps != 0) {
+            t.enharmonicTranspose(wraps);
         }
-        return true;
-    };
-
-    return processContent(content(), 1, processContent);
+        auto note = parent<sequence::Note>();
+        if (auto written = note.written()) {
+            t.enharmonicTranspose(written->diatonicDelta());
+        }
+        int newAlter = t.alteration();
+        int newOctaves{};
+        int newNoteType = music_theory::positiveModulus(t.displacement(), music_theory::STANDARD_DIATONIC_STEPS, &newOctaves);
+        return { NoteStep(newNoteType), newOctaves + 4, newAlter };
+    }
+    return *this;
 }
 
 } // namespace mnx

@@ -57,6 +57,8 @@ public:
     MNX_OPTIONAL_CHILD(Array<Beam>, beams);                 ///< the beams that comprise the next beam level (may be omitted)
     MNX_OPTIONAL_PROPERTY(BeamHookDirection, direction);    ///< the forced direction of a beam hook (if this beam contains one event).
     MNX_REQUIRED_CHILD(Array<std::string>, events);         ///< the events that comprise this beam level
+
+    inline static constexpr std::string_view JsonSchemaTypeName = "beam";     ///< required for mapping
 };
 
 /**
@@ -91,7 +93,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the specific SMuFL glyph to use for rendering the clef
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(OttavaAmountOrZero, octave, OttavaAmountOrZero::NoTransposition);  ///< the number of octaves by which the clef transposes
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, showOctave, true); ///< if octave is non-zero, this value determines whether the octave should be displayedon the clef
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, showOctave, true); ///< if octave is non-zero, this value determines whether the octave should be displayed on the clef
     MNX_REQUIRED_PROPERTY(ClefSign, sign);          ///< the clef sign
     MNX_REQUIRED_PROPERTY(int, staffPosition);      ///< staff position offset from center of staff (in half-spaces)
 };
@@ -132,7 +134,7 @@ public:
  * @class Ottava
  * @brief Represents an ottava starting with the next event in the sequence
  */
-class Ottava : public ArrayElementObject
+class       Ottava : public ArrayElementObject
 {
 public:
     /// @brief Constructor for existing Space objects
@@ -159,7 +161,7 @@ public:
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
     /// @todo orient
     MNX_REQUIRED_CHILD(RhythmicPosition, position);                 ///< The start position of the ottava
-    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this ottava applies to
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);              ///< The staff (within the part) this ottava applies to
     MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this ottava applies to.
 };
@@ -208,18 +210,21 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param diatonic The number of diatonic steps in the interval (negative is down)
-    /// @param chromatic The number of 12-EDO chromatic halfsteps in the interval (negative is down)
-    PartTransposition(Base& parent, std::string_view key, int diatonic, int chromatic)
+    /// @param interval The transposition interval for the part.
+    PartTransposition(Base& parent, std::string_view key, const Interval::Fields& interval)
         : Object(parent, key)
     {
-        create_interval(diatonic, chromatic);
+        create_interval(interval);
     }
 
     MNX_REQUIRED_CHILD(Interval, interval);         ///< the transposition interval
     MNX_OPTIONAL_PROPERTY(int, keyFifthsFlipAt);    ///< the number of sharps (positive) or flats (negative) at which to simplify the key signature
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, prefersWrittenPitches, false); ///< if true, this instrument prefers displaying written pitches even in the context of
                                                     ///< concert-pitch score. (Examples could be piccolo, double base, glockenspiel, etc.)
+
+    /// @brief Calculates and returns the transposed keyFifths value for the input key.
+    /// @param concertKey The concert key to calculate from.
+    KeySignature::Fields calcTransposedKey(const KeySignature::Fields& concertKey) const;
 };
 
 /**
@@ -299,8 +304,18 @@ class Part : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
+    /// @brief Creates a new Part class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    Part(Base& parent, std::string_view key)
+        : ArrayElementObject(parent, key)
+    {
+        // required children
+        create_measures();
+    }
+
     MNX_OPTIONAL_CHILD(Dictionary<part::KitComponent>, kit); ///< The definition of a kit of (usually percussion) instruments that are used by the part.
-    MNX_OPTIONAL_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
+    MNX_REQUIRED_CHILD(Array<part::Measure>, measures); ///< Contains all the musical data for this part
     MNX_OPTIONAL_PROPERTY(std::string, name);           ///< Specifies the user-facing full name of this part
     MNX_OPTIONAL_PROPERTY(std::string, shortName);      ///< Specifies the user-facing abbreviated name of this part
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);      ///< Name of SMuFL-font for notation elements in the part (can be overridden by children)

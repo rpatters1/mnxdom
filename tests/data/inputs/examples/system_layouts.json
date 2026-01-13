@@ -1,194 +1,202 @@
 {
-    "mnx": {
-       "version": 1
-    },
-    "global": {
-       "measures": [
-          {},
-          {},
-          {},
-          {}
-       ]
-    },
-    "layouts": [
-       {
-          "id": "layout1",
-          "content": [
-             {
-                "type": "group",
-                "content": [
-                   {
-                      "type": "group",
-                      "content": [
-                         {
-                            "type": "staff",
-                            "sources": [
-                               {
-                                  "labelref": "shortName",
-                                  "part": "fl1",
-                                  "stem": "up"
-                               },
-                               {
-                                  "labelref": "shortName",
-                                  "part": "fl2",
-                                  "stem": "down"
-                               }
-                            ]
-                         },
-                         {
-                            "type": "staff",
-                            "labelref": "shortName",
-                            "sources": [
-                               {
-                                  "part": "fl3"
-                               }
-                            ]
-                         }
-                      ],
-                      "label": "Flutes",
-                      "symbol": "brace"
-                   },
-                   {
-                      "type": "staff",
-                      "label": "Oboes",
-                      "sources": [
-                         {
-                            "labelref": "shortName",
-                            "part": "ob1",
-                            "stem": "up"
-                         },
-                         {
-                            "labelref": "shortName",
-                            "part": "ob2",
-                            "stem": "down"
-                         }
-                      ]
-                   }
-                ],
-                "symbol": "bracket"
-             },
-             {
-                "type": "group",
-                "content": [
-                   {
-                      "type": "staff",
-                      "sources": [
-                         {
-                            "part": "piano",
-                            "staff": 1
-                         }
-                      ]
-                   },
-                   {
-                      "type": "staff",
-                      "sources": [
-                         {
-                            "part": "piano",
-                            "staff": 2
-                         }
-                      ]
-                   }
-                ],
-                "label": "Piano",
-                "symbol": "brace"
-             }
-          ]
-       },
-       {
-          "id": "layout2",
-          "content": [
-             {
-                "type": "group",
-                "content": [
-                   {
-                      "type": "group",
-                      "content": [
-                         {
-                            "type": "staff",
-                            "labelref": "shortName",
-                            "sources": [
-                               {
-                                  "part": "fl1"
-                               }
-                            ]
-                         },
-                         {
-                            "type": "staff",
-                            "labelref": "shortName",
-                            "sources": [
-                               {
-                                  "part": "fl2"
-                               }
-                            ]
-                         },
-                         {
-                            "type": "staff",
-                            "labelref": "shortName",
-                            "sources": [
-                               {
-                                  "part": "fl3"
-                               }
-                            ]
-                         }
-                      ],
-                      "label": "Fl.",
-                      "symbol": "brace"
-                   },
-                   {
-                      "type": "staff",
-                      "label": "Ob.",
-                      "sources": [
-                         {
-                            "labelref": "shortName",
-                            "part": "ob1",
-                            "stem": "up"
-                         },
-                         {
-                            "labelref": "shortName",
-                            "part": "ob2",
-                            "stem": "down"
-                         }
-                      ]
-                   }
-                ],
-                "symbol": "bracket"
-             },
-             {
-                "type": "group",
-                "content": [
-                   {
-                      "type": "staff",
-                      "sources": [
-                         {
-                            "part": "piano",
-                            "staff": 1
-                         }
-                      ]
-                   },
-                   {
-                      "type": "staff",
-                      "sources": [
-                         {
-                            "part": "piano",
-                            "staff": 2
-                         }
-                      ]
-                   }
-                ],
-                "label": "Piano",
-                "symbol": "brace"
-             }
-          ]
-       }
-    ],
-    "parts": [
-       {
-          "id": "fl1",
-          "name": "Flute 1",
-          "shortName": "1",
-          "measures": [
+   "mnx": {
+      "version": 1
+   },
+   "global": {
+      "measures": [
+         {},
+         {},
+         {},
+         {}
+      ]
+   },
+   "layouts": [
+      {
+         "id": "layout1",
+         "content": [
             {
-               "sequences": []
+               "type": "group",
+               "content": [
+                  {
+                     "type": "group",
+                     "content": [
+                        {
+                           "type": "staff",
+                           "sources": [
+                              {
+                                 "labelref": "shortName",
+                                 "part": "fl1",
+                                 "stem": "up"
+                              },
+                              {
+                                 "labelref": "shortName",
+                                 "part": "fl2",
+                                 "stem": "down"
+                              }
+                           ]
+                        },
+                        {
+                           "type": "staff",
+                           "labelref": "shortName",
+                           "sources": [
+                              {
+                                 "part": "fl3"
+                              }
+                           ]
+                        }
+                     ],
+                     "label": "Flutes",
+                     "symbol": "brace"
+                  },
+                  {
+                     "type": "staff",
+                     "label": "Oboes",
+                     "sources": [
+                        {
+                           "labelref": "shortName",
+                           "part": "ob1",
+                           "stem": "up"
+                        },
+                        {
+                           "labelref": "shortName",
+                           "part": "ob2",
+                           "stem": "down"
+                        }
+                     ]
+                  }
+               ],
+               "symbol": "bracket"
+            },
+            {
+               "type": "group",
+               "content": [
+                  {
+                     "type": "staff",
+                     "sources": [
+                        {
+                           "part": "piano",
+                           "staff": 1
+                        }
+                     ]
+                  },
+                  {
+                     "type": "staff",
+                     "sources": [
+                        {
+                           "part": "piano",
+                           "staff": 2
+                        }
+                     ]
+                  }
+               ],
+               "label": "Piano",
+               "symbol": "brace"
+            }
+         ]
+      },
+      {
+         "id": "layout2",
+         "content": [
+            {
+               "type": "group",
+               "content": [
+                  {
+                     "type": "group",
+                     "content": [
+                        {
+                           "type": "staff",
+                           "labelref": "shortName",
+                           "sources": [
+                              {
+                                 "part": "fl1"
+                              }
+                           ]
+                        },
+                        {
+                           "type": "staff",
+                           "labelref": "shortName",
+                           "sources": [
+                              {
+                                 "part": "fl2"
+                              }
+                           ]
+                        },
+                        {
+                           "type": "staff",
+                           "labelref": "shortName",
+                           "sources": [
+                              {
+                                 "part": "fl3"
+                              }
+                           ]
+                        }
+                     ],
+                     "label": "Fl.",
+                     "symbol": "brace"
+                  },
+                  {
+                     "type": "staff",
+                     "label": "Ob.",
+                     "sources": [
+                        {
+                           "labelref": "shortName",
+                           "part": "ob1",
+                           "stem": "up"
+                        },
+                        {
+                           "labelref": "shortName",
+                           "part": "ob2",
+                           "stem": "down"
+                        }
+                     ]
+                  }
+               ],
+               "symbol": "bracket"
+            },
+            {
+               "type": "group",
+               "content": [
+                  {
+                     "type": "staff",
+                     "sources": [
+                        {
+                           "part": "piano",
+                           "staff": 1
+                        }
+                     ]
+                  },
+                  {
+                     "type": "staff",
+                     "sources": [
+                        {
+                           "part": "piano",
+                           "staff": 2
+                        }
+                     ]
+                  }
+               ],
+               "label": "Piano",
+               "symbol": "brace"
+            }
+         ]
+      }
+   ],
+   "parts": [
+      {
+         "id": "fl1",
+         "name": "Flute 1",
+         "shortName": "1",
+         "measures": [
+            {
+               "sequences": [],
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ]
             },
             {
                "sequences": []
@@ -200,14 +208,22 @@
                "sequences": []
             }
          ]
-         },
-       {
-          "id": "fl2",
-          "name": "Flute 2",
-          "shortName": "2",
-          "measures": [
+      },
+      {
+         "id": "fl2",
+         "name": "Flute 2",
+         "shortName": "2",
+         "measures": [
             {
-               "sequences": []
+               "sequences": [],
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ]
             },
             {
                "sequences": []
@@ -219,14 +235,22 @@
                "sequences": []
             }
          ]
-       },
-       {
-          "id": "fl3",
-          "name": "Flute 3",
-          "shortName": "3",
-          "measures": [
+      },
+      {
+         "id": "fl3",
+         "name": "Flute 3",
+         "shortName": "3",
+         "measures": [
             {
-               "sequences": []
+               "sequences": [],
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ]
             },
             {
                "sequences": []
@@ -238,14 +262,22 @@
                "sequences": []
             }
          ]
-       },
-       {
-          "id": "ob1",
-          "name": "Oboe 1",
-          "shortName": "1",
-          "measures": [
+      },
+      {
+         "id": "ob1",
+         "name": "Oboe 1",
+         "shortName": "1",
+         "measures": [
             {
-               "sequences": []
+               "sequences": [],
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ]
             },
             {
                "sequences": []
@@ -257,14 +289,22 @@
                "sequences": []
             }
          ]
-       },
-       {
-          "id": "ob2",
-          "name": "Oboe 2",
-          "shortName": "2",
-          "measures": [
+      },
+      {
+         "id": "ob2",
+         "name": "Oboe 2",
+         "shortName": "2",
+         "measures": [
             {
-               "sequences": []
+               "sequences": [],
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ]
             },
             {
                "sequences": []
@@ -276,14 +316,29 @@
                "sequences": []
             }
          ]
-       },
-       {
-          "id": "piano",
-          "name": "Piano",
-          "staves": 2,
-          "measures": [
+      },
+      {
+         "id": "piano",
+         "name": "Piano",
+         "staves": 2,
+         "measures": [
             {
-               "sequences": []
+               "sequences": [],
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  },
+                  {
+                     "clef": {
+                        "sign": "F",
+                        "staffPosition": 2
+                     },
+                     "staff": 2
+                  }
+               ]
             },
             {
                "sequences": []
@@ -295,25 +350,25 @@
                "sequences": []
             }
          ]
-       }
-    ],
-    "scores": [
-       {
-          "name": "Full score",
-          "pages": [
-             {
-                "systems": [
-                   {
-                      "layout": "layout1",
-                      "measure": 1
-                   },
-                   {
-                      "layout": "layout2",
-                      "measure": 4
-                   }
-                ]
-             }
-          ]
-       }
-    ]
- }
+      }
+   ],
+   "scores": [
+      {
+         "name": "Full score",
+         "pages": [
+            {
+               "systems": [
+                  {
+                     "layout": "layout1",
+                     "measure": 1
+                  },
+                  {
+                     "layout": "layout2",
+                     "measure": 4
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

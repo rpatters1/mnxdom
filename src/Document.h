@@ -33,8 +33,23 @@
 namespace mnx {
 
 namespace util {
-class IdMapping;
+class EntityMap;
 }
+
+/**
+ * @struct EntityMapPolicies
+ * @brief Controls optional behaviors when building an EntityMap.
+ *
+ * These policies allow consumers to relax certain MNX capabilities that they
+ * might not support while still obtaining a useful ottava map.
+ */
+struct EntityMapPolicies
+{
+    /// @brief When false, ottava spans ignore grace-note targeting (graces follow the main event).
+    bool ottavasRespectGraceTargets { true };
+    /// @brief When false, ottava spans ignore voice-specific targeting (ottavas apply to the entire staff).
+    bool ottavasRespectVoiceTargets { true };
+};
 
 /**
  * @class MnxMetaData
@@ -64,8 +79,8 @@ public:
     public:
         using Object::Object;
 
-        MNX_OPTIONAL_PROPERTY(bool, useAccidentalDisplay);  ///< Optional property indicating whether accidental display is used.
-        MNX_OPTIONAL_PROPERTY(bool, useBeams);              ///< Optional property that indicates if beams are encoded.
+        MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, useAccidentalDisplay, false);  ///< Optional property indicating whether accidental display is used.
+        MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, useBeams, false);              ///< Optional property that indicates if beams are encoded.
     };
 
     /**
@@ -87,7 +102,7 @@ class Document : public Object
 {
 private:
     /// @brief Not really shared, but std::unique_ptr creates unacceptable dependencies in the headers
-    std::shared_ptr<util::IdMapping> m_idMapping;
+    std::shared_ptr<util::EntityMap> m_entityMapping;
 
 public:
     /**
@@ -107,7 +122,7 @@ public:
     Document(const std::shared_ptr<json>& root) : Object(root, json_pointer{}) {}
 
     /// @brief Copy constructor that zaps the id mapping, if any
-    Document(const Document& src) : Object(src), m_idMapping(nullptr) {}
+    Document(const Document& src) : Object(src), m_entityMapping(nullptr) {}
 
     using Base::root;
 
@@ -144,6 +159,29 @@ public:
     }
 
     /**
+     * @brief Creates a Document from a data buffer containing JSON.
+     * @tparam Byte An 8-bit integer type (char, signed/unsigned char, std::uint8_t, etc.)
+     * @param data Pointer to the start of the JSON text buffer.
+     * @param size Number of bytes in the buffer.
+     * @return A Document instance populated with the parsed data.
+     * @throws std::invalid_argument if data is null and size is non-zero.
+     * @throws nlohmann::json::parse_error (or other nlohmann::json exceptions) on parse failure.
+     */
+    template <typename Byte,
+              typename = std::enable_if_t<
+                         std::is_integral_v<Byte> &&
+                         (sizeof(Byte) == 1) &&
+                         !std::is_same_v<std::remove_cv_t<Byte>, bool>>>
+    [[nodiscard]] static Document create(const Byte* data, std::size_t size)
+    {
+        if (!data && size != 0) {
+            throw std::invalid_argument("JSON buffer pointer is null.");
+        }
+        auto root = std::make_shared<json>(nlohmann::json::parse(data, data + size));
+        return Document(root);
+    }
+
+    /**
      * @brief Saves the MNX document to a file.
      * @param outputPath The file path to save the document.
      * @param indentSpaces Optional number of spaces for indentation; if not provided, no indentation is applied.
@@ -162,21 +200,28 @@ public:
     }
 
     /// @brief Builds or rebuilds the ID mapping for the document, replacing any existing mapping.
+    /// @param policies Optional controls for how supplemental mappings (like ottavas) are constructed.
     /// @param errorHandler An optional error handler. If provided, the function does not throw on duplicate keys added.
     /// @throws util::mapping_error on duplicate keys if no @p errorHandler is provided.
-    void buildIdMapping(const std::optional<ErrorHandler>& errorHandler = std::nullopt);
+    void buildEntityMap(EntityMapPolicies policies = {},
+                        const std::optional<ErrorHandler>& errorHandler = std::nullopt);
 
-    /// @brief Gets a reference to the ID mapping instance for the document.
-    [[nodiscard]] const util::IdMapping& getIdMapping() const
+    /// @brief Gets a reference to the entity mapping instance for the document.
+    [[nodiscard]] const util::EntityMap& getEntityMap() const
     {
-        MNX_ASSERT_IF(!m_idMapping) {
-            throw std::logic_error("Call buildIdMapping before calling getIdMapping.");
+        MNX_ASSERT_IF(!m_entityMapping) {
+            throw std::logic_error("Call buildEntityMap before calling getEntityMap.");
         }
-        return *m_idMapping;
+        return *m_entityMapping;
     }
 
-    /// @brief Returns whether am ID mapping currently exists
-    [[nodiscard]] bool hasIdMapping() const { return static_cast<bool>(m_idMapping); }
+    /// @brief Returns whether an entity mapping currently exists
+    [[nodiscard]] bool hasEntityMap() const { return static_cast<bool>(m_entityMapping); }
+
+    /// @brief Finds a layout that matches the canonical full score layout, where each part staff
+    /// appears in order on a single corresponding layout staff.
+    /// @return The layout if found or std::nullopt if not.
+    [[nodiscard]] std::optional<Layout> findFullScoreLayout() const;
 };
 
 static_assert(std::is_move_constructible<mnx::Document>::value, "Document must be move constructible");

@@ -48,10 +48,9 @@ TEST(Document, Minimal)
     EXPECT_EQ(mnx.version(), 1);
     ASSERT_TRUE(mnx.support().has_value());
     auto support = *mnx.support();
-    ASSERT_TRUE(support.useAccidentalDisplay().has_value());
-    EXPECT_TRUE(*support.useAccidentalDisplay());
+    EXPECT_TRUE(support.useAccidentalDisplay());
     support.set_useAccidentalDisplay(false);
-    EXPECT_FALSE(*support.useAccidentalDisplay());
+    EXPECT_FALSE(support.useAccidentalDisplay());
 
     auto measures = doc.global().measures();
     EXPECT_EQ(measures.size(), 0u);
@@ -77,7 +76,7 @@ TEST(Document, MinimalFromScratch)
     EXPECT_EQ(doc.mnx().version(), MNX_VERSION + 1);
 
     auto support = mnx.create_support();
-    support.set_useAccidentalDisplay(false);
+    support.set_useAccidentalDisplay(true);
 
     EXPECT_TRUE(support.useAccidentalDisplay()) << "mnx has a support instance";
     doc.mnx().clear_support();
@@ -128,7 +127,7 @@ TEST(Document, MissingRequiredFields)
     EXPECT_FALSE(validation::schemaValidate(doc)) << "after adding version, schema should still not validate";
 
     auto global = doc.global();
-    EXPECT_THROW(static_cast<void>(global.measures()), std::runtime_error);
+    EXPECT_THROW(static_cast<void>(global.measures()), std::out_of_range);
     global.create_measures();
     EXPECT_EQ(doc.global().measures().size(), 0u);
     EXPECT_TRUE(validation::schemaValidate(doc)) << "after adding global, schema should validate";

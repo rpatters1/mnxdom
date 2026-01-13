@@ -43,6 +43,22 @@ TEST(Parts, MeasuresMismatch)
     expectSemanticError(doc, inputPath, "contains a different number of measures (4) than are defined globally (3)");
 }
 
+TEST(Parts, MissingInitialClefs)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "missing_initial_clef.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "Missing clef at the beginning of staff 1 in part P1 (first measure).");
+}
+
+TEST(Parts, ClefInvalidStaff)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "clef_invalid_staff.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "Clef references non-existent staff 2 in part P1.");
+}
+
 TEST(Parts, InvalidLyricsLineIds)
 {
     setupTestDataPaths();

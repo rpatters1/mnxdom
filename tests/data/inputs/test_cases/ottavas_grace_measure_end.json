@@ -1,0 +1,123 @@
+{
+   "mnx": {
+      "version": 1
+   },
+   "global": {
+      "measures": [
+         {
+            "time": {
+               "count": 4,
+               "unit": 4
+            }
+         }
+      ]
+   },
+   "parts": [
+      {
+         "measures": [
+            {
+               "clefs": [
+                  {
+                     "clef": {
+                        "sign": "G",
+                        "staffPosition": -2
+                     }
+                  }
+               ],
+               "ottavas": [
+                  {
+                     "position": {
+                        "fraction": [
+                           1,
+                           2
+                        ]
+                     },
+                     "end": {
+                        "measure": 1,
+                        "position": {
+                           "fraction": [
+                              1,
+                              1
+                           ],
+                           "graceIndex": 0
+                        }
+                     },
+                     "value": 1
+                  }
+               ],
+               "sequences": [
+                  {
+                     "content": [
+                        {
+                           "type": "event",
+                           "id": "main1",
+                           "duration": {
+                              "base": "half"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "C"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "event",
+                           "id": "main2",
+                           "duration": {
+                              "base": "quarter"
+                           },
+                           "notes": [
+                              {
+                                 "pitch": {
+                                    "octave": 4,
+                                    "step": "G"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "type": "grace",
+                           "content": [
+                              {
+                                 "type": "event",
+                                 "id": "end_gr1",
+                                 "duration": {
+                                    "base": "eighth"
+                                 },
+                                 "notes": [
+                                    {
+                                       "pitch": {
+                                          "octave": 5,
+                                          "step": "A"
+                                       }
+                                    }
+                                 ]
+                              },
+                              {
+                                 "type": "event",
+                                 "id": "end_gr2",
+                                 "duration": {
+                                    "base": "eighth"
+                                 },
+                                 "notes": [
+                                    {
+                                       "pitch": {
+                                          "octave": 5,
+                                          "step": "B"
+                                       }
+                                    }
+                                 ]
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

@@ -1,0 +1,155 @@
+{
+    "mnx": {
+        "version": 1,
+        "support": {
+            "useBeams": true
+        }
+    },
+    "global": {
+        "measures": [
+            {
+                "key": {
+                    "fifths": 0
+                },
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                }
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "measures": [
+                {
+                    "sequences": [],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2,
+                                "octave": 0,
+                                "glyph": "gClef"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "P2",
+            "staves": 2,
+            "measures": [
+                {
+                    "sequences": [],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2,
+                                "octave": 0,
+                                "glyph": "gClef"
+                            },
+                            "staff": 1
+                        },
+                        {
+                            "clef": {
+                                "sign": "F",
+                                "staffPosition": 2,
+                                "octave": 0,
+                                "glyph": "fClef"
+                            },
+                            "staff": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "P3",
+            "measures": [
+                {
+                    "sequences": [],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2,
+                                "octave": 0,
+                                "glyph": "gClef"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "layouts": [
+        {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "sources": [
+                                {
+                                    "part": "P1",
+                                    "labelref": "name"
+                                }
+                            ],
+                            "type": "staff",
+                            "label": "S0"
+                        },
+                        {
+                            "content": [
+                                {
+                                    "sources": [
+                                        {
+                                            "part": "P2",
+                                            "staff": 1
+                                        }
+                                    ],
+                                    "type": "staff",
+                                    "label": "S1"
+                                },
+                                {
+                                    "sources": [
+                                        {
+                                            "part": "P2",
+                                            "staff": 2
+                                        }
+                                    ],
+                                    "type": "staff",
+                                    "label": "S2"
+                                }
+                            ],
+                            "type": "group",
+                            "symbol": "brace",
+                            "label": "B"
+                        },
+                        {
+                            "content": [],
+                            "type": "group",
+                            "label": "C"
+                        },
+                        {
+                            "sources": [
+                                {
+                                    "part": "P3",
+                                    "staff": 1,
+                                    "labelref": "name"
+                                }
+                            ],
+                            "type": "staff",
+                            "label": "S3"
+                        }
+                    ],
+                    "type": "group",
+                    "symbol": "bracket",
+                    "label": "A"
+                }
+            ],
+            "id": "S0-ScrVw"
+        }
+    ]
+}

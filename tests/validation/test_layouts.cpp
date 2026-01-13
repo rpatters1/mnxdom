@@ -50,3 +50,19 @@ TEST(Layouts, NonexistentStaffNumber)
     auto doc = mnx::Document::create(inputPath);
     expectSemanticError(doc, inputPath,  "ID \"P2\" not found in ID mapping");
 }
+
+TEST(Layouts, InvalidPartDistributionInStaff)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "orchestral_layout_bad.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "Layout staff \"<no-id>\" has one or more part voices specified multiple times");
+}
+
+TEST(Layouts, EmptyGroup)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "layoutspans.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "Layout group contains no content");
+}

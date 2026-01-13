@@ -1,13 +1,24 @@
 {
-  "mnx": {"version": 1, "support": {"useAccidentalDisplay": true}},
+  "mnx": {"version": 1},
   "global": {
     "measures": [
       {
-        "key": {"fifths": -2},
+        "_x": {
+          "mnxdocs": {
+            "highlight": ["time"]
+          }
+        },
         "time": {"count": 4, "unit": 4}
       },
       {},
-      {}
+      {
+        "_x": {
+          "mnxdocs": {
+            "highlight": ["time"]
+          }
+        },
+        "time": {"count": 2, "unit": 4}
+      }
     ]
   },
   "parts": [
@@ -23,28 +34,25 @@
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {"pitch": {"step": "F", "octave": 4}}
+                    {"pitch": {"step": "C", "octave": 5}}
                   ]
                 },
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {"pitch": {"step": "G", "octave": 4}}
+                    {"pitch": {"step": "D", "octave": 5}}
                   ]
                 },
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {
-                      "pitch": {"step": "G", "octave": 4, "alter": 1},
-                      "accidentalDisplay": {"show": true}
-                    }
+                    {"pitch": {"step": "E", "octave": 5}}
                   ]
                 },
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {"pitch": {"step": "A", "octave": 4}}
+                    {"pitch": {"step": "F", "octave": 5}}
                   ]
                 }
               ]
@@ -56,24 +64,27 @@
             {
               "content": [
                 {
-                  "duration": {"base": "half"},
+                  "duration": {"base": "quarter"},
                   "notes": [
-                    {"pitch": {"step": "B", "octave": 4, "alter": -1}}
+                    {"pitch": {"step": "C", "octave": 5}}
                   ]
                 },
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {
-                      "pitch": {"step": "D", "octave": 5, "alter": -1},
-                      "accidentalDisplay": {"show": true}
-                    }
+                    {"pitch": {"step": "D", "octave": 5}}
                   ]
                 },
                 {
                   "duration": {"base": "quarter"},
                   "notes": [
-                    {"_c": "This note doesn't use accidentalDisplay.", "pitch": {"step": "D", "octave": 5, "alter": -1}}
+                    {"pitch": {"step": "E", "octave": 5}}
+                  ]
+                },
+                {
+                  "duration": {"base": "quarter"},
+                  "notes": [
+                    {"pitch": {"step": "F", "octave": 5}}
                   ]
                 }
               ]
@@ -85,12 +96,15 @@
             {
               "content": [
                 {
-                  "duration": {"base": "whole"},
+                  "duration": {"base": "quarter"},
                   "notes": [
-                    {
-                      "pitch": {"step": "D", "octave": 5},
-                      "accidentalDisplay": {"show": true}
-                    }
+                    {"pitch": {"step": "B", "octave": 4}}
+                  ]
+                },
+                {
+                  "duration": {"base": "quarter"},
+                  "notes": [
+                    {"pitch": {"step": "D", "octave": 5}}
                   ]
                 }
               ]

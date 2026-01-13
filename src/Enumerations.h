@@ -250,16 +250,6 @@ enum class OttavaAmountOrZero : int
 };
 
 /**
- * @enum SlurTieEndLocation
- * @brief Specifies the location of the end of a slur or tie, if it doesn't have a target
- */
-enum class SlurTieEndLocation
-{
-    Outgoing,
-    Incoming,
-};
-
-/**
  * @enum SlurTieSide
  * @brief Specifies the direction of a slur or tie.
  */
@@ -277,6 +267,18 @@ enum class StemDirection
 {
     Down,           ///< stems down (default)
     Up              ///< stems up
+};
+
+/**
+ * @enum TieTargetType
+ * @brief The values that describe the target of a tie.
+ */
+enum class TieTargetType
+{
+    NextNote,       ///< The tie ends on the next adjacent note in the same voice. This is the most common case.
+    Arpeggio,       ///< The tie is part of an arpeggio notated as consecutive ties.
+    CrossJump,      ///< The tie crosses to a different ending or jump location.
+    CrossVoice      ///< The tie end on the next adjacent note in a different voice.
 };
 
 /**

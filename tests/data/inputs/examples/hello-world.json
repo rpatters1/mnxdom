@@ -3,14 +3,8 @@
   "global": {
     "measures": [
       {
-        "_x": {
-          "mnxdocs": {
-            "highlight": ["repeatStart", "repeatEnd"]
-          }
-        },
-        "time": {"count": 4, "unit": 4},
-        "repeatStart": {},
-        "repeatEnd": {}
+        "barline": {"type": "regular"},
+        "time": {"count": 4, "unit": 4}
       }
     ]
   },
@@ -27,7 +21,7 @@
                 {
                   "duration": {"base": "whole"},
                   "notes": [
-                    {"pitch": {"step": "C", "octave": 5}}
+                    {"pitch": {"step": "C", "octave": 4}}
                   ]
                 }
               ]

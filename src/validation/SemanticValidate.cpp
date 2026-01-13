@@ -158,6 +158,8 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
         } else {
             if (!tie.lv()) {
                 addError("Tie has neither a target nor is it an lv tie.", tie);
+            } else if (tie.targetType()) {
+                addError("Tie is an lv tie but also has targetType.", tie);
             }
         }
     }
@@ -559,6 +561,7 @@ void SemanticValidator::validateScores()
             }
             std::optional<size_t> lastSystemMeasure;
             bool isFirstSystem = true;
+            bool skipScore = false;
             if (auto pages = score.pages()) {
                 for (const auto page : pages.value()) {
                     if (const auto layout = page.layout()) {
@@ -575,10 +578,15 @@ void SemanticValidator::validateScores()
                                 addError("The first system in score \"" + score.name()
                                     + "\" starts after the first measure", system);
                             }
+                        } else {
+                            addError("Score \"" + score.name()
+                                + "\" references missing measure " + std::to_string(system.measure()), system);
+                            skipScore = true;
+                            break;
                         }
                         isFirstSystem = false;
-                        if (lastSystemMeasure && currentSystemMeasureIndex.value() <= lastSystemMeasure) {
-                            std::string msg = currentSystemMeasureIndex < lastSystemMeasure
+                        if (lastSystemMeasure && currentSystemMeasureIndex && currentSystemMeasureIndex.value() <= lastSystemMeasure) {
+                            std::string msg = currentSystemMeasureIndex.value() < lastSystemMeasure.value()
                                 ? "starts before"
                                 : "starts on the same measure as";
                             addError("Score \"" + score.name() + "\" contains system that " + msg + " previous system", system);
@@ -594,6 +602,9 @@ void SemanticValidator::validateScores()
                                 }
                             }
                         }
+                    }
+                    if (skipScore) {
+                        break;
                     }
                 }
             }

@@ -3,14 +3,7 @@
   "global": {
     "measures": [
       {
-        "_x": {
-          "mnxdocs": {
-            "highlight": ["repeatStart", "repeatEnd"]
-          }
-        },
-        "time": {"count": 4, "unit": 4},
-        "repeatStart": {},
-        "repeatEnd": {}
+        "time": {"count": 4, "unit": 4}
       }
     ]
   },
@@ -24,6 +17,22 @@
           "sequences": [
             {
               "content": [
+                {
+                  "_x": {
+                    "mnxdocs": {
+                      "highlight": ["type"]
+                    }
+                  },
+                  "type": "grace",
+                  "content": [
+                    {
+                      "duration": {"base": "eighth"},
+                      "notes": [
+                        {"pitch": {"step": "B", "octave": 4}}
+                      ]
+                    }
+                  ]
+                },
                 {
                   "duration": {"base": "whole"},
                   "notes": [

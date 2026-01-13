@@ -5,12 +5,11 @@
       {
         "_x": {
           "mnxdocs": {
-            "highlight": ["repeatStart", "repeatEnd"]
+            "highlight": ["repeatEnd"]
           }
         },
         "time": {"count": 4, "unit": 4},
-        "repeatStart": {},
-        "repeatEnd": {}
+        "repeatEnd": {"times": 4}
       }
     ]
   },

@@ -16,24 +16,86 @@
     {
       "measures": [
         {
-          "_x": {
-            "mnxdocs": {
-              "highlight": ["dynamics"]
-            }
-          },
           "clefs": [
             {
               "clef": {
-                "sign": "G",
-                "staffPosition": -2
+                "staffPosition": -2,
+                "sign": "G"
               }
             }
           ],
-          "dynamics": [
-            {"position": {"fraction": [0, 1]}, "value": "ff"},
-            {"position": {"fraction": [3, 4]}, "value": "ppp"}
-          ],
           "sequences": [
+            {
+              "content": [
+                {
+                  "duration": {
+                    "base": "quarter"
+                  },
+                  "notes": [
+                    {
+                      "pitch": {
+                        "octave": 5,
+                        "step": "E"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "duration": {
+                    "base": "quarter"
+                  },
+                  "rest": {
+                    "_x": {
+                      "mnxdocs": {
+                        "highlight": ["staffPosition"]
+                      }
+                    },
+                    "staffPosition": 2
+                  }
+                },
+                {
+                  "duration": {
+                    "base": "eighth"
+                  },
+                  "id": "ev3",
+                  "notes": [
+                    {
+                      "pitch": {
+                        "octave": 5,
+                        "step": "F"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "duration": {
+                    "base": "eighth"
+                  },
+                  "id": "ev4",
+                  "notes": [
+                    {
+                      "pitch": {
+                        "octave": 5,
+                        "step": "E"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "duration": {
+                    "base": "quarter"
+                  },
+                  "rest": {
+                    "_x": {
+                      "mnxdocs": {
+                        "highlight": ["staffPosition"]
+                      }
+                    },
+                    "staffPosition": 2
+                  }
+                }
+              ]
+            },
             {
               "content": [
                 {
@@ -70,7 +132,7 @@
                     {
                       "pitch": {
                         "octave": 4,
-                        "step": "G"
+                        "step": "D"
                       }
                     }
                   ]
@@ -83,24 +145,6 @@
                     {
                       "pitch": {
                         "octave": 4,
-                        "step": "C"
-                      }
-                    },
-                    {
-                      "pitch": {
-                        "octave": 4,
-                        "step": "E"
-                      }
-                    },
-                    {
-                      "pitch": {
-                        "octave": 4,
-                        "step": "G"
-                      }
-                    },
-                    {
-                      "pitch": {
-                        "octave": 5,
                         "step": "C"
                       }
                     }

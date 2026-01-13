@@ -222,9 +222,10 @@ public:
         }
     }
 
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, lv, false);    ///< Indicates the presence of an l.v. tie (instead of target)
-    MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< used to force tie direction (if present)
-    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< the note id of the tied-to note
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, lv, false);    ///< Indicates the presence of an l.v. tie (instead of target).
+    MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< Used to force tie direction (if present).
+    MNX_OPTIONAL_PROPERTY(std::string, target);             ///< The note id of the tied-to note.
+    MNX_OPTIONAL_PROPERTY(TieTargetType, targetType);       ///< The type of target for this tie (if present).
 };
 
 /**

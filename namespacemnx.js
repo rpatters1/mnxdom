@@ -13,6 +13,7 @@ var namespacemnx =
     [ "ContentObject", "classmnx_1_1ContentObject.html", "classmnx_1_1ContentObject" ],
     [ "Dictionary", "classmnx_1_1Dictionary.html", "classmnx_1_1Dictionary" ],
     [ "Document", "classmnx_1_1Document.html", "classmnx_1_1Document" ],
+    [ "EntityMapPolicies", "structmnx_1_1EntityMapPolicies.html", "structmnx_1_1EntityMapPolicies" ],
     [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
     [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
     [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],

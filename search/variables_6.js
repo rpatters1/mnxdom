@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lyriclines_0',['lyricLines',['../structmnx_1_1validation_1_1SemanticValidationResult.html#afc062dace0308c1dcb6e072343f89a59',1,'mnx::validation::SemanticValidationResult']]]
+  ['halfsteps_0',['halfSteps',['../structmnx_1_1Interval_1_1Fields.html#afd1f5d04aaadf25b3e5b654e7d9ac7b3',1,'mnx::Interval::Fields']]]
 ];

@@ -153,40 +153,31 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</t
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
 <tr class="memdesc:af964e19b6398456bf417982fc42a7549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all elements. <br /></td></tr>
 <tr class="separator:af964e19b6398456bf417982fc42a7549"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a111f524859a9486e6cc305da7e2d6d27" id="r_a111f524859a9486e6cc305da7e2d6d27"><td class="memItemLeft" align="right" valign="top"><a id="a111f524859a9486e6cc305da7e2d6d27" name="a111f524859a9486e6cc305da7e2d6d27"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t index) const</td></tr>
-<tr class="memdesc:a111f524859a9486e6cc305da7e2d6d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct getter for a particular element. <br /></td></tr>
-<tr class="separator:a111f524859a9486e6cc305da7e2d6d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b12c95dbcf72bfe5f58243cffbfa5a2" id="r_a1b12c95dbcf72bfe5f58243cffbfa5a2"><td class="memItemLeft" align="right" valign="top"><a id="a1b12c95dbcf72bfe5f58243cffbfa5a2" name="a1b12c95dbcf72bfe5f58243cffbfa5a2"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (const std::string &amp;key) const</td></tr>
-<tr class="memdesc:a1b12c95dbcf72bfe5f58243cffbfa5a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">const operator[] <br /></td></tr>
-<tr class="separator:a1b12c95dbcf72bfe5f58243cffbfa5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cf7ce8344a366321e55f2b8bd55f066" id="r_a0cf7ce8344a366321e55f2b8bd55f066"><td class="memItemLeft" align="right" valign="top"><a id="a0cf7ce8344a366321e55f2b8bd55f066" name="a0cf7ce8344a366321e55f2b8bd55f066"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (const std::string &amp;key)</td></tr>
-<tr class="memdesc:a0cf7ce8344a366321e55f2b8bd55f066"><td class="mdescLeft">&#160;</td><td class="mdescRight">non-const operator[] <br /></td></tr>
-<tr class="separator:a0cf7ce8344a366321e55f2b8bd55f066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e701a88a1e3d0a244d2e8acf9158862" id="r_a9e701a88a1e3d0a244d2e8acf9158862"><td class="memTemplParams" colspan="2"><a id="a9e701a88a1e3d0a244d2e8acf9158862" name="a9e701a88a1e3d0a244d2e8acf9158862"></a>
+<tr class="memitem:acdf2d49204da7be43ba75656f5839b96" id="r_acdf2d49204da7be43ba75656f5839b96"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#acdf2d49204da7be43ba75656f5839b96">at</a> (std::string_view key) const</td></tr>
+<tr class="memdesc:acdf2d49204da7be43ba75656f5839b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct getter for a particular element.  <br /></td></tr>
+<tr class="separator:acdf2d49204da7be43ba75656f5839b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a535c793d19a0c7df06b6513cf2e535f0" id="r_a535c793d19a0c7df06b6513cf2e535f0"><td class="memTemplParams" colspan="2"><a id="a535c793d19a0c7df06b6513cf2e535f0" name="a535c793d19a0c7df06b6513cf2e535f0"></a>
 template&lt;typename U  = T&gt; </td></tr>
-<tr class="memitem:a9e701a88a1e3d0a244d2e8acf9158862"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt;!std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, void &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>emplace</b> (const std::string &amp;key, const U &amp;value)</td></tr>
-<tr class="memdesc:a9e701a88a1e3d0a244d2e8acf9158862"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new value to the dictonary. (Available only for primitive types) <br /></td></tr>
-<tr class="separator:a9e701a88a1e3d0a244d2e8acf9158862"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a471e334e53ef63567b58cb64b2ae6211" id="r_a471e334e53ef63567b58cb64b2ae6211"><td class="memTemplParams" colspan="2">template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, int &gt;  = 0&gt; </td></tr>
-<tr class="memitem:a471e334e53ef63567b58cb64b2ae6211"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#a471e334e53ef63567b58cb64b2ae6211">append</a> (const std::string &amp;key, Args &amp;&amp;... args)</td></tr>
-<tr class="memdesc:a471e334e53ef63567b58cb64b2ae6211"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new element using the input key. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types)  <br /></td></tr>
-<tr class="separator:a471e334e53ef63567b58cb64b2ae6211"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dfce2582a05a4fc39316a5e1622e331" id="r_a4dfce2582a05a4fc39316a5e1622e331"><td class="memItemLeft" align="right" valign="top"><a id="a4dfce2582a05a4fc39316a5e1622e331" name="a4dfce2582a05a4fc39316a5e1622e331"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>erase</b> (const std::string &amp;key)</td></tr>
-<tr class="memdesc:a4dfce2582a05a4fc39316a5e1622e331"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an element at a given key. <br /></td></tr>
-<tr class="separator:a4dfce2582a05a4fc39316a5e1622e331"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af14789620d9166f8c408e4317d675791" id="r_af14789620d9166f8c408e4317d675791"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#af14789620d9166f8c408e4317d675791">find</a> (const std::string &amp;key)</td></tr>
-<tr class="memdesc:af14789620d9166f8c408e4317d675791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds an element by key and returns an iterator.  <br /></td></tr>
-<tr class="separator:af14789620d9166f8c408e4317d675791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4327ca695cfc1a85aafd70be14f5aa6e" id="r_a4327ca695cfc1a85aafd70be14f5aa6e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#a4327ca695cfc1a85aafd70be14f5aa6e">find</a> (const std::string &amp;key) const</td></tr>
-<tr class="memdesc:a4327ca695cfc1a85aafd70be14f5aa6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds an element by key and returns a const iterator.  <br /></td></tr>
-<tr class="separator:a4327ca695cfc1a85aafd70be14f5aa6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d32cec9bdc8eb499d79bf31b51fce71" id="r_a8d32cec9bdc8eb499d79bf31b51fce71"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#a8d32cec9bdc8eb499d79bf31b51fce71">contains</a> (const std::string &amp;key) const</td></tr>
-<tr class="memdesc:a8d32cec9bdc8eb499d79bf31b51fce71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the key exists in in the dictionary.  <br /></td></tr>
-<tr class="separator:a8d32cec9bdc8eb499d79bf31b51fce71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a535c793d19a0c7df06b6513cf2e535f0"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt;!std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, void &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>emplace</b> (std::string_view key, const U &amp;value)</td></tr>
+<tr class="memdesc:a535c793d19a0c7df06b6513cf2e535f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new value to the dictonary. (Available only for primitive types) <br /></td></tr>
+<tr class="separator:a535c793d19a0c7df06b6513cf2e535f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78ea1a274019eabf91a792bbb24dc125" id="r_a78ea1a274019eabf91a792bbb24dc125"><td class="memTemplParams" colspan="2">template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a78ea1a274019eabf91a792bbb24dc125"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#a78ea1a274019eabf91a792bbb24dc125">append</a> (std::string_view key, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a78ea1a274019eabf91a792bbb24dc125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new element using the input key. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types)  <br /></td></tr>
+<tr class="separator:a78ea1a274019eabf91a792bbb24dc125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd8e86d2600121be752e51d1d23a036a" id="r_abd8e86d2600121be752e51d1d23a036a"><td class="memItemLeft" align="right" valign="top"><a id="abd8e86d2600121be752e51d1d23a036a" name="abd8e86d2600121be752e51d1d23a036a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>erase</b> (std::string_view key)</td></tr>
+<tr class="memdesc:abd8e86d2600121be752e51d1d23a036a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an element at a given key. <br /></td></tr>
+<tr class="separator:abd8e86d2600121be752e51d1d23a036a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db597e11a29528e222ab2270e301cf6" id="r_a5db597e11a29528e222ab2270e301cf6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#a5db597e11a29528e222ab2270e301cf6">find</a> (std::string_view key)</td></tr>
+<tr class="memdesc:a5db597e11a29528e222ab2270e301cf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds an element by key and returns an iterator.  <br /></td></tr>
+<tr class="separator:a5db597e11a29528e222ab2270e301cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2eb7f63ed0768ee5c319e2cf16a2c72" id="r_aa2eb7f63ed0768ee5c319e2cf16a2c72"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#aa2eb7f63ed0768ee5c319e2cf16a2c72">find</a> (std::string_view key) const</td></tr>
+<tr class="memdesc:aa2eb7f63ed0768ee5c319e2cf16a2c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds an element by key and returns a const iterator.  <br /></td></tr>
+<tr class="separator:aa2eb7f63ed0768ee5c319e2cf16a2c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af76505057285918cf48cbb6f3dbeffff" id="r_af76505057285918cf48cbb6f3dbeffff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#af76505057285918cf48cbb6f3dbeffff">contains</a> (std::string_view key) const</td></tr>
+<tr class="memdesc:af76505057285918cf48cbb6f3dbeffff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the key exists in in the dictionary.  <br /></td></tr>
+<tr class="separator:af76505057285918cf48cbb6f3dbeffff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b69c927beebcd644bff737205b30866" id="r_a9b69c927beebcd644bff737205b30866"><td class="memItemLeft" align="right" valign="top"><a id="a9b69c927beebcd644bff737205b30866" name="a9b69c927beebcd644bff737205b30866"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()</td></tr>
 <tr class="memdesc:a9b69c927beebcd644bff737205b30866"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator to the beginning of the dictionary. <br /></td></tr>
@@ -246,10 +237,10 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td>
 <tr class="memitem:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a> () const</td></tr>
 <tr class="memdesc:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the parent object for this node.  <br /></td></tr>
 <tr class="separator:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base" id="r_a088b161677e48210d553c7b6b0cd72aa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a088b161677e48210d553c7b6b0cd72aa">getEnclosingElement</a> () const</td></tr>
-<tr class="memdesc:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. <a class="el" href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays.">ContentObject</a>), the highest level instance is returned. (To get the lowest level immediate container, use <a class="el" href="classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291" title="Returns the container of the array this element belongs to wrapped as the specified template type.">ArrayElementObject::container</a>.)  <br /></td></tr>
-<tr class="separator:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base" id="r_a9a73783497762ab5afd1cf04ca4be433"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Scope  = scope::Default&gt; </td></tr>
+<tr class="memitem:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a9a73783497762ab5afd1cf04ca4be433">getEnclosingElement</a> () const</td></tr>
+<tr class="memdesc:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. <a class="el" href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays.">ContentObject</a>), the highest level instance is returned. (To get the lowest level immediate container, use <a class="el" href="classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291" title="Returns the object that owns the content array this element belongs to wrapped as the specified templ...">ContentObject::container</a>.)  <br /></td></tr>
+<tr class="separator:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base" id="r_a1ef198706551096c7bbd023a3fae3406"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> () const</td></tr>
 <tr class="memdesc:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the json_pointer for this node. <br /></td></tr>
@@ -390,8 +381,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a471e334e53ef63567b58cb64b2ae6211" name="a471e334e53ef63567b58cb64b2ae6211"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a471e334e53ef63567b58cb64b2ae6211">&#9670;&#160;</a></span>append()</h2>
+<a id="a78ea1a274019eabf91a792bbb24dc125" name="a78ea1a274019eabf91a792bbb24dc125"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78ea1a274019eabf91a792bbb24dc125">&#9670;&#160;</a></span>append()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +397,7 @@ template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base
         <tr>
           <td class="memname">U <a class="el" href="classmnx_1_1Dictionary.html">mnx::Dictionary</a>&lt; T &gt;::append </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
@@ -433,8 +424,44 @@ template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base
 
 </div>
 </div>
-<a id="a8d32cec9bdc8eb499d79bf31b51fce71" name="a8d32cec9bdc8eb499d79bf31b51fce71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d32cec9bdc8eb499d79bf31b51fce71">&#9670;&#160;</a></span>contains()</h2>
+<a id="acdf2d49204da7be43ba75656f5839b96" name="acdf2d49204da7be43ba75656f5839b96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdf2d49204da7be43ba75656f5839b96">&#9670;&#160;</a></span>at()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classmnx_1_1Dictionary.html">mnx::Dictionary</a>&lt; T &gt;::at </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Direct getter for a particular element. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>when the key does not exist. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af76505057285918cf48cbb6f3dbeffff" name="af76505057285918cf48cbb6f3dbeffff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af76505057285918cf48cbb6f3dbeffff">&#9670;&#160;</a></span>contains()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -447,7 +474,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="classmnx_1_1Dictionary.html">mnx::Dictionary</a>&lt; T &gt;::contains </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -469,8 +496,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="af14789620d9166f8c408e4317d675791" name="af14789620d9166f8c408e4317d675791"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af14789620d9166f8c408e4317d675791">&#9670;&#160;</a></span>find() <span class="overload">[1/2]</span></h2>
+<a id="a5db597e11a29528e222ab2270e301cf6" name="a5db597e11a29528e222ab2270e301cf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db597e11a29528e222ab2270e301cf6">&#9670;&#160;</a></span>find() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -483,7 +510,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classmnx_1_1Dictionary.html">mnx::Dictionary</a>&lt; T &gt;::find </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
@@ -506,8 +533,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a4327ca695cfc1a85aafd70be14f5aa6e" name="a4327ca695cfc1a85aafd70be14f5aa6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4327ca695cfc1a85aafd70be14f5aa6e">&#9670;&#160;</a></span>find() <span class="overload">[2/2]</span></h2>
+<a id="aa2eb7f63ed0768ee5c319e2cf16a2c72" name="aa2eb7f63ed0768ee5c319e2cf16a2c72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2eb7f63ed0768ee5c319e2cf16a2c72">&#9670;&#160;</a></span>find() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -520,7 +547,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classmnx_1_1Dictionary.html">mnx::Dictionary</a>&lt; T &gt;::find </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td> const</td>
         </tr>

@@ -44,7 +44,8 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ]
+        [ "Typedefs", "functions_type.html", null ],
+        [ "Enumerations", "functions_enum.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -56,11 +57,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
-"classmnx_1_1MeasureRhythmicPosition.html#accddcc5a375d0a48393e0c49be58584e",
-"classmnx_1_1global_1_1RepeatStart.html#a4988843f33731e91af29f49660111eb6",
-"classmnx_1_1sequence_1_1AccidentalDisplay.html#a067c2b32ffe2410415d59dfc98be4dbd",
+"classmnx_1_1MeasureRhythmicPosition.html#a143d6280542666057d5d883778bd2240",
+"classmnx_1_1global_1_1RepeatEnd.html#a4988843f33731e91af29f49660111eb6",
+"classmnx_1_1sequence_1_1AccidentalDisplay.html#a4f7c47d102ada909dfdc44f632d6b586",
 "classmnx_1_1sequence_1_1TransposeWritten.html",
-"namespacemnx_1_1validation.html#a94f02ad6bb8ceac641a8773d2588ea9a"
+"namespacemnx.html#aef9fb8ab9a62640138018b7387b578aaa08a38277b0309070706f6652eeae9a53"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

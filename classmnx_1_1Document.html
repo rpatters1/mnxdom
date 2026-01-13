@@ -156,17 +156,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a02a5f9228a9083f053f2e12f8aaeaf74" id="r_a02a5f9228a9083f053f2e12f8aaeaf74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Document.html#a02a5f9228a9083f053f2e12f8aaeaf74">save</a> (const std::filesystem::path &amp;outputPath, std::optional&lt; int &gt; indentSpaces) const</td></tr>
 <tr class="memdesc:a02a5f9228a9083f053f2e12f8aaeaf74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the MNX document to a file.  <br /></td></tr>
 <tr class="separator:a02a5f9228a9083f053f2e12f8aaeaf74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45b6cf128cc6d711cdc8df498727b385" id="r_a45b6cf128cc6d711cdc8df498727b385"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Document.html#a45b6cf128cc6d711cdc8df498727b385">buildIdMapping</a> (const std::optional&lt; <a class="el" href="namespacemnx.html#a1ecfb36b8c75b494f064bfd002c4c119">ErrorHandler</a> &gt; &amp;errorHandler=std::nullopt)</td></tr>
-<tr class="memdesc:a45b6cf128cc6d711cdc8df498727b385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds or rebuilds the ID mapping for the document, replacing any existing mapping.  <br /></td></tr>
-<tr class="separator:a45b6cf128cc6d711cdc8df498727b385"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2549ae202cb6df7dd273bb270bb15170" id="r_a2549ae202cb6df7dd273bb270bb15170"><td class="memItemLeft" align="right" valign="top"><a id="a2549ae202cb6df7dd273bb270bb15170" name="a2549ae202cb6df7dd273bb270bb15170"></a>
-const <a class="el" href="classmnx_1_1util_1_1IdMapping.html">util::IdMapping</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getIdMapping</b> () const</td></tr>
-<tr class="memdesc:a2549ae202cb6df7dd273bb270bb15170"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a reference to the ID mapping instance for the document. <br /></td></tr>
-<tr class="separator:a2549ae202cb6df7dd273bb270bb15170"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c83f9bb41d4fa6a3c63309129008fb0" id="r_a9c83f9bb41d4fa6a3c63309129008fb0"><td class="memItemLeft" align="right" valign="top"><a id="a9c83f9bb41d4fa6a3c63309129008fb0" name="a9c83f9bb41d4fa6a3c63309129008fb0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasIdMapping</b> () const</td></tr>
-<tr class="memdesc:a9c83f9bb41d4fa6a3c63309129008fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether am ID mapping currently exists. <br /></td></tr>
-<tr class="separator:a9c83f9bb41d4fa6a3c63309129008fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7d5e6859f022b19fb27d89d4798d53f" id="r_ac7d5e6859f022b19fb27d89d4798d53f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Document.html#ac7d5e6859f022b19fb27d89d4798d53f">buildEntityMap</a> (<a class="el" href="structmnx_1_1EntityMapPolicies.html">EntityMapPolicies</a> policies={}, const std::optional&lt; <a class="el" href="namespacemnx.html#a1ecfb36b8c75b494f064bfd002c4c119">ErrorHandler</a> &gt; &amp;errorHandler=std::nullopt)</td></tr>
+<tr class="memdesc:ac7d5e6859f022b19fb27d89d4798d53f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds or rebuilds the ID mapping for the document, replacing any existing mapping.  <br /></td></tr>
+<tr class="separator:ac7d5e6859f022b19fb27d89d4798d53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90f5175ea60f1965a03c1a47ffa2f552" id="r_a90f5175ea60f1965a03c1a47ffa2f552"><td class="memItemLeft" align="right" valign="top"><a id="a90f5175ea60f1965a03c1a47ffa2f552" name="a90f5175ea60f1965a03c1a47ffa2f552"></a>
+const <a class="el" href="classmnx_1_1util_1_1EntityMap.html">util::EntityMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEntityMap</b> () const</td></tr>
+<tr class="memdesc:a90f5175ea60f1965a03c1a47ffa2f552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a reference to the entity mapping instance for the document. <br /></td></tr>
+<tr class="separator:a90f5175ea60f1965a03c1a47ffa2f552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac7e336390a2f643de194fa12bbd085" id="r_aaac7e336390a2f643de194fa12bbd085"><td class="memItemLeft" align="right" valign="top"><a id="aaac7e336390a2f643de194fa12bbd085" name="aaac7e336390a2f643de194fa12bbd085"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasEntityMap</b> () const</td></tr>
+<tr class="memdesc:aaac7e336390a2f643de194fa12bbd085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether an entity mapping currently exists. <br /></td></tr>
+<tr class="separator:aaac7e336390a2f643de194fa12bbd085"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc9df934e0a3c244614177bca1078579" id="r_acc9df934e0a3c244614177bca1078579"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classmnx_1_1Layout.html">Layout</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Document.html#acc9df934e0a3c244614177bca1078579">findFullScoreLayout</a> () const</td></tr>
+<tr class="memdesc:acc9df934e0a3c244614177bca1078579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a layout that matches the canonical full score layout, where each part staff appears in order on a single corresponding layout staff.  <br /></td></tr>
+<tr class="separator:acc9df934e0a3c244614177bca1078579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afacc705368b873d604044f3628a74f3c" id="r_afacc705368b873d604044f3628a74f3c"><td class="memItemLeft" align="right" valign="top"><a id="afacc705368b873d604044f3628a74f3c" name="afacc705368b873d604044f3628a74f3c"></a>
 const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796">json</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>root</b> () const</td></tr>
 <tr class="memdesc:afacc705368b873d604044f3628a74f3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the root. <br /></td></tr>
@@ -214,10 +217,10 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 <tr class="memitem:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a> () const</td></tr>
 <tr class="memdesc:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the parent object for this node.  <br /></td></tr>
 <tr class="separator:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base" id="r_a088b161677e48210d553c7b6b0cd72aa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a088b161677e48210d553c7b6b0cd72aa">getEnclosingElement</a> () const</td></tr>
-<tr class="memdesc:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. <a class="el" href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays.">ContentObject</a>), the highest level instance is returned. (To get the lowest level immediate container, use <a class="el" href="classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291" title="Returns the container of the array this element belongs to wrapped as the specified template type.">ArrayElementObject::container</a>.)  <br /></td></tr>
-<tr class="separator:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base" id="r_a9a73783497762ab5afd1cf04ca4be433"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Scope  = scope::Default&gt; </td></tr>
+<tr class="memitem:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a9a73783497762ab5afd1cf04ca4be433">getEnclosingElement</a> () const</td></tr>
+<tr class="memdesc:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. <a class="el" href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays.">ContentObject</a>), the highest level instance is returned. (To get the lowest level immediate container, use <a class="el" href="classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291" title="Returns the object that owns the content array this element belongs to wrapped as the specified templ...">ContentObject::container</a>.)  <br /></td></tr>
+<tr class="separator:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base" id="r_a1ef198706551096c7bbd023a3fae3406"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> () const</td></tr>
 <tr class="memdesc:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the json_pointer for this node. <br /></td></tr>
@@ -232,6 +235,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5494915a76ef3b0d4c91c08ddb3a1f32" id="r_a5494915a76ef3b0d4c91c08ddb3a1f32"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classmnx_1_1Document.html">Document</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Document.html#a5494915a76ef3b0d4c91c08ddb3a1f32">create</a> (const std::filesystem::path &amp;inputPath)</td></tr>
 <tr class="memdesc:a5494915a76ef3b0d4c91c08ddb3a1f32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classmnx_1_1Document.html" title="Represents an MNX document and provides methods for loading and saving.">Document</a> from a JSON file.  <br /></td></tr>
 <tr class="separator:a5494915a76ef3b0d4c91c08ddb3a1f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a443497cd6b0cee8b86dbb655aa95c8d6" id="r_a443497cd6b0cee8b86dbb655aa95c8d6"><td class="memTemplParams" colspan="2">template&lt;typename Byte , typename  = std::enable_if_t&lt;                         std::is_integral_v&lt;Byte&gt; &amp;&amp;                         (sizeof(Byte) == 1) &amp;&amp;                         !std::is_same_v&lt;std::remove_cv_t&lt;Byte&gt;, bool&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a443497cd6b0cee8b86dbb655aa95c8d6"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classmnx_1_1Document.html">Document</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Document.html#a443497cd6b0cee8b86dbb655aa95c8d6">create</a> (const Byte *data, std::size_t size)</td></tr>
+<tr class="memdesc:a443497cd6b0cee8b86dbb655aa95c8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classmnx_1_1Document.html" title="Represents an MNX document and provides methods for loading and saving.">Document</a> from a data buffer containing JSON.  <br /></td></tr>
+<tr class="separator:a443497cd6b0cee8b86dbb655aa95c8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -338,18 +345,28 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a45b6cf128cc6d711cdc8df498727b385" name="a45b6cf128cc6d711cdc8df498727b385"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45b6cf128cc6d711cdc8df498727b385">&#9670;&#160;</a></span>buildIdMapping()</h2>
+<a id="ac7d5e6859f022b19fb27d89d4798d53f" name="ac7d5e6859f022b19fb27d89d4798d53f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7d5e6859f022b19fb27d89d4798d53f">&#9670;&#160;</a></span>buildEntityMap()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void mnx::Document::buildIdMapping </td>
+          <td class="memname">void mnx::Document::buildEntityMap </td>
           <td>(</td>
-          <td class="paramtype">const std::optional&lt; <a class="el" href="namespacemnx.html#a1ecfb36b8c75b494f064bfd002c4c119">ErrorHandler</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>errorHandler</em> = <code>std::nullopt</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structmnx_1_1EntityMapPolicies.html">EntityMapPolicies</a>&#160;</td>
+          <td class="paramname"><em>policies</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::optional&lt; <a class="el" href="namespacemnx.html#a1ecfb36b8c75b494f064bfd002c4c119">ErrorHandler</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>errorHandler</em> = <code>std::nullopt</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -357,6 +374,7 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 <p>Builds or rebuilds the ID mapping for the document, replacing any existing mapping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">policies</td><td>Optional controls for how supplemental mappings (like ottavas) are constructed. </td></tr>
     <tr><td class="paramname">errorHandler</td><td>An optional error handler. If provided, the function does not throw on duplicate keys added. </td></tr>
   </table>
   </dd>
@@ -370,8 +388,69 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 
 </div>
 </div>
+<a id="a443497cd6b0cee8b86dbb655aa95c8d6" name="a443497cd6b0cee8b86dbb655aa95c8d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a443497cd6b0cee8b86dbb655aa95c8d6">&#9670;&#160;</a></span>create() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Byte , typename  = std::enable_if_t&lt;                         std::is_integral_v&lt;Byte&gt; &amp;&amp;                         (sizeof(Byte) == 1) &amp;&amp;                         !std::is_same_v&lt;std::remove_cv_t&lt;Byte&gt;, bool&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classmnx_1_1Document.html">Document</a> mnx::Document::create </td>
+          <td>(</td>
+          <td class="paramtype">const Byte *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="classmnx_1_1Document.html" title="Represents an MNX document and provides methods for loading and saving.">Document</a> from a data buffer containing JSON. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Byte</td><td>An 8-bit integer type (char, signed/unsigned char, std::uint8_t, etc.) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Pointer to the start of the JSON text buffer. </td></tr>
+    <tr><td class="paramname">size</td><td>Number of bytes in the buffer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classmnx_1_1Document.html" title="Represents an MNX document and provides methods for loading and saving.">Document</a> instance populated with the parsed data. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if data is null and size is non-zero. </td></tr>
+    <tr><td class="paramname">nlohmann::json::parse_error</td><td>(or other nlohmann::json exceptions) on parse failure. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5494915a76ef3b0d4c91c08ddb3a1f32" name="a5494915a76ef3b0d4c91c08ddb3a1f32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5494915a76ef3b0d4c91c08ddb3a1f32">&#9670;&#160;</a></span>create()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5494915a76ef3b0d4c91c08ddb3a1f32">&#9670;&#160;</a></span>create() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -408,6 +487,26 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="acc9df934e0a3c244614177bca1078579" name="acc9df934e0a3c244614177bca1078579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc9df934e0a3c244614177bca1078579">&#9670;&#160;</a></span>findFullScoreLayout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="classmnx_1_1Layout.html">Layout</a> &gt; mnx::Document::findFullScoreLayout </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds a layout that matches the canonical full score layout, where each part staff appears in order on a single corresponding layout staff. </p>
+<dl class="section return"><dt>Returns</dt><dd>The layout if found or std::nullopt if not. </dd></dl>
 
 </div>
 </div>

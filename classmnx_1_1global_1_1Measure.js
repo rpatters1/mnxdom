@@ -1,8 +1,11 @@
 var classmnx_1_1global_1_1Measure =
 [
     [ "calcBarlineType", "classmnx_1_1global_1_1Measure.html#acaf57dd54e79125d1daeff29ba450ab1", null ],
+    [ "calcCurrentKey", "classmnx_1_1global_1_1Measure.html#ac1b8e0959c5aafd0a23a23c663e2af6c", null ],
+    [ "calcCurrentKeyFields", "classmnx_1_1global_1_1Measure.html#ac3e95826011c6535baa66f6ba09c2e89", null ],
     [ "calcCurrentTime", "classmnx_1_1global_1_1Measure.html#a1bd736b2c877a7365956670ff363e302", null ],
     [ "calcMeasureIndex", "classmnx_1_1global_1_1Measure.html#ace3decd66b97313b05e81a409aa2f30c", null ],
+    [ "calcVisibleNumber", "classmnx_1_1global_1_1Measure.html#a8aed2c5f9b7690e13b425e2640df7188", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#a021e53c7e09b74563649864f56dacdb9", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#a2644e5888e813c2beae191435fe28eec", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#abe614f900867f739ab7b44f7fd428197", null ],

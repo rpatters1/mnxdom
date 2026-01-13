@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li>Validation routines for both the MNX JSON schema and semantic validation.</li>
 </ul>
 <p>Member functions for each MNX entity are defined using macros that create the boilerplate for the definitions. For example, <code>MNX_REQUIRED_PROPERTY</code> creates a getter (equal to the property name) and a setter (<code>set_</code> followed by the property name). The boilerplate macros are defined in <code><a class="el" href="BaseTypes_8h_source.html">BaseTypes.h</a></code> and have extensive documentation in the comments.</p>
-<p>A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed from scratch. They can be subsequently changed if need be. Many classes have <code>Initializer</code> types to facilitate passing all the required data for a child object.</p>
+<p>A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed from scratch. They can be subsequently changed if need be. Many classes have <code>Fields</code> types to facilitate passing all the required data for a child object.</p>
 <dl class="section warning"><dt>Warning</dt><dd>Avoid using references for instances returned by the methods in this library. Because classes are so lightweight, all methods return temporary copies. Using a reference on a temporary is undefined behavior.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Robert Patterson </dd></dl>
 </div></div><!-- PageDoc -->

@@ -178,6 +178,10 @@ template&lt;typename U  = T&gt; </td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>erase</b> (size_t index)</td></tr>
 <tr class="memdesc:a5a4887f27d00fdecc4c3b72da9e7a522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an element at a given index. <br /></td></tr>
 <tr class="separator:a5a4887f27d00fdecc4c3b72da9e7a522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71d223145cc464c531193824bb55b955" id="r_a71d223145cc464c531193824bb55b955"><td class="memTemplParams" colspan="2">template&lt;typename U  = T&gt; </td></tr>
+<tr class="memitem:a71d223145cc464c531193824bb55b955"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt;!std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, std::vector&lt; U &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#a71d223145cc464c531193824bb55b955">toStdVector</a> () const</td></tr>
+<tr class="memdesc:a71d223145cc464c531193824bb55b955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the <a class="el" href="classmnx_1_1Array.html" title="Represents an MNX array, encapsulating property access.">Array</a> to an owning std::vector.  <br /></td></tr>
+<tr class="separator:a71d223145cc464c531193824bb55b955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a086b39fbc63d4cd4a9793ee617f7a16c" id="r_a086b39fbc63d4cd4a9793ee617f7a16c"><td class="memItemLeft" align="right" valign="top"><a id="a086b39fbc63d4cd4a9793ee617f7a16c" name="a086b39fbc63d4cd4a9793ee617f7a16c"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()</td></tr>
 <tr class="memdesc:a086b39fbc63d4cd4a9793ee617f7a16c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator to the beginning of the array. <br /></td></tr>
@@ -218,10 +222,10 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td>
 <tr class="memitem:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a> () const</td></tr>
 <tr class="memdesc:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the parent object for this node.  <br /></td></tr>
 <tr class="separator:a4bbd397a39dc2f5db959ac639d954335 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base" id="r_a088b161677e48210d553c7b6b0cd72aa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a088b161677e48210d553c7b6b0cd72aa">getEnclosingElement</a> () const</td></tr>
-<tr class="memdesc:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. <a class="el" href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays.">ContentObject</a>), the highest level instance is returned. (To get the lowest level immediate container, use <a class="el" href="classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291" title="Returns the container of the array this element belongs to wrapped as the specified template type.">ArrayElementObject::container</a>.)  <br /></td></tr>
-<tr class="separator:a088b161677e48210d553c7b6b0cd72aa inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base" id="r_a9a73783497762ab5afd1cf04ca4be433"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Scope  = scope::Default&gt; </td></tr>
+<tr class="memitem:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a9a73783497762ab5afd1cf04ca4be433">getEnclosingElement</a> () const</td></tr>
+<tr class="memdesc:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the enclosing array element for this instance. If T is a type that can be nested (e.g. <a class="el" href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays.">ContentObject</a>), the highest level instance is returned. (To get the lowest level immediate container, use <a class="el" href="classmnx_1_1ArrayElementObject.html#a79dce742fe1e62a6602d4ad33bcca291" title="Returns the object that owns the content array this element belongs to wrapped as the specified templ...">ContentObject::container</a>.)  <br /></td></tr>
+<tr class="separator:a9a73783497762ab5afd1cf04ca4be433 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base" id="r_a1ef198706551096c7bbd023a3fae3406"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> () const</td></tr>
 <tr class="memdesc:a1ef198706551096c7bbd023a3fae3406 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the json_pointer for this node. <br /></td></tr>
@@ -431,6 +435,38 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a71d223145cc464c531193824bb55b955" name="a71d223145cc464c531193824bb55b955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71d223145cc464c531193824bb55b955">&#9670;&#160;</a></span>toStdVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if_t&lt;!std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, std::vector&lt; U &gt; &gt; <a class="el" href="classmnx_1_1Array.html">mnx::Array</a>&lt; T &gt;::toStdVector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the <a class="el" href="classmnx_1_1Array.html" title="Represents an MNX array, encapsulating property access.">Array</a> to an owning std::vector. </p>
+<p>Intended only for value-like element types. The returned vector is detached from the document and may be used as a grouped snapshot of values (e.g., for passing to external APIs). </p>
 
 </div>
 </div>

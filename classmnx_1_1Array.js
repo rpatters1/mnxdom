@@ -18,5 +18,6 @@ var classmnx_1_1Array =
     [ "operator[]", "classmnx_1_1Array.html#aefecc04578a2d8c354f56c08ab01f0b7", null ],
     [ "operator[]", "classmnx_1_1Array.html#a3fbf0b5765e79612d02accee536dc0a6", null ],
     [ "push_back", "classmnx_1_1Array.html#ac5b1b4f6b60b7a8aae628dda400dbfe8", null ],
-    [ "size", "classmnx_1_1Array.html#a0d4cf011d9f8cba4bfb36954b17ad7ad", null ]
+    [ "size", "classmnx_1_1Array.html#a0d4cf011d9f8cba4bfb36954b17ad7ad", null ],
+    [ "toStdVector", "classmnx_1_1Array.html#a71d223145cc464c531193824bb55b955", null ]
 ];

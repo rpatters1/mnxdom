@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hasidmapping_0',['hasIdMapping',['../classmnx_1_1Document.html#a9c83f9bb41d4fa6a3c63309129008fb0',1,'mnx::Document']]]
+  ['hasentitymap_0',['hasEntityMap',['../classmnx_1_1Document.html#aaac7e336390a2f643de194fa12bbd085',1,'mnx::Document']]]
 ];

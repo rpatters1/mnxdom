@@ -13,11 +13,9 @@ var annotated_dup =
         [ "RepeatStart", "classmnx_1_1global_1_1RepeatStart.html", "classmnx_1_1global_1_1RepeatStart" ],
         [ "Segno", "classmnx_1_1global_1_1Segno.html", "classmnx_1_1global_1_1Segno" ],
         [ "Sound", "classmnx_1_1global_1_1Sound.html", "classmnx_1_1global_1_1Sound" ],
-        [ "StyleGlobal", "classmnx_1_1global_1_1StyleGlobal.html", "classmnx_1_1global_1_1StyleGlobal" ],
         [ "Tempo", "classmnx_1_1global_1_1Tempo.html", "classmnx_1_1global_1_1Tempo" ]
       ] ],
       [ "layout", "namespacemnx_1_1layout.html", [
-        [ "ContentObject", "classmnx_1_1layout_1_1ContentObject.html", null ],
         [ "Group", "classmnx_1_1layout_1_1Group.html", "classmnx_1_1layout_1_1Group" ],
         [ "Staff", "classmnx_1_1layout_1_1Staff.html", "classmnx_1_1layout_1_1Staff" ],
         [ "StaffSource", "classmnx_1_1layout_1_1StaffSource.html", "classmnx_1_1layout_1_1StaffSource" ]
@@ -32,6 +30,11 @@ var annotated_dup =
         [ "PartTransposition", "classmnx_1_1part_1_1PartTransposition.html", "classmnx_1_1part_1_1PartTransposition" ],
         [ "PositionedClef", "classmnx_1_1part_1_1PositionedClef.html", "classmnx_1_1part_1_1PositionedClef" ]
       ] ],
+      [ "scope", null, [
+        [ "Default", "structmnx_1_1scope_1_1Default.html", null ],
+        [ "LayoutContent", "structmnx_1_1scope_1_1LayoutContent.html", null ],
+        [ "SequenceContent", "structmnx_1_1scope_1_1SequenceContent.html", null ]
+      ] ],
       [ "score", "namespacemnx_1_1score.html", [
         [ "LayoutChange", "classmnx_1_1score_1_1LayoutChange.html", "classmnx_1_1score_1_1LayoutChange" ],
         [ "MultimeasureRest", "classmnx_1_1score_1_1MultimeasureRest.html", "classmnx_1_1score_1_1MultimeasureRest" ],
@@ -43,7 +46,6 @@ var annotated_dup =
         [ "AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", "classmnx_1_1sequence_1_1AccidentalDisplay" ],
         [ "AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", "classmnx_1_1sequence_1_1AccidentalEnclosure" ],
         [ "BreathMark", "classmnx_1_1sequence_1_1BreathMark.html", "classmnx_1_1sequence_1_1BreathMark" ],
-        [ "ContentObject", "classmnx_1_1sequence_1_1ContentObject.html", null ],
         [ "Event", "classmnx_1_1sequence_1_1Event.html", "classmnx_1_1sequence_1_1Event" ],
         [ "EventLyricLine", "classmnx_1_1sequence_1_1EventLyricLine.html", "classmnx_1_1sequence_1_1EventLyricLine" ],
         [ "EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", "classmnx_1_1sequence_1_1EventLyrics" ],
@@ -72,8 +74,17 @@ var annotated_dup =
         [ "Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
       ] ],
       [ "util", null, [
-        [ "IdMapping", "classmnx_1_1util_1_1IdMapping.html", "classmnx_1_1util_1_1IdMapping" ],
-        [ "mapping_error", "classmnx_1_1util_1_1mapping__error.html", null ]
+        [ "detail", null, [
+          [ "JsonSchemaTypeNames", "structmnx_1_1util_1_1detail_1_1JsonSchemaTypeNames.html", null ],
+          [ "JsonSchemaTypeNames< sequence::NoteBase >", "structmnx_1_1util_1_1detail_1_1JsonSchemaTypeNames_3_01sequence_1_1NoteBase_01_4.html", null ]
+        ] ],
+        [ "EntityMap", "classmnx_1_1util_1_1EntityMap.html", "classmnx_1_1util_1_1EntityMap" ],
+        [ "LayoutSpan", "structmnx_1_1util_1_1LayoutSpan.html", "structmnx_1_1util_1_1LayoutSpan" ],
+        [ "mapping_error", "classmnx_1_1util_1_1mapping__error.html", null ],
+        [ "SequenceWalkContext", "structmnx_1_1util_1_1SequenceWalkContext.html", "structmnx_1_1util_1_1SequenceWalkContext" ],
+        [ "SequenceWalkHooks", "structmnx_1_1util_1_1SequenceWalkHooks.html", "structmnx_1_1util_1_1SequenceWalkHooks" ],
+        [ "StaffKey", "structmnx_1_1util_1_1StaffKey.html", "structmnx_1_1util_1_1StaffKey" ],
+        [ "StaffKeyHash", "structmnx_1_1util_1_1StaffKeyHash.html", "structmnx_1_1util_1_1StaffKeyHash" ]
       ] ],
       [ "validation", "namespacemnx_1_1validation.html", [
         [ "SemanticValidationResult", "structmnx_1_1validation_1_1SemanticValidationResult.html", "structmnx_1_1validation_1_1SemanticValidationResult" ],
@@ -86,6 +97,7 @@ var annotated_dup =
       [ "ContentObject", "classmnx_1_1ContentObject.html", "classmnx_1_1ContentObject" ],
       [ "Dictionary", "classmnx_1_1Dictionary.html", "classmnx_1_1Dictionary" ],
       [ "Document", "classmnx_1_1Document.html", "classmnx_1_1Document" ],
+      [ "EntityMapPolicies", "structmnx_1_1EntityMapPolicies.html", "structmnx_1_1EntityMapPolicies" ],
       [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
       [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
       [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],

@@ -163,7 +163,7 @@
   * It creates the following class methods.
   *
   * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
-  * - `create_NAME(args...) if the child does not exist, creates the child from the input constructor arguments. Otherwise returns the child.
+  * - `ensure_NAME(args...) if the child does not exist, creates the child from the input constructor arguments. Otherwise returns the child.
   * - `clear_NAME(args...) clears the child from JSON document.
   *
   * @param TYPE the type of the child object or array
@@ -172,7 +172,7 @@
  #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
     [[nodiscard]] std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
     template<typename... Args> \
-    TYPE create_##NAME(Args&&... args) { \
+    TYPE ensure_##NAME(Args&&... args) { \
         if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \
         return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
     } \

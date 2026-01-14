@@ -361,7 +361,7 @@ public:
     {
         // per the specification, either noteValue or the full-measure boolean *must* be supplied.
         if (noteValue) {
-            create_duration(noteValue.value());
+            ensure_duration(noteValue.value());
         } else {
             set_measure(true);
         }

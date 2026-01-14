@@ -36,15 +36,15 @@ TEST(Scores, FromScratch)
     }
     EXPECT_EQ(doc.global().measures().size(), size_t(numBars));
 
-    auto scores = doc.create_scores();
+    auto scores = doc.ensure_scores();
 
     auto score = scores.append("Full Score");
-    auto pages = score.create_pages();
+    auto pages = score.ensure_pages();
     auto page = pages.append();
     auto system = page.systems().append(1);
     EXPECT_EQ(system.measure(), 1);
     EXPECT_EQ(page.systems().append(4).measure(), 4);
-    auto layoutChanges = system.create_layoutChanges();
+    auto layoutChanges = system.ensure_layoutChanges();
     auto layoutChange = layoutChanges.append("layout1", 2, FractionValue(3, 8));
     EXPECT_EQ(layoutChange.layout(), "layout1");
     EXPECT_EQ(layoutChange.location().measure(), 2);

@@ -75,7 +75,7 @@ TEST(Document, MinimalFromScratch)
     mnx.set_version(MNX_VERSION + 1);
     EXPECT_EQ(doc.mnx().version(), MNX_VERSION + 1);
 
-    auto support = mnx.create_support();
+    auto support = mnx.ensure_support();
     support.set_useAccidentalDisplay(true);
 
     EXPECT_TRUE(support.useAccidentalDisplay()) << "mnx has a support instance";
@@ -93,7 +93,7 @@ TEST(Document, MinimalFromScratch)
     measures.append();
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a measure to a part";
 
-    auto layouts = doc.create_layouts();
+    auto layouts = doc.ensure_layouts();
     layouts.append();
     auto layout = layouts[0];
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a layout, even with no layout id";

@@ -27,8 +27,11 @@ globalMeasure.create_time(mnx::TimeSignature::from(4, mnx::TimeSignatureUnit::Qu
 auto part = doc.parts().append();
 auto measure = part.create_measures().append();
 measure.create_clefs().append(mnx::part::Clef::from(mnx::ClefSign::GClef, -2));
-auto event = measure.sequences().append<mnx::sequence::Event>(
-    mnx::sequence::Event::from(mnx::NoteValue::from(mnx::NoteValueBase::Whole)));
+auto event = measure.sequences()
+    .append()
+    .content()
+    .append<mnx::sequence::Event>();
+event.ensure_duration(mnx::NoteValue::from(mnx::NoteValueBase::Whole));
 event.create_notes().append(mnx::sequence::Note::from(
     mnx::sequence::Pitch::from(mnx::NoteStep::C, 4)));
 // save to file

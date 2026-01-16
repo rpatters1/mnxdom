@@ -433,12 +433,6 @@ public:
 class Event : public ContentObject
 {
 public:
-    /// @brief initializer class for #Event
-    struct Fields
-    {
-        std::optional<NoteValue::Fields> noteValue; ///< the note value (nullopt for full measure)
-    };
-
     /// @brief Constructor for existing Event objects
     Event(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
@@ -448,29 +442,10 @@ public:
     /// @brief Creates a new Event class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The event fields to use.
-    Event(Base& parent, std::string_view key, const Fields& fields)
+    Event(Base& parent, std::string_view key)
         : ContentObject(parent, key)
     {
-        // per the specification, either noteValue or the full-measure boolean *must* be supplied.
-        if (fields.noteValue) {
-            ensure_duration(fields.noteValue.value());
-        } else {
-            set_measure(true);
-        }
     }
-
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const
-    {
-        if (auto value = duration()) {
-            return { value.value() };
-        }
-        return { std::nullopt };
-    }
-
-    /// @brief Create a Fields instance for #Event.
-    static Fields from(const std::optional<NoteValue::Fields>& noteValue = std::nullopt) { return { noteValue }; }
 
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
     MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.

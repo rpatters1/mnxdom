@@ -21,19 +21,18 @@ auto doc = mnx::Document(); // automatically creates required child nodes
 // global
 auto globalMeasure = doc.global().measures().append();
 // required fields are supplied when objects are created
-globalMeasure.create_barline(mnx::Barline::from(mnx::BarlineType::Regular));
-globalMeasure.create_time(mnx::TimeSignature::from(4, mnx::TimeSignatureUnit::Quarter));
+globalMeasure.create_barline(mnx::BarlineType::Regular);
+globalMeasure.create_time(4, mnx::TimeSignatureUnit::Quarter);
 // parts
 auto part = doc.parts().append();
 auto measure = part.create_measures().append();
-measure.create_clefs().append(mnx::part::Clef::from(mnx::ClefSign::GClef, -2));
+measure.create_clefs().append(mnx::ClefSign::GClef, -2, std::nullopt);
 auto event = measure.sequences()
     .append()
     .content()
     .append<mnx::sequence::Event>();
-event.ensure_duration(mnx::NoteValue::from(mnx::NoteValueBase::Whole));
-event.create_notes().append(mnx::sequence::Note::from(
-    mnx::sequence::Pitch::from(mnx::NoteStep::C, 4)));
+event.ensure_duration(mnx::NoteValueBase::Whole, 0);
+event.create_notes().append(mnx::sequence::Pitch::make(mnx::NoteStep::C, 4));
 // save to file
 doc.save("hello-world.json", 4); // indent with 4 spaces
 ```

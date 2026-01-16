@@ -69,11 +69,11 @@ class Clef : public Object
 {
 public:
     /// @brief initializer class for #Clef
-    struct Fields
+    struct Required
     {
-        ClefSign clefSign{};                                     ///< the type of clef symbol
-        int staffPosition{};                                     ///< staff position offset from center of staff
-        std::optional<OttavaAmountOrZero> octaveAdjustment;      ///< optional octave adjustment
+        ClefSign clefSign{};                    ///< the type of clef symbol
+        int staffPosition{};                    ///< staff position offset from center of staff
+        OttavaAmountOrZero octaveAdjustment{};  ///< octave adjustment (NoTransposition when unset)
     };
 
     /// @brief Constructor for existing Clef instances
@@ -85,23 +85,23 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The clef fields to use.
-    Clef(Base& parent, std::string_view key, const Fields& fields)
+    /// @param clefSign The type of clef symbol
+    /// @param staffPosition Staff position offset from center of staff
+    /// @param octaveAdjustment Octave adjustment (NoTransposition when unset)
+    Clef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition,
+        OttavaAmountOrZero octaveAdjustment = OttavaAmountOrZero::NoTransposition)
         : Object(parent, key)
     {
-        set_sign(fields.clefSign);
-        set_staffPosition(fields.staffPosition);
-        if (fields.octaveAdjustment.has_value()) {
-            set_octave(fields.octaveAdjustment.value());
-        }
+        set_sign(clefSign);
+        set_staffPosition(staffPosition);
+        set_or_clear_octave(octaveAdjustment);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { sign(), staffPosition(), octave() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { sign(), staffPosition(), octave() }; }
 
-    /// @brief Create a Fields instance for #Clef.
-    static Fields from(ClefSign clefSign, int staffPosition,
-                       std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    /// @brief Create a Required instance for #Clef.
+    static Required make(ClefSign clefSign, int staffPosition, OttavaAmountOrZero octaveAdjustment = OttavaAmountOrZero::NoTransposition)
     { return { clefSign, staffPosition, octaveAdjustment }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
@@ -120,7 +120,7 @@ class Dynamic : public ContentObject
 {
 public:
     /// @brief initializer class for #Dynamic
-    struct Fields
+    struct Required
     {
         std::string value;          ///< the value of the dynamic
         FractionValue position{};   ///< the position within the measure
@@ -135,22 +135,25 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element.
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The dynamic fields to use.
-    Dynamic(Base& parent, std::string_view key, const Fields& fields)
+    /// @param value The value of the dynamic
+    /// @param position The position within the measure
+    Dynamic(Base& parent, std::string_view key, const std::string& value, const FractionValue& position)
         : ContentObject(parent, key)
     {
-        set_value(fields.value);
-        create_position({ fields.position });
+        set_value(value);
+        create_position(position);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { value(), position().fraction() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { value(), position().fraction() }; }
 
-    /// @brief Create a Fields instance for #Dynamic.
-    static Fields from(const std::string& value, const FractionValue& position) { return { value, position }; }
+    /// @brief Create a Required instance for #Dynamic.
+    static Required make(const std::string& value, const FractionValue& position) { return { value, position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
-    MNX_REQUIRED_CHILD(RhythmicPosition, position);                 ///< The rhythmic position of the dynamic within the measure.
+    MNX_REQUIRED_CHILD(
+        RhythmicPosition, position,
+        (const FractionValue&, position)); ///< The rhythmic position of the dynamic within the measure.
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this dynamic applies to
     MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this dynamic applies to.
@@ -164,7 +167,7 @@ class       Ottava : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #Ottava
-    struct Fields
+    struct Required
     {
         OttavaAmount value{};        ///< the value (type) of ottava
         FractionValue position{};    ///< the start position of the ottava
@@ -181,29 +184,38 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element.
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The ottava fields to use.
-    Ottava(Base& parent, std::string_view key, const Fields& fields)
+    /// @param value The value (type) of ottava
+    /// @param position The start position of the ottava
+    /// @param endMeasureId The end measure of the ottava
+    /// @param endPosition The position within the end measure
+    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, int endMeasureId,
+           const FractionValue& endPosition)
         : ArrayElementObject(parent, key)
     {
-        create_position({ fields.position });
-        create_end({ fields.endMeasureId, fields.endPosition });
-        set_value(fields.value);
+        create_position(position);
+        create_end(endMeasureId, endPosition);
+        set_value(value);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const
+    /// @brief Implicit conversion back to Required.
+    operator Required() const
     {
         return { value(), position().fraction(), end().measure(), end().position().fraction() };
     }
 
-    /// @brief Create a Fields instance for #Ottava.
-    static Fields from(OttavaAmount value, const FractionValue& position, int endMeasureId,
+    /// @brief Create a Required instance for #Ottava.
+    static Required make(OttavaAmount value, const FractionValue& position, int endMeasureId,
                        const FractionValue& endPosition)
     { return { value, position, endMeasureId, endPosition }; }
 
-    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
+    MNX_REQUIRED_CHILD(
+        MeasureRhythmicPosition, end,
+        (int, measureId),
+        (const FractionValue&, position)); ///< The end of the ottava (includes any events starting at this location)
     /// @todo orient
-    MNX_REQUIRED_CHILD(RhythmicPosition, position);                 ///< The start position of the ottava
+    MNX_REQUIRED_CHILD(
+        RhythmicPosition, position,
+        (const FractionValue&, position)); ///< The start position of the ottava
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);              ///< The staff (within the part) this ottava applies to
     MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this ottava applies to.
@@ -217,7 +229,7 @@ class KitComponent : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #KitComponent
-    struct Fields
+    struct Required
     {
         int staffPosition{}; ///< the staff position of the kit component
     };
@@ -231,18 +243,18 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The kit component fields to use.
-    KitComponent(Base& parent, std::string_view key, const Fields& fields)
+    /// @param staffPosition The staff position of the kit component
+    KitComponent(Base& parent, std::string_view key, int staffPosition)
         : ArrayElementObject(parent, key)
     {
-        set_staffPosition(fields.staffPosition);
+        set_staffPosition(staffPosition);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { staffPosition() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { staffPosition() }; }
 
-    /// @brief Create a Fields instance for #KitComponent.
-    static Fields from(int staffPosition) { return { staffPosition }; }
+    /// @brief Create a Required instance for #KitComponent.
+    static Required make(int staffPosition) { return { staffPosition }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, name);       ///< Human-readable name of the kit component
     MNX_OPTIONAL_PROPERTY(std::string, sound);      ///< The sound ID in `global.sounds`.
@@ -257,9 +269,9 @@ class PartTransposition : public Object
 {
 public:
     /// @brief initializer class for #PartTransposition
-    struct Fields
+    struct Required
     {
-        Interval::Fields interval{}; ///< the transposition interval for the part
+        Interval::Required interval{}; ///< the transposition interval for the part
     };
 
     /// @brief Constructor for existing Clef instances
@@ -271,27 +283,30 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The transposition fields to use.
-    PartTransposition(Base& parent, std::string_view key, const Fields& fields)
+    /// @param interval The transposition interval for the part
+    PartTransposition(Base& parent, std::string_view key, const Interval::Required& interval)
         : Object(parent, key)
     {
-        create_interval(fields.interval);
+        create_interval(interval.staffDistance, interval.halfSteps);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { interval() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { interval() }; }
 
-    /// @brief Create a Fields instance for #PartTransposition.
-    static Fields from(const Interval::Fields& interval) { return { interval }; }
+    /// @brief Create a Required instance for #PartTransposition.
+    static Required make(const Interval::Required& interval) { return { interval }; }
 
-    MNX_REQUIRED_CHILD(Interval, interval);         ///< the transposition interval
+    MNX_REQUIRED_CHILD(
+        Interval, interval,
+        (int, staffDistance),
+        (int, halfSteps)); ///< the transposition interval
     MNX_OPTIONAL_PROPERTY(int, keyFifthsFlipAt);    ///< the number of sharps (positive) or flats (negative) at which to simplify the key signature
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, prefersWrittenPitches, false); ///< if true, this instrument prefers displaying written pitches even in the context of
                                                     ///< concert-pitch score. (Examples could be piccolo, double base, glockenspiel, etc.)
 
     /// @brief Calculates and returns the transposed keyFifths value for the input key.
     /// @param concertKey The concert key to calculate from.
-    KeySignature::Fields calcTransposedKey(const KeySignature::Fields& concertKey) const;
+    KeySignature::Required calcTransposedKey(const KeySignature::Required& concertKey) const;
 };
 
 /**
@@ -302,11 +317,11 @@ class PositionedClef : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #PositionedClef
-    struct Fields
+    struct Required
     {
         ClefSign clefSign{};                                     ///< the type of clef symbol
         int staffPosition{};                                     ///< staff position offset from center of staff
-        std::optional<OttavaAmountOrZero> octaveAdjustment;      ///< optional octave adjustment
+        OttavaAmountOrZero octaveAdjustment{};                    ///< the octave adjustment
     };
 
     /// @brief Constructor for existing PositionedClef instances
@@ -318,23 +333,32 @@ public:
     /// @brief Creates a new PositionedClef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The positioned clef fields to use.
-    PositionedClef(Base& parent, std::string_view key, const Fields& fields)
+    /// @param clefSign The type of clef symbol
+    /// @param staffPosition Staff position offset from center of staff
+    /// @param octaveAdjustment Optional octave adjustment
+    PositionedClef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition,
+                   OttavaAmountOrZero octaveAdjustment)
         : ArrayElementObject(parent, key)
     {
-        create_clef({ fields.clefSign, fields.staffPosition, fields.octaveAdjustment });
+        create_clef(clefSign, staffPosition, octaveAdjustment);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { clef().sign(), clef().staffPosition(), clef().octave() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { clef().sign(), clef().staffPosition(), clef().octave() }; }
 
-    /// @brief Create a Fields instance for #PositionedClef.
-    static Fields from(ClefSign clefSign, int staffPosition,
-                       std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    /// @brief Create a Required instance for #PositionedClef.
+    static Required make(ClefSign clefSign, int staffPosition,
+                       OttavaAmountOrZero octaveAdjustment = OttavaAmountOrZero::NoTransposition)
     { return { clefSign, staffPosition, octaveAdjustment }; }
 
-    MNX_REQUIRED_CHILD(Clef, clef);                     ///< the beats per minute of this tempo marking
-    MNX_OPTIONAL_CHILD(RhythmicPosition, position);     ///< location within the measure of the tempo marking
+    MNX_REQUIRED_CHILD(
+        Clef, clef,
+        (ClefSign, clefSign),
+        (int, staffPosition),
+        (OttavaAmountOrZero, octaveAdjustment)); ///< the beats per minute of this tempo marking
+    MNX_OPTIONAL_CHILD(
+        RhythmicPosition, position,
+        (const FractionValue&, position)); ///< location within the measure of the tempo marking
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number (for multistaff parts)
 };
 
@@ -401,7 +425,9 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, shortName);      ///< Specifies the user-facing abbreviated name of this part
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);      ///< Name of SMuFL-font for notation elements in the part (can be overridden by children)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staves, 1); ///< The number of staves in this part.
-    MNX_OPTIONAL_CHILD(part::PartTransposition, transposition); ///< the instrument transposition for the part
+    MNX_OPTIONAL_CHILD(
+        part::PartTransposition, transposition,
+        (const Interval::Required&, interval)); ///< the instrument transposition for the part
 
     inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };

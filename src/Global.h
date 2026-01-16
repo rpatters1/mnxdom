@@ -40,7 +40,7 @@ class Barline : public Object
 {
 public:
     /// @brief initializer class for #Barline
-    struct Fields
+    struct Required
     {
         BarlineType barlineType{}; ///< the barline type for this Barline
     };
@@ -54,18 +54,18 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The barline fields to use.
-    Barline(Base& parent, std::string_view key, const Fields& fields)
+    /// @param barlineType The barline type for this Barline
+    Barline(Base& parent, std::string_view key, BarlineType barlineType)
         : Object(parent, key)
     {
-        set_type(fields.barlineType);
+        set_type(barlineType);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { type() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { type() }; }
 
-    /// @brief Create a Fields instance for #Barline.
-    static Fields from(BarlineType barlineType) { return { barlineType }; }
+    /// @brief Create a Required instance for #Barline.
+    static Required make(BarlineType barlineType) { return { barlineType }; }
 
     MNX_REQUIRED_PROPERTY(BarlineType, type);  ///< the type of barline
 };
@@ -78,7 +78,7 @@ class Ending : public Object
 {
 public:
     /// @brief initializer class for #Ending
-    struct Fields
+    struct Required
     {
         int duration{}; ///< the duration of the ending
     };
@@ -92,18 +92,18 @@ public:
     /// @brief Creates a new Ending class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The ending fields to use.
-    Ending(Base& parent, std::string_view key, const Fields& fields)
+    /// @param duration The duration of the ending
+    Ending(Base& parent, std::string_view key, int duration)
         : Object(parent, key)
     {
-        set_duration(fields.duration);
+        set_duration(duration);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { duration() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { duration() }; }
 
-    /// @brief Create a Fields instance for #Ending.
-    static Fields from(int duration) { return { duration }; }
+    /// @brief Create a Required instance for #Ending.
+    static Required make(int duration) { return { duration }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the type of barline
@@ -119,7 +119,7 @@ class Fine : public Object
 {
 public:
     /// @brief initializer class for #Fine
-    struct Fields
+    struct Required
     {
         FractionValue position{}; ///< the position of the Fine within the measure
     };
@@ -133,21 +133,23 @@ public:
     /// @brief Creates a new Fine class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The fine fields to use.
-    Fine(Base& parent, std::string_view key, const Fields& fields)
+    /// @param position The position of the Fine within the measure
+    Fine(Base& parent, std::string_view key, const FractionValue& position)
         : Object(parent, key)
     {
-        create_location({ fields.position });
+        create_location(position);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { location().fraction() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { location().fraction() }; }
 
-    /// @brief Create a Fields instance for #Fine.
-    static Fields from(const FractionValue& position) { return { position }; }
+    /// @brief Create a Required instance for #Fine.
+    static Required make(const FractionValue& position) { return { position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the fine direction
-    MNX_REQUIRED_CHILD(RhythmicPosition, location);             ///< the location of the fine direction
+    MNX_REQUIRED_CHILD(
+        RhythmicPosition, location,
+        (const FractionValue&, position)); ///< the location of the fine direction
 };
 
 /**
@@ -158,7 +160,7 @@ class Jump : public Object
 {
 public:
     /// @brief initializer class for #Jump
-    struct Fields
+    struct Required
     {
         JumpType jumpType{};      ///< the jump type
         FractionValue position{}; ///< the position within the measure
@@ -173,22 +175,25 @@ public:
     /// @brief Creates a new Jump class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The jump fields to use.
-    Jump(Base& parent, std::string_view key, const Fields& fields)
+    /// @param jumpType The jump type
+    /// @param position The position within the measure
+    Jump(Base& parent, std::string_view key, JumpType jumpType, const FractionValue& position)
         : Object(parent, key)
     {
-        set_type(fields.jumpType);
-        create_location({ fields.position });
+        set_type(jumpType);
+        create_location(position);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { type(), location().fraction() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { type(), location().fraction() }; }
 
-    /// @brief Create a Fields instance for #Jump.
-    static Fields from(JumpType jumpType, const FractionValue& position) { return { jumpType, position }; }
+    /// @brief Create a Required instance for #Jump.
+    static Required make(JumpType jumpType, const FractionValue& position) { return { jumpType, position }; }
 
     MNX_REQUIRED_PROPERTY(JumpType, type);                      ///< the JumpType
-    MNX_REQUIRED_CHILD(RhythmicPosition, location);              ///< the location of the jump
+    MNX_REQUIRED_CHILD(
+        RhythmicPosition, location,
+        (const FractionValue&, position)); ///< the location of the jump
 };
 
 /**
@@ -222,7 +227,7 @@ class Segno : public Object
 {
 public:
     /// @brief initializer class for #Segno
-    struct Fields
+    struct Required
     {
         FractionValue position{}; ///< the position of the Segno within the measure
     };
@@ -236,22 +241,24 @@ public:
     /// @brief Creates a new Segno class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The segno fields to use.
-    Segno(Base& parent, std::string_view key, const Fields& fields)
+    /// @param position The position of the Segno within the measure
+    Segno(Base& parent, std::string_view key, const FractionValue& position)
         : Object(parent, key)
     {
-        create_location({ fields.position });
+        create_location(position);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { location().fraction() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { location().fraction() }; }
 
-    /// @brief Create a Fields instance for #Segno.
-    static Fields from(const FractionValue& position) { return { position }; }
+    /// @brief Create a Required instance for #Segno.
+    static Required make(const FractionValue& position) { return { position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the SMuFL glyph name to be used when rendering this segno.
-    MNX_REQUIRED_CHILD(RhythmicPosition, location); ///< location
+    MNX_REQUIRED_CHILD(
+        RhythmicPosition, location,
+        (const FractionValue&, position)); ///< location
 };
 
 /**
@@ -275,10 +282,10 @@ class Tempo : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #Tempo
-    struct Fields
+    struct Required
     {
         int bpm{};                       ///< the beats per minute
-        NoteValue::Fields noteValue{};   ///< the note value for the tempo
+        NoteValue::Required noteValue{};   ///< the note value for the tempo
     };
 
     /// @brief Constructor for existing Tempo instances
@@ -290,23 +297,29 @@ public:
     /// @brief Creates a new Tempo class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The tempo fields to use.
-    Tempo(Base& parent, std::string_view key, const Fields& fields)
+    /// @param bpm The beats per minute
+    /// @param noteValue The note value for the tempo
+    Tempo(Base& parent, std::string_view key, int bpm, const NoteValue::Required& noteValue)
         : ArrayElementObject(parent, key)
     {
-        set_bpm(fields.bpm);
-        create_value(fields.noteValue);
+        set_bpm(bpm);
+        create_value(noteValue.base, noteValue.dots);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { bpm(), value() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { bpm(), value() }; }
 
-    /// @brief Create a Fields instance for #Tempo.
-    static Fields from(int bpm, const NoteValue::Fields& noteValue) { return { bpm, noteValue }; }
+    /// @brief Create a Required instance for #Tempo.
+    static Required make(int bpm, const NoteValue::Required& noteValue) { return { bpm, noteValue }; }
 
     MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking
-    MNX_OPTIONAL_CHILD(RhythmicPosition, location); ///< location within the measure of the tempo marking
-    MNX_REQUIRED_CHILD(NoteValue, value);           ///< the note value for the tempo.
+    MNX_OPTIONAL_CHILD(
+        RhythmicPosition, location,
+        (const FractionValue&, position)); ///< location within the measure of the tempo marking
+    MNX_REQUIRED_CHILD(
+        NoteValue, value,
+        (NoteValueBase, base),
+        (unsigned, dots)); ///< the note value for the tempo.
 };
 
 /**
@@ -318,19 +331,35 @@ class Measure : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_CHILD(Barline, barline);           ///< optional barline for this measure
-    MNX_OPTIONAL_CHILD(Ending, ending);             ///< optional ending ("volta bracket") for this measure
-    MNX_OPTIONAL_CHILD(Fine, fine);                 ///< optional fine direction for this measure
+    MNX_OPTIONAL_CHILD(
+        Barline, barline,
+        (BarlineType, barlineType)); ///< optional barline for this measure
+    MNX_OPTIONAL_CHILD(
+        Ending, ending,
+        (int, duration)); ///< optional ending ("volta bracket") for this measure
+    MNX_OPTIONAL_CHILD(
+        Fine, fine,
+        (const FractionValue&, position)); ///< optional fine direction for this measure
     MNX_OPTIONAL_PROPERTY(int, index);              ///< the measure index which is used to refer to this measure by other classes in the MNX document
-    MNX_OPTIONAL_CHILD(Jump, jump);                 ///< optional jump direction for this measure
-    MNX_OPTIONAL_CHILD(KeySignature, key);          ///< optional key signature/key change for this measure
+    MNX_OPTIONAL_CHILD(
+        Jump, jump,
+        (JumpType, jumpType),
+        (const FractionValue&, position)); ///< optional jump direction for this measure
+    MNX_OPTIONAL_CHILD(
+        KeySignature, key,
+        (int, fifths)); ///< optional key signature/key change for this measure
     MNX_OPTIONAL_PROPERTY(int, number);             ///< visible measure number. Use #calcVisibleNumber to get the correct value,
                                                     ///< as defined in the MNX specification, since it may be omitted here.
     MNX_OPTIONAL_CHILD(RepeatEnd, repeatEnd);       ///< if present, indicates that there is backwards repeat
     MNX_OPTIONAL_CHILD(RepeatStart, repeatStart);   ///< if present, indicates that a repeated section starts here
-    MNX_OPTIONAL_CHILD(Segno, segno);               ///< if present, indicates that a segno marker is here
+    MNX_OPTIONAL_CHILD(
+        Segno, segno,
+        (const FractionValue&, position)); ///< if present, indicates that a segno marker is here
     MNX_OPTIONAL_CHILD(Array<Tempo>, tempos);       ///< the tempo changes within the measure, if any
-    MNX_OPTIONAL_CHILD(TimeSignature, time);        ///< if present, indicates a meter change
+    MNX_OPTIONAL_CHILD(
+        TimeSignature, time,
+        (int, count),
+        (TimeSignatureUnit, unit)); ///< if present, indicates a meter change
 
     /// @brief Calculates the barline type for this measure.
     /// @return barline().type() if barline() has a value. Otherwise the default (as defined in the MNX specification.)
@@ -354,7 +383,7 @@ public:
 
     /// @brief Get the fields of the current key signature.
     /// @return The current key fields if found, otherwise the fields for key with no accidentals.
-    [[nodiscard]] KeySignature::Fields calcCurrentKeyFields() const;
+    [[nodiscard]] KeySignature::Required calcCurrentKeyFields() const;
 
     inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };

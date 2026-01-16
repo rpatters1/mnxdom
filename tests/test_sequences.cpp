@@ -25,9 +25,8 @@
 
 using namespace mnx;
 
-void checkSequence(const part::Measure& measure, size_t contentIdx,
-    const KeySignature::Fields& expectedTranKeySig,
-    const sequence::Pitch::Fields& expected1stTransPitch)
+void checkSequence(const part::Measure& measure, size_t contentIdx, int expectedTranKeyFifths,
+    const sequence::Pitch::Required& expected1stTransPitch)
 {
     ASSERT_FALSE(measure.sequences().empty());
     auto sequence = measure.sequences()[0];
@@ -46,6 +45,7 @@ void checkSequence(const part::Measure& measure, size_t contentIdx,
     auto globalMeasure = measure.getGlobalMeasure();
     auto part = measure.getEnclosingElement<Part>();
     ASSERT_TRUE(part);
+    auto expectedTranKeySig = KeySignature::make(expectedTranKeyFifths);
     if (auto partTran = part->transposition()) {
         EXPECT_EQ(partTran->calcTransposedKey(globalMeasure.calcCurrentKeyFields()).fifths, expectedTranKeySig.fifths) << "transposed key does not match expected value";
     } else {

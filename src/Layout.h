@@ -40,7 +40,7 @@ class StaffSource : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #StaffSource
-    struct Fields
+    struct Required
     {
         std::string partId; ///< the part to use as a source
     };
@@ -54,18 +54,18 @@ public:
     /// @brief Creates a new StaffSource class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The staff source fields to use.
-    StaffSource(Base& parent, std::string_view key, const Fields& fields)
+    /// @param partId The part to use as a source
+    StaffSource(Base& parent, std::string_view key, const std::string& partId)
         : ArrayElementObject(parent, key)
     {
-        set_part(fields.partId);
+        set_part(partId);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { part() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { part() }; }
 
-    /// @brief Create a Fields instance for #StaffSource.
-    static Fields from(const std::string& partId) { return { partId }; }
+    /// @brief Create a Required instance for #StaffSource.
+    static Required make(const std::string& partId) { return { partId }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, label);          ///< Text to appear to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)

@@ -44,7 +44,7 @@ class AccidentalEnclosure : public Object
 {
 public:
     /// @brief initializer class for #AccidentalEnclosure
-    struct Fields
+    struct Required
     {
         AccidentalEnclosureSymbol symbol{}; ///< the symbol to use for the enclosure
     };
@@ -58,18 +58,18 @@ public:
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
-    /// @param fields The enclosure fields to use.
-    AccidentalEnclosure(Base& parent, std::string_view key, const Fields& fields)
+    /// @param symbol The symbol to use for the enclosure
+    AccidentalEnclosure(Base& parent, std::string_view key, AccidentalEnclosureSymbol symbol)
         : Object(parent, key)
     {
-        set_symbol(fields.symbol);
+        set_symbol(symbol);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { symbol() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { symbol() }; }
 
-    /// @brief Create a Fields instance for #AccidentalEnclosure.
-    static Fields from(AccidentalEnclosureSymbol symbol) { return { symbol }; }
+    /// @brief Create a Required instance for #AccidentalEnclosure.
+    static Required make(AccidentalEnclosureSymbol symbol) { return { symbol }; }
 
     MNX_REQUIRED_PROPERTY(AccidentalEnclosureSymbol, symbol);      ///< The symbol to use for the enclosure
 };
@@ -82,7 +82,7 @@ class AccidentalDisplay : public Object
 {
 public:
     /// @brief initializer class for #AccidentalDisplay
-    struct Fields
+    struct Required
     {
         bool show{}; ///< whether to show or hide the accidental
     };
@@ -96,20 +96,22 @@ public:
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
-    /// @param fields The accidental display fields to use.
-    AccidentalDisplay(Base& parent, std::string_view key, const Fields& fields)
+    /// @param show Whether to show or hide the accidental
+    AccidentalDisplay(Base& parent, std::string_view key, bool show)
         : Object(parent, key)
     {
-        set_show(fields.show);
+        set_show(show);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { show() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { show() }; }
 
-    /// @brief Create a Fields instance for #AccidentalDisplay.
-    static Fields from(bool show) { return { show }; }
+    /// @brief Create a Required instance for #AccidentalDisplay.
+    static Required make(bool show) { return { show }; }
 
-    MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure);     ///< The enclosure type (brackets or parentheses). Omit if none.
+    MNX_OPTIONAL_CHILD(
+        AccidentalEnclosure, enclosure,
+        (AccidentalEnclosureSymbol, symbol)); ///< The enclosure type (brackets or parentheses). Omit if none.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, force, false); ///< Whether this accidental was set intentionally (e.g., a courtesy accidental).
     MNX_REQUIRED_PROPERTY(bool, show);                      ///< Whether to show or hide the accidental
 };
@@ -146,7 +148,7 @@ class Pitch : public Object
 {
 public:
     /// @brief initializer class for #Pitch
-    struct Fields
+    struct Required
     {
         NoteStep step{};    ///< the letter spelling of the note.
         int octave{};       ///< the octave number of the note (where C4 is middle C).
@@ -162,20 +164,22 @@ public:
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The fields to initialize the instance.
-    Pitch(Base& parent, std::string_view key, const Fields& fields)
+    /// @param step The letter spelling of the note.
+    /// @param octave The octave number of the note (where C4 is middle C).
+    /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat).
+    Pitch(Base& parent, std::string_view key, NoteStep step, int octave, int alter)
         : Object(parent, key)
     {
-        set_step(fields.step);
-        set_octave(fields.octave);
-        set_or_clear_alter(fields.alter);
+        set_step(step);
+        set_octave(octave);
+        set_or_clear_alter(alter);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { step(), octave(), alter() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { step(), octave(), alter() }; }
 
-    /// @brief Create a Fields instance for #Pitch.
-    static Fields from(NoteStep step, int octave, int alter = 0) { return { step, octave, alter }; }
+    /// @brief Create a Required instance for #Pitch.
+    static Required make(NoteStep step, int octave, int alter = 0) { return { step, octave, alter }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, alter, 0);  ///< chromatic alteration
     MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
@@ -184,11 +188,11 @@ public:
     /// @brief Checks if the input pitch is the same as this pitch, including enharmonic equivalents
     /// @param src The value to compare with
     /// @return true if they are the same or enharmonically equivalent
-    [[nodiscard]] bool isSamePitch(const Fields& src) const;
+    [[nodiscard]] bool isSamePitch(const Required& src) const;
 
     /// @brief Calculates the transposed version of this pitch, taking into account the part transposition
     /// for the part that contains this pitch.
-    [[nodiscard]] Fields calcTransposed() const;
+    [[nodiscard]] Required calcTransposed() const;
 };
 
 /**
@@ -199,7 +203,7 @@ class Slur : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #Slur
-    struct Fields
+    struct Required
     {
         std::string target; ///< the target note id of the slur
     };
@@ -213,18 +217,18 @@ public:
     /// @brief Creates a new Slur class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The slur fields to use.
-    Slur(Base& parent, std::string_view key, const Fields& fields)
+    /// @param target The target note id of the slur
+    Slur(Base& parent, std::string_view key, const std::string& target)
         : ArrayElementObject(parent, key)
     {
-        set_target(fields.target);
+        set_target(target);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { target() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { target() }; }
 
-    /// @brief Create a Fields instance for #Slur.
-    static Fields from(const std::string& target) { return { target }; }
+    /// @brief Create a Required instance for #Slur.
+    static Required make(const std::string& target) { return { target }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, endNote);            ///< the specific note ID this slur ends on
     MNX_OPTIONAL_PROPERTY(LineType, lineType);              ///< the type of line for the slur
@@ -241,12 +245,6 @@ public:
 class Tie : public ArrayElementObject
 {
 public:
-    /// @brief initializer class for #Tie
-    struct Fields
-    {
-        std::optional<std::string> target; ///< the target note id of the tie (nullopt for l.v. tie)
-    };
-
     /// @brief Constructor for existing Tie objects
     Tie(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -256,22 +254,9 @@ public:
     /// @brief Creates a new Tie class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The tie fields to use.
-    Tie(Base& parent, std::string_view key, const Fields& fields)
+    Tie(Base& parent, std::string_view key)
         : ArrayElementObject(parent, key)
-    {
-        if (fields.target) {
-            set_target(fields.target.value());
-        } else {
-            set_lv(true);
-        }
-    }
-
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { target() }; }
-
-    /// @brief Create a Fields instance for #Tie.
-    static Fields from(const std::optional<std::string>& target = std::nullopt) { return { target }; }
+    {}
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, lv, false);    ///< Indicates the presence of an l.v. tie (instead of target).
     MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< Used to force tie direction (if present).
@@ -301,7 +286,7 @@ class KitNote : public NoteBase
 {
 public:
     /// @brief initializer class for #KitNote
-    struct Fields
+    struct Required
     {
         std::string kitComponentId; ///< the ID within the kit for this part
     };
@@ -315,18 +300,18 @@ public:
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The kit note fields to use.
-    KitNote(Base& parent, std::string_view key, const Fields& fields)
+    /// @param kitComponentId The ID within the kit for this part
+    KitNote(Base& parent, std::string_view key, const std::string& kitComponentId)
         : NoteBase(parent, key)
     {
-        set_kitComponent(fields.kitComponentId);
+        set_kitComponent(kitComponentId);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { kitComponent() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { kitComponent() }; }
 
-    /// @brief Create a Fields instance for #KitNote.
-    static Fields from(const std::string& kitComponentId) { return { kitComponentId }; }
+    /// @brief Create a Required instance for #KitNote.
+    static Required make(const std::string& kitComponentId) { return { kitComponentId }; }
 
     MNX_REQUIRED_PROPERTY(std::string, kitComponent);               ///< The ID within the kit for this part.
 
@@ -341,9 +326,9 @@ class Note : public NoteBase
 {
 public:
     /// @brief initializer class for #Note
-    struct Fields
+    struct Required
     {
-        Pitch::Fields pitch{}; ///< the pitch of the note
+        Pitch::Required pitch{}; ///< the pitch of the note
     };
 
     /// @brief Constructor for existing Note objects
@@ -355,21 +340,27 @@ public:
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The note fields to use.
-    Note(Base& parent, std::string_view key, const Fields& fields)
+    /// @param pitch The pitch fields to use
+    Note(Base& parent, std::string_view key, const Pitch::Required& pitch)
         : NoteBase(parent, key)
     {
-        create_pitch(fields.pitch);
+        create_pitch(pitch.step, pitch.octave, pitch.alter);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { pitch() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { pitch() }; }
 
-    /// @brief Create a Fields instance for #Note.
-    static Fields from(const Pitch::Fields& pitch) { return { pitch }; }
+    /// @brief Create a Required instance for #Note.
+    static Required make(const Pitch::Required& pitch) { return { pitch }; }
 
-    MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental
-    MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
+    MNX_OPTIONAL_CHILD(
+        AccidentalDisplay, accidentalDisplay,
+        (bool, show)); ///< the forced show/hide state of the accidental
+    MNX_REQUIRED_CHILD(
+        Pitch, pitch,
+        (NoteStep, step),
+        (int, octave),
+        (int, alter)); ///< the pitch of the note
     MNX_OPTIONAL_CHILD(TransposeWritten, written);                  ///< How to write this note when it is displayed transposed
 
     inline static constexpr std::string_view JsonSchemaTypeName = "note";     ///< required for mapping
@@ -383,7 +374,7 @@ class EventLyricLine : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #EventLyricLine
-    struct Fields
+    struct Required
     {
         std::string syllableText; ///< the syllable text
     };
@@ -397,18 +388,18 @@ public:
     /// @brief Creates a new EventLyricLine class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The lyric line fields to use.
-    EventLyricLine(Base& parent, std::string_view key, const Fields& fields)
+    /// @param syllableText The syllable text
+    EventLyricLine(Base& parent, std::string_view key, const std::string& syllableText)
         : ArrayElementObject(parent, key)
     {
-        set_text(fields.syllableText);
+        set_text(syllableText);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { text() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { text() }; }
 
-    /// @brief Create a Fields instance for #EventLyricLine.
-    static Fields from(const std::string& syllableText) { return { syllableText }; }
+    /// @brief Create a Required instance for #EventLyricLine.
+    static Required make(const std::string& syllableText) { return { syllableText }; }
 
     MNX_REQUIRED_PROPERTY(std::string, text);           ///< the syllable text
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(LyricLineType, type, LyricLineType::Whole);  ///< the type of syllable (in relation to the complete word)
@@ -447,7 +438,10 @@ public:
     {
     }
 
-    MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
+    MNX_OPTIONAL_CHILD(
+        NoteValue, duration,
+        (NoteValueBase, base),
+        (unsigned, dots)); ///< Symbolic duration of the event.
     MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
@@ -496,7 +490,7 @@ class Space : public ContentObject
 {
 public:
     /// @brief initializer class for #Space
-    struct Fields
+    struct Required
     {
         FractionValue duration{}; ///< duration of the space
     };
@@ -510,20 +504,22 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element.
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The space fields to use.
-    Space(Base& parent, std::string_view key, const Fields& fields)
+    /// @param duration The duration of the space
+    Space(Base& parent, std::string_view key, const FractionValue& duration)
         : ContentObject(parent, key)
     {
-        create_duration({ fields.duration });
+        create_duration(duration);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { duration() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { duration() }; }
 
-    /// @brief Create a Fields instance for #Space.
-    static Fields from(const FractionValue& duration) { return { duration }; }
+    /// @brief Create a Required instance for #Space.
+    static Required make(const FractionValue& duration) { return { duration }; }
 
-    MNX_REQUIRED_CHILD(Fraction, duration);               ///< Duration of space to occupy.
+    MNX_REQUIRED_CHILD(
+        Fraction, duration,
+        (const FractionValue&, value)); ///< Duration of space to occupy.
 
     inline static constexpr std::string_view ContentTypeValue = "space";   ///< type value that identifies the type within the content array
 };
@@ -566,10 +562,10 @@ class MultiNoteTremolo : public ContentObject
 {
 public:
     /// @brief initializer class for #MultiNoteTremolo
-    struct Fields
+    struct Required
     {
         int numberOfMarks{};                   ///< the number of marks (beams)
-        NoteValueQuantity::Fields noteValueQuant{}; ///< the note value quantity
+        NoteValueQuantity::Required noteValueQuant{}; ///< the note value quantity
     };
 
     /// @brief Constructor for existing Tuplet objects
@@ -581,26 +577,33 @@ public:
     /// @brief Creates a new MultiNoteTremolo class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The tremolo fields to use.
-    MultiNoteTremolo(Base& parent, std::string_view key, const Fields& fields)
+    /// @param numberOfMarks The number of marks (beams)
+    /// @param noteValueQuant The note value quantity
+    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
         : ContentObject(parent, key)
     {
         create_content();
-        set_marks(fields.numberOfMarks);
-        create_outer(fields.noteValueQuant);
+        set_marks(numberOfMarks);
+        create_outer(noteValueQuant.count, noteValueQuant.noteValue);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { marks(), outer() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { marks(), outer() }; }
 
-    /// @brief Create a Fields instance for #MultiNoteTremolo.
-    static Fields from(int numberOfMarks, const NoteValueQuantity::Fields& noteValueQuant)
+    /// @brief Create a Required instance for #MultiNoteTremolo.
+    static Required make(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
     { return { numberOfMarks, noteValueQuant }; }
 
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
-    MNX_OPTIONAL_CHILD(NoteValue, individualDuration);              ///< optional value that specifies the individual duration of each event in the tremolo.
+    MNX_OPTIONAL_CHILD(
+        NoteValue, individualDuration,
+        (NoteValueBase, base),
+        (unsigned, dots)); ///< optional value that specifies the individual duration of each event in the tremolo.
     MNX_REQUIRED_PROPERTY(int, marks);                              ///< the number of marks (beams)
-    MNX_REQUIRED_CHILD(NoteValueQuantity, outer);                   ///< a half note tremolo would be 2 quarters here
+    MNX_REQUIRED_CHILD(
+        NoteValueQuantity, outer,
+        (unsigned, count),
+        (const NoteValue::Required&, noteValue)); ///< a half note tremolo would be 2 quarters here
 
     inline static constexpr std::string_view ContentTypeValue = "tremolo";   ///< type value that identifies the type within the content array
 };
@@ -613,10 +616,10 @@ class Tuplet : public ContentObject
 {
 public:
     /// @brief initializer class for #Tuplet
-    struct Fields
+    struct Required
     {
-        NoteValueQuantity::Fields innerNoteValueQuant{}; ///< inner amount
-        NoteValueQuantity::Fields outerNoteValueQuant{}; ///< outer amount
+        NoteValueQuantity::Required innerNoteValueQuant{}; ///< inner amount
+        NoteValueQuantity::Required outerNoteValueQuant{}; ///< outer amount
     };
 
     /// @brief Constructor for existing Tuplet objects
@@ -628,27 +631,35 @@ public:
     /// @brief Creates a new Tuplet class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The tuplet fields to use.
-    Tuplet(Base& parent, std::string_view key, const Fields& fields)
+    /// @param innerNoteValueQuant Inner amount
+    /// @param outerNoteValueQuant Outer amount
+    Tuplet(Base& parent, std::string_view key, const NoteValueQuantity::Required& innerNoteValueQuant,
+           const NoteValueQuantity::Required& outerNoteValueQuant)
         : ContentObject(parent, key)
     {
-        create_inner(fields.innerNoteValueQuant);
-        create_outer(fields.outerNoteValueQuant);
+        create_inner(innerNoteValueQuant.count, innerNoteValueQuant.noteValue);
+        create_outer(outerNoteValueQuant.count, outerNoteValueQuant.noteValue);
         create_content();
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { inner(), outer() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { inner(), outer() }; }
 
-    /// @brief Create a Fields instance for #Tuplet.
-    static Fields from(const NoteValueQuantity::Fields& innerNoteValueQuant,
-                       const NoteValueQuantity::Fields& outerNoteValueQuant)
+    /// @brief Create a Required instance for #Tuplet.
+    static Required make(const NoteValueQuantity::Required& innerNoteValueQuant,
+                       const NoteValueQuantity::Required& outerNoteValueQuant)
     { return { innerNoteValueQuant, outerNoteValueQuant }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events, tuplets, and grace notes
-    MNX_REQUIRED_CHILD(NoteValueQuantity, inner);                   ///< Inner quantity: **3 quarters in the time** of 2 quarters
-    MNX_REQUIRED_CHILD(NoteValueQuantity, outer);                   ///< Outer quantity: 3 quarters in the time **of 2 quarters**
+    MNX_REQUIRED_CHILD(
+        NoteValueQuantity, inner,
+        (unsigned, count),
+        (const NoteValue::Required&, noteValue)); ///< Inner quantity: **3 quarters in the time** of 2 quarters
+    MNX_REQUIRED_CHILD(
+        NoteValueQuantity, outer,
+        (unsigned, count),
+        (const NoteValue::Required&, noteValue)); ///< Outer quantity: 3 quarters in the time **of 2 quarters**
     /// @todo `orient`
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showNumber, TupletDisplaySetting::Inner); ///< How and whether to show the tuplet number(s)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showValue, TupletDisplaySetting::NoNumber); ///< How and whether to show the tuplet note value(s)

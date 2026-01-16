@@ -593,12 +593,12 @@ std::optional<KeySignature> global::Measure::calcCurrentKey() const
     return next.key();
 }
 
-KeySignature::Fields global::Measure::calcCurrentKeyFields() const
+KeySignature::Required global::Measure::calcCurrentKeyFields() const
 {
     if (auto currentKey = calcCurrentKey()) {
         return currentKey.value();
     }
-    return 0;
+    return KeySignature::make(0);
 }
 
 // *************************
@@ -624,7 +624,7 @@ std::optional<TimeSignature> part::Measure::calcCurrentTime() const
 // ***** part::PartTransposition *****
 // ***********************************
 
-KeySignature::Fields part::PartTransposition::calcTransposedKey(const KeySignature::Fields& concertKey) const
+KeySignature::Required part::PartTransposition::calcTransposedKey(const KeySignature::Required& concertKey) const
 {
     const auto i = interval();
     int alteration = music_theory::calcAlterationFrom12EdoHalfsteps(i.staffDistance(), i.halfSteps());
@@ -643,7 +643,7 @@ KeySignature::Fields part::PartTransposition::calcTransposedKey(const KeySignatu
             }
         }
     }
-    return result;
+    return KeySignature::make(result);
 }
 
 // ***************************
@@ -746,7 +746,7 @@ FractionValue sequence::Event::calcStartTime() const
 // ***** sequence::Pitch *****
 // ***************************
 
-bool sequence::Pitch::isSamePitch(const Pitch::Fields& src) const
+bool sequence::Pitch::isSamePitch(const Pitch::Required& src) const
 {
     if (src.alter == alter()
         && src.octave == octave()
@@ -757,7 +757,7 @@ bool sequence::Pitch::isSamePitch(const Pitch::Fields& src) const
     return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter());
 }
 
-sequence::Pitch::Fields sequence::Pitch::calcTransposed() const
+sequence::Pitch::Required sequence::Pitch::calcTransposed() const
 {
     auto sequence = getEnclosingElement<Sequence>();
     MNX_ASSERT_IF(!sequence) {

@@ -43,6 +43,12 @@ namespace sequence {
 class AccidentalEnclosure : public Object
 {
 public:
+    /// @brief initializer class for #AccidentalEnclosure
+    struct Fields
+    {
+        AccidentalEnclosureSymbol symbol{}; ///< the symbol to use for the enclosure
+    };
+
     /// @brief Constructor for existing AccidentalEnclosure objects
     AccidentalEnclosure(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -52,12 +58,18 @@ public:
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
-    /// @param inSymbol The enclosure symbol to use.
-    AccidentalEnclosure(Base& parent, std::string_view key, AccidentalEnclosureSymbol inSymbol)
+    /// @param fields The enclosure fields to use.
+    AccidentalEnclosure(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_symbol(inSymbol);
+        set_symbol(fields.symbol);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { symbol() }; }
+
+    /// @brief Create a Fields instance for #AccidentalEnclosure.
+    static Fields from(AccidentalEnclosureSymbol symbol) { return { symbol }; }
 
     MNX_REQUIRED_PROPERTY(AccidentalEnclosureSymbol, symbol);      ///< The symbol to use for the enclosure
 };
@@ -69,6 +81,12 @@ public:
 class AccidentalDisplay : public Object
 {
 public:
+    /// @brief initializer class for #AccidentalDisplay
+    struct Fields
+    {
+        bool show{}; ///< whether to show or hide the accidental
+    };
+
     /// @brief Constructor for existing AccidentalEnclosure objects
     AccidentalDisplay(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -78,12 +96,18 @@ public:
     /// @brief Creates a new Pitch class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
-    /// @param showAcci Show or hide the accidental.
-    AccidentalDisplay(Base& parent, std::string_view key, bool showAcci)
+    /// @param fields The accidental display fields to use.
+    AccidentalDisplay(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_show(showAcci);
+        set_show(fields.show);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { show() }; }
+
+    /// @brief Create a Fields instance for #AccidentalDisplay.
+    static Fields from(bool show) { return { show }; }
 
     MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure);     ///< The enclosure type (brackets or parentheses). Omit if none.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, force, false); ///< Whether this accidental was set intentionally (e.g., a courtesy accidental).
@@ -150,6 +174,9 @@ public:
     /// @brief Implicit conversion back to Fields.
     operator Fields() const { return { step(), octave(), alter() }; }
 
+    /// @brief Create a Fields instance for #Pitch.
+    static Fields from(NoteStep step, int octave, int alter = 0) { return { step, octave, alter }; }
+
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, alter, 0);  ///< chromatic alteration
     MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
     MNX_REQUIRED_PROPERTY(NoteStep, step);      ///< the note step, (i.e., "A".."G")
@@ -171,6 +198,12 @@ public:
 class Slur : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #Slur
+    struct Fields
+    {
+        std::string target; ///< the target note id of the slur
+    };
+
     /// @brief Constructor for existing Slur objects
     Slur(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -180,12 +213,18 @@ public:
     /// @brief Creates a new Slur class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param target The target note id of the slur.
-    Slur(Base& parent, std::string_view key, const std::string& target)
+    /// @param fields The slur fields to use.
+    Slur(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_target(target);
+        set_target(fields.target);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { target() }; }
+
+    /// @brief Create a Fields instance for #Slur.
+    static Fields from(const std::string& target) { return { target }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, endNote);            ///< the specific note ID this slur ends on
     MNX_OPTIONAL_PROPERTY(LineType, lineType);              ///< the type of line for the slur
@@ -202,6 +241,12 @@ public:
 class Tie : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #Tie
+    struct Fields
+    {
+        std::optional<std::string> target; ///< the target note id of the tie (nullopt for l.v. tie)
+    };
+
     /// @brief Constructor for existing Tie objects
     Tie(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -211,16 +256,22 @@ public:
     /// @brief Creates a new Tie class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param target The target note id of the tie. If omitted, the the tie is created as an l.v. tie.
-    Tie(Base& parent, std::string_view key, const std::optional<std::string>& target = std::nullopt)
+    /// @param fields The tie fields to use.
+    Tie(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        if (target) {
-            set_target(target.value());
+        if (fields.target) {
+            set_target(fields.target.value());
         } else {
             set_lv(true);
         }
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { target() }; }
+
+    /// @brief Create a Fields instance for #Tie.
+    static Fields from(const std::optional<std::string>& target = std::nullopt) { return { target }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, lv, false);    ///< Indicates the presence of an l.v. tie (instead of target).
     MNX_OPTIONAL_PROPERTY(SlurTieSide, side);               ///< Used to force tie direction (if present).
@@ -249,6 +300,12 @@ public:
 class KitNote : public NoteBase
 {
 public:
+    /// @brief initializer class for #KitNote
+    struct Fields
+    {
+        std::string kitComponentId; ///< the ID within the kit for this part
+    };
+
     /// @brief Constructor for existing Note objects
     KitNote(const std::shared_ptr<json>& root, json_pointer pointer)
         : NoteBase(root, pointer)
@@ -258,12 +315,18 @@ public:
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param kitComponentId The ID within the kit for this part.
-    KitNote(Base& parent, std::string_view key, std::string kitComponentId)
+    /// @param fields The kit note fields to use.
+    KitNote(Base& parent, std::string_view key, const Fields& fields)
         : NoteBase(parent, key)
     {
-        set_kitComponent(kitComponentId);
+        set_kitComponent(fields.kitComponentId);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { kitComponent() }; }
+
+    /// @brief Create a Fields instance for #KitNote.
+    static Fields from(const std::string& kitComponentId) { return { kitComponentId }; }
 
     MNX_REQUIRED_PROPERTY(std::string, kitComponent);               ///< The ID within the kit for this part.
 
@@ -277,6 +340,12 @@ public:
 class Note : public NoteBase
 {
 public:
+    /// @brief initializer class for #Note
+    struct Fields
+    {
+        Pitch::Fields pitch{}; ///< the pitch of the note
+    };
+
     /// @brief Constructor for existing Note objects
     Note(const std::shared_ptr<json>& root, json_pointer pointer)
         : NoteBase(root, pointer)
@@ -286,12 +355,18 @@ public:
     /// @brief Creates a new Note class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param pitch The pitch of the note.
-    Note(Base& parent, std::string_view key, const Pitch::Fields& pitch)
+    /// @param fields The note fields to use.
+    Note(Base& parent, std::string_view key, const Fields& fields)
         : NoteBase(parent, key)
     {
-        create_pitch(pitch);
+        create_pitch(fields.pitch);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { pitch() }; }
+
+    /// @brief Create a Fields instance for #Note.
+    static Fields from(const Pitch::Fields& pitch) { return { pitch }; }
 
     MNX_OPTIONAL_CHILD(AccidentalDisplay, accidentalDisplay);       ///< the forced show/hide state of the accidental
     MNX_REQUIRED_CHILD(Pitch, pitch);                               ///< the pitch of the note
@@ -307,6 +382,12 @@ public:
 class EventLyricLine : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #EventLyricLine
+    struct Fields
+    {
+        std::string syllableText; ///< the syllable text
+    };
+
     /// @brief Constructor for existing EventLyricLine objects
     EventLyricLine(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -316,12 +397,18 @@ public:
     /// @brief Creates a new EventLyricLine class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param syllableText The syllable text for this instance.
-    EventLyricLine(Base& parent, std::string_view key, const std::string& syllableText)
+    /// @param fields The lyric line fields to use.
+    EventLyricLine(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_text(syllableText);
+        set_text(fields.syllableText);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { text() }; }
+
+    /// @brief Create a Fields instance for #EventLyricLine.
+    static Fields from(const std::string& syllableText) { return { syllableText }; }
 
     MNX_REQUIRED_PROPERTY(std::string, text);           ///< the syllable text
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(LyricLineType, type, LyricLineType::Whole);  ///< the type of syllable (in relation to the complete word)
@@ -346,6 +433,12 @@ public:
 class Event : public ContentObject
 {
 public:
+    /// @brief initializer class for #Event
+    struct Fields
+    {
+        std::optional<NoteValue::Fields> noteValue; ///< the note value (nullopt for full measure)
+    };
+
     /// @brief Constructor for existing Event objects
     Event(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
@@ -355,17 +448,29 @@ public:
     /// @brief Creates a new Event class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param noteValue The note value. If omitted, the event is set to full measure.
-    Event(Base& parent, std::string_view key, std::optional<NoteValue::Fields> noteValue = std::nullopt)
+    /// @param fields The event fields to use.
+    Event(Base& parent, std::string_view key, const Fields& fields)
         : ContentObject(parent, key)
     {
         // per the specification, either noteValue or the full-measure boolean *must* be supplied.
-        if (noteValue) {
-            ensure_duration(noteValue.value());
+        if (fields.noteValue) {
+            ensure_duration(fields.noteValue.value());
         } else {
             set_measure(true);
         }
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const
+    {
+        if (auto value = duration()) {
+            return { value.value() };
+        }
+        return { std::nullopt };
+    }
+
+    /// @brief Create a Fields instance for #Event.
+    static Fields from(const std::optional<NoteValue::Fields>& noteValue = std::nullopt) { return { noteValue }; }
 
     MNX_OPTIONAL_CHILD(NoteValue, duration);                ///< Symbolic duration of the event.
     MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
@@ -415,6 +520,12 @@ public:
 class Space : public ContentObject
 {
 public:
+    /// @brief initializer class for #Space
+    struct Fields
+    {
+        FractionValue duration{}; ///< duration of the space
+    };
+
     /// @brief Constructor for existing Space objects
     Space(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
@@ -424,12 +535,18 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element.
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param duration The duration of the space.
-    Space(Base& parent, std::string_view key, const FractionValue& duration)
+    /// @param fields The space fields to use.
+    Space(Base& parent, std::string_view key, const Fields& fields)
         : ContentObject(parent, key)
     {
-        create_duration(duration);
+        create_duration({ fields.duration });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { duration() }; }
+
+    /// @brief Create a Fields instance for #Space.
+    static Fields from(const FractionValue& duration) { return { duration }; }
 
     MNX_REQUIRED_CHILD(Fraction, duration);               ///< Duration of space to occupy.
 
@@ -473,6 +590,13 @@ public:
 class MultiNoteTremolo : public ContentObject
 {
 public:
+    /// @brief initializer class for #MultiNoteTremolo
+    struct Fields
+    {
+        int numberOfMarks{};                   ///< the number of marks (beams)
+        NoteValueQuantity::Fields noteValueQuant{}; ///< the note value quantity
+    };
+
     /// @brief Constructor for existing Tuplet objects
     MultiNoteTremolo(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
@@ -482,15 +606,21 @@ public:
     /// @brief Creates a new MultiNoteTremolo class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param numberOfMarks The number of marks (beams) in the tremolo
-    /// @param noteValueQuant The note value quantity of each event in the tremolo (e.g., a half note tremolo would be 2 quarters here)
-    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, const NoteValueQuantity::Fields& noteValueQuant)
+    /// @param fields The tremolo fields to use.
+    MultiNoteTremolo(Base& parent, std::string_view key, const Fields& fields)
         : ContentObject(parent, key)
     {
         create_content();
-        set_marks(numberOfMarks);
-        create_outer(noteValueQuant);
+        set_marks(fields.numberOfMarks);
+        create_outer(fields.noteValueQuant);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { marks(), outer() }; }
+
+    /// @brief Create a Fields instance for #MultiNoteTremolo.
+    static Fields from(int numberOfMarks, const NoteValueQuantity::Fields& noteValueQuant)
+    { return { numberOfMarks, noteValueQuant }; }
 
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
     MNX_OPTIONAL_CHILD(NoteValue, individualDuration);              ///< optional value that specifies the individual duration of each event in the tremolo.
@@ -507,6 +637,13 @@ public:
 class Tuplet : public ContentObject
 {
 public:
+    /// @brief initializer class for #Tuplet
+    struct Fields
+    {
+        NoteValueQuantity::Fields innerNoteValueQuant{}; ///< inner amount
+        NoteValueQuantity::Fields outerNoteValueQuant{}; ///< outer amount
+    };
+
     /// @brief Constructor for existing Tuplet objects
     Tuplet(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
@@ -516,16 +653,22 @@ public:
     /// @brief Creates a new Tuplet class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param innerNoteValueQuant The inner amount: 3 **quarters** in the time of 2 quarters
-    /// @param outerNoteValueQuant The outer amount: 3 quarters in the time of 2 **quarters**
-    Tuplet(Base& parent, std::string_view key, const NoteValueQuantity::Fields& innerNoteValueQuant,
-                    const NoteValueQuantity::Fields& outerNoteValueQuant)
+    /// @param fields The tuplet fields to use.
+    Tuplet(Base& parent, std::string_view key, const Fields& fields)
         : ContentObject(parent, key)
     {
-        create_inner(innerNoteValueQuant);
-        create_outer(outerNoteValueQuant);
+        create_inner(fields.innerNoteValueQuant);
+        create_outer(fields.outerNoteValueQuant);
         create_content();
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { inner(), outer() }; }
+
+    /// @brief Create a Fields instance for #Tuplet.
+    static Fields from(const NoteValueQuantity::Fields& innerNoteValueQuant,
+                       const NoteValueQuantity::Fields& outerNoteValueQuant)
+    { return { innerNoteValueQuant, outerNoteValueQuant }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events, tuplets, and grace notes

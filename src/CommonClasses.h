@@ -392,6 +392,15 @@ private:
     static constexpr size_t DENOMINATOR_INDEX = 1;
 
 public:    
+    /// @brief initializer class for #Fraction
+    struct Fields
+    {
+        FractionValue value{}; ///< the numerator and denominator of the fraction
+
+        /// @brief Implicit constructor allows FractionValue to initialize it.
+        Fields(const FractionValue& v = {}) : value(v) {}
+    };
+
     /// @brief Constructor to wrap a Fraction instance around existing JSON
     Fraction(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayType(root, pointer)
@@ -404,12 +413,12 @@ public:
     /// @brief Creates a new Array class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param value The numerator (number on top) and denominator (number on bottom) of the fraction.
-    Fraction(Base& parent, std::string_view key, const FractionValue& value)
+    /// @param fields The fraction fields to use.
+    Fraction(Base& parent, std::string_view key, const Fields& fields)
         : ArrayType(parent, key)
     {
-        push_back(value.numerator());
-        push_back(value.denominator());
+        push_back(fields.value.numerator());
+        push_back(fields.value.denominator());
     }
 
     /// @brief Implicit conversion to @ref FractionValue for arithmetic and comparisons.
@@ -417,6 +426,12 @@ public:
     {
         return FractionValue(numerator(), denominator());
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { FractionValue(numerator(), denominator()) }; }
+
+    /// @brief Create a Fields instance for #Fraction.
+    static Fields from(const FractionValue& value) { return { value }; }
 
     MNX_ARRAY_ELEMENT_PROPERTY(NumType, numerator, NUMERATOR_INDEX);        ///< the numerator of the fraction
     MNX_ARRAY_ELEMENT_PROPERTY(NumType, denominator, DENOMINATOR_INDEX);    ///< the denominator of the fraction
@@ -431,6 +446,12 @@ public:
 class RhythmicPosition : public Object
 {
 public:
+    /// @brief initializer class for #RhythmicPosition
+    struct Fields
+    {
+        FractionValue position{}; ///< position within a measure
+    };
+
     /// @brief Constructor for existing rhythmic position instances
     RhythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -440,15 +461,21 @@ public:
     /// @brief Creates a new RhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param position Position within a measure (as a fraction of whole notes)
-    RhythmicPosition(Base& parent, std::string_view key, const FractionValue& position)
+    /// @param fields The rhythmic position fields to use.
+    RhythmicPosition(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        create_fraction(position);
+        create_fraction({ fields.position });
     }
 
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { fraction() }; }
+
+    /// @brief Create a Fields instance for #RhythmicPosition.
+    static Fields from(const FractionValue& position) { return { position }; }
+
     MNX_REQUIRED_CHILD(Fraction, fraction);             ///< The metric position, where 1/4 is a quarter note.
-    MNX_OPTIONAL_PROPERTY(unsigned, graceIndex);    ///< The grace note index of this position.
+    MNX_OPTIONAL_PROPERTY(unsigned, graceIndex);        ///< The grace note index of this position.
                                                         ///< (0 is the primary, and then count to the left.)
 };
 
@@ -459,6 +486,13 @@ public:
 class MeasureRhythmicPosition : public Object
 {
 public:
+    /// @brief initializer class for #MeasureRhythmicPosition
+    struct Fields
+    {
+        int measureId{};          ///< the measure id of the position
+        FractionValue position{}; ///< the position within the measure
+    };
+
     /// @brief Constructor for existing rhythmic position instances
     MeasureRhythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -468,14 +502,19 @@ public:
     /// @brief Creates a new MeasureRhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param measureId The measure index of the measure of the position.
-    /// @param position Position within the measure (as a fraction of whole notes)
-    MeasureRhythmicPosition(Base& parent, std::string_view key, int measureId, const FractionValue& position)
+    /// @param fields The measure rhythmic position fields to use.
+    MeasureRhythmicPosition(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_measure(measureId);
-        create_position(position);
+        set_measure(fields.measureId);
+        create_position({ fields.position });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { measure(), position().fraction() }; }
+
+    /// @brief Create a Fields instance for #MeasureRhythmicPosition.
+    static Fields from(int measureId, const FractionValue& position) { return { measureId, position }; }
 
     MNX_REQUIRED_PROPERTY(int, measure);            ///< The measure id of the measure of this MeasureRhythmicPosition.
     MNX_REQUIRED_CHILD(RhythmicPosition, position); ///< The metric position, where 1/4 is a quarter note.
@@ -515,6 +554,9 @@ public:
     /// @brief Implicit conversion back to Fields.
     operator Fields() const { return { halfSteps(), staffDistance() }; }
 
+    /// @brief Create a Fields instance for #Interval.
+    static Fields from(int staffDistance, int halfSteps) { return { staffDistance, halfSteps }; }
+
     MNX_REQUIRED_PROPERTY(int, halfSteps);      ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
     MNX_REQUIRED_PROPERTY(int, staffDistance);  ///< the number of diatonic steps in the interval (negative is down)
 };
@@ -543,6 +585,9 @@ public:
 
     /// @brief Implicit conversion back to Fields.
     operator Fields() const { return { fifths() }; }
+
+    /// @brief Create a Fields instance for #KeySignature.
+    static Fields from(int fifths) { return { fifths }; }
 
     /// @brief Creates a new KeySignature class as a child of a JSON element
     /// @param parent The parent class instance
@@ -594,6 +639,9 @@ public:
     /// @brief Implicit conversion back to Fields.
     operator Fields() const { return { base(), dots() }; }
 
+    /// @brief Create a Fields instance for #NoteValue.
+    static Fields from(NoteValueBase base, unsigned dots = 0) { return { base, dots }; }
+
     /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const;
 
@@ -638,6 +686,9 @@ public:
     /// @brief Implicit conversion back to Fields.
     operator Fields() const { return { multiple(), duration() }; }
 
+    /// @brief Create a Fields instance for #NoteValueQuantity.
+    static Fields from(unsigned count, const NoteValue::Fields& noteValue) { return { count, noteValue }; }
+
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const
     { return multiple() * duration(); }
@@ -653,6 +704,13 @@ public:
 class TimeSignature : public Object
 {
 public:
+    /// @brief initializer class for #TimeSignature
+    struct Fields
+    {
+        int count{};             ///< the number of beats (top number)
+        TimeSignatureUnit unit{}; ///< the unit value (bottom number)
+    };
+
     /// @brief Constructor for existing NoteValue instances
     TimeSignature(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -662,14 +720,19 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param count The number of beats per minutes
-    /// @param unit The note value base for this Barline
-    TimeSignature(Base& parent, std::string_view key, int count, TimeSignatureUnit unit)
+    /// @param fields The time signature fields to use.
+    TimeSignature(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_count(count);
-        set_unit(unit);
+        set_count(fields.count);
+        set_unit(fields.unit);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { count(), unit() }; }
+
+    /// @brief Create a Fields instance for #TimeSignature.
+    static Fields from(int count, TimeSignatureUnit unit) { return { count, unit }; }
 
     /// @brief Implicit converter to FractionValue. This function preserves the time signature values
     /// rather than reducing to lowest common denominator.

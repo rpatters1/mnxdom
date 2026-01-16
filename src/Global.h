@@ -39,6 +39,12 @@ namespace global {
 class Barline : public Object
 {
 public:
+    /// @brief initializer class for #Barline
+    struct Fields
+    {
+        BarlineType barlineType{}; ///< the barline type for this Barline
+    };
+
     /// @brief Constructor for existing Barline objects
     Barline(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -48,12 +54,18 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param barlineType The barline type for this Barline
-    Barline(Base& parent, std::string_view key, BarlineType barlineType)
+    /// @param fields The barline fields to use.
+    Barline(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_type(barlineType);
+        set_type(fields.barlineType);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { type() }; }
+
+    /// @brief Create a Fields instance for #Barline.
+    static Fields from(BarlineType barlineType) { return { barlineType }; }
 
     MNX_REQUIRED_PROPERTY(BarlineType, type);  ///< the type of barline
 };
@@ -65,6 +77,12 @@ public:
 class Ending : public Object
 {
 public:
+    /// @brief initializer class for #Ending
+    struct Fields
+    {
+        int duration{}; ///< the duration of the ending
+    };
+
     /// @brief Constructor for existing Ending objects
     Ending(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -74,12 +92,18 @@ public:
     /// @brief Creates a new Ending class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param duration The duration of th ending
-    Ending(Base& parent, std::string_view key, int duration)
+    /// @param fields The ending fields to use.
+    Ending(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_duration(duration);
+        set_duration(fields.duration);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { duration() }; }
+
+    /// @brief Create a Fields instance for #Ending.
+    static Fields from(int duration) { return { duration }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the type of barline
@@ -94,6 +118,12 @@ public:
 class Fine : public Object
 {
 public:
+    /// @brief initializer class for #Fine
+    struct Fields
+    {
+        FractionValue position{}; ///< the position of the Fine within the measure
+    };
+
     /// @brief Constructor for existing Fine objects
     Fine(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -103,12 +133,18 @@ public:
     /// @brief Creates a new Fine class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param position The position of the Fine within the measure.
-    Fine(Base& parent, std::string_view key, const FractionValue& position)
+    /// @param fields The fine fields to use.
+    Fine(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        create_location(position);
+        create_location({ fields.position });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { location().fraction() }; }
+
+    /// @brief Create a Fields instance for #Fine.
+    static Fields from(const FractionValue& position) { return { position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the fine direction
     MNX_REQUIRED_CHILD(RhythmicPosition, location);             ///< the location of the fine direction
@@ -121,6 +157,13 @@ public:
 class Jump : public Object
 {
 public:
+    /// @brief initializer class for #Jump
+    struct Fields
+    {
+        JumpType jumpType{};      ///< the jump type
+        FractionValue position{}; ///< the position within the measure
+    };
+
     /// @brief Constructor for existing Jump objects
     Jump(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -130,14 +173,19 @@ public:
     /// @brief Creates a new Jump class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param jumpType The @ref JumpType of this jump.
-    /// @param position The position of the Jump within the measure.
-    Jump(Base& parent, std::string_view key, JumpType jumpType, const FractionValue& position)
+    /// @param fields The jump fields to use.
+    Jump(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_type(jumpType);
-        create_location(position);
+        set_type(fields.jumpType);
+        create_location({ fields.position });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { type(), location().fraction() }; }
+
+    /// @brief Create a Fields instance for #Jump.
+    static Fields from(JumpType jumpType, const FractionValue& position) { return { jumpType, position }; }
 
     MNX_REQUIRED_PROPERTY(JumpType, type);                      ///< the JumpType
     MNX_REQUIRED_CHILD(RhythmicPosition, location);              ///< the location of the jump
@@ -173,6 +221,12 @@ public:
 class Segno : public Object
 {
 public:
+    /// @brief initializer class for #Segno
+    struct Fields
+    {
+        FractionValue position{}; ///< the position of the Segno within the measure
+    };
+
     /// @brief Constructor for existing Segno objects
     Segno(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -182,12 +236,18 @@ public:
     /// @brief Creates a new Segno class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param position The position of the Segno within the measure.
-    Segno(Base& parent, std::string_view key, const FractionValue& position)
+    /// @param fields The segno fields to use.
+    Segno(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        create_location(position);
+        create_location({ fields.position });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { location().fraction() }; }
+
+    /// @brief Create a Fields instance for #Segno.
+    static Fields from(const FractionValue& position) { return { position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the SMuFL glyph name to be used when rendering this segno.
@@ -214,6 +274,13 @@ public:
 class Tempo : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #Tempo
+    struct Fields
+    {
+        int bpm{};                       ///< the beats per minute
+        NoteValue::Fields noteValue{};   ///< the note value for the tempo
+    };
+
     /// @brief Constructor for existing Tempo instances
     Tempo(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -223,14 +290,19 @@ public:
     /// @brief Creates a new Tempo class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param bpm The number of beats per minutes
-    /// @param noteValue The note value
-    Tempo(Base& parent, std::string_view key, int bpm, const NoteValue::Fields& noteValue)
+    /// @param fields The tempo fields to use.
+    Tempo(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_bpm(bpm);
-        create_value(noteValue);
+        set_bpm(fields.bpm);
+        create_value(fields.noteValue);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { bpm(), value() }; }
+
+    /// @brief Create a Fields instance for #Tempo.
+    static Fields from(int bpm, const NoteValue::Fields& noteValue) { return { bpm, noteValue }; }
 
     MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking
     MNX_OPTIONAL_CHILD(RhythmicPosition, location); ///< location within the measure of the tempo marking

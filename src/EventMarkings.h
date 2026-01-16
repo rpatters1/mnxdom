@@ -140,6 +140,12 @@ public:
 class SingleNoteTremolo : public EventMarkingBase
 {
 public:
+    /// @brief initializer class for #SingleNoteTremolo
+    struct Fields
+    {
+        unsigned marks{}; ///< the number of marks
+    };
+
     /// @brief Constructor for existing SingleNoteTremolo objects
     SingleNoteTremolo(const std::shared_ptr<json>& root, json_pointer pointer)
         : EventMarkingBase(root, pointer)
@@ -149,12 +155,18 @@ public:
     /// @brief Creates a new SingleNoteTremolo class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param marks The number of marks.
-    SingleNoteTremolo(Base& parent, std::string_view key, unsigned marks)
+    /// @param fields The tremolo fields to use.
+    SingleNoteTremolo(Base& parent, std::string_view key, const Fields& fields)
         : EventMarkingBase(parent, key)
     {
-        set_marks(marks);
+        set_marks(fields.marks);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { marks() }; }
+
+    /// @brief Create a Fields instance for #SingleNoteTremolo.
+    static Fields from(unsigned marks) { return { marks }; }
 
     MNX_REQUIRED_PROPERTY(unsigned, marks);     ///< the number of marks (a value from 0..8, inclusive)
 };

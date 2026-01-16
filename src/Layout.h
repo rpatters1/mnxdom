@@ -39,6 +39,12 @@ namespace layout {
 class StaffSource : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #StaffSource
+    struct Fields
+    {
+        std::string partId; ///< the part to use as a source
+    };
+
     /// @brief Constructor for existing staff sources
     StaffSource(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -48,12 +54,18 @@ public:
     /// @brief Creates a new StaffSource class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param partId The part to use as a source
-    StaffSource(Base& parent, std::string_view key, std::string& partId)
+    /// @param fields The staff source fields to use.
+    StaffSource(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_part(partId);
+        set_part(fields.partId);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { part() }; }
+
+    /// @brief Create a Fields instance for #StaffSource.
+    static Fields from(const std::string& partId) { return { partId }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, label);          ///< Text to appear to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)

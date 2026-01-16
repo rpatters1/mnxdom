@@ -40,8 +40,17 @@
  * by the property name). The boilerplate macros are defined in `BaseTypes.h` and have extensive documentation in the comments.
  *
  * A key feature of this DOM is that MNX-required children and properties must be supplied when an object is constructed
- * from scratch. They can be subsequently changed if need be. Many classes have `Fields` types to facilitate passing
- * all the required data for a child object.
+ * from scratch. They can be subsequently changed if need be. Many classes have `Fields` types (with `from(...)` helpers)
+ * to facilitate passing all the required data for a child object.
+ *
+ * Example:
+ * @code
+ * mnx::sequence::Event evt(seq, "content",
+ *     mnx::sequence::Event::from(mnx::NoteValue::from(NoteValueBase::Quarter, 1)));
+ *
+ * auto note = evt.ensure_notes().append(mnx::sequence::Note::from(
+ *     mnx::sequence::Pitch::from(NoteStep::C, 4)));
+ * @endcode
  *
  * @warning Avoid using references for instances returned by the methods in this library. Because classes are so lightweight,
  * all methods return temporary copies. Using a reference on a temporary is undefined behavior.

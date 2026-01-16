@@ -39,6 +39,13 @@ namespace score {
 class MultimeasureRest : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #MultimeasureRest
+    struct Fields
+    {
+        int startMeasure{}; ///< the measure index of the first measure in the multimeasure rest
+        int numMeasures{};  ///< the number of measures in the multimeasure rest
+    };
+
     /// @brief Constructor for existing mm rests
     MultimeasureRest(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -48,14 +55,19 @@ public:
     /// @brief Creates a new MultimeasureRest class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param startMeasure The measure index of the first measure in the multimeasure rest
-    /// @param numMeasures The number of measures in the multimeasure rest
-    MultimeasureRest(Base& parent, std::string_view key, int startMeasure, int numMeasures)
+    /// @param fields The multimeasure rest fields to use.
+    MultimeasureRest(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_start(startMeasure);
-        set_duration(numMeasures);
+        set_start(fields.startMeasure);
+        set_duration(fields.numMeasures);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { start(), duration() }; }
+
+    /// @brief Create a Fields instance for #MultimeasureRest.
+    static Fields from(int startMeasure, int numMeasures) { return { startMeasure, numMeasures }; }
 
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the number of measures in the multimeasure rest
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< the label to place on the multimeasure rest, if provided.
@@ -69,6 +81,14 @@ public:
 class LayoutChange : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #LayoutChange
+    struct Fields
+    {
+        std::string layoutId;     ///< the id of the layout to use for the layout change
+        int measureId{};          ///< the measure index of the measure of the position
+        FractionValue position{}; ///< the position of the LayoutChange within the measure
+    };
+
     /// @brief Constructor for existing system layouts
     LayoutChange(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -78,16 +98,20 @@ public:
     /// @brief Creates a new LayoutChange class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param layoutId The id of the layout to use for the layout change
-    /// @param measureId The measure index of the measure of the position.
-    /// @param position The position of the LayoutChange within the measure.
-    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId,
-            int measureId, const FractionValue& position)
+    /// @param fields The layout change fields to use.
+    LayoutChange(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_layout(layoutId);
-        create_location(measureId, position);
+        set_layout(fields.layoutId);
+        create_location({ fields.measureId, fields.position });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { layout(), location().measure(), location().position().fraction() }; }
+
+    /// @brief Create a Fields instance for #LayoutChange.
+    static Fields from(const std::string& layoutId, int measureId, const FractionValue& position)
+    { return { layoutId, measureId, position }; }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, location);   ///< location where the new layout takes effect.
@@ -100,6 +124,12 @@ public:
 class System : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #System
+    struct Fields
+    {
+        int startMeasure{}; ///< the measure index of the first measure in the system
+    };
+
     /// @brief Constructor for existing system layouts
     System(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -109,12 +139,18 @@ public:
     /// @brief Creates a new System class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param startMeasure The measure index of the first measure in the system
-    System(Base& parent, std::string_view key, int startMeasure)
+    /// @param fields The system fields to use.
+    System(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_measure(startMeasure);
+        set_measure(fields.startMeasure);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { measure() }; }
+
+    /// @brief Create a Fields instance for #System.
+    static Fields from(int startMeasure) { return { startMeasure }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<LayoutChange>, layoutChanges); ///< layout changes in the system (e.g., for changes in stem direction)
@@ -153,6 +189,12 @@ public:
 class Score : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #Score
+    struct Fields
+    {
+        std::string scoreName; ///< the name of the score to be created
+    };
+
     /// @brief Constructor for existing system layouts
     Score(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -162,12 +204,18 @@ public:
     /// @brief Creates a new Score class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param scoreName The name of the score to be created
-    Score(Base& parent, std::string_view key, const std::string& scoreName)
+    /// @param fields The score fields to use.
+    Score(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_name(scoreName);
+        set_name(fields.scoreName);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { name() }; }
+
+    /// @brief Create a Fields instance for #Score.
+    static Fields from(const std::string& scoreName) { return { scoreName }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);                             ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<score::MultimeasureRest>, multimeasureRests);  ///< List of multimeasure rests in the score.

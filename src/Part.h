@@ -68,6 +68,14 @@ public:
 class Clef : public Object
 {
 public:
+    /// @brief initializer class for #Clef
+    struct Fields
+    {
+        ClefSign clefSign{};                                     ///< the type of clef symbol
+        int staffPosition{};                                     ///< staff position offset from center of staff
+        std::optional<OttavaAmountOrZero> octaveAdjustment;      ///< optional octave adjustment
+    };
+
     /// @brief Constructor for existing Clef instances
     Clef(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -77,18 +85,24 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param staffPosition The note value base for this Barline
-    /// @param clefSign The type of clef symbold
-    /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    Clef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    /// @param fields The clef fields to use.
+    Clef(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        set_sign(clefSign);
-        set_staffPosition(staffPosition);
-        if (octaveAdjustment.has_value()) {
-            set_octave(octaveAdjustment.value());
+        set_sign(fields.clefSign);
+        set_staffPosition(fields.staffPosition);
+        if (fields.octaveAdjustment.has_value()) {
+            set_octave(fields.octaveAdjustment.value());
         }
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { sign(), staffPosition(), octave() }; }
+
+    /// @brief Create a Fields instance for #Clef.
+    static Fields from(ClefSign clefSign, int staffPosition,
+                       std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    { return { clefSign, staffPosition, octaveAdjustment }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the specific SMuFL glyph to use for rendering the clef
@@ -105,6 +119,13 @@ public:
 class Dynamic : public ContentObject
 {
 public:
+    /// @brief initializer class for #Dynamic
+    struct Fields
+    {
+        std::string value;          ///< the value of the dynamic
+        FractionValue position{};   ///< the position within the measure
+    };
+
     /// @brief Constructor for existing Space objects
     Dynamic(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
@@ -114,14 +135,19 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element.
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param value the value of the dynamic. Currently the spec allows any string here.
-    /// @param position the position of the dynamic within the measure.
-    Dynamic(Base& parent, std::string_view key, const std::string& value, const FractionValue& position)
+    /// @param fields The dynamic fields to use.
+    Dynamic(Base& parent, std::string_view key, const Fields& fields)
         : ContentObject(parent, key)
     {
-        set_value(value);
-        create_position(position);
+        set_value(fields.value);
+        create_position({ fields.position });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { value(), position().fraction() }; }
+
+    /// @brief Create a Fields instance for #Dynamic.
+    static Fields from(const std::string& value, const FractionValue& position) { return { value, position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
     MNX_REQUIRED_CHILD(RhythmicPosition, position);                 ///< The rhythmic position of the dynamic within the measure.
@@ -137,6 +163,15 @@ public:
 class       Ottava : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #Ottava
+    struct Fields
+    {
+        OttavaAmount value{};        ///< the value (type) of ottava
+        FractionValue position{};    ///< the start position of the ottava
+        int endMeasureId{};          ///< the end measure of the ottava
+        FractionValue endPosition{}; ///< the position within the end measure
+    };
+
     /// @brief Constructor for existing Space objects
     Ottava(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -146,17 +181,25 @@ public:
     /// @brief Creates a new Space class as a child of a JSON element.
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
-    /// @param value the value (type) of ottava.
-    /// @param position the start position of the ottava.
-    /// @param endMeasureId The end measure of the ottava.
-    /// @param endPosition The position within the end measure of the ottava. (The ottava includes events that start at this position.)
-    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
+    /// @param fields The ottava fields to use.
+    Ottava(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        create_position(position);
-        create_end(endMeasureId, endPosition);
-        set_value(value);
+        create_position({ fields.position });
+        create_end({ fields.endMeasureId, fields.endPosition });
+        set_value(fields.value);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const
+    {
+        return { value(), position().fraction(), end().measure(), end().position().fraction() };
+    }
+
+    /// @brief Create a Fields instance for #Ottava.
+    static Fields from(OttavaAmount value, const FractionValue& position, int endMeasureId,
+                       const FractionValue& endPosition)
+    { return { value, position, endMeasureId, endPosition }; }
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end);               ///< The end of the ottava (includes any events starting at this location)
     /// @todo orient
@@ -173,6 +216,12 @@ public:
 class KitComponent : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #KitComponent
+    struct Fields
+    {
+        int staffPosition{}; ///< the staff position of the kit component
+    };
+
     /// @brief Constructor for existing Clef instances
     KitComponent(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -182,12 +231,18 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param staffPosition The staff position of the kit component, where 0 is the middle line.
-    KitComponent(Base& parent, std::string_view key, int staffPosition)
+    /// @param fields The kit component fields to use.
+    KitComponent(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        set_staffPosition(staffPosition);
+        set_staffPosition(fields.staffPosition);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { staffPosition() }; }
+
+    /// @brief Create a Fields instance for #KitComponent.
+    static Fields from(int staffPosition) { return { staffPosition }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, name);       ///< Human-readable name of the kit component
     MNX_OPTIONAL_PROPERTY(std::string, sound);      ///< The sound ID in `global.sounds`.
@@ -201,6 +256,12 @@ public:
 class PartTransposition : public Object
 {
 public:
+    /// @brief initializer class for #PartTransposition
+    struct Fields
+    {
+        Interval::Fields interval{}; ///< the transposition interval for the part
+    };
+
     /// @brief Constructor for existing Clef instances
     PartTransposition(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -210,12 +271,18 @@ public:
     /// @brief Creates a new Clef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param interval The transposition interval for the part.
-    PartTransposition(Base& parent, std::string_view key, const Interval::Fields& interval)
+    /// @param fields The transposition fields to use.
+    PartTransposition(Base& parent, std::string_view key, const Fields& fields)
         : Object(parent, key)
     {
-        create_interval(interval);
+        create_interval(fields.interval);
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { interval() }; }
+
+    /// @brief Create a Fields instance for #PartTransposition.
+    static Fields from(const Interval::Fields& interval) { return { interval }; }
 
     MNX_REQUIRED_CHILD(Interval, interval);         ///< the transposition interval
     MNX_OPTIONAL_PROPERTY(int, keyFifthsFlipAt);    ///< the number of sharps (positive) or flats (negative) at which to simplify the key signature
@@ -234,6 +301,14 @@ public:
 class PositionedClef : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #PositionedClef
+    struct Fields
+    {
+        ClefSign clefSign{};                                     ///< the type of clef symbol
+        int staffPosition{};                                     ///< staff position offset from center of staff
+        std::optional<OttavaAmountOrZero> octaveAdjustment;      ///< optional octave adjustment
+    };
+
     /// @brief Constructor for existing PositionedClef instances
     PositionedClef(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -243,14 +318,20 @@ public:
     /// @brief Creates a new PositionedClef class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param staffPosition The note value base for this Barline
-    /// @param clefSign The type of clef symbold
-    /// @param octaveAdjustment The number of octaves by which the clef transposes (may be omitted)
-    PositionedClef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition, std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    /// @param fields The positioned clef fields to use.
+    PositionedClef(Base& parent, std::string_view key, const Fields& fields)
         : ArrayElementObject(parent, key)
     {
-        create_clef(clefSign, staffPosition, octaveAdjustment);
+        create_clef({ fields.clefSign, fields.staffPosition, fields.octaveAdjustment });
     }
+
+    /// @brief Implicit conversion back to Fields.
+    operator Fields() const { return { clef().sign(), clef().staffPosition(), clef().octave() }; }
+
+    /// @brief Create a Fields instance for #PositionedClef.
+    static Fields from(ClefSign clefSign, int staffPosition,
+                       std::optional<OttavaAmountOrZero> octaveAdjustment = std::nullopt)
+    { return { clefSign, staffPosition, octaveAdjustment }; }
 
     MNX_REQUIRED_CHILD(Clef, clef);                     ///< the beats per minute of this tempo marking
     MNX_OPTIONAL_CHILD(RhythmicPosition, position);     ///< location within the measure of the tempo marking

@@ -26,14 +26,30 @@
 #include <cassert>
 #include <iostream>
 #include <optional>
+#include <string_view>
 #include <type_traits>
 
 #include "nlohmann/json.hpp"
 
- /**
-  * @brief creates a required property with a simple type
-  *
-  * It creates the following class methods.
+namespace mnx {
+class Base;
+namespace detail {
+template <typename T, typename = void>
+struct has_fields : std::false_type {};
+
+template <typename T>
+struct has_fields<T, std::void_t<typename T::Fields>> : std::true_type {};
+
+template <typename T>
+struct is_child_default_ctor
+    : std::bool_constant<std::is_constructible_v<T, Base&, std::string_view> && !has_fields<T>::value> {};
+} // namespace detail
+} // namespace mnx
+
+/**
+ * @brief creates a required property with a simple type
+ *
+ * It creates the following class methods.
   *
   * - `NAME()` returns the value of the property.
   * - `set_NAME(value) sets the value of the property.
@@ -141,40 +157,61 @@
  /**
   * @brief creates a required child object or array
   *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns the child.
-  * - `create_NAME(args...) creates the child from the input constructor arguments
-  *
-  * @param TYPE the type of the child object or array
-  * @param NAME the name of the child object or array (no quotes)
-  */
- #define MNX_REQUIRED_CHILD(TYPE, NAME) \
+ * It creates the following class methods.
+ *
+ * - `NAME()` returns the child.
+ * - `create_NAME(fields) creates the child from the input fields (if available)
+ * - `create_NAME() creates the child with a default constructor (if available)
+ *
+ * For classes that define `Fields`, prefer `TYPE::from(...)` to build the fields value.
+ *
+ * Example (IntelliSense):
+ * `create_pitch(sequence::Pitch::from(NoteStep::C, 4));`
+ *
+ * @param TYPE the type of the child object or array
+ * @param NAME the name of the child object or array (no quotes)
+ */
+#define MNX_REQUIRED_CHILD(TYPE, NAME) \
     [[nodiscard]] TYPE NAME() const { return getChild<TYPE>(#NAME); } \
-    template<typename... Args> \
-    TYPE create_##NAME(Args&&... args) { \
-        return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
+    template <typename T = TYPE, std::enable_if_t<mnx::detail::has_fields<T>::value, int> = 0> \
+    TYPE create_##NAME(const typename T::Fields& fields) { \
+        return setChild(#NAME, T(*this, #NAME, fields)); \
+    } \
+    template <typename T = TYPE, std::enable_if_t<mnx::detail::is_child_default_ctor<T>::value, int> = 0> \
+    TYPE create_##NAME() { \
+        return setChild(#NAME, T(*this, #NAME)); \
     } \
     static_assert(true, "") // require semicolon after macro
 
  /**
   * @brief creates an optional child object or array
   *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
-  * - `ensure_NAME(args...) if the child does not exist, creates the child from the input constructor arguments. Otherwise returns the child.
-  * - `clear_NAME(args...) clears the child from JSON document.
-  *
-  * @param TYPE the type of the child object or array
-  * @param NAME the name of the child object or array (no quotes)
-  */
- #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
+ * It creates the following class methods.
+ *
+ * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
+ * - `ensure_NAME(fields) if the child does not exist, creates the child from the input fields. Otherwise returns the child.
+ * - `ensure_NAME() if the child does not exist, creates the child with a default constructor. Otherwise returns the child.
+ * - `clear_NAME(args...) clears the child from JSON document.
+ *
+ * For classes that define `Fields`, prefer `TYPE::from(...)` to build the fields value.
+ *
+ * Example (IntelliSense):
+ * `ensure_duration(NoteValue::from(NoteValueBase::Quarter, 1));`
+ *
+ * @param TYPE the type of the child object or array
+ * @param NAME the name of the child object or array (no quotes)
+ */
+#define MNX_OPTIONAL_CHILD(TYPE, NAME) \
     [[nodiscard]] std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
-    template<typename... Args> \
-    TYPE ensure_##NAME(Args&&... args) { \
+    template <typename T = TYPE, std::enable_if_t<mnx::detail::has_fields<T>::value, int> = 0> \
+    TYPE ensure_##NAME(const typename T::Fields& fields) { \
         if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \
-        return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
+        return setChild(#NAME, T(*this, #NAME, fields)); \
+    } \
+    template <typename T = TYPE, std::enable_if_t<mnx::detail::is_child_default_ctor<T>::value, int> = 0> \
+    TYPE ensure_##NAME() { \
+        if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \
+        return setChild(#NAME, T(*this, #NAME)); \
     } \
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro

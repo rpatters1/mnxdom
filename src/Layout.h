@@ -33,9 +33,15 @@ namespace mnx {
 namespace layout {
 
 /**
-* @class StaffSource
+ * @class StaffSource
  * @brief Represents a staff source for a staff in a layout in a score.
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_LAYOUT_STAFF_SOURCE_FIELDS(M) \
+    M(const std::string&, partId)
+#define MNX_LAYOUT_STAFF_SOURCE_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_LAYOUT_STAFF_SOURCE_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class StaffSource : public ArrayElementObject
 {
 public:
@@ -55,7 +61,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param partId The part to use as a source
-    StaffSource(Base& parent, std::string_view key, const std::string& partId)
+    StaffSource(Base& parent, std::string_view key, MNX_LAYOUT_STAFF_SOURCE_CTOR_ARGS)
         : ArrayElementObject(parent, key)
     {
         set_part(partId);
@@ -65,7 +71,7 @@ public:
     operator Required() const { return { part() }; }
 
     /// @brief Create a Required instance for #StaffSource.
-    static Required make(const std::string& partId) { return { partId }; }
+    static Required make(MNX_LAYOUT_STAFF_SOURCE_CTOR_ARGS) { return { partId }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, label);          ///< Text to appear to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);          ///< The labelref to use (rather than label)

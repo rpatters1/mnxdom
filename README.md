@@ -26,9 +26,13 @@ globalMeasure.create_time(4, mnx::TimeSignatureUnit::Quarter);
 // parts
 auto part = doc.parts().append();
 auto measure = part.create_measures().append();
-measure.create_clefs().append(mnx::ClefSign::GClef, -2);
-auto event = measure.sequences().append<mnx::sequence::Event>(mnx::NoteValueBase::Whole);
-event.create_notes().append(mnx::NoteStep::C, 4);
+measure.create_clefs().append(mnx::ClefSign::GClef, -2, std::nullopt);
+auto event = measure.sequences()
+    .append()
+    .content()
+    .append<mnx::sequence::Event>();
+event.ensure_duration(mnx::NoteValueBase::Whole, 0);
+event.create_notes().append(mnx::sequence::Pitch::make(mnx::NoteStep::C, 4));
 // save to file
 doc.save("hello-world.json", 4); // indent with 4 spaces
 ```

@@ -26,163 +26,13 @@
 #include <cassert>
 #include <iostream>
 #include <optional>
+#include <string_view>
 #include <type_traits>
+#include <utility>
 
 #include "nlohmann/json.hpp"
+#include "BoilerplateMacros.h"
 
- /**
-  * @brief creates a required property with a simple type
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns the value of the property.
-  * - `set_NAME(value) sets the value of the property.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  */
-#define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
-    [[nodiscard]] TYPE NAME() const { \
-        if (!ref().contains(#NAME)) { \
-            throw std::runtime_error("Missing required property: " #NAME); \
-        } \
-        return ref()[#NAME].get<TYPE>(); \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    static_assert(true, "") // require semicolon after macro
-
- /**
-  * @brief creates a property (with a simple type) that occupies a fixed position in an array
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns the value of the property.
-  * - `set_NAME(value) sets the value of the property.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  * @param INDEX the index in the array for the property
-  */
- #define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
-    static_assert(std::is_integral_v<decltype(INDEX)>, "array index must be an integer type"); \
-    [[nodiscard]] TYPE NAME() const { return (*this)[INDEX]; } \
-    void set_##NAME(const TYPE& value) { (*this)[INDEX] = value; } \
-    static_assert(true, "") // require semicolon after macro
-
- /**
-  * @brief creates an optional named property with a simple type. This is a property whose name is different than
-  * its JSON key. This is used when the JSON property name is a C++ keyword. An example is `class` that becomes a
-  * property called `styleClass`.
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
-  * - `NAME_or(value)` returns the property value if it exists or the input value if not.
-  * - `set_NAME(value) sets the value of the property.
-  * - `clear_NAME() clears the property from the JSON document.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  * @param KEY the JSON key of the property (with quotes)
-  */
- #define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, KEY) \
-    [[nodiscard]] std::optional<TYPE> NAME() const { \
-        return ref().contains(KEY) ? std::optional<TYPE>(ref()[KEY].get<TYPE>()) : std::nullopt; \
-    } \
-    [[nodiscard]] TYPE NAME##_or(const TYPE& defaultVal) const { \
-        return ref().contains(KEY) ? ref()[KEY].get<TYPE>() : defaultVal; \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[KEY] = value; } \
-    void clear_##NAME() { ref().erase(KEY); } \
-    static_assert(true, "") // require semicolon after macro
-
- /**
-  * @brief creates an optional property with a simple type.
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
-  * - `NAME_or(value)` returns the property value if it exists or the input value if not.
-  * - `set_NAME(value) sets the value of the property.
-  * - `clear_NAME() clears the property from the JSON document.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  */
- #define MNX_OPTIONAL_PROPERTY(TYPE, NAME) MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, #NAME)
-
- /**
-  * @brief creates an optional property with a default value.
-  *
-  * It has the following class methods.
-  *
-  * - `NAME()` returns the value of the property.
-  * - `set_NAME(value) sets the value of the property.
-  * - `clear_NAME() clears the property from the JSON document.
-  * - `set_or_clear_NAME(value) sets the value of the property if the input value is not the default.
-  * Otherwise it clears the property.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  * @param DEFAULT the default value of the property.
-  */
-#define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
-    [[nodiscard]] TYPE NAME() const { \
-        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
-    } \
-    void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    void set_or_clear_##NAME(const TYPE& value) { \
-        if (value == DEFAULT) clear_##NAME(); \
-        else set_##NAME(value); \
-    } \
-    static_assert(true, "") // require semicolon after macro
-
- /**
-  * @brief creates a required child object or array
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns the child.
-  * - `create_NAME(args...) creates the child from the input constructor arguments
-  *
-  * @param TYPE the type of the child object or array
-  * @param NAME the name of the child object or array (no quotes)
-  */
- #define MNX_REQUIRED_CHILD(TYPE, NAME) \
-    [[nodiscard]] TYPE NAME() const { return getChild<TYPE>(#NAME); } \
-    template<typename... Args> \
-    TYPE create_##NAME(Args&&... args) { \
-        return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
-    } \
-    static_assert(true, "") // require semicolon after macro
-
- /**
-  * @brief creates an optional child object or array
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
-  * - `ensure_NAME(args...) if the child does not exist, creates the child from the input constructor arguments. Otherwise returns the child.
-  * - `clear_NAME(args...) clears the child from JSON document.
-  *
-  * @param TYPE the type of the child object or array
-  * @param NAME the name of the child object or array (no quotes)
-  */
- #define MNX_OPTIONAL_CHILD(TYPE, NAME) \
-    [[nodiscard]] std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
-    template<typename... Args> \
-    TYPE ensure_##NAME(Args&&... args) { \
-        if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \
-        return setChild(#NAME, TYPE(*this, #NAME, std::forward<Args>(args)...)); \
-    } \
-    void clear_##NAME() { ref().erase(#NAME); } \
-    static_assert(true, "") // require semicolon after macro
-
-#define MNX_ASSERT_IF(TEST) \
-assert(!(TEST)); \
-if (TEST)
-    
 /**
  * @namespace mnx
  * @brief object model for MNX format
@@ -199,7 +49,9 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 
 class Object;
 class Document;
+class Base;
 template <typename T> class Array;
+template <typename T> class Dictionary;
 
 namespace validation {
 class SemanticValidator;
@@ -214,6 +66,82 @@ struct LayoutContent {};
 } // namespace scope
 
 #endif
+
+namespace detail {
+
+template <typename T, auto MakeFunc>
+struct ArrayAppendFromMake;
+
+template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
+struct ArrayAppendFromMake<T, MakeFunc>
+{
+    // Mirrors T::make signature for append IntelliSense without changing behavior.
+    T append(Args... args)
+    {
+        return static_cast<Array<T>&>(*this).template appendImpl<T>(std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T>
+struct ArrayAppendBase
+{
+    template <typename U = T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append(Args&&... args)
+    {
+        return static_cast<Derived&>(*this).template appendImpl<U>(std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T, typename = void>
+struct ArrayAppendOverloads : ArrayAppendBase<Derived, T> {};
+
+template <typename Derived, typename T>
+struct ArrayAppendOverloads<Derived, T, std::void_t<decltype(&T::make)>>
+    : ArrayAppendBase<Derived, T>,
+      ArrayAppendFromMake<T, &T::make>
+{
+    using ArrayAppendBase<Derived, T>::append;
+    using ArrayAppendFromMake<T, &T::make>::append;
+};
+
+template <typename T, auto MakeFunc>
+struct DictionaryAppendFromMake;
+
+template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
+struct DictionaryAppendFromMake<T, MakeFunc>
+{
+    // Mirrors T::make signature for append IntelliSense without changing behavior.
+    T append(std::string_view key, Args... args)
+    {
+        return static_cast<Dictionary<T>&>(*this).template appendImpl<T>(key, std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T>
+struct DictionaryAppendBase
+{
+    template <typename U = T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append(std::string_view key, Args&&... args)
+    {
+        return static_cast<Derived&>(*this).template appendImpl<U>(key, std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T, typename = void>
+struct DictionaryAppendOverloads : DictionaryAppendBase<Derived, T> {};
+
+template <typename Derived, typename T>
+struct DictionaryAppendOverloads<Derived, T, std::void_t<decltype(&T::make)>>
+    : DictionaryAppendBase<Derived, T>,
+      DictionaryAppendFromMake<T, &T::make>
+{
+    using DictionaryAppendBase<Derived, T>::append;
+    using DictionaryAppendFromMake<T, &T::make>::append;
+};
+
+} // namespace detail
 
 
 /**
@@ -500,7 +428,8 @@ class ArrayElementObject;
  * @brief Represents an MNX array, encapsulating property access.
  */
 template <typename T>
-class Array : public Base
+class Array : public Base,
+              public detail::ArrayAppendOverloads<Array<T>, T>
 {
     static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string> ||
                   std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX array element type.");
@@ -598,18 +527,6 @@ public:
      * @brief Create a new element at the end of the array. (Available only for Base types)
      * @return The newly created element.
     */
-    template <typename U = T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
-    U append(Args&&... args)
-    {
-        if constexpr (std::is_base_of_v<Object, U>) {
-            ref().push_back(json::object());
-        } else {
-            ref().push_back(json::array());
-        }
-        return U(*this, std::to_string(ref().size() - 1), std::forward<Args>(args)...);
-    }
-
     /** @brief Remove an element at a given index. */
     void erase(size_t index)
     {
@@ -648,6 +565,24 @@ protected:
             throw std::out_of_range("Index out of range");
         }
     }
+
+private:
+    template <typename U, typename... Args>
+    U appendImpl(Args&&... args)
+    {
+        static_assert(std::is_base_of_v<Base, U>, "Array::appendImpl requires a Base-derived element type.");
+        if constexpr (std::is_base_of_v<Object, U>) {
+            ref().push_back(json::object());
+        } else {
+            ref().push_back(json::array());
+        }
+        return U(*this, std::to_string(ref().size() - 1), std::forward<Args>(args)...);
+    }
+
+    template <typename, auto>
+    friend struct detail::ArrayAppendFromMake;
+    template <typename, typename>
+    friend struct detail::ArrayAppendBase;
 };
 
 /**
@@ -767,9 +702,20 @@ public:
     }
 
     /// @brief Append an element of the specified type
-    template <typename T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T append(Args&&... args)
+    template <typename T, typename... Args>
+    T append(Args... args)
+    {
+        static_assert(!std::is_same_v<T, T>,
+                      "ContentArray::append requires an explicit specialization; update ContentArrayAppendOverloads.h.");
+        return appendImpl<T>(std::forward<Args>(args)...);
+    }
+
+    // Prevent untemplated append() calls; callers must use append<T>(...).
+    ContentObject append(...) = delete;
+
+private:
+    template <typename T, typename... Args>
+    T appendImpl(Args&&... args)
     {
         auto result = BaseArray::append<T>(std::forward<Args>(args)...);
         if constexpr (T::ContentTypeValue != ContentObject::ContentTypeValueDefault) {
@@ -778,7 +724,6 @@ public:
         return result;
     }
 
-private:
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
@@ -821,7 +766,8 @@ struct EnumStringMapping
  * @brief Represents an MNX dictionary, where each key is a user-defined string.
  */
 template <typename T>
-class Dictionary : public Object
+class Dictionary : public Object,
+                   public detail::DictionaryAppendOverloads<Dictionary<T>, T>
 {
     static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string> ||
                   std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX dictionary element type.");
@@ -910,18 +856,6 @@ public:
      * @brief Create a new element using the input key. (Available only for Base types)
      * @return The newly created element.
     */
-    template <typename U = T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
-    U append(std::string_view key, Args&&... args)
-    {
-        if constexpr (std::is_base_of_v<Object, U>) {
-            ref()[key] = json::object();
-        } else {
-            ref()[key] = json::array();
-        }
-        return U(*this, key, std::forward<Args>(args)...);
-    }
-
     /** @brief Remove an element at a given key. */
     void erase(std::string_view key)
     {
@@ -973,6 +907,23 @@ private:
             return getChild<SimpleType<T>>(key);
         }
     }
+
+    template <typename U, typename... Args>
+    U appendImpl(std::string_view key, Args&&... args)
+    {
+        static_assert(std::is_base_of_v<Base, U>, "Dictionary::appendImpl requires a Base-derived element type.");
+        if constexpr (std::is_base_of_v<Object, U>) {
+            ref()[key] = json::object();
+        } else {
+            ref()[key] = json::array();
+        }
+        return U(*this, key, std::forward<Args>(args)...);
+    }
+
+    template <typename, auto>
+    friend struct detail::DictionaryAppendFromMake;
+    template <typename, typename>
+    friend struct detail::DictionaryAppendBase;
 };
 
 } // namespace mnx

@@ -36,9 +36,23 @@ namespace score {
  * @class MultimeasureRest
  * @brief Represents a multimeasure rest in a score.
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_SCORE_MULTIMEASURE_REST_FIELDS(M) \
+    M(int, startMeasure), \
+    M(int, numMeasures)
+#define MNX_SCORE_MULTIMEASURE_REST_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_SCORE_MULTIMEASURE_REST_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class MultimeasureRest : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #MultimeasureRest
+    struct Required
+    {
+        int startMeasure{}; ///< the measure index of the first measure in the multimeasure rest
+        int numMeasures{};  ///< the number of measures in the multimeasure rest
+    };
+
     /// @brief Constructor for existing mm rests
     MultimeasureRest(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -50,12 +64,18 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
-    MultimeasureRest(Base& parent, std::string_view key, int startMeasure, int numMeasures)
+    MultimeasureRest(Base& parent, std::string_view key, MNX_SCORE_MULTIMEASURE_REST_CTOR_ARGS)
         : ArrayElementObject(parent, key)
     {
         set_start(startMeasure);
         set_duration(numMeasures);
     }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { start(), duration() }; }
+
+    /// @brief Create a Required instance for #MultimeasureRest.
+    static Required make(MNX_SCORE_MULTIMEASURE_REST_CTOR_ARGS) { return { startMeasure, numMeasures }; }
 
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the number of measures in the multimeasure rest
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< the label to place on the multimeasure rest, if provided.
@@ -66,9 +86,25 @@ public:
  * @class LayoutChange
  * @brief Represents a system layout change in a score
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_SCORE_LAYOUT_CHANGE_FIELDS(M) \
+    M(const std::string&, layoutId), \
+    M(int, measureId), \
+    M(const FractionValue&, position)
+#define MNX_SCORE_LAYOUT_CHANGE_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_SCORE_LAYOUT_CHANGE_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class LayoutChange : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #LayoutChange
+    struct Required
+    {
+        std::string layoutId;     ///< the id of the layout to use for the layout change
+        int measureId{};          ///< the measure index of the measure of the position
+        FractionValue position{}; ///< the position of the LayoutChange within the measure
+    };
+
     /// @brief Constructor for existing system layouts
     LayoutChange(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -79,27 +115,46 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param layoutId The id of the layout to use for the layout change
-    /// @param measureId The measure index of the measure of the position.
-    /// @param position The position of the LayoutChange within the measure.
-    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId,
-            int measureId, const FractionValue& position)
+    /// @param measureId The measure index of the measure of the position
+    /// @param position The position of the LayoutChange within the measure
+    LayoutChange(Base& parent, std::string_view key, MNX_SCORE_LAYOUT_CHANGE_CTOR_ARGS)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);
         create_location(measureId, position);
     }
 
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { layout(), location().measure(), location().position().fraction() }; }
+
+    /// @brief Create a Required instance for #LayoutChange.
+    static Required make(MNX_SCORE_LAYOUT_CHANGE_CTOR_ARGS)
+    { return { layoutId, measureId, position }; }
+
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
-    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, location);   ///< location where the new layout takes effect.
+    MNX_REQUIRED_CHILD(MeasureRhythmicPosition, location,
+        MNX_FIELDS_AS_TUPLES(MNX_MEASURE_RHYTHMIC_POSITION_FIELDS)); ///< location where the new layout takes effect.
 };
 
 /**
  * @class System
  * @brief Represents a system on a page in a score.
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_SCORE_SYSTEM_FIELDS(M) \
+    M(int, startMeasure)
+#define MNX_SCORE_SYSTEM_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_SCORE_SYSTEM_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class System : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #System
+    struct Required
+    {
+        int startMeasure{}; ///< the measure index of the first measure in the system
+    };
+
     /// @brief Constructor for existing system layouts
     System(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -110,11 +165,17 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the system
-    System(Base& parent, std::string_view key, int startMeasure)
+    System(Base& parent, std::string_view key, MNX_SCORE_SYSTEM_CTOR_ARGS)
         : ArrayElementObject(parent, key)
     {
         set_measure(startMeasure);
     }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { measure() }; }
+
+    /// @brief Create a Required instance for #System.
+    static Required make(MNX_SCORE_SYSTEM_CTOR_ARGS) { return { startMeasure }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<LayoutChange>, layoutChanges); ///< layout changes in the system (e.g., for changes in stem direction)
@@ -150,9 +211,21 @@ public:
  * @class Score
  * @brief Represents an element in the scores section of an MNX document.
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_SCORE_SCORE_FIELDS(M) \
+    M(const std::string&, scoreName)
+#define MNX_SCORE_SCORE_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_SCORE_SCORE_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Score : public ArrayElementObject
 {
 public:
+    /// @brief initializer class for #Score
+    struct Required
+    {
+        std::string scoreName; ///< the name of the score to be created
+    };
+
     /// @brief Constructor for existing system layouts
     Score(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
@@ -163,11 +236,17 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param scoreName The name of the score to be created
-    Score(Base& parent, std::string_view key, const std::string& scoreName)
+    Score(Base& parent, std::string_view key, MNX_SCORE_SCORE_CTOR_ARGS)
         : ArrayElementObject(parent, key)
     {
         set_name(scoreName);
     }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { name() }; }
+
+    /// @brief Create a Required instance for #Score.
+    static Required make(MNX_SCORE_SCORE_CTOR_ARGS) { return { scoreName }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);                             ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<score::MultimeasureRest>, multimeasureRests);  ///< List of multimeasure rests in the score.

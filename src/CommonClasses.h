@@ -404,7 +404,7 @@ public:
     /// @brief Creates a new Array class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param value The numerator (number on top) and denominator (number on bottom) of the fraction.
+    /// @param value The fraction value to use.
     Fraction(Base& parent, std::string_view key, const FractionValue& value)
         : ArrayType(parent, key)
     {
@@ -424,13 +424,32 @@ public:
     friend class Base;
 };
 
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_FRACTION_FIELDS(M) \
+    M(const FractionValue&, value)
+#define MNX_FRACTION_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_FRACTION_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
+
 /**
  * @class RhythmicPosition
  * @brief Represents a system on a page in a score.
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_RHYTHMIC_POSITION_FIELDS(M) \
+    M(const FractionValue&, position)
+#define MNX_RHYTHMIC_POSITION_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_RHYTHMIC_POSITION_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class RhythmicPosition : public Object
 {
 public:
+    /// @brief initializer class for #RhythmicPosition
+    struct Required
+    {
+        FractionValue position{}; ///< position within a measure
+    };
+
     /// @brief Constructor for existing rhythmic position instances
     RhythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -440,15 +459,23 @@ public:
     /// @brief Creates a new RhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param position Position within a measure (as a fraction of whole notes)
-    RhythmicPosition(Base& parent, std::string_view key, const FractionValue& position)
+    /// @param position The rhythmic position value to use.
+    RhythmicPosition(Base& parent, std::string_view key, MNX_RHYTHMIC_POSITION_CTOR_ARGS)
         : Object(parent, key)
     {
         create_fraction(position);
     }
 
-    MNX_REQUIRED_CHILD(Fraction, fraction);             ///< The metric position, where 1/4 is a quarter note.
-    MNX_OPTIONAL_PROPERTY(unsigned, graceIndex);    ///< The grace note index of this position.
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { fraction() }; }
+
+    /// @brief Create a Required instance for #RhythmicPosition.
+    static Required make(MNX_RHYTHMIC_POSITION_CTOR_ARGS) { return { position }; }
+
+    MNX_REQUIRED_CHILD(
+        Fraction, fraction,
+        MNX_FIELDS_AS_TUPLES(MNX_FRACTION_FIELDS)); ///< The metric position, where 1/4 is a quarter note.
+    MNX_OPTIONAL_PROPERTY(unsigned, graceIndex);        ///< The grace note index of this position.
                                                         ///< (0 is the primary, and then count to the left.)
 };
 
@@ -456,9 +483,23 @@ public:
  * @class MeasureRhythmicPosition
  * @brief Represents a system on a page in a score.
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_MEASURE_RHYTHMIC_POSITION_FIELDS(M) \
+    M(int, measureId), \
+    M(const FractionValue&, position)
+#define MNX_MEASURE_RHYTHMIC_POSITION_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_MEASURE_RHYTHMIC_POSITION_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class MeasureRhythmicPosition : public Object
 {
 public:
+    /// @brief initializer class for #MeasureRhythmicPosition
+    struct Required
+    {
+        int measureId{};          ///< the measure id of the position
+        FractionValue position{}; ///< the position within the measure
+    };
+
     /// @brief Constructor for existing rhythmic position instances
     MeasureRhythmicPosition(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -468,28 +509,43 @@ public:
     /// @brief Creates a new MeasureRhythmicPosition class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param measureId The measure index of the measure of the position.
-    /// @param position Position within the measure (as a fraction of whole notes)
-    MeasureRhythmicPosition(Base& parent, std::string_view key, int measureId, const FractionValue& position)
+    /// @param measureId The measure id of the position
+    /// @param position The position within the measure
+    MeasureRhythmicPosition(Base& parent, std::string_view key, MNX_MEASURE_RHYTHMIC_POSITION_CTOR_ARGS)
         : Object(parent, key)
     {
         set_measure(measureId);
         create_position(position);
     }
 
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { measure(), position().fraction() }; }
+
+    /// @brief Create a Required instance for #MeasureRhythmicPosition.
+    static Required make(MNX_MEASURE_RHYTHMIC_POSITION_CTOR_ARGS) { return { measureId, position }; }
+
     MNX_REQUIRED_PROPERTY(int, measure);            ///< The measure id of the measure of this MeasureRhythmicPosition.
-    MNX_REQUIRED_CHILD(RhythmicPosition, position); ///< The metric position, where 1/4 is a quarter note.
+    MNX_REQUIRED_CHILD(
+        RhythmicPosition, position,
+        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< The metric position, where 1/4 is a quarter note.
 };
 
 /**
  * @class Interval
  * @brief Represents a musical chromatic interval
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_INTERVAL_FIELDS(M) \
+    M(int, staffDistance), \
+    M(int, halfSteps)
+#define MNX_INTERVAL_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_INTERVAL_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Interval : public Object
 {
 public:
     /// @brief initializer class for #Interval
-    struct Fields
+    struct Required
     {
         int staffDistance{};    ///< the number of diatonic steps in the interval (negative is down)
         int halfSteps{};        ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
@@ -504,16 +560,20 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The fields to contruct the interval.
-    Interval(Base& parent, std::string_view key, const Fields& fields)
+    /// @param staffDistance The number of diatonic steps in the interval (negative is down)
+    /// @param halfSteps The number of 12-EDO chromatic halfsteps in the interval (negative is down)
+    Interval(Base& parent, std::string_view key, MNX_INTERVAL_CTOR_ARGS)
         : Object(parent, key)
     {
-        set_halfSteps(fields.halfSteps);
-        set_staffDistance(fields.staffDistance);
+        set_halfSteps(halfSteps);
+        set_staffDistance(staffDistance);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { halfSteps(), staffDistance() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { halfSteps(), staffDistance() }; }
+
+    /// @brief Create a Required instance for #Interval.
+    static Required make(MNX_INTERVAL_CTOR_ARGS) { return { staffDistance, halfSteps }; }
 
     MNX_REQUIRED_PROPERTY(int, halfSteps);      ///< the number of 12-EDO chromatic halfsteps in the interval (negative is down)
     MNX_REQUIRED_PROPERTY(int, staffDistance);  ///< the number of diatonic steps in the interval (negative is down)
@@ -523,16 +583,19 @@ public:
  * @class KeySignature
  * @brief Represents a key signature
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_KEY_SIGNATURE_FIELDS(M) \
+    M(int, fifths)
+#define MNX_KEY_SIGNATURE_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_KEY_SIGNATURE_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class KeySignature : public Object
 {
 public:
     /// @brief initializer class for #KeySignature
-    struct Fields
+    struct Required
     {
         int fifths{};           ///< offset from signature with no accidentals
-
-        /// @brief Implicit constructor allows int to intialize it.
-        Fields(int f = 0) : fifths(f) {}
     };
 
     /// @brief Constructor for existing KeySignature objects
@@ -541,17 +604,20 @@ public:
     {
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { fifths() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { fifths() }; }
+
+    /// @brief Create a Required instance for #KeySignature.
+    static Required make(MNX_KEY_SIGNATURE_CTOR_ARGS) { return { fifths }; }
 
     /// @brief Creates a new KeySignature class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The fields to create 
-    KeySignature(Base& parent, std::string_view key, const Fields& fields)
+    /// @param fifths The offset from signature with no accidentals
+    KeySignature(Base& parent, std::string_view key, MNX_KEY_SIGNATURE_CTOR_ARGS)
         : Object(parent, key)
     {
-        set_fifths(fields.fifths);
+        set_fifths(fifths);
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the key signature
@@ -562,11 +628,18 @@ public:
  * @class NoteValue
  * @brief Represents a symbolic note value (not necessarily a duration)
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_NOTE_VALUE_FIELDS(M) \
+    M(NoteValueBase, base), \
+    M(unsigned, dots, = 0)
+#define MNX_NOTE_VALUE_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_NOTE_VALUE_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class NoteValue : public Object
 {
 public:
     /// @brief initializer class for #NoteValue
-    struct Fields
+    struct Required
     {
         NoteValueBase base{};   ///< the note value base to initialize
         unsigned dots{};        ///< the number of dots to initialize
@@ -581,18 +654,22 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The note value fields.
-    NoteValue(Base& parent, std::string_view key, const Fields& fields)
+    /// @param base The note value base to initialize
+    /// @param dots The number of dots to initialize
+    NoteValue(Base& parent, std::string_view key, MNX_NOTE_VALUE_CTOR_ARGS)
         : Object(parent, key)
     {
-        set_base(fields.base);
-        if (fields.dots) {
-            set_dots(fields.dots);
+        set_base(base);
+        if (dots) {
+            set_dots(dots);
         }
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { base(), dots() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { base(), dots() }; }
+
+    /// @brief Create a Required instance for #NoteValue.
+    static Required make(MNX_NOTE_VALUE_CTOR_ARGS) { return { base, dots }; }
 
     /// @brief Convert the note value to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const;
@@ -608,14 +685,21 @@ public:
  * @class NoteValueQuantity
  * @brief Represents a quantity of symbolic note values=
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_NOTE_VALUE_QUANTITY_FIELDS(M) \
+    M(unsigned, count), \
+    M(const NoteValue::Required&, noteValue)
+#define MNX_NOTE_VALUE_QUANTITY_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_NOTE_VALUE_QUANTITY_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class NoteValueQuantity : public Object
 {
 public:
     /// @brief initializer class for #NoteValueQuantity
-    struct Fields
+    struct Required
     {
         unsigned count{};               ///< The quantity of note values
-        NoteValue::Fields noteValue{};  ///< the note value base to initialize
+        NoteValue::Required noteValue{};  ///< the note value base to initialize
     };
 
     /// @brief Constructor for existing NoteValue instances
@@ -627,22 +711,27 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param fields The note value fields.
-    NoteValueQuantity(Base& parent, std::string_view key, const Fields& fields)
+    /// @param count The quantity of note values
+    /// @param noteValue The note value base to initialize
+    NoteValueQuantity(Base& parent, std::string_view key, MNX_NOTE_VALUE_QUANTITY_CTOR_ARGS)
         : Object(parent, key)
     {
-        set_multiple(fields.count);
-        create_duration(fields.noteValue);
+        set_multiple(count);
+        create_duration(noteValue.base, noteValue.dots);
     }
 
-    /// @brief Implicit conversion back to Fields.
-    operator Fields() const { return { multiple(), duration() }; }
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { multiple(), duration() }; }
+
+    /// @brief Create a Required instance for #NoteValueQuantity.
+    static Required make(MNX_NOTE_VALUE_QUANTITY_CTOR_ARGS) { return { count, noteValue }; }
 
     /// @brief Convert the note value quantity to a Fraction base where a quarter note is 1/4.
     [[nodiscard]] operator FractionValue() const
     { return multiple() * duration(); }
 
-    MNX_REQUIRED_CHILD(NoteValue, duration);                    ///< duration unit
+    MNX_REQUIRED_CHILD(NoteValue, duration,
+        MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_FIELDS)); ///< duration unit
     MNX_REQUIRED_PROPERTY(unsigned, multiple);                  ///< quantity of duration units
 };
 
@@ -650,9 +739,23 @@ public:
  * @class TimeSignature
  * @brief Represents the tempo for a global measure.
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_TIME_SIGNATURE_FIELDS(M) \
+    M(int, count), \
+    M(TimeSignatureUnit, unit)
+#define MNX_TIME_SIGNATURE_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_TIME_SIGNATURE_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class TimeSignature : public Object
 {
 public:
+    /// @brief initializer class for #TimeSignature
+    struct Required
+    {
+        int count{};             ///< the number of beats (top number)
+        TimeSignatureUnit unit{}; ///< the unit value (bottom number)
+    };
+
     /// @brief Constructor for existing NoteValue instances
     TimeSignature(const std::shared_ptr<json>& root, json_pointer pointer)
         : Object(root, pointer)
@@ -662,14 +765,20 @@ public:
     /// @brief Creates a new Barline class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param count The number of beats per minutes
-    /// @param unit The note value base for this Barline
-    TimeSignature(Base& parent, std::string_view key, int count, TimeSignatureUnit unit)
+    /// @param count The number of beats (top number)
+    /// @param unit The unit value (bottom number)
+    TimeSignature(Base& parent, std::string_view key, MNX_TIME_SIGNATURE_CTOR_ARGS)
         : Object(parent, key)
     {
         set_count(count);
         set_unit(unit);
     }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { count(), unit() }; }
+
+    /// @brief Create a Required instance for #TimeSignature.
+    static Required make(MNX_TIME_SIGNATURE_CTOR_ARGS) { return { count, unit }; }
 
     /// @brief Implicit converter to FractionValue. This function preserves the time signature values
     /// rather than reducing to lowest common denominator.

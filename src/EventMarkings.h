@@ -137,9 +137,21 @@ public:
  * @class SingleNoteTremolo
  * @brief Class that represents single-note tremolo marking on an event
  */
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
+#define MNX_SEQUENCE_SINGLE_NOTE_TREMOLO_FIELDS(M) \
+    M(unsigned, marks)
+#define MNX_SEQUENCE_SINGLE_NOTE_TREMOLO_CTOR_ARGS \
+    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_SINGLE_NOTE_TREMOLO_FIELDS)
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class SingleNoteTremolo : public EventMarkingBase
 {
 public:
+    /// @brief initializer class for #SingleNoteTremolo
+    struct Required
+    {
+        unsigned marks{}; ///< the number of marks
+    };
+
     /// @brief Constructor for existing SingleNoteTremolo objects
     SingleNoteTremolo(const std::shared_ptr<json>& root, json_pointer pointer)
         : EventMarkingBase(root, pointer)
@@ -149,12 +161,18 @@ public:
     /// @brief Creates a new SingleNoteTremolo class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param marks The number of marks.
-    SingleNoteTremolo(Base& parent, std::string_view key, unsigned marks)
+    /// @param marks The number of marks
+    SingleNoteTremolo(Base& parent, std::string_view key, MNX_SEQUENCE_SINGLE_NOTE_TREMOLO_CTOR_ARGS)
         : EventMarkingBase(parent, key)
     {
         set_marks(marks);
     }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { marks() }; }
+
+    /// @brief Create a Required instance for #SingleNoteTremolo.
+    static Required make(MNX_SEQUENCE_SINGLE_NOTE_TREMOLO_CTOR_ARGS) { return { marks }; }
 
     MNX_REQUIRED_PROPERTY(unsigned, marks);     ///< the number of marks (a value from 0..8, inclusive)
 };
@@ -187,7 +205,8 @@ public:
     MNX_OPTIONAL_CHILD(Stress, stress);                 ///< A stress mark
     MNX_OPTIONAL_CHILD(StrongAccent, strongAccent);     ///< A strong accent mark
     MNX_OPTIONAL_CHILD(Tenuto, tenuto);                 ///< A stress mark
-    MNX_OPTIONAL_CHILD(SingleNoteTremolo, tremolo);     ///< A single-note tremolo mark
+    MNX_OPTIONAL_CHILD(SingleNoteTremolo, tremolo,
+        MNX_FIELDS_AS_TUPLES(MNX_SEQUENCE_SINGLE_NOTE_TREMOLO_FIELDS)); ///< A single-note tremolo mark
     MNX_OPTIONAL_CHILD(Unstress, unstress);             ///< A stress mark
 };
 

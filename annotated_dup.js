@@ -1,6 +1,18 @@
 var annotated_dup =
 [
     [ "mnx", "namespacemnx.html", [
+      [ "detail", null, [
+        [ "ArrayAppendBase", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+        [ "ArrayAppendFromMake", "structmnx_1_1detail_1_1ArrayAppendFromMake.html", null ],
+        [ "ArrayAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1ArrayAppendFromMake_3_01T_00_01MakeFunc_01_4.html", null ],
+        [ "ArrayAppendOverloads", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+        [ "ArrayAppendOverloads< Derived, T, std::void_t< decltype(&T::make)> >", "structmnx_1_1detail_1_1ArrayAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html", null ],
+        [ "DictionaryAppendBase", "structmnx_1_1detail_1_1DictionaryAppendBase.html", null ],
+        [ "DictionaryAppendFromMake", "structmnx_1_1detail_1_1DictionaryAppendFromMake.html", null ],
+        [ "DictionaryAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1DictionaryAppendFromMake_3_01T_00_01MakeFunc_01_4.html", null ],
+        [ "DictionaryAppendOverloads", "structmnx_1_1detail_1_1DictionaryAppendOverloads.html", null ],
+        [ "DictionaryAppendOverloads< Derived, T, std::void_t< decltype(&T::make)> >", "structmnx_1_1detail_1_1DictionaryAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html", null ]
+      ] ],
       [ "global", "namespacemnx_1_1global.html", [
         [ "Barline", "classmnx_1_1global_1_1Barline.html", "classmnx_1_1global_1_1Barline" ],
         [ "Ending", "classmnx_1_1global_1_1Ending.html", "classmnx_1_1global_1_1Ending" ],

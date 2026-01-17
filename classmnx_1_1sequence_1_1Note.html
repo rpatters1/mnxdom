@@ -93,7 +93,9 @@ $(document).ready(function(){initNavTree('classmnx_1_1sequence_1_1Note.html','')
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classmnx_1_1sequence_1_1Note-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mnx::sequence::Note Class Reference</div></div>
@@ -119,23 +121,33 @@ $(document).ready(function(){initNavTree('classmnx_1_1sequence_1_1Note.html','')
   </map>
 </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1sequence_1_1Note_1_1Required.html">Required</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">initializer class for <a class="el" href="classmnx_1_1sequence_1_1Note.html#a7d9105838867ccb8deaf3e3232f01dea" title="Constructor for existing Note objects.">Note</a>  <a href="structmnx_1_1sequence_1_1Note_1_1Required.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7d9105838867ccb8deaf3e3232f01dea" id="r_a7d9105838867ccb8deaf3e3232f01dea"><td class="memItemLeft" align="right" valign="top"><a id="a7d9105838867ccb8deaf3e3232f01dea" name="a7d9105838867ccb8deaf3e3232f01dea"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Note</b> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:a7d9105838867ccb8deaf3e3232f01dea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for existing <a class="el" href="classmnx_1_1sequence_1_1Note.html" title="Represents a single note (i.e., within a chord) within a musical event within a sequence.">Note</a> objects. <br /></td></tr>
 <tr class="separator:a7d9105838867ccb8deaf3e3232f01dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37b0edf15d3bae4b6d30b5e670230d1a" id="r_a37b0edf15d3bae4b6d30b5e670230d1a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Note.html#a37b0edf15d3bae4b6d30b5e670230d1a">Note</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, const <a class="el" href="structmnx_1_1sequence_1_1Pitch_1_1Fields.html">Pitch::Fields</a> &amp;pitch)</td></tr>
-<tr class="memdesc:a37b0edf15d3bae4b6d30b5e670230d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1sequence_1_1Note.html" title="Represents a single note (i.e., within a chord) within a musical event within a sequence.">Note</a> class as a child of a JSON element.  <br /></td></tr>
-<tr class="separator:a37b0edf15d3bae4b6d30b5e670230d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dae18386bdc55260c634f9c3c155fc7" id="r_a3dae18386bdc55260c634f9c3c155fc7"><td class="memItemLeft" align="right" valign="top"><a id="a3dae18386bdc55260c634f9c3c155fc7" name="a3dae18386bdc55260c634f9c3c155fc7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1sequence_1_1AccidentalDisplay.html">AccidentalDisplay</a>, accidentalDisplay)</td></tr>
-<tr class="memdesc:a3dae18386bdc55260c634f9c3c155fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">the forced show/hide state of the accidental <br /></td></tr>
-<tr class="separator:a3dae18386bdc55260c634f9c3c155fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e7b751710905b341624672104bd8119" id="r_a6e7b751710905b341624672104bd8119"><td class="memItemLeft" align="right" valign="top"><a id="a6e7b751710905b341624672104bd8119" name="a6e7b751710905b341624672104bd8119"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1sequence_1_1Pitch.html">Pitch</a>, pitch)</td></tr>
-<tr class="memdesc:a6e7b751710905b341624672104bd8119"><td class="mdescLeft">&#160;</td><td class="mdescRight">the pitch of the note <br /></td></tr>
-<tr class="separator:a6e7b751710905b341624672104bd8119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd379e75119d3ee45efd567d19a25b0" id="r_abdd379e75119d3ee45efd567d19a25b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Note.html#abdd379e75119d3ee45efd567d19a25b0">Note</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, MNX_SEQUENCE_NOTE_CTOR_ARGS)</td></tr>
+<tr class="memdesc:abdd379e75119d3ee45efd567d19a25b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1sequence_1_1Note.html" title="Represents a single note (i.e., within a chord) within a musical event within a sequence.">Note</a> class as a child of a JSON element.  <br /></td></tr>
+<tr class="separator:abdd379e75119d3ee45efd567d19a25b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c90dd2496d29838f467500b0349f95" id="r_aa6c90dd2496d29838f467500b0349f95"><td class="memItemLeft" align="right" valign="top"><a id="aa6c90dd2496d29838f467500b0349f95" name="aa6c90dd2496d29838f467500b0349f95"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator Required</b> () const</td></tr>
+<tr class="memdesc:aa6c90dd2496d29838f467500b0349f95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion back to <a class="el" href="structmnx_1_1sequence_1_1Note_1_1Required.html" title="initializer class for Note">Required</a>. <br /></td></tr>
+<tr class="separator:aa6c90dd2496d29838f467500b0349f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc77981eab7e44fc890df94a93c854a2" id="r_afc77981eab7e44fc890df94a93c854a2"><td class="memItemLeft" align="right" valign="top"><a id="afc77981eab7e44fc890df94a93c854a2" name="afc77981eab7e44fc890df94a93c854a2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1sequence_1_1AccidentalDisplay.html">AccidentalDisplay</a>, accidentalDisplay, MNX_FIELDS_AS_TUPLES(MNX_SEQUENCE_ACCIDENTAL_DISPLAY_FIELDS))</td></tr>
+<tr class="memdesc:afc77981eab7e44fc890df94a93c854a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">the forced show/hide state of the accidental <br /></td></tr>
+<tr class="separator:afc77981eab7e44fc890df94a93c854a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6bb97282d7601fa347e67ccf6fb70c0" id="r_ae6bb97282d7601fa347e67ccf6fb70c0"><td class="memItemLeft" align="right" valign="top"><a id="ae6bb97282d7601fa347e67ccf6fb70c0" name="ae6bb97282d7601fa347e67ccf6fb70c0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1sequence_1_1Pitch.html">Pitch</a>, pitch, MNX_FIELDS_AS_TUPLES(MNX_SEQUENCE_PITCH_FIELDS))</td></tr>
+<tr class="memdesc:ae6bb97282d7601fa347e67ccf6fb70c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">the pitch of the note <br /></td></tr>
+<tr class="separator:ae6bb97282d7601fa347e67ccf6fb70c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ff85750d77e8654615eb55d93e8b0d2" id="r_a4ff85750d77e8654615eb55d93e8b0d2"><td class="memItemLeft" align="right" valign="top"><a id="a4ff85750d77e8654615eb55d93e8b0d2" name="a4ff85750d77e8654615eb55d93e8b0d2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1sequence_1_1TransposeWritten.html">TransposeWritten</a>, written)</td></tr>
 <tr class="memdesc:a4ff85750d77e8654615eb55d93e8b0d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">How to write this note when it is displayed transposed. <br /></td></tr>
@@ -219,6 +231,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 <tr class="memdesc:af14d0aec0e1a12a893bc0bd2cc7880a9 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the document root. <br /></td></tr>
 <tr class="separator:af14d0aec0e1a12a893bc0bd2cc7880a9 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab854bf065ce0655d8ada32d7c048d835" id="r_ab854bf065ce0655d8ada32d7c048d835"><td class="memItemLeft" align="right" valign="top"><a id="ab854bf065ce0655d8ada32d7c048d835" name="ab854bf065ce0655d8ada32d7c048d835"></a>
+static <a class="el" href="structmnx_1_1sequence_1_1Note_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (MNX_SEQUENCE_NOTE_CTOR_ARGS)</td></tr>
+<tr class="memdesc:ab854bf065ce0655d8ada32d7c048d835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1sequence_1_1Note_1_1Required.html" title="initializer class for Note">Required</a> instance for <a class="el" href="classmnx_1_1sequence_1_1Note.html#a7d9105838867ccb8deaf3e3232f01dea" title="Constructor for existing Note objects.">Note</a>. <br /></td></tr>
+<tr class="separator:ab854bf065ce0655d8ada32d7c048d835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:acd125cb578580d16c46715eb0aa16df0" id="r_acd125cb578580d16c46715eb0aa16df0"><td class="memItemLeft" align="right" valign="top"><a id="acd125cb578580d16c46715eb0aa16df0" name="acd125cb578580d16c46715eb0aa16df0"></a>
@@ -261,8 +280,8 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a single note (i.e., within a chord) within a musical event within a sequence. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a37b0edf15d3bae4b6d30b5e670230d1a" name="a37b0edf15d3bae4b6d30b5e670230d1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37b0edf15d3bae4b6d30b5e670230d1a">&#9670;&#160;</a></span>Note()</h2>
+<a id="abdd379e75119d3ee45efd567d19a25b0" name="abdd379e75119d3ee45efd567d19a25b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd379e75119d3ee45efd567d19a25b0">&#9670;&#160;</a></span>Note()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -285,8 +304,8 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structmnx_1_1sequence_1_1Pitch_1_1Fields.html">Pitch::Fields</a> &amp;&#160;</td>
-          <td class="paramname"><em>pitch</em>&#160;</td>
+          <td class="paramtype">MNX_SEQUENCE_NOTE_CTOR_ARGS&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -306,7 +325,7 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#afa6f9a599ccd372
   <table class="params">
     <tr><td class="paramname">parent</td><td>The parent class instance </td></tr>
     <tr><td class="paramname">key</td><td>The JSON key to use for embedding in parent. </td></tr>
-    <tr><td class="paramname">pitch</td><td>The pitch of the note. </td></tr>
+    <tr><td class="paramname">pitch</td><td>The pitch fields to use </td></tr>
   </table>
   </dd>
 </dl>

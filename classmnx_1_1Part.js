@@ -2,7 +2,7 @@ var classmnx_1_1Part =
 [
     [ "Part", "classmnx_1_1Part.html#a7566e69dc96d207c39cc8d2a8de3a37c", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1Part.html#a61fd6ffcdc2ea184ae04b5dc1274e7f1", null ],
-    [ "MNX_OPTIONAL_CHILD", "classmnx_1_1Part.html#a5f425f8d1cf5e4ecd88c60e93ffc40a3", null ],
+    [ "MNX_OPTIONAL_CHILD", "classmnx_1_1Part.html#ac9165a50f7e0270551a65a850f4469cf", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1Part.html#a0c6c32c4121d2cb22f7d4389e59c7dbc", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1Part.html#ac901341cf72f25c0e9d8ffe6ac65c028", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1Part.html#a47496efb0492aea6131493ac6191017e", null ],

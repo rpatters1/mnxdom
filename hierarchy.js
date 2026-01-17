@@ -1,12 +1,32 @@
 var hierarchy =
 [
+    [ "mnx::detail::ArrayAppendBase< Derived, T >", "structmnx_1_1detail_1_1ArrayAppendBase.html", [
+      [ "mnx::detail::ArrayAppendOverloads< Array< T >, T >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", [
+        [ "mnx::Array< T >", "classmnx_1_1Array.html", null ]
+      ] ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< ContentObject >, ContentObject >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< unsigned >, unsigned >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Derived, T, typename >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", [
+        [ "mnx::Array< ContentObject >", "classmnx_1_1Array.html", [
+          [ "mnx::ContentArray", "classmnx_1_1ContentArray.html", null ]
+        ] ],
+        [ "mnx::Array< unsigned >", "classmnx_1_1Array.html", [
+          [ "mnx::Fraction", "classmnx_1_1Fraction.html", null ]
+        ] ]
+      ] ],
+      [ "mnx::detail::ArrayAppendOverloads< Derived, T, std::void_t< decltype(&T::make)> >", "structmnx_1_1detail_1_1ArrayAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html", null ]
+    ] ],
+    [ "mnx::detail::ArrayAppendBase< Array< ContentObject >, ContentObject >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendBase< Array< T >, T >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendBase< Array< unsigned >, unsigned >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1ArrayAppendFromMake.html", null ],
+    [ "mnx::detail::ArrayAppendFromMake< T, &T::make >", "structmnx_1_1detail_1_1ArrayAppendFromMake.html", [
+      [ "mnx::detail::ArrayAppendOverloads< Derived, T, std::void_t< decltype(&T::make)> >", "structmnx_1_1detail_1_1ArrayAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html", null ]
+    ] ],
+    [ "mnx::detail::ArrayAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1ArrayAppendFromMake_3_01T_00_01MakeFunc_01_4.html", null ],
     [ "mnx::Base", "classmnx_1_1Base.html", [
-      [ "mnx::Array< ContentObject >", "classmnx_1_1Array.html", [
-        [ "mnx::ContentArray", "classmnx_1_1ContentArray.html", null ]
-      ] ],
-      [ "mnx::Array< unsigned >", "classmnx_1_1Array.html", [
-        [ "mnx::Fraction", "classmnx_1_1Fraction.html", null ]
-      ] ],
+      [ "mnx::Array< ContentObject >", "classmnx_1_1Array.html", null ],
+      [ "mnx::Array< unsigned >", "classmnx_1_1Array.html", null ],
       [ "mnx::Array< T >", "classmnx_1_1Array.html", null ],
       [ "mnx::Object", "classmnx_1_1Object.html", [
         [ "mnx::ArrayElementObject", "classmnx_1_1ArrayElementObject.html", [
@@ -92,20 +112,63 @@ var hierarchy =
       [ "mnx::SimpleType< T, >", "classmnx_1_1SimpleType.html", null ]
     ] ],
     [ "mnx::scope::Default", "structmnx_1_1scope_1_1Default.html", null ],
+    [ "mnx::detail::DictionaryAppendBase< Derived, T >", "structmnx_1_1detail_1_1DictionaryAppendBase.html", [
+      [ "mnx::detail::DictionaryAppendOverloads< Dictionary< T >, T >", "structmnx_1_1detail_1_1DictionaryAppendOverloads.html", [
+        [ "mnx::Dictionary< T >", "classmnx_1_1Dictionary.html", null ]
+      ] ],
+      [ "mnx::detail::DictionaryAppendOverloads< Derived, T, typename >", "structmnx_1_1detail_1_1DictionaryAppendOverloads.html", null ],
+      [ "mnx::detail::DictionaryAppendOverloads< Derived, T, std::void_t< decltype(&T::make)> >", "structmnx_1_1detail_1_1DictionaryAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html", null ]
+    ] ],
+    [ "mnx::detail::DictionaryAppendBase< Dictionary< T >, T >", "structmnx_1_1detail_1_1DictionaryAppendBase.html", null ],
+    [ "mnx::detail::DictionaryAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1DictionaryAppendFromMake.html", null ],
+    [ "mnx::detail::DictionaryAppendFromMake< T, &T::make >", "structmnx_1_1detail_1_1DictionaryAppendFromMake.html", [
+      [ "mnx::detail::DictionaryAppendOverloads< Derived, T, std::void_t< decltype(&T::make)> >", "structmnx_1_1detail_1_1DictionaryAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html", null ]
+    ] ],
+    [ "mnx::detail::DictionaryAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1DictionaryAppendFromMake_3_01T_00_01MakeFunc_01_4.html", null ],
     [ "mnx::util::EntityMap", "classmnx_1_1util_1_1EntityMap.html", null ],
     [ "mnx::EntityMapPolicies", "structmnx_1_1EntityMapPolicies.html", null ],
     [ "mnx::EnumStringMapping< E, typename >", "structmnx_1_1EnumStringMapping.html", null ],
     [ "mnx::validation::ValidationResult::Error", "structmnx_1_1validation_1_1ValidationResult_1_1Error.html", null ],
-    [ "mnx::Interval::Fields", "structmnx_1_1Interval_1_1Fields.html", null ],
-    [ "mnx::KeySignature::Fields", "structmnx_1_1KeySignature_1_1Fields.html", null ],
-    [ "mnx::NoteValue::Fields", "structmnx_1_1NoteValue_1_1Fields.html", null ],
-    [ "mnx::NoteValueQuantity::Fields", "structmnx_1_1NoteValueQuantity_1_1Fields.html", null ],
-    [ "mnx::sequence::Pitch::Fields", "structmnx_1_1sequence_1_1Pitch_1_1Fields.html", null ],
     [ "mnx::FractionValue", "structmnx_1_1FractionValue.html", null ],
     [ "mnx::util::detail::JsonSchemaTypeNames< T >", "structmnx_1_1util_1_1detail_1_1JsonSchemaTypeNames.html", null ],
     [ "mnx::util::detail::JsonSchemaTypeNames< sequence::NoteBase >", "structmnx_1_1util_1_1detail_1_1JsonSchemaTypeNames_3_01sequence_1_1NoteBase_01_4.html", null ],
     [ "mnx::scope::LayoutContent", "structmnx_1_1scope_1_1LayoutContent.html", null ],
     [ "mnx::util::LayoutSpan", "structmnx_1_1util_1_1LayoutSpan.html", null ],
+    [ "mnx::global::Barline::Required", "structmnx_1_1global_1_1Barline_1_1Required.html", null ],
+    [ "mnx::global::Ending::Required", "structmnx_1_1global_1_1Ending_1_1Required.html", null ],
+    [ "mnx::global::Fine::Required", "structmnx_1_1global_1_1Fine_1_1Required.html", null ],
+    [ "mnx::global::Jump::Required", "structmnx_1_1global_1_1Jump_1_1Required.html", null ],
+    [ "mnx::global::Segno::Required", "structmnx_1_1global_1_1Segno_1_1Required.html", null ],
+    [ "mnx::global::Tempo::Required", "structmnx_1_1global_1_1Tempo_1_1Required.html", null ],
+    [ "mnx::Interval::Required", "structmnx_1_1Interval_1_1Required.html", null ],
+    [ "mnx::KeySignature::Required", "structmnx_1_1KeySignature_1_1Required.html", null ],
+    [ "mnx::layout::StaffSource::Required", "structmnx_1_1layout_1_1StaffSource_1_1Required.html", null ],
+    [ "mnx::MeasureRhythmicPosition::Required", "structmnx_1_1MeasureRhythmicPosition_1_1Required.html", null ],
+    [ "mnx::NoteValue::Required", "structmnx_1_1NoteValue_1_1Required.html", null ],
+    [ "mnx::NoteValueQuantity::Required", "structmnx_1_1NoteValueQuantity_1_1Required.html", null ],
+    [ "mnx::part::Clef::Required", "structmnx_1_1part_1_1Clef_1_1Required.html", null ],
+    [ "mnx::part::Dynamic::Required", "structmnx_1_1part_1_1Dynamic_1_1Required.html", null ],
+    [ "mnx::part::KitComponent::Required", "structmnx_1_1part_1_1KitComponent_1_1Required.html", null ],
+    [ "mnx::part::Ottava::Required", "structmnx_1_1part_1_1Ottava_1_1Required.html", null ],
+    [ "mnx::part::PartTransposition::Required", "structmnx_1_1part_1_1PartTransposition_1_1Required.html", null ],
+    [ "mnx::part::PositionedClef::Required", "structmnx_1_1part_1_1PositionedClef_1_1Required.html", null ],
+    [ "mnx::RhythmicPosition::Required", "structmnx_1_1RhythmicPosition_1_1Required.html", null ],
+    [ "mnx::score::LayoutChange::Required", "structmnx_1_1score_1_1LayoutChange_1_1Required.html", null ],
+    [ "mnx::score::MultimeasureRest::Required", "structmnx_1_1score_1_1MultimeasureRest_1_1Required.html", null ],
+    [ "mnx::Score::Required", "structmnx_1_1Score_1_1Required.html", null ],
+    [ "mnx::score::System::Required", "structmnx_1_1score_1_1System_1_1Required.html", null ],
+    [ "mnx::sequence::AccidentalDisplay::Required", "structmnx_1_1sequence_1_1AccidentalDisplay_1_1Required.html", null ],
+    [ "mnx::sequence::AccidentalEnclosure::Required", "structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html", null ],
+    [ "mnx::sequence::EventLyricLine::Required", "structmnx_1_1sequence_1_1EventLyricLine_1_1Required.html", null ],
+    [ "mnx::sequence::KitNote::Required", "structmnx_1_1sequence_1_1KitNote_1_1Required.html", null ],
+    [ "mnx::sequence::MultiNoteTremolo::Required", "structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html", null ],
+    [ "mnx::sequence::Note::Required", "structmnx_1_1sequence_1_1Note_1_1Required.html", null ],
+    [ "mnx::sequence::Pitch::Required", "structmnx_1_1sequence_1_1Pitch_1_1Required.html", null ],
+    [ "mnx::sequence::SingleNoteTremolo::Required", "structmnx_1_1sequence_1_1SingleNoteTremolo_1_1Required.html", null ],
+    [ "mnx::sequence::Slur::Required", "structmnx_1_1sequence_1_1Slur_1_1Required.html", null ],
+    [ "mnx::sequence::Space::Required", "structmnx_1_1sequence_1_1Space_1_1Required.html", null ],
+    [ "mnx::sequence::Tuplet::Required", "structmnx_1_1sequence_1_1Tuplet_1_1Required.html", null ],
+    [ "mnx::TimeSignature::Required", "structmnx_1_1TimeSignature_1_1Required.html", null ],
     [ "std::runtime_error", null, [
       [ "mnx::util::mapping_error", "classmnx_1_1util_1_1mapping__error.html", null ]
     ] ],

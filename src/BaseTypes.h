@@ -702,9 +702,20 @@ public:
     }
 
     /// @brief Append an element of the specified type
-    template <typename T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    T append(Args&&... args)
+    template <typename T, typename... Args>
+    T append(Args... args)
+    {
+        static_assert(!std::is_same_v<T, T>,
+                      "ContentArray::append requires an explicit specialization; update ContentArrayAppendOverloads.h.");
+        return appendImpl<T>(std::forward<Args>(args)...);
+    }
+
+    // Prevent untemplated append() calls; callers must use append<T>(...).
+    ContentObject append(...) = delete;
+
+private:
+    template <typename T, typename... Args>
+    T appendImpl(Args&&... args)
     {
         auto result = BaseArray::append<T>(std::forward<Args>(args)...);
         if constexpr (T::ContentTypeValue != ContentObject::ContentTypeValueDefault) {
@@ -713,7 +724,6 @@ public:
         return result;
     }
 
-private:
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>

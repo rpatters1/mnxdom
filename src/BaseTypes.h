@@ -28,6 +28,7 @@
 #include <optional>
 #include <string_view>
 #include <type_traits>
+#include <utility>
 
 #include "nlohmann/json.hpp"
 #include "BoilerplateMacros.h"
@@ -48,7 +49,9 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 
 class Object;
 class Document;
+class Base;
 template <typename T> class Array;
+template <typename T> class Dictionary;
 
 namespace validation {
 class SemanticValidator;
@@ -63,6 +66,82 @@ struct LayoutContent {};
 } // namespace scope
 
 #endif
+
+namespace detail {
+
+template <typename T, auto MakeFunc>
+struct ArrayAppendFromMake;
+
+template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
+struct ArrayAppendFromMake<T, MakeFunc>
+{
+    // Mirrors T::make signature for append IntelliSense without changing behavior.
+    T append(Args... args)
+    {
+        return static_cast<Array<T>&>(*this).template appendImpl<T>(std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T>
+struct ArrayAppendBase
+{
+    template <typename U = T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append(Args&&... args)
+    {
+        return static_cast<Derived&>(*this).template appendImpl<U>(std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T, typename = void>
+struct ArrayAppendOverloads : ArrayAppendBase<Derived, T> {};
+
+template <typename Derived, typename T>
+struct ArrayAppendOverloads<Derived, T, std::void_t<decltype(&T::make)>>
+    : ArrayAppendBase<Derived, T>,
+      ArrayAppendFromMake<T, &T::make>
+{
+    using ArrayAppendBase<Derived, T>::append;
+    using ArrayAppendFromMake<T, &T::make>::append;
+};
+
+template <typename T, auto MakeFunc>
+struct DictionaryAppendFromMake;
+
+template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
+struct DictionaryAppendFromMake<T, MakeFunc>
+{
+    // Mirrors T::make signature for append IntelliSense without changing behavior.
+    T append(std::string_view key, Args... args)
+    {
+        return static_cast<Dictionary<T>&>(*this).template appendImpl<T>(key, std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T>
+struct DictionaryAppendBase
+{
+    template <typename U = T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
+    U append(std::string_view key, Args&&... args)
+    {
+        return static_cast<Derived&>(*this).template appendImpl<U>(key, std::forward<Args>(args)...);
+    }
+};
+
+template <typename Derived, typename T, typename = void>
+struct DictionaryAppendOverloads : DictionaryAppendBase<Derived, T> {};
+
+template <typename Derived, typename T>
+struct DictionaryAppendOverloads<Derived, T, std::void_t<decltype(&T::make)>>
+    : DictionaryAppendBase<Derived, T>,
+      DictionaryAppendFromMake<T, &T::make>
+{
+    using DictionaryAppendBase<Derived, T>::append;
+    using DictionaryAppendFromMake<T, &T::make>::append;
+};
+
+} // namespace detail
 
 
 /**
@@ -349,7 +428,8 @@ class ArrayElementObject;
  * @brief Represents an MNX array, encapsulating property access.
  */
 template <typename T>
-class Array : public Base
+class Array : public Base,
+              public detail::ArrayAppendOverloads<Array<T>, T>
 {
     static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string> ||
                   std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX array element type.");
@@ -447,18 +527,6 @@ public:
      * @brief Create a new element at the end of the array. (Available only for Base types)
      * @return The newly created element.
     */
-    template <typename U = T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
-    U append(Args&&... args)
-    {
-        if constexpr (std::is_base_of_v<Object, U>) {
-            ref().push_back(json::object());
-        } else {
-            ref().push_back(json::array());
-        }
-        return U(*this, std::to_string(ref().size() - 1), std::forward<Args>(args)...);
-    }
-
     /** @brief Remove an element at a given index. */
     void erase(size_t index)
     {
@@ -497,6 +565,24 @@ protected:
             throw std::out_of_range("Index out of range");
         }
     }
+
+private:
+    template <typename U, typename... Args>
+    U appendImpl(Args&&... args)
+    {
+        static_assert(std::is_base_of_v<Base, U>, "Array::appendImpl requires a Base-derived element type.");
+        if constexpr (std::is_base_of_v<Object, U>) {
+            ref().push_back(json::object());
+        } else {
+            ref().push_back(json::array());
+        }
+        return U(*this, std::to_string(ref().size() - 1), std::forward<Args>(args)...);
+    }
+
+    template <typename, auto>
+    friend struct detail::ArrayAppendFromMake;
+    template <typename, typename>
+    friend struct detail::ArrayAppendBase;
 };
 
 /**
@@ -670,7 +756,8 @@ struct EnumStringMapping
  * @brief Represents an MNX dictionary, where each key is a user-defined string.
  */
 template <typename T>
-class Dictionary : public Object
+class Dictionary : public Object,
+                   public detail::DictionaryAppendOverloads<Dictionary<T>, T>
 {
     static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string> ||
                   std::is_base_of_v<ArrayElementObject, T>, "Invalid MNX dictionary element type.");
@@ -759,18 +846,6 @@ public:
      * @brief Create a new element using the input key. (Available only for Base types)
      * @return The newly created element.
     */
-    template <typename U = T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
-    U append(std::string_view key, Args&&... args)
-    {
-        if constexpr (std::is_base_of_v<Object, U>) {
-            ref()[key] = json::object();
-        } else {
-            ref()[key] = json::array();
-        }
-        return U(*this, key, std::forward<Args>(args)...);
-    }
-
     /** @brief Remove an element at a given key. */
     void erase(std::string_view key)
     {
@@ -822,6 +897,23 @@ private:
             return getChild<SimpleType<T>>(key);
         }
     }
+
+    template <typename U, typename... Args>
+    U appendImpl(std::string_view key, Args&&... args)
+    {
+        static_assert(std::is_base_of_v<Base, U>, "Dictionary::appendImpl requires a Base-derived element type.");
+        if constexpr (std::is_base_of_v<Object, U>) {
+            ref()[key] = json::object();
+        } else {
+            ref()[key] = json::array();
+        }
+        return U(*this, key, std::forward<Args>(args)...);
+    }
+
+    template <typename, auto>
+    friend struct detail::DictionaryAppendFromMake;
+    template <typename, typename>
+    friend struct detail::DictionaryAppendBase;
 };
 
 } // namespace mnx

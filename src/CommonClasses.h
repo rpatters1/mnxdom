@@ -570,7 +570,7 @@ public:
     }
 
     /// @brief Implicit conversion back to Required.
-    operator Required() const { return { halfSteps(), staffDistance() }; }
+    operator Required() const { return { staffDistance(), halfSteps() }; }
 
     /// @brief Create a Required instance for #Interval.
     static Required make(MNX_INTERVAL_CTOR_ARGS) { return { staffDistance, halfSteps }; }

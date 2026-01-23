@@ -71,6 +71,9 @@ FetchContent_MakeAvailable(json_schema_validator)
 target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
 target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
 target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
+target_compile_options(mnxdom PUBLIC
+    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wno-gnu-zero-variadic-macro-arguments>
+)
 if (MSVC)
     # Needed for __VA_OPT__ support in macro-heavy headers on MSVC.
     target_compile_options(mnxdom PUBLIC /Zc:preprocessor)

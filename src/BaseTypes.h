@@ -85,6 +85,10 @@ struct ArrayAppendFromMake<T, MakeFunc>
 template <typename Derived, typename T>
 struct ArrayAppendBase
 {
+    /**
+     * @brief Append a new element at the end of the array. (Available only for Base types)
+     * @return The newly created element.
+    */
     template <typename U = T, typename... Args,
               std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
     U append(Args&&... args)
@@ -111,7 +115,10 @@ struct DictionaryAppendFromMake;
 template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
 struct DictionaryAppendFromMake<T, MakeFunc>
 {
-    // Mirrors T::make signature for append IntelliSense without changing behavior.
+    /**
+     * @brief Create a new element using the input key. (Available only for Base types)
+     * @return The newly created element.
+    */
     T append(std::string_view key, Args... args)
     {
         return static_cast<Dictionary<T>&>(*this).template appendImpl<T>(key, std::forward<Args>(args)...);
@@ -523,10 +530,6 @@ public:
         ref().push_back(value);
     }
 
-    /**
-     * @brief Create a new element at the end of the array. (Available only for Base types)
-     * @return The newly created element.
-    */
     /** @brief Remove an element at a given index. */
     void erase(size_t index)
     {
@@ -852,10 +855,6 @@ public:
         ref()[key] = value;
     }
 
-    /**
-     * @brief Create a new element using the input key. (Available only for Base types)
-     * @return The newly created element.
-    */
     /** @brief Remove an element at a given key. */
     void erase(std::string_view key)
     {

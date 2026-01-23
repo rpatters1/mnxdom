@@ -173,8 +173,9 @@ template&lt;typename U  = T&gt; </td></tr>
 <tr class="memitem:ac5b1b4f6b60b7a8aae628dda400dbfe8"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt;!std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, void &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>push_back</b> (const U &amp;value)</td></tr>
 <tr class="memdesc:ac5b1b4f6b60b7a8aae628dda400dbfe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a new value to the array. (Available only for primitive types) <br /></td></tr>
 <tr class="separator:ac5b1b4f6b60b7a8aae628dda400dbfe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a4887f27d00fdecc4c3b72da9e7a522" id="r_a5a4887f27d00fdecc4c3b72da9e7a522"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#a5a4887f27d00fdecc4c3b72da9e7a522">erase</a> (size_t index)</td></tr>
-<tr class="memdesc:a5a4887f27d00fdecc4c3b72da9e7a522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new element at the end of the array. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types)  <br /></td></tr>
+<tr class="memitem:a5a4887f27d00fdecc4c3b72da9e7a522" id="r_a5a4887f27d00fdecc4c3b72da9e7a522"><td class="memItemLeft" align="right" valign="top"><a id="a5a4887f27d00fdecc4c3b72da9e7a522" name="a5a4887f27d00fdecc4c3b72da9e7a522"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>erase</b> (size_t index)</td></tr>
+<tr class="memdesc:a5a4887f27d00fdecc4c3b72da9e7a522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an element at a given index. <br /></td></tr>
 <tr class="separator:a5a4887f27d00fdecc4c3b72da9e7a522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71d223145cc464c531193824bb55b955" id="r_a71d223145cc464c531193824bb55b955"><td class="memTemplParams" colspan="2">template&lt;typename U  = T&gt; </td></tr>
 <tr class="memitem:a71d223145cc464c531193824bb55b955"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt;!std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, std::vector&lt; U &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#a71d223145cc464c531193824bb55b955">toStdVector</a> () const</td></tr>
@@ -233,9 +234,9 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td>
 <tr class="memdesc:af14d0aec0e1a12a893bc0bd2cc7880a9 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the document root. <br /></td></tr>
 <tr class="separator:af14d0aec0e1a12a893bc0bd2cc7880a9 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structmnx_1_1detail_1_1ArrayAppendBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structmnx_1_1detail_1_1ArrayAppendBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structmnx_1_1detail_1_1ArrayAppendBase.html">mnx::detail::ArrayAppendBase&lt; Derived, T &gt;</a></td></tr>
-<tr class="memitem:ae1a898822bcf3a4c62dfc03b0cab7580 inherit pub_methods_structmnx_1_1detail_1_1ArrayAppendBase" id="r_ae1a898822bcf3a4c62dfc03b0cab7580"><td class="memTemplParams" colspan="2">
-template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, int &gt;  = 0&gt; </td></tr>
-<tr class="memitem:ae1a898822bcf3a4c62dfc03b0cab7580 inherit pub_methods_structmnx_1_1detail_1_1ArrayAppendBase"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><b>append</b> (Args &amp;&amp;... args)</td></tr>
+<tr class="memitem:ae1a898822bcf3a4c62dfc03b0cab7580 inherit pub_methods_structmnx_1_1detail_1_1ArrayAppendBase" id="r_ae1a898822bcf3a4c62dfc03b0cab7580"><td class="memTemplParams" colspan="2">template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:ae1a898822bcf3a4c62dfc03b0cab7580 inherit pub_methods_structmnx_1_1detail_1_1ArrayAppendBase"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmnx_1_1detail_1_1ArrayAppendBase.html#ae1a898822bcf3a4c62dfc03b0cab7580">append</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ae1a898822bcf3a4c62dfc03b0cab7580 inherit pub_methods_structmnx_1_1detail_1_1ArrayAppendBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a new element at the end of the array. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types)  <br /></td></tr>
 <tr class="separator:ae1a898822bcf3a4c62dfc03b0cab7580 inherit pub_methods_structmnx_1_1detail_1_1ArrayAppendBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -416,38 +417,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a5a4887f27d00fdecc4c3b72da9e7a522" name="a5a4887f27d00fdecc4c3b72da9e7a522"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a4887f27d00fdecc4c3b72da9e7a522">&#9670;&#160;</a></span>erase()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classmnx_1_1Array.html">mnx::Array</a>&lt; T &gt;::erase </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create a new element at the end of the array. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types) </p>
-<dl class="section return"><dt>Returns</dt><dd>The newly created element.</dd></dl>
-<p>Remove an element at a given index. </p>
 
 </div>
 </div>

@@ -164,8 +164,9 @@ template&lt;typename U  = T&gt; </td></tr>
 <tr class="memitem:a535c793d19a0c7df06b6513cf2e535f0"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt;!std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, void &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>emplace</b> (std::string_view key, const U &amp;value)</td></tr>
 <tr class="memdesc:a535c793d19a0c7df06b6513cf2e535f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new value to the dictonary. (Available only for primitive types) <br /></td></tr>
 <tr class="separator:a535c793d19a0c7df06b6513cf2e535f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd8e86d2600121be752e51d1d23a036a" id="r_abd8e86d2600121be752e51d1d23a036a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#abd8e86d2600121be752e51d1d23a036a">erase</a> (std::string_view key)</td></tr>
-<tr class="memdesc:abd8e86d2600121be752e51d1d23a036a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new element using the input key. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types)  <br /></td></tr>
+<tr class="memitem:abd8e86d2600121be752e51d1d23a036a" id="r_abd8e86d2600121be752e51d1d23a036a"><td class="memItemLeft" align="right" valign="top"><a id="abd8e86d2600121be752e51d1d23a036a" name="abd8e86d2600121be752e51d1d23a036a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>erase</b> (std::string_view key)</td></tr>
+<tr class="memdesc:abd8e86d2600121be752e51d1d23a036a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an element at a given key. <br /></td></tr>
 <tr class="separator:abd8e86d2600121be752e51d1d23a036a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5db597e11a29528e222ab2270e301cf6" id="r_a5db597e11a29528e222ab2270e301cf6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Dictionary.html#a5db597e11a29528e222ab2270e301cf6">find</a> (std::string_view key)</td></tr>
 <tr class="memdesc:a5db597e11a29528e222ab2270e301cf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds an element by key and returns an iterator.  <br /></td></tr>
@@ -464,38 +465,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="abd8e86d2600121be752e51d1d23a036a" name="abd8e86d2600121be752e51d1d23a036a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd8e86d2600121be752e51d1d23a036a">&#9670;&#160;</a></span>erase()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classmnx_1_1Dictionary.html">mnx::Dictionary</a>&lt; T &gt;::erase </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create a new element using the input key. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types) </p>
-<dl class="section return"><dt>Returns</dt><dd>The newly created element.</dd></dl>
-<p>Remove an element at a given key. </p>
 
 </div>
 </div>

@@ -7,7 +7,7 @@ var searchData=
   ['aeolian_4',['Aeolian',['../namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683cea71c7913b150c35a82ad53ae6b3be4d21',1,'music_theory']]],
   ['alter_5',['alter',['../structmnx_1_1sequence_1_1Pitch_1_1Required.html#a7eb866eee626ce4d90e814e0f231a8ec',1,'mnx::sequence::Pitch::Required']]],
   ['alteration_6',['alteration',['../classmusic__theory_1_1Transposer.html#a550fc30dbc918d850cd12599248b001c',1,'music_theory::Transposer']]],
-  ['append_7',['append',['../classmnx_1_1ContentArray.html#ab6dcbf57b11b6080e76f78f5f09eb888',1,'mnx::ContentArray']]],
+  ['append_7',['append',['../classmnx_1_1ContentArray.html#ab6dcbf57b11b6080e76f78f5f09eb888',1,'mnx::ContentArray::append()'],['../structmnx_1_1detail_1_1DictionaryAppendFromMake_3_01T_00_01MakeFunc_01_4.html#a2c80b81a34a4995f1eec3c4e256d81e8',1,'mnx::detail::DictionaryAppendFromMake&lt; T, MakeFunc &gt;::append()'],['../structmnx_1_1detail_1_1ArrayAppendBase.html#ae1a898822bcf3a4c62dfc03b0cab7580',1,'mnx::detail::ArrayAppendBase::append()']]],
   ['arpeggio_8',['Arpeggio',['../namespacemnx.html#a961d9beb0e598614b7157949964d33efae30c0ef84d87ecf9870662a879a36a46',1,'mnx']]],
   ['array_9',['array',['../classmnx_1_1Array.html#a3fc676b2d5484d189bd905ad6bd1ec4d',1,'mnx::Array::Array(Base &amp;parent, std::string_view key)'],['../classmnx_1_1Array.html#abe20cb3f95cee1491a0fe46a11cb1bfd',1,'mnx::Array::Array(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1Array.html',1,'mnx::Array&lt; T &gt;']]],
   ['array_3c_20contentobject_20_3e_10',['Array&lt; ContentObject &gt;',['../classmnx_1_1Array.html',1,'mnx']]],

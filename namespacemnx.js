@@ -37,7 +37,7 @@ var namespacemnx =
     [ "json_pointer", "namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc", null ],
     [ "AccidentalEnclosureSymbol", "namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7d", [
       [ "Brackets", "namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da16e127072878e35f572b8f19bdb4b686", null ],
-      [ "Parenthesis", "namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da304d34e3694c1f6c446cede23add1b98", null ]
+      [ "Parentheses", "namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da9ca8f54c595187c5d86748cc2f3346d7", null ]
     ] ],
     [ "AutoYesNo", "namespacemnx.html#a80e8e06e1c1d79c1b9fb8305c2184940", [
       [ "Auto", "namespacemnx.html#a80e8e06e1c1d79c1b9fb8305c2184940a06b9281e396db002010bde1de57262eb", null ],

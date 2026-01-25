@@ -2,7 +2,7 @@ var searchData=
 [
   ['page_0',['page',['../classmnx_1_1score_1_1Page.html',1,'mnx::score::Page'],['../classmnx_1_1score_1_1Page.html#aea318c90db12dfe763c0812101db187c',1,'mnx::score::Page::Page()']]],
   ['parent_1',['parent',['../classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335',1,'mnx::Base']]],
-  ['parenthesis_2',['Parenthesis',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da304d34e3694c1f6c446cede23add1b98',1,'mnx']]],
+  ['parentheses_2',['Parentheses',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da9ca8f54c595187c5d86748cc2f3346d7',1,'mnx']]],
   ['part_3',['part',['../classmnx_1_1Part.html',1,'mnx::Part'],['../classmnx_1_1Part.html#a7566e69dc96d207c39cc8d2a8de3a37c',1,'mnx::Part::Part()']]],
   ['partid_4',['partid',['../structmnx_1_1layout_1_1StaffSource_1_1Required.html#aefacdcabe6fa62a1009e4c2922dac164',1,'mnx::layout::StaffSource::Required::partId'],['../structmnx_1_1util_1_1StaffKey.html#a1809d5ea22ea5711474d48333194611b',1,'mnx::util::StaffKey::partId']]],
   ['parttransposition_5',['parttransposition',['../classmnx_1_1part_1_1PartTransposition.html#ae7bce042eca93912112cb92a5e46c21d',1,'mnx::part::PartTransposition::PartTransposition(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1part_1_1PartTransposition.html#ac7ca86c992c3b01c006da43772995966',1,'mnx::part::PartTransposition::PartTransposition(Base &amp;parent, std::string_view key, MNX_PART_PART_TRANSPOSITION_CTOR_ARGS)'],['../classmnx_1_1part_1_1PartTransposition.html',1,'mnx::part::PartTransposition']]],

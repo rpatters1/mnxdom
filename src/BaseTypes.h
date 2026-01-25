@@ -499,6 +499,16 @@ public:
     {
         return operator[](index);
     }
+
+    /** @brief Access the first element.
+     *  @throws std::out_of_range if the array is empty.
+     */
+    [[nodiscard]] T front() const { return (*this)[0]; }
+
+    /** @brief Access the last element.
+     *  @throws std::out_of_range if the array is empty.
+     */
+    [[nodiscard]] T back() const { return (*this)[size() - 1]; }
     
     /// @brief const operator[]
     [[nodiscard]] auto operator[](size_t index) const

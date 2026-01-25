@@ -160,6 +160,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr
 T&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t index) const</td></tr>
 <tr class="memdesc:ad3f9afe3548f6babc1664c31e5ed80bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct getter for a particular element. <br /></td></tr>
 <tr class="separator:ad3f9afe3548f6babc1664c31e5ed80bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0154160a7a37029f2a66876b529d3ead" id="r_a0154160a7a37029f2a66876b529d3ead"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#a0154160a7a37029f2a66876b529d3ead">front</a> () const</td></tr>
+<tr class="memdesc:a0154160a7a37029f2a66876b529d3ead"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access the first element.  <br /></td></tr>
+<tr class="separator:a0154160a7a37029f2a66876b529d3ead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9148a0f6c01309edbc04f82b7e777fb" id="r_aa9148a0f6c01309edbc04f82b7e777fb"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Array.html#aa9148a0f6c01309edbc04f82b7e777fb">back</a> () const</td></tr>
+<tr class="memdesc:aa9148a0f6c01309edbc04f82b7e777fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access the last element.  <br /></td></tr>
+<tr class="separator:aa9148a0f6c01309edbc04f82b7e777fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fbf0b5765e79612d02accee536dc0a6" id="r_a3fbf0b5765e79612d02accee536dc0a6"><td class="memItemLeft" align="right" valign="top"><a id="a3fbf0b5765e79612d02accee536dc0a6" name="a3fbf0b5765e79612d02accee536dc0a6"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t index) const</td></tr>
 <tr class="memdesc:a3fbf0b5765e79612d02accee536dc0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">const operator[] <br /></td></tr>
@@ -384,6 +390,41 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa9148a0f6c01309edbc04f82b7e777fb" name="aa9148a0f6c01309edbc04f82b7e777fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9148a0f6c01309edbc04f82b7e777fb">&#9670;&#160;</a></span>back()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classmnx_1_1Array.html">mnx::Array</a>&lt; T &gt;::back </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Access the last element. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if the array is empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a05a20cc19658a6cae21da5ed73d07f7c" name="a05a20cc19658a6cae21da5ed73d07f7c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05a20cc19658a6cae21da5ed73d07f7c">&#9670;&#160;</a></span>checkIndex()</h2>
 
@@ -414,6 +455,41 @@ template&lt;typename T &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>if the index is out of range </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0154160a7a37029f2a66876b529d3ead" name="a0154160a7a37029f2a66876b529d3ead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0154160a7a37029f2a66876b529d3ead">&#9670;&#160;</a></span>front()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classmnx_1_1Array.html">mnx::Array</a>&lt; T &gt;::front </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Access the first element. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if the array is empty. </td></tr>
   </table>
   </dd>
 </dl>

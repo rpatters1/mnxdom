@@ -38,8 +38,8 @@ namespace mnx {
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 MNX_ENUM_MAPPING(AccidentalEnclosureSymbol, {
-    { "brackets",       AccidentalEnclosureSymbol:: Brackets },
-    { "parentheses",    AccidentalEnclosureSymbol::Parenthesis }
+    { "brackets",       AccidentalEnclosureSymbol::Brackets },
+    { "parentheses",    AccidentalEnclosureSymbol::Parentheses }
 });
 
 MNX_ENUM_MAPPING(AutoYesNo, {

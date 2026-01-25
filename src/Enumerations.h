@@ -29,8 +29,8 @@ namespace mnx {
  */
 enum class AccidentalEnclosureSymbol
 {
-    Brackets,           ///< stems down (default)
-    Parenthesis         ///< stems up
+    Brackets,           ///< enclose accidental in brackets
+    Parentheses         ///< enclose accidental in parentheses
 };
 
 /**

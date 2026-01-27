@@ -796,26 +796,30 @@ private:
         using reference = value_type&;
 
     private:
-        DictionaryType* m_ptr;
-        IteratorType m_it;
-        mutable std::unique_ptr<value_type> m_pair;  // Cached key-value pair for operator*() and operator->()
+        DictionaryType* m_ptr {};
+        IteratorType m_it {};
+        mutable std::optional<value_type> m_pair; // cached key/value
 
-        void update_pair() const {
+        void update_pair() const
+        {
             m_pair.reset();
             if (m_it != m_ptr->ref().end()) {
-                m_pair = std::make_unique<value_type>(m_it.key(), m_ptr->valueForKey(m_it.key()));
+                m_pair.emplace(m_it.key(), m_ptr->valueForKey(m_it.key()));
             }
         }
-    
-    public:
-        iter(DictionaryType* ptr, IteratorType it) : m_ptr(ptr), m_it(it)
-        { update_pair(); }
 
-        [[nodiscard]] reference operator*() const { return *m_pair.get(); }
-        [[nodiscard]] pointer operator->() const { return m_pair.get(); }
+    public:
+        iter(DictionaryType* ptr, IteratorType it)
+            : m_ptr(ptr), m_it(it)
+        {
+            update_pair();
+        }
+
+        [[nodiscard]] reference operator*() const { return *m_pair; }
+        [[nodiscard]] pointer operator->() const { return &*m_pair; }
 
         iter& operator++() { ++m_it; update_pair(); return *this; }
-        iter operator++(int) { iter tmp = *this; ++(*this); return tmp; }
+        iter operator++(int) { iter tmp(*this); ++(*this); return tmp; }
 
         [[nodiscard]] bool operator!=(const iter& o) const { return m_it != o.m_it; }
         [[nodiscard]] bool operator==(const iter& o) const { return m_it == o.m_it; }

@@ -239,9 +239,15 @@ struct LayoutSpan
     /**
      * @brief Nesting depth of this span within the layout hierarchy.
      *
-     * Depth increases with each level of group nesting. For a given
-     * startIndex, group spans always have a smaller depth than the
-     * staff span they contain, ensuring staff spans sort last.
+     * Depth reflects the layout content tree level: groups live at the
+     * container depth, and staff spans are always one level deeper
+     * (leaf depth = container depth + 1). This means ungrouped staves
+     * in the root content still have depth 1, while root-level groups
+     * have depth 0. Example: with root content [Flute, Clarinet, PianoGroup],
+     * where PianoGroup contains two staves, the group span for PianoGroup has
+     * depth 0, while all staff spans (Flute, Clarinet, and both piano staves)
+     * have depth 1. For a given startIndex, group spans always have a smaller
+     * depth than the staff span they contain, ensuring staff spans sort last.
      */
     size_t depth{};
 
@@ -288,6 +294,10 @@ struct LayoutSpan
 /// The returned spans are sorted by ascending #LayoutSpan::startIndex and then by ascending
 /// #LayoutSpan::depth. This ordering places outer groups before inner groups when they start at the
 /// same staff, and places the staff span at the deepest depth for its start index.
+///
+/// Depth follows the content tree level: groups live at the container depth, and staff spans are
+/// one level deeper (leaf depth = container depth + 1). This means ungrouped staves in the root
+/// content have depth 1, while root-level groups have depth 0.
 ///
 /// If an unsupported content element is encountered during traversal, the function fails and
 /// returns std::nullopt.
@@ -407,8 +417,10 @@ buildLayoutSpans(const mnx::Layout& layout)
 /// reasonable default in the absence of an explicit layout definition.
 ///
 /// Staff spans are assigned the deepest depth within their part so that they sort after their
-/// enclosing group span when spans are ordered by start index and depth. For single-staff parts,
-/// only a staff span is produced, and the part name is applied directly to that staff.
+/// enclosing group span when spans are ordered by start index and depth. This mirrors the explicit
+/// layout semantics: group spans live at the container depth, and staff spans are one level deeper
+/// (so single-staff parts still produce staff spans at depth 1). For single-staff parts, only a
+/// staff span is produced, and the part name is applied directly to that staff.
 ///
 /// Parts that declare zero staves are ignored.
 ///
@@ -429,7 +441,7 @@ buildDefaultLayoutSpans(const Array<Part>& parts)
         bool staffNameNeeded = true;
         if (numStaves > 1) {
             LayoutSpan groupSpan;
-            groupSpan.depth = staffDepth++;
+            groupSpan.depth = 0;
             groupSpan.kind = LayoutSpan::Kind::Group;
             groupSpan.symbol = LayoutSymbol::Brace;
             groupSpan.startIndex = staffIdx;

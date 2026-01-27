@@ -61,7 +61,7 @@ var NAVTREEINDEX =
 "classmnx_1_1global_1_1Measure.html#aa2179b1717d5debd3977cb5170c444ef",
 "classmnx_1_1score_1_1MultimeasureRest.html#a0c63d113a6662c33584a1dad558867be",
 "classmnx_1_1sequence_1_1SingleNoteTremolo.html#ad0e48bf272b1c8cd518c6ec4c1e804b1",
-"namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63a7fc56270e7a70fa81a5935b72eacbe29",
+"namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63a3a3ea00cfc35332cedf6e5e9a32e94da",
 "structmnx_1_1part_1_1Clef_1_1Required.html"
 ];
 

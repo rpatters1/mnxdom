@@ -33,7 +33,7 @@ var namespacemnx =
     [ "SimpleType", "classmnx_1_1SimpleType.html", "classmnx_1_1SimpleType" ],
     [ "TimeSignature", "classmnx_1_1TimeSignature.html", "classmnx_1_1TimeSignature" ],
     [ "ErrorHandler", "namespacemnx.html#a1ecfb36b8c75b494f064bfd002c4c119", null ],
-    [ "json", "namespacemnx.html#afa6f9a599ccd3724de8d3d0d1d9fb796", null ],
+    [ "json", "namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30", null ],
     [ "json_pointer", "namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc", null ],
     [ "AccidentalEnclosureSymbol", "namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7d", [
       [ "Brackets", "namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da16e127072878e35f572b8f19bdb4b686", null ],

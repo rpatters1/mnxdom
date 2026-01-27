@@ -190,7 +190,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Nesting depth of this span within the layout hierarchy. </p>
-<p>Depth increases with each level of group nesting. For a given startIndex, group spans always have a smaller depth than the staff span they contain, ensuring staff spans sort last. </p>
+<p>Depth reflects the layout content tree level: groups live at the container depth, and staff spans are always one level deeper (leaf depth = container depth + 1). This means ungrouped staves in the root content still have depth 1, while root-level groups have depth 0. Example: with root content [Flute, Clarinet, PianoGroup], where PianoGroup contains two staves, the group span for PianoGroup has depth 0, while all staff spans (Flute, Clarinet, and both piano staves) have depth 1. For a given startIndex, group spans always have a smaller depth than the staff span they contain, ensuring staff spans sort last. </p>
 
 </div>
 </div>

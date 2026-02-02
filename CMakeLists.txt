@@ -31,6 +31,7 @@ endif()
 set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
 set(MNX_SCHEMA_DIR "${CMAKE_CURRENT_LIST_DIR}/schema")
 
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/MnxW3C.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 
 # Add library
@@ -70,7 +71,10 @@ FetchContent_MakeAvailable(json_schema_validator)
 
 target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
 target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
+# nlohmann/json behavior config
 target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
+# Export fetched mnx_w3c locations to dependents
+mnx_w3c_apply_interface_definitions(mnxdom)
 target_compile_options(mnxdom PUBLIC
     $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wno-gnu-zero-variadic-macro-arguments>
 )

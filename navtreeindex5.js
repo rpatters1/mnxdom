@@ -76,8 +76,9 @@ var NAVTREEINDEX5 =
 "namespacemnx_1_1score.html":[1,0,0,3],
 "namespacemnx_1_1sequence.html":[1,0,0,4],
 "namespacemnx_1_1validation.html":[1,0,0,5],
-"namespacemnx_1_1validation.html#a94f02ad6bb8ceac641a8773d2588ea9a":[1,0,0,5,2],
-"namespacemnx_1_1validation.html#ac8fcada9e8539ae3ce8094a02d2b653a":[1,0,0,5,3],
+"namespacemnx_1_1validation.html#a3b2c7aa455e8caa7340c8e56c65ef90c":[1,0,0,5,2],
+"namespacemnx_1_1validation.html#a94f02ad6bb8ceac641a8773d2588ea9a":[1,0,0,5,3],
+"namespacemnx_1_1validation.html#ac8fcada9e8539ae3ce8094a02d2b653a":[1,0,0,5,4],
 "namespacemusic__theory.html":[1,0,1],
 "namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683ce":[1,0,1,2],
 "namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683cea2dfbe3d304372906c238010701613654":[1,0,1,2,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "structmnx_1_1layout_1_1StaffSource_1_1Required.html":[1,0,0,1,2,0],
 "structmnx_1_1layout_1_1StaffSource_1_1Required.html":[2,0,0,2,2,0],
 "structmnx_1_1layout_1_1StaffSource_1_1Required.html#aefacdcabe6fa62a1009e4c2922dac164":[1,0,0,1,2,0,0],
-"structmnx_1_1layout_1_1StaffSource_1_1Required.html#aefacdcabe6fa62a1009e4c2922dac164":[2,0,0,2,2,0,0],
-"structmnx_1_1part_1_1Clef_1_1Required.html":[1,0,0,2,1,0]
+"structmnx_1_1layout_1_1StaffSource_1_1Required.html#aefacdcabe6fa62a1009e4c2922dac164":[2,0,0,2,2,0,0]
 };

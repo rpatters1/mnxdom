@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"structmnx_1_1part_1_1Clef_1_1Required.html":[1,0,0,2,1,0],
 "structmnx_1_1part_1_1Clef_1_1Required.html":[2,0,0,3,1,0],
 "structmnx_1_1part_1_1Clef_1_1Required.html#a629ca5ad1693c61737af38af4f6bc19a":[1,0,0,2,1,0,0],
 "structmnx_1_1part_1_1Clef_1_1Required.html#a629ca5ad1693c61737af38af4f6bc19a":[2,0,0,3,1,0,0],

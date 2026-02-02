@@ -119,10 +119,40 @@ Functions</h2></td></tr>
 <tr class="memitem:ac8fcada9e8539ae3ce8094a02d2b653a" id="r_ac8fcada9e8539ae3ce8094a02d2b653a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmnx_1_1validation_1_1SemanticValidationResult.html">SemanticValidationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx_1_1validation.html#ac8fcada9e8539ae3ce8094a02d2b653a">semanticValidate</a> (const <a class="el" href="classmnx_1_1Document.html">Document</a> &amp;document)</td></tr>
 <tr class="memdesc:ac8fcada9e8539ae3ce8094a02d2b653a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the semantics of the input MNX document.  <br /></td></tr>
 <tr class="separator:ac8fcada9e8539ae3ce8094a02d2b653a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b2c7aa455e8caa7340c8e56c65ef90c" id="r_a3b2c7aa455e8caa7340c8e56c65ef90c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx_1_1validation.html#a3b2c7aa455e8caa7340c8e56c65ef90c">hasValidDocumentRoot</a> (const <a class="el" href="classmnx_1_1Document.html">Document</a> &amp;document)</td></tr>
+<tr class="memdesc:a3b2c7aa455e8caa7340c8e56c65ef90c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detects if the input JSON has a valid document root. This allows client code to permit a non-schema-conforming document to run anyway, perhaps with a warning to the user.  <br /></td></tr>
+<tr class="separator:a3b2c7aa455e8caa7340c8e56c65ef90c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>provides schema- and semantic-level validation functions for MNX documents </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a3b2c7aa455e8caa7340c8e56c65ef90c" name="a3b2c7aa455e8caa7340c8e56c65ef90c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b2c7aa455e8caa7340c8e56c65ef90c">&#9670;&#160;</a></span>hasValidDocumentRoot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mnx::validation::hasValidDocumentRoot </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmnx_1_1Document.html">Document</a> &amp;&#160;</td>
+          <td class="paramname"><em>document</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Detects if the input JSON has a valid document root. This allows client code to permit a non-schema-conforming document to run anyway, perhaps with a warning to the user. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">document</td><td>The document to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the document root is a valid MNX document root. </dd></dl>
+
+</div>
+</div>
 <a id="a94f02ad6bb8ceac641a8773d2588ea9a" name="a94f02ad6bb8ceac641a8773d2588ea9a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a94f02ad6bb8ceac641a8773d2588ea9a">&#9670;&#160;</a></span>schemaValidate()</h2>
 

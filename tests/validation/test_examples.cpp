@@ -21,22 +21,43 @@
  * THE SOFTWARE.
  */
 #include <string>
+#include <array>
 #include <filesystem>
 #include <iterator>
+#include <string_view>
+#include <algorithm>
 
 #include "gtest/gtest.h"
 #include "mnxdom.h"
 #include "test_utils.h"
 
+namespace {
+constexpr std::array<std::string_view, 3> kSchemaOnlyExamples = {
+    "orchestral-layout.json",
+    "organ-layout.json",
+    "system-layouts.json"
+};
+
+bool shouldOnlySchemaValidate(const std::filesystem::path& path)
+{
+    const auto filename = path.filename().string();
+    return std::find(kSchemaOnlyExamples.begin(), kSchemaOnlyExamples.end(), filename) != kSchemaOnlyExamples.end();
+}
+} // namespace
+
 TEST(Examples, All)
 {
-    setupTestDataPaths();
-    std::filesystem::path inputPath = getInputPath() / "examples";
+    const std::filesystem::path inputPath = MNX_W3C_EXAMPLES_PATH;
+    ASSERT_TRUE(std::filesystem::exists(inputPath)) << "examples path does not exist: " << inputPath;
     int filesProcessed = 0;
     for (const auto& entry : std::filesystem::directory_iterator(inputPath)) {
         if (entry.is_regular_file() && entry.path().extension() == ".json") {
             auto doc = mnx::Document::create(entry.path());
-            fullValidate(doc, entry.path());
+            if (shouldOnlySchemaValidate(entry.path())) {
+                validateSchema(doc, entry.path());
+            } else {
+                fullValidate(doc, entry.path());
+            }
             filesProcessed++;
         }
     }

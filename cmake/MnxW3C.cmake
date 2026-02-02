@@ -3,7 +3,7 @@ include(FetchContent)
 # Fetch MNX spec
 FetchContent_Declare(
     mnx_w3c
-    GIT_REPOSITORY git@github.com:w3c/mnx.git
+    GIT_REPOSITORY https://github.com/w3c/mnx.git
     GIT_TAG 75551875790062bc9d61e3ca468a050136021f58
     SOURCE_SUBDIR _cmake_disabled_please_ignore # this is a hack to prevent FetchContent_Declare from running the fetched content cmake.
     # see https://stackoverflow.com/questions/79261625/cmake-fetchcontent-with-header-only-project/79261858#79261858

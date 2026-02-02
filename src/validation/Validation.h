@@ -82,12 +82,18 @@ struct SemanticValidationResult : public ValidationResult
 /// @param document The mnx::Document to validate
 /// @param jsonSchema The JSON schema to validate against, or std::nullopt for the embedded schema
 /// @return validation result
-ValidationResult schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema = std::nullopt);
+extern ValidationResult schemaValidate(const Document& document, const std::optional<std::string>& jsonSchema = std::nullopt);
 
 /// @brief Validates the semantics of the input MNX document
 /// @param document The document to validate
 /// @return validation result
-SemanticValidationResult semanticValidate(const Document& document);
+extern SemanticValidationResult semanticValidate(const Document& document);
+
+/// @brief Detects if the input JSON has a valid document root. This allows client code to permit a
+/// non-schema-conforming document to run anyway, perhaps with a warning to the user.
+/// @param document The document to check.
+/// @return True if the document root is a valid MNX document root.
+extern bool hasValidDocumentRoot(const Document& document);
 
 } // namespace validation
 } // namespace mnx

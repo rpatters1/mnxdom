@@ -630,5 +630,58 @@ SemanticValidationResult semanticValidate(const Document& document)
     return validator.result;
 }
 
+namespace {
+// allowed root-level items defined here
+constexpr std::array<std::string_view, 8> allowedItems = {
+    "global",
+    "layouts",
+    "mnx",
+    "parts",
+    "scores",
+    "_c",
+    "_x",
+    "id"
+};
+
+constexpr bool allowedItemsContains(std::string_view key)
+{
+    for (auto v : allowedItems) {
+        if (v == key) {
+            return true;
+        }
+    }
+    return false;
+}
+} // namespace
+
+bool hasValidDocumentRoot(const Document& document)
+{
+    // required items found here
+    bool foundGlobal = false;
+    bool foundParts = false;
+    bool foundMnx = false;
+
+    const auto root = document.root();
+    for (const auto& [key, value] : root->items()) {
+        if (!allowedItemsContains(key)) {
+            return false;
+        }
+        if (key == "global") {
+            foundGlobal = true;
+        }
+        if (key == "parts") {
+            foundParts = true;
+        }
+        if (key == "mnx") {
+            const auto mnx = root->at("mnx");
+            if (!mnx["version"].empty()) {
+                foundMnx = true;
+            }
+        }
+    }
+
+    return foundGlobal && foundParts && foundMnx;
+}
+
 } // namespace validation
 } // namespace mnx

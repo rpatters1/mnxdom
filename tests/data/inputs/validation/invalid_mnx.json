@@ -1,0 +1,21 @@
+{
+  "mnx": {
+    "version": 1
+  },
+  "global": {
+    "key": "C major",
+    "time": 4
+  },
+  "parts": {
+    "P1": {
+      "name": 123,
+      "measures": {}
+    }
+  },
+  "scores": {
+    "score-1": {
+      "title": 123,
+      "parts": "not-an-array"
+    }
+  }
+}

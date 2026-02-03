@@ -77,11 +77,9 @@ target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 mnx_w3c_apply_interface_definitions(mnxdom)
 target_compile_options(mnxdom PUBLIC
     $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wno-gnu-zero-variadic-macro-arguments>
+    # Required by public headers that use __VA_OPT__.
+    $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>
 )
-if (MSVC)
-    # Needed for __VA_OPT__ support in macro-heavy headers on MSVC.
-    target_compile_options(mnxdom PUBLIC /Zc:preprocessor)
-endif()
 
 add_dependencies(mnxdom GenerateMnxSchemaXxd)
 target_include_directories(mnxdom PRIVATE ${GENERATED_DIR})

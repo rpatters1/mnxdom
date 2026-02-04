@@ -76,9 +76,6 @@ target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 # Export fetched mnx_w3c locations to dependents
 mnx_w3c_apply_interface_definitions(mnxdom)
 target_compile_options(mnxdom PUBLIC
-    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wno-gnu-zero-variadic-macro-arguments>
-    # Required by public headers that use __VA_OPT__.
-    $<$<CXX_COMPILER_ID:GNU>:-Wno-c++20-extensions>
     $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>
 )
 

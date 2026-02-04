@@ -53,6 +53,12 @@ class Base;
 template <typename T> class Array;
 template <typename T> class Dictionary;
 
+namespace sequence {
+class Space;
+class MultiNoteTremolo;
+class Tuplet;
+} // namespace sequence
+
 namespace validation {
 class SemanticValidator;
 }; // namespace validation
@@ -714,10 +720,20 @@ public:
         return operator[](index).get<T>();
     }
 
-    /// @brief Append an element of the specified type.
-    /// @details Concrete signatures are explicitly specialized per type to preserve IntelliSense call sequences.
+    /// @brief Append an element of the specified type (default overload for no-arg content types).
+    template <typename T,
+              std::enable_if_t<std::is_base_of_v<ContentObject, T> &&
+                               !std::is_same_v<T, sequence::Space> &&
+                               !std::is_same_v<T, sequence::MultiNoteTremolo> &&
+                               !std::is_same_v<T, sequence::Tuplet>, int> = 0>
+    T append()
+    {
+        return appendWithType<T>();
+    }
+
+    /// @brief Append overload entry point for explicitly specialized argful content types.
     template <typename T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
+              std::enable_if_t<std::is_base_of_v<ContentObject, T> && (sizeof...(Args) > 0), int> = 0>
     T append(const Args&... args)
     {
         static_assert(!std::is_same_v<T, T>,

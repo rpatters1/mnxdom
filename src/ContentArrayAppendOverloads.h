@@ -26,30 +26,6 @@
 namespace mnx {
 
 template <>
-inline layout::Staff ContentArray::append<layout::Staff>()
-{
-    return appendWithType<layout::Staff>();
-}
-
-template <>
-inline layout::Group ContentArray::append<layout::Group>()
-{
-    return appendWithType<layout::Group>();
-}
-
-template <>
-inline sequence::Event ContentArray::append<sequence::Event>()
-{
-    return appendWithType<sequence::Event>();
-}
-
-template <>
-inline sequence::Grace ContentArray::append<sequence::Grace>()
-{
-    return appendWithType<sequence::Grace>();
-}
-
-template <>
 inline sequence::Space ContentArray::append<sequence::Space, FractionValue>(const FractionValue& duration)
 {
     return appendWithType<sequence::Space>(duration);

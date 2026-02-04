@@ -26,7 +26,7 @@
 #define MNX_PP_CAT(a, b) MNX_PP_CAT_I(a, b)
 #define MNX_PP_CAT_I(a, b) a##b
 
-#define MNX_PP_NARG(...) MNX_PP_NARG_I(__VA_ARGS__, MNX_PP_RSEQ_N())
+#define MNX_PP_NARG(...) MNX_PP_NARG_I(__VA_ARGS__, MNX_PP_RSEQ_N(), 0)
 #define MNX_PP_NARG_I(...) MNX_PP_ARG_N(__VA_ARGS__)
 #define MNX_PP_ARG_N( \
     _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, N, ...) N
@@ -196,7 +196,7 @@
     CREATE_BODY \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_REQUIRED_CHILD_2(TYPE, NAME, ...) \
+#define MNX_REQUIRED_CHILD_2(TYPE, NAME) \
     MNX_REQUIRED_CHILD_CORE(TYPE, NAME, \
         TYPE create_##NAME() { return setChild(#NAME, TYPE(*this, #NAME)); } \
     )
@@ -253,7 +253,7 @@
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro
 
-#define MNX_OPTIONAL_CHILD_2(TYPE, NAME, ...) \
+#define MNX_OPTIONAL_CHILD_2(TYPE, NAME) \
     MNX_OPTIONAL_CHILD_CORE(TYPE, NAME, \
         TYPE ensure_##NAME() { \
             if (auto child = getOptionalChild<TYPE>(#NAME)) return child.value(); \

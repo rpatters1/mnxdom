@@ -75,19 +75,25 @@ struct LayoutContent {};
 
 namespace detail {
 
+/// @brief Adds an `append(...)` overload that mirrors a type's static `make(...)` signature for arrays.
 template <typename T, auto MakeFunc>
 struct ArrayAppendFromMake;
 
+/// @brief Implements Array append overloads from a type's `make(...)` signature.
 template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
 struct ArrayAppendFromMake<T, MakeFunc>
 {
-    // Mirrors T::make signature for append IntelliSense without changing behavior.
+    /**
+     * @brief Append a new element at the end of the array. (Available only for Base types)
+     * @return The newly created element.
+    */
     T append(Args... args)
     {
         return static_cast<Array<T>&>(*this).template appendImpl<T>(std::forward<Args>(args)...);
     }
 };
 
+/// @brief Base append implementation for arrays of Base-derived types.
 template <typename Derived, typename T>
 struct ArrayAppendBase
 {
@@ -115,9 +121,11 @@ struct ArrayAppendOverloads<Derived, T, std::void_t<decltype(&T::make)>>
     using ArrayAppendFromMake<T, &T::make>::append;
 };
 
+/// @brief Adds an `append(key, ...)` overload that mirrors a type's static `make(...)` signature for dictionaries.
 template <typename T, auto MakeFunc>
 struct DictionaryAppendFromMake;
 
+/// @brief Implements Dictionary append overloads from a type's `make(...)` signature.
 template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
 struct DictionaryAppendFromMake<T, MakeFunc>
 {
@@ -131,9 +139,14 @@ struct DictionaryAppendFromMake<T, MakeFunc>
     }
 };
 
+/// @brief Base append implementation for dictionaries of Base-derived types.
 template <typename Derived, typename T>
 struct DictionaryAppendBase
 {
+    /**
+     * @brief Append a new element at the end of the array. (Available only for Base types)
+     * @return The newly created element.
+    */
     template <typename U = T, typename... Args,
               std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
     U append(std::string_view key, Args&&... args)

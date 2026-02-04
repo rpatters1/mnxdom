@@ -41,6 +41,7 @@
 namespace mnx::util {
 
 namespace detail {
+#ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
 template <typename T>
 struct JsonSchemaTypeNames
@@ -88,6 +89,7 @@ std::string typeNamesExpectationString()
     return oss.str();
 }
 
+#endif // DOXYGEN_SHOULD_IGNORE_THIS
 } // namespace detail
 
 /// @brief base class for mapping error exceptions

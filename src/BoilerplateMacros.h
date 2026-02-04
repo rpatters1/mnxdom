@@ -65,13 +65,13 @@
  * @brief creates a required property with a simple type
  *
  * It creates the following class methods.
-  *
-  * - `NAME()` returns the value of the property.
-  * - `set_NAME(value) sets the value of the property.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  */
+ *
+ * - `NAME()` returns the value of the property.
+ * - `set_NAME(value) sets the value of the property.
+ *
+ * @param TYPE the type of the property
+ * @param NAME the name of the property (no quotes)
+ */
 #define MNX_REQUIRED_PROPERTY(TYPE, NAME) \
     [[nodiscard]] TYPE NAME() const { \
         if (!ref().contains(#NAME)) { \
@@ -82,41 +82,41 @@
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     static_assert(true, "") // require semicolon after macro
 
- /**
-  * @brief creates a property (with a simple type) that occupies a fixed position in an array
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns the value of the property.
-  * - `set_NAME(value) sets the value of the property.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  * @param INDEX the index in the array for the property
-  */
- #define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
+/**
+ * @brief creates a property (with a simple type) that occupies a fixed position in an array
+ *
+ * It creates the following class methods.
+ *
+ * - `NAME()` returns the value of the property.
+ * - `set_NAME(value) sets the value of the property.
+ *
+ * @param TYPE the type of the property
+ * @param NAME the name of the property (no quotes)
+ * @param INDEX the index in the array for the property
+ */
+#define MNX_ARRAY_ELEMENT_PROPERTY(TYPE, NAME, INDEX) \
     static_assert(std::is_integral_v<decltype(INDEX)>, "array index must be an integer type"); \
     [[nodiscard]] TYPE NAME() const { return (*this)[INDEX]; } \
     void set_##NAME(const TYPE& value) { (*this)[INDEX] = value; } \
     static_assert(true, "") // require semicolon after macro
 
- /**
-  * @brief creates an optional named property with a simple type. This is a property whose name is different than
-  * its JSON key. This is used when the JSON property name is a C++ keyword. An example is `class` that becomes a
-  * property called `styleClass`.
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
-  * - `NAME_or(value)` returns the property value if it exists or the input value if not.
-  * - `set_NAME(value) sets the value of the property.
-  * - `clear_NAME() clears the property from the JSON document.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  * @param KEY the JSON key of the property (with quotes)
-  */
- #define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, KEY) \
+/**
+ * @brief creates an optional named property with a simple type. This is a property whose name is different than
+ * its JSON key. This is used when the JSON property name is a C++ keyword. An example is `class` that becomes a
+ * property called `styleClass`.
+ *
+ * It creates the following class methods.
+ *
+ * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
+ * - `NAME_or(value)` returns the property value if it exists or the input value if not.
+ * - `set_NAME(value) sets the value of the property.
+ * - `clear_NAME() clears the property from the JSON document.
+ *
+ * @param TYPE the type of the property
+ * @param NAME the name of the property (no quotes)
+ * @param KEY the JSON key of the property (with quotes)
+ */
+#define MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, KEY) \
     [[nodiscard]] std::optional<TYPE> NAME() const { \
         return ref().contains(KEY) ? std::optional<TYPE>(ref()[KEY].get<TYPE>()) : std::nullopt; \
     } \
@@ -127,36 +127,36 @@
     void clear_##NAME() { ref().erase(KEY); } \
     static_assert(true, "") // require semicolon after macro
 
- /**
-  * @brief creates an optional property with a simple type.
-  *
-  * It creates the following class methods.
-  *
-  * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
-  * - `NAME_or(value)` returns the property value if it exists or the input value if not.
-  * - `set_NAME(value) sets the value of the property.
-  * - `clear_NAME() clears the property from the JSON document.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  */
- #define MNX_OPTIONAL_PROPERTY(TYPE, NAME) MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, #NAME)
+/**
+ * @brief creates an optional property with a simple type.
+ *
+ * It creates the following class methods.
+ *
+ * - `NAME()` returns a std::optional<TYPE> containing the value of the property.
+ * - `NAME_or(value)` returns the property value if it exists or the input value if not.
+ * - `set_NAME(value) sets the value of the property.
+ * - `clear_NAME() clears the property from the JSON document.
+ *
+ * @param TYPE the type of the property
+ * @param NAME the name of the property (no quotes)
+ */
+#define MNX_OPTIONAL_PROPERTY(TYPE, NAME) MNX_OPTIONAL_NAMED_PROPERTY(TYPE, NAME, #NAME)
 
- /**
-  * @brief creates an optional property with a default value.
-  *
-  * It has the following class methods.
-  *
-  * - `NAME()` returns the value of the property.
-  * - `set_NAME(value) sets the value of the property.
-  * - `clear_NAME() clears the property from the JSON document.
-  * - `set_or_clear_NAME(value) sets the value of the property if the input value is not the default.
-  * Otherwise it clears the property.
-  *
-  * @param TYPE the type of the property
-  * @param NAME the name of the property (no quotes)
-  * @param DEFAULT the default value of the property.
-  */
+/**
+ * @brief creates an optional property with a default value.
+ *
+ * It has the following class methods.
+ *
+ * - `NAME()` returns the value of the property.
+ * - `set_NAME(value) sets the value of the property.
+ * - `clear_NAME() clears the property from the JSON document.
+ * - `set_or_clear_NAME(value) sets the value of the property if the input value is not the default.
+ * Otherwise it clears the property.
+ *
+ * @param TYPE the type of the property
+ * @param NAME the name of the property (no quotes)
+ * @param DEFAULT the default value of the property.
+ */
 #define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
     [[nodiscard]] TYPE NAME() const { \
         return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
@@ -169,16 +169,16 @@
     } \
     static_assert(true, "") // require semicolon after macro
 
- /**
-  * @brief creates a required child object or array
-  *
+/**
+ * @brief creates a required child object or array
+ *
  * It creates the following class methods.
  *
  * - `NAME()` returns the child.
  * - `create_NAME(...)` creates the child from constructor parameters (variadic form only).
  * - `create_NAME()` creates the child with a default constructor (non-variadic form only).
  *
-* For classes that define `Required`, pass the constructor parameters directly.
+ * For classes that define `Required`, pass the constructor parameters directly.
  *
  * Example (IntelliSense):
  * `create_pitch(NoteStep::C, 4, 0);`
@@ -224,9 +224,9 @@
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
- /**
-  * @brief creates an optional child object or array
-  *
+/**
+ * @brief creates an optional child object or array
+ *
  * It creates the following class methods.
  *
  * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
@@ -234,7 +234,7 @@
  * - `ensure_NAME()` if the child does not exist, creates it with a default constructor (non-variadic form only).
  * - `clear_NAME()` clears the child from JSON document.
  *
-* For classes that define `Required`, pass the constructor parameters directly.
+ * For classes that define `Required`, pass the constructor parameters directly.
  *
  * Example (IntelliSense):
  * `ensure_duration(NoteValueBase::Quarter, 1);`

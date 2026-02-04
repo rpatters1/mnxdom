@@ -40,12 +40,6 @@ namespace sequence {
  * @class AccidentalEnclosure
  * @brief Represents the enclosure on an accidental.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_ACCIDENTAL_ENCLOSURE_FIELDS(M) \
-    M(AccidentalEnclosureSymbol, symbol)
-#define MNX_SEQUENCE_ACCIDENTAL_ENCLOSURE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_ACCIDENTAL_ENCLOSURE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class AccidentalEnclosure : public Object
 {
 public:
@@ -65,7 +59,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
     /// @param symbol The symbol to use for the enclosure
-    AccidentalEnclosure(Base& parent, std::string_view key, MNX_SEQUENCE_ACCIDENTAL_ENCLOSURE_CTOR_ARGS)
+    AccidentalEnclosure(Base& parent, std::string_view key, AccidentalEnclosureSymbol symbol)
         : Object(parent, key)
     {
         set_symbol(symbol);
@@ -75,7 +69,7 @@ public:
     operator Required() const { return { symbol() }; }
 
     /// @brief Create a Required instance for #AccidentalEnclosure.
-    static Required make(MNX_SEQUENCE_ACCIDENTAL_ENCLOSURE_CTOR_ARGS) { return { symbol }; }
+    static Required make(AccidentalEnclosureSymbol symbol) { return { symbol }; }
 
     MNX_REQUIRED_PROPERTY(AccidentalEnclosureSymbol, symbol);      ///< The symbol to use for the enclosure
 };
@@ -84,12 +78,6 @@ public:
  * @class AccidentalDisplay
  * @brief Represents an explicit directive to show or hide an accidental.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_ACCIDENTAL_DISPLAY_FIELDS(M) \
-    M(bool, show)
-#define MNX_SEQUENCE_ACCIDENTAL_DISPLAY_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_ACCIDENTAL_DISPLAY_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class AccidentalDisplay : public Object
 {
 public:
@@ -109,7 +97,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in the parent.
     /// @param show Whether to show or hide the accidental
-    AccidentalDisplay(Base& parent, std::string_view key, MNX_SEQUENCE_ACCIDENTAL_DISPLAY_CTOR_ARGS)
+    AccidentalDisplay(Base& parent, std::string_view key, bool show)
         : Object(parent, key)
     {
         set_show(show);
@@ -119,10 +107,10 @@ public:
     operator Required() const { return { show() }; }
 
     /// @brief Create a Required instance for #AccidentalDisplay.
-    static Required make(MNX_SEQUENCE_ACCIDENTAL_DISPLAY_CTOR_ARGS) { return { show }; }
+    static Required make(bool show) { return { show }; }
 
     MNX_OPTIONAL_CHILD(AccidentalEnclosure, enclosure,
-        MNX_FIELDS_AS_TUPLES(MNX_SEQUENCE_ACCIDENTAL_ENCLOSURE_FIELDS)); ///< The enclosure type (brackets or parentheses). Omit if none.
+        (AccidentalEnclosureSymbol, symbol)); ///< The enclosure type (brackets or parentheses). Omit if none.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, force, false); ///< Whether this accidental was set intentionally (e.g., a courtesy accidental).
     MNX_REQUIRED_PROPERTY(bool, show);                      ///< Whether to show or hide the accidental
 };
@@ -155,14 +143,6 @@ public:
  * @class Pitch
  * @brief Represents the pitch of a note
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_PITCH_FIELDS(M) \
-    M(NoteStep, step), \
-    M(int, octave), \
-    M(int, alter, = 0)
-#define MNX_SEQUENCE_PITCH_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_PITCH_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Pitch : public Object
 {
 public:
@@ -186,7 +166,7 @@ public:
     /// @param step The letter spelling of the note.
     /// @param octave The octave number of the note (where C4 is middle C).
     /// @param alter The chromatic alteration of the note (positive for sharp, negative for flat).
-    Pitch(Base& parent, std::string_view key, MNX_SEQUENCE_PITCH_CTOR_ARGS)
+    Pitch(Base& parent, std::string_view key, NoteStep step, int octave, int alter = 0)
         : Object(parent, key)
     {
         set_step(step);
@@ -198,7 +178,7 @@ public:
     operator Required() const { return { step(), octave(), alter() }; }
 
     /// @brief Create a Required instance for #Pitch.
-    static Required make(MNX_SEQUENCE_PITCH_CTOR_ARGS) { return { step, octave, alter }; }
+    static Required make(NoteStep step, int octave, int alter = 0) { return { step, octave, alter }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, alter, 0);  ///< chromatic alteration
     MNX_REQUIRED_PROPERTY(int, octave);         ///< the octave number
@@ -218,12 +198,6 @@ public:
  * @class Slur
  * @brief Contains information about a tie on a note.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_SLUR_FIELDS(M) \
-    M(const std::string&, target)
-#define MNX_SEQUENCE_SLUR_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_SLUR_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Slur : public ArrayElementObject
 {
 public:
@@ -243,7 +217,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param target The target note id of the slur
-    Slur(Base& parent, std::string_view key, MNX_SEQUENCE_SLUR_CTOR_ARGS)
+    Slur(Base& parent, std::string_view key, const std::string& target)
         : ArrayElementObject(parent, key)
     {
         set_target(target);
@@ -253,7 +227,7 @@ public:
     operator Required() const { return { target() }; }
 
     /// @brief Create a Required instance for #Slur.
-    static Required make(MNX_SEQUENCE_SLUR_CTOR_ARGS) { return { target }; }
+    static Required make(const std::string& target) { return { target }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, endNote);            ///< the specific note ID this slur ends on
     MNX_OPTIONAL_PROPERTY(LineType, lineType);              ///< the type of line for the slur
@@ -307,12 +281,6 @@ public:
  * @class KitNote
  * @brief Represents a single note in a (drum) kit within a musical event within a sequence.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_KIT_NOTE_FIELDS(M) \
-    M(const std::string&, kitComponentId)
-#define MNX_SEQUENCE_KIT_NOTE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_KIT_NOTE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class KitNote : public NoteBase
 {
 public:
@@ -332,7 +300,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param kitComponentId The ID within the kit for this part
-    KitNote(Base& parent, std::string_view key, MNX_SEQUENCE_KIT_NOTE_CTOR_ARGS)
+    KitNote(Base& parent, std::string_view key, const std::string& kitComponentId)
         : NoteBase(parent, key)
     {
         set_kitComponent(kitComponentId);
@@ -342,7 +310,7 @@ public:
     operator Required() const { return { kitComponent() }; }
 
     /// @brief Create a Required instance for #KitNote.
-    static Required make(MNX_SEQUENCE_KIT_NOTE_CTOR_ARGS) { return { kitComponentId }; }
+    static Required make(const std::string& kitComponentId) { return { kitComponentId }; }
 
     MNX_REQUIRED_PROPERTY(std::string, kitComponent);               ///< The ID within the kit for this part.
 
@@ -353,12 +321,6 @@ public:
  * @class Note
  * @brief Represents a single note (i.e., within a chord) within a musical event within a sequence.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_NOTE_FIELDS(M) \
-    M(const Pitch::Required&, pitch)
-#define MNX_SEQUENCE_NOTE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_NOTE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Note : public NoteBase
 {
 public:
@@ -378,7 +340,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param pitch The pitch fields to use
-    Note(Base& parent, std::string_view key, MNX_SEQUENCE_NOTE_CTOR_ARGS)
+    Note(Base& parent, std::string_view key, const Pitch::Required& pitch)
         : NoteBase(parent, key)
     {
         create_pitch(pitch.step, pitch.octave, pitch.alter);
@@ -388,12 +350,12 @@ public:
     operator Required() const { return { pitch() }; }
 
     /// @brief Create a Required instance for #Note.
-    static Required make(MNX_SEQUENCE_NOTE_CTOR_ARGS) { return { pitch }; }
+    static Required make(const Pitch::Required& pitch) { return { pitch }; }
 
     MNX_OPTIONAL_CHILD(
         AccidentalDisplay, accidentalDisplay,
-        MNX_FIELDS_AS_TUPLES(MNX_SEQUENCE_ACCIDENTAL_DISPLAY_FIELDS)); ///< the forced show/hide state of the accidental
-    MNX_REQUIRED_CHILD(Pitch, pitch, MNX_FIELDS_AS_TUPLES(MNX_SEQUENCE_PITCH_FIELDS)); ///< the pitch of the note
+        (bool, show)); ///< the forced show/hide state of the accidental
+    MNX_REQUIRED_CHILD(Pitch, pitch, (NoteStep, step), (int, octave), (int, alter)); ///< the pitch of the note
     MNX_OPTIONAL_CHILD(TransposeWritten, written);                  ///< How to write this note when it is displayed transposed
 
     inline static constexpr std::string_view JsonSchemaTypeName = "note";     ///< required for mapping
@@ -403,12 +365,6 @@ public:
  * @class EventLyricLine
  * @brief Contains information about a lyric syllable from one lyric line on a note.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_EVENT_LYRIC_LINE_FIELDS(M) \
-    M(const std::string&, syllableText)
-#define MNX_SEQUENCE_EVENT_LYRIC_LINE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_EVENT_LYRIC_LINE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class EventLyricLine : public ArrayElementObject
 {
 public:
@@ -428,7 +384,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param syllableText The syllable text
-    EventLyricLine(Base& parent, std::string_view key, MNX_SEQUENCE_EVENT_LYRIC_LINE_CTOR_ARGS)
+    EventLyricLine(Base& parent, std::string_view key, const std::string& syllableText)
         : ArrayElementObject(parent, key)
     {
         set_text(syllableText);
@@ -438,7 +394,7 @@ public:
     operator Required() const { return { text() }; }
 
     /// @brief Create a Required instance for #EventLyricLine.
-    static Required make(MNX_SEQUENCE_EVENT_LYRIC_LINE_CTOR_ARGS) { return { syllableText }; }
+    static Required make(const std::string& syllableText) { return { syllableText }; }
 
     MNX_REQUIRED_PROPERTY(std::string, text);           ///< the syllable text
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(LyricLineType, type, LyricLineType::Whole);  ///< the type of syllable (in relation to the complete word)
@@ -478,7 +434,7 @@ public:
     }
 
     MNX_OPTIONAL_CHILD(NoteValue, duration,
-        MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_FIELDS)); ///< Symbolic duration of the event.
+        (NoteValueBase, base), (unsigned, dots)); ///< Symbolic duration of the event.
     MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
@@ -523,12 +479,6 @@ public:
  * @class Space
  * @brief Occupies metric space without showing anything.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_SPACE_FIELDS(M) \
-    M(const FractionValue&, duration)
-#define MNX_SEQUENCE_SPACE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_SPACE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Space : public ContentObject
 {
 public:
@@ -548,7 +498,7 @@ public:
     /// @param parent The parent class instance.
     /// @param key The JSON key to use for embedding in parent.
     /// @param duration The duration of the space
-    Space(Base& parent, std::string_view key, MNX_SEQUENCE_SPACE_CTOR_ARGS)
+    Space(Base& parent, std::string_view key, const FractionValue& duration)
         : ContentObject(parent, key)
     {
         create_duration(duration);
@@ -558,11 +508,11 @@ public:
     operator Required() const { return { duration() }; }
 
     /// @brief Create a Required instance for #Space.
-    static Required make(MNX_SEQUENCE_SPACE_CTOR_ARGS) { return { duration }; }
+    static Required make(const FractionValue& duration) { return { duration }; }
 
     MNX_REQUIRED_CHILD(
         Fraction, duration,
-        MNX_FIELDS_AS_TUPLES(MNX_FRACTION_FIELDS)); ///< Duration of space to occupy.
+        (const FractionValue&, value)); ///< Duration of space to occupy.
 
     inline static constexpr std::string_view ContentTypeValue = "space";   ///< type value that identifies the type within the content array
 };
@@ -601,13 +551,6 @@ public:
  * @class MultiNoteTremolo
  * @brief Represents a multi-note tremolo sequence within a sequence.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_MULTI_NOTE_TREMOLO_FIELDS(M) \
-    M(int, numberOfMarks), \
-    M(const NoteValueQuantity::Required&, noteValueQuant)
-#define MNX_SEQUENCE_MULTI_NOTE_TREMOLO_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_MULTI_NOTE_TREMOLO_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class MultiNoteTremolo : public ContentObject
 {
 public:
@@ -629,7 +572,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param numberOfMarks The number of marks (beams)
     /// @param noteValueQuant The note value quantity
-    MultiNoteTremolo(Base& parent, std::string_view key, MNX_SEQUENCE_MULTI_NOTE_TREMOLO_CTOR_ARGS)
+    MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
         : ContentObject(parent, key)
     {
         create_content();
@@ -641,16 +584,16 @@ public:
     operator Required() const { return { marks(), outer() }; }
 
     /// @brief Create a Required instance for #MultiNoteTremolo.
-    static Required make(MNX_SEQUENCE_MULTI_NOTE_TREMOLO_CTOR_ARGS)
+    static Required make(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
     { return { numberOfMarks, noteValueQuant }; }
 
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
     MNX_OPTIONAL_CHILD(
         NoteValue, individualDuration,
-        MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_FIELDS)); ///< optional value that specifies the individual duration of each event in the tremolo.
+        (NoteValueBase, base), (unsigned, dots)); ///< optional value that specifies the individual duration of each event in the tremolo.
     MNX_REQUIRED_PROPERTY(int, marks);                              ///< the number of marks (beams)
     MNX_REQUIRED_CHILD(NoteValueQuantity, outer,
-        MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_QUANTITY_FIELDS)); ///< a half note tremolo would be 2 quarters here
+        (unsigned, count), (const NoteValue::Required&, noteValue)); ///< a half note tremolo would be 2 quarters here
 
     inline static constexpr std::string_view ContentTypeValue = "tremolo";   ///< type value that identifies the type within the content array
 };
@@ -659,13 +602,6 @@ public:
  * @class Tuplet
  * @brief Represents a tuplet sequence within a sequence.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SEQUENCE_TUPLET_FIELDS(M) \
-    M(const NoteValueQuantity::Required&, innerNoteValueQuant), \
-    M(const NoteValueQuantity::Required&, outerNoteValueQuant)
-#define MNX_SEQUENCE_TUPLET_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SEQUENCE_TUPLET_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Tuplet : public ContentObject
 {
 public:
@@ -687,7 +623,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param innerNoteValueQuant Inner amount
     /// @param outerNoteValueQuant Outer amount
-    Tuplet(Base& parent, std::string_view key, MNX_SEQUENCE_TUPLET_CTOR_ARGS)
+    Tuplet(Base& parent, std::string_view key, const NoteValueQuantity::Required& innerNoteValueQuant, const NoteValueQuantity::Required& outerNoteValueQuant)
         : ContentObject(parent, key)
     {
         create_inner(innerNoteValueQuant.count, innerNoteValueQuant.noteValue);
@@ -699,15 +635,15 @@ public:
     operator Required() const { return { inner(), outer() }; }
 
     /// @brief Create a Required instance for #Tuplet.
-    static Required make(MNX_SEQUENCE_TUPLET_CTOR_ARGS)
+    static Required make(const NoteValueQuantity::Required& innerNoteValueQuant, const NoteValueQuantity::Required& outerNoteValueQuant)
     { return { innerNoteValueQuant, outerNoteValueQuant }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style
     MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events, tuplets, and grace notes
     MNX_REQUIRED_CHILD(NoteValueQuantity, inner,
-        MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_QUANTITY_FIELDS)); ///< Inner quantity: **3 quarters in the time** of 2 quarters
+        (unsigned, count), (const NoteValue::Required&, noteValue)); ///< Inner quantity: **3 quarters in the time** of 2 quarters
     MNX_REQUIRED_CHILD(NoteValueQuantity, outer,
-        MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_QUANTITY_FIELDS)); ///< Outer quantity: 3 quarters in the time **of 2 quarters**
+        (unsigned, count), (const NoteValue::Required&, noteValue)); ///< Outer quantity: 3 quarters in the time **of 2 quarters**
     /// @todo `orient`
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showNumber, TupletDisplaySetting::Inner); ///< How and whether to show the tuplet number(s)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TupletDisplaySetting, showValue, TupletDisplaySetting::NoNumber); ///< How and whether to show the tuplet note value(s)

@@ -36,12 +36,6 @@ namespace global {
  * @class Barline
  * @brief Represents the barline for a global measure.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_GLOBAL_BARLINE_FIELDS(M) \
-    M(BarlineType, barlineType)
-#define MNX_GLOBAL_BARLINE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_GLOBAL_BARLINE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Barline : public Object
 {
 public:
@@ -61,7 +55,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param barlineType The barline type for this Barline
-    Barline(Base& parent, std::string_view key, MNX_GLOBAL_BARLINE_CTOR_ARGS)
+    Barline(Base& parent, std::string_view key, BarlineType barlineType)
         : Object(parent, key)
     {
         set_type(barlineType);
@@ -71,7 +65,7 @@ public:
     operator Required() const { return { type() }; }
 
     /// @brief Create a Required instance for #Barline.
-    static Required make(MNX_GLOBAL_BARLINE_CTOR_ARGS) { return { barlineType }; }
+    static Required make(BarlineType barlineType) { return { barlineType }; }
 
     MNX_REQUIRED_PROPERTY(BarlineType, type);  ///< the type of barline
 };
@@ -80,12 +74,6 @@ public:
  * @class Ending
  * @brief Represents an alternate ending (or "volta bracket") for a global measure.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_GLOBAL_ENDING_FIELDS(M) \
-    M(int, duration)
-#define MNX_GLOBAL_ENDING_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_GLOBAL_ENDING_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Ending : public Object
 {
 public:
@@ -105,7 +93,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param duration The duration of the ending
-    Ending(Base& parent, std::string_view key, MNX_GLOBAL_ENDING_CTOR_ARGS)
+    Ending(Base& parent, std::string_view key, int duration)
         : Object(parent, key)
     {
         set_duration(duration);
@@ -115,7 +103,7 @@ public:
     operator Required() const { return { duration() }; }
 
     /// @brief Create a Required instance for #Ending.
-    static Required make(MNX_GLOBAL_ENDING_CTOR_ARGS) { return { duration }; }
+    static Required make(int duration) { return { duration }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the type of barline
@@ -127,12 +115,6 @@ public:
  * @class Fine
  * @brief Represents an Fine object (as in "D.S. al Fine")
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_GLOBAL_FINE_FIELDS(M) \
-    M(const FractionValue&, position)
-#define MNX_GLOBAL_FINE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_GLOBAL_FINE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Fine : public Object
 {
 public:
@@ -152,7 +134,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param position The position of the Fine within the measure
-    Fine(Base& parent, std::string_view key, MNX_GLOBAL_FINE_CTOR_ARGS)
+    Fine(Base& parent, std::string_view key, const FractionValue& position)
         : Object(parent, key)
     {
         create_location(position);
@@ -162,24 +144,17 @@ public:
     operator Required() const { return { location().fraction() }; }
 
     /// @brief Create a Required instance for #Fine.
-    static Required make(MNX_GLOBAL_FINE_CTOR_ARGS) { return { position }; }
+    static Required make(const FractionValue& position) { return { position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                  ///< color to use when rendering the fine direction
     MNX_REQUIRED_CHILD(RhythmicPosition, location,
-        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< the location of the fine direction
+        (const FractionValue&, position)); ///< the location of the fine direction
 };
 
 /**
  * @class Jump
  * @brief Represents an Jump object (as in "D.S.")
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_GLOBAL_JUMP_FIELDS(M) \
-    M(JumpType, jumpType), \
-    M(const FractionValue&, position)
-#define MNX_GLOBAL_JUMP_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_GLOBAL_JUMP_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Jump : public Object
 {
 public:
@@ -201,7 +176,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param jumpType The jump type
     /// @param position The position within the measure
-    Jump(Base& parent, std::string_view key, MNX_GLOBAL_JUMP_CTOR_ARGS)
+    Jump(Base& parent, std::string_view key, JumpType jumpType, const FractionValue& position)
         : Object(parent, key)
     {
         set_type(jumpType);
@@ -212,11 +187,11 @@ public:
     operator Required() const { return { type(), location().fraction() }; }
 
     /// @brief Create a Required instance for #Jump.
-    static Required make(MNX_GLOBAL_JUMP_CTOR_ARGS) { return { jumpType, position }; }
+    static Required make(JumpType jumpType, const FractionValue& position) { return { jumpType, position }; }
 
     MNX_REQUIRED_PROPERTY(JumpType, type);                      ///< the JumpType
     MNX_REQUIRED_CHILD(RhythmicPosition, location,
-        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< the location of the jump
+        (const FractionValue&, position)); ///< the location of the jump
 };
 
 /**
@@ -246,12 +221,6 @@ public:
  * @class Segno
  * @brief Represents a segno marker
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_GLOBAL_SEGNO_FIELDS(M) \
-    M(const FractionValue&, position)
-#define MNX_GLOBAL_SEGNO_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_GLOBAL_SEGNO_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Segno : public Object
 {
 public:
@@ -271,7 +240,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param position The position of the Segno within the measure
-    Segno(Base& parent, std::string_view key, MNX_GLOBAL_SEGNO_CTOR_ARGS)
+    Segno(Base& parent, std::string_view key, const FractionValue& position)
         : Object(parent, key)
     {
         create_location(position);
@@ -281,12 +250,12 @@ public:
     operator Required() const { return { location().fraction() }; }
 
     /// @brief Create a Required instance for #Segno.
-    static Required make(MNX_GLOBAL_SEGNO_CTOR_ARGS) { return { position }; }
+    static Required make(const FractionValue& position) { return { position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
     MNX_OPTIONAL_PROPERTY(std::string, glyph);      ///< the SMuFL glyph name to be used when rendering this segno.
     MNX_REQUIRED_CHILD(RhythmicPosition, location,
-        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< location
+        (const FractionValue&, position)); ///< location
 };
 
 /**
@@ -306,13 +275,6 @@ public:
  * @class Tempo
  * @brief Represents the tempo for a global measure.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_GLOBAL_TEMPO_FIELDS(M) \
-    M(int, bpm), \
-    M(const NoteValue::Required&, noteValue)
-#define MNX_GLOBAL_TEMPO_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_GLOBAL_TEMPO_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Tempo : public ArrayElementObject
 {
 public:
@@ -334,7 +296,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param bpm The beats per minute
     /// @param noteValue The note value for the tempo
-    Tempo(Base& parent, std::string_view key, MNX_GLOBAL_TEMPO_CTOR_ARGS)
+    Tempo(Base& parent, std::string_view key, int bpm, const NoteValue::Required& noteValue)
         : ArrayElementObject(parent, key)
     {
         set_bpm(bpm);
@@ -345,13 +307,13 @@ public:
     operator Required() const { return { bpm(), value() }; }
 
     /// @brief Create a Required instance for #Tempo.
-    static Required make(MNX_GLOBAL_TEMPO_CTOR_ARGS) { return { bpm, noteValue }; }
+    static Required make(int bpm, const NoteValue::Required& noteValue) { return { bpm, noteValue }; }
 
     MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking
     MNX_OPTIONAL_CHILD(RhythmicPosition, location,
-        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< location within the measure of the tempo marking
+        (const FractionValue&, position)); ///< location within the measure of the tempo marking
     MNX_REQUIRED_CHILD(NoteValue, value,
-        MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_FIELDS)); ///< the note value for the tempo.
+        (NoteValueBase, base), (unsigned, dots)); ///< the note value for the tempo.
 };
 
 /**
@@ -364,25 +326,25 @@ public:
     using ArrayElementObject::ArrayElementObject;
 
     MNX_OPTIONAL_CHILD(Barline, barline,
-        MNX_FIELDS_AS_TUPLES(MNX_GLOBAL_BARLINE_FIELDS)); ///< optional barline for this measure
+        (BarlineType, barlineType)); ///< optional barline for this measure
     MNX_OPTIONAL_CHILD(Ending, ending,
-        MNX_FIELDS_AS_TUPLES(MNX_GLOBAL_ENDING_FIELDS)); ///< optional ending ("volta bracket") for this measure
+        (int, duration)); ///< optional ending ("volta bracket") for this measure
     MNX_OPTIONAL_CHILD(Fine, fine,
-        MNX_FIELDS_AS_TUPLES(MNX_GLOBAL_FINE_FIELDS)); ///< optional fine direction for this measure
+        (const FractionValue&, position)); ///< optional fine direction for this measure
     MNX_OPTIONAL_PROPERTY(int, index);              ///< the measure index which is used to refer to this measure by other classes in the MNX document
     MNX_OPTIONAL_CHILD(Jump, jump,
-        MNX_FIELDS_AS_TUPLES(MNX_GLOBAL_JUMP_FIELDS)); ///< optional jump direction for this measure
+        (JumpType, jumpType), (const FractionValue&, position)); ///< optional jump direction for this measure
     MNX_OPTIONAL_CHILD(KeySignature, key,
-        MNX_FIELDS_AS_TUPLES(MNX_KEY_SIGNATURE_FIELDS)); ///< optional key signature/key change for this measure
+        (int, fifths)); ///< optional key signature/key change for this measure
     MNX_OPTIONAL_PROPERTY(int, number);             ///< visible measure number. Use #calcVisibleNumber to get the correct value,
                                                     ///< as defined in the MNX specification, since it may be omitted here.
     MNX_OPTIONAL_CHILD(RepeatEnd, repeatEnd);       ///< if present, indicates that there is backwards repeat
     MNX_OPTIONAL_CHILD(RepeatStart, repeatStart);   ///< if present, indicates that a repeated section starts here
     MNX_OPTIONAL_CHILD(Segno, segno,
-        MNX_FIELDS_AS_TUPLES(MNX_GLOBAL_SEGNO_FIELDS)); ///< if present, indicates that a segno marker is here
+        (const FractionValue&, position)); ///< if present, indicates that a segno marker is here
     MNX_OPTIONAL_CHILD(Array<Tempo>, tempos);       ///< the tempo changes within the measure, if any
     MNX_OPTIONAL_CHILD(TimeSignature, time,
-        MNX_FIELDS_AS_TUPLES(MNX_TIME_SIGNATURE_FIELDS)); ///< if present, indicates a meter change
+        (int, count), (TimeSignatureUnit, unit)); ///< if present, indicates a meter change
 
     /// @brief Calculates the barline type for this measure.
     /// @return barline().type() if barline() has a value. Otherwise the default (as defined in the MNX specification.)

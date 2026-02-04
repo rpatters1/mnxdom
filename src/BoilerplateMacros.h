@@ -22,7 +22,7 @@
 #pragma once
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
-// Preprocessor helpers to build field lists and parameter lists.
+// Preprocessor helpers to build child macro overloads and parameter lists.
 #define MNX_PP_CAT(a, b) MNX_PP_CAT_I(a, b)
 #define MNX_PP_CAT_I(a, b) a##b
 
@@ -31,24 +31,6 @@
 #define MNX_PP_ARG_N( \
     _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, N, ...) N
 #define MNX_PP_RSEQ_N() 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
-
-#define MNX_FOR_EACH(m, ...) MNX_PP_CAT(MNX_FOR_EACH_, MNX_PP_NARG(__VA_ARGS__))(m, __VA_ARGS__)
-#define MNX_FOR_EACH_1(m, x) m(x)
-#define MNX_FOR_EACH_2(m, x, ...) m(x) MNX_FOR_EACH_1(m, __VA_ARGS__)
-#define MNX_FOR_EACH_3(m, x, ...) m(x) MNX_FOR_EACH_2(m, __VA_ARGS__)
-#define MNX_FOR_EACH_4(m, x, ...) m(x) MNX_FOR_EACH_3(m, __VA_ARGS__)
-#define MNX_FOR_EACH_5(m, x, ...) m(x) MNX_FOR_EACH_4(m, __VA_ARGS__)
-#define MNX_FOR_EACH_6(m, x, ...) m(x) MNX_FOR_EACH_5(m, __VA_ARGS__)
-#define MNX_FOR_EACH_7(m, x, ...) m(x) MNX_FOR_EACH_6(m, __VA_ARGS__)
-#define MNX_FOR_EACH_8(m, x, ...) m(x) MNX_FOR_EACH_7(m, __VA_ARGS__)
-#define MNX_FOR_EACH_9(m, x, ...) m(x) MNX_FOR_EACH_8(m, __VA_ARGS__)
-#define MNX_FOR_EACH_10(m, x, ...) m(x) MNX_FOR_EACH_9(m, __VA_ARGS__)
-#define MNX_FOR_EACH_11(m, x, ...) m(x) MNX_FOR_EACH_10(m, __VA_ARGS__)
-#define MNX_FOR_EACH_12(m, x, ...) m(x) MNX_FOR_EACH_11(m, __VA_ARGS__)
-#define MNX_FOR_EACH_13(m, x, ...) m(x) MNX_FOR_EACH_12(m, __VA_ARGS__)
-#define MNX_FOR_EACH_14(m, x, ...) m(x) MNX_FOR_EACH_13(m, __VA_ARGS__)
-#define MNX_FOR_EACH_15(m, x, ...) m(x) MNX_FOR_EACH_14(m, __VA_ARGS__)
-#define MNX_FOR_EACH_16(m, x, ...) m(x) MNX_FOR_EACH_15(m, __VA_ARGS__)
 
 #define MNX_FOR_EACH_COMMA(m, ...) MNX_PP_CAT(MNX_FOR_EACH_COMMA_, MNX_PP_NARG(__VA_ARGS__))(m, __VA_ARGS__)
 #define MNX_FOR_EACH_COMMA_1(m, x) m(x)
@@ -77,8 +59,6 @@
 #define MNX_FIELD_PARAM(pair) MNX_FIELD_TYPE(pair) MNX_FIELD_NAME(pair)
 #define MNX_FIELDS_PARAMS(...) MNX_FOR_EACH_COMMA(MNX_FIELD_PARAM, __VA_ARGS__)
 #define MNX_FIELDS_NAMES(...) MNX_FOR_EACH_COMMA(MNX_FIELD_NAME, __VA_ARGS__)
-#define MNX_FIELD_MEMBER(pair) MNX_FIELD_TYPE(pair) MNX_FIELD_NAME(pair);
-#define MNX_FIELDS_MEMBERS(...) MNX_FOR_EACH(MNX_FIELD_MEMBER, __VA_ARGS__)
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
 /**
@@ -206,8 +186,8 @@
  * @param TYPE the type of the child object or array
  * @param NAME the name of the child object or array (no quotes)
  */
-#define MNX_REQUIRED_CHILD(TYPE, NAME, ...) \
-    MNX_PP_CAT(MNX_REQUIRED_CHILD_, MNX_PP_NARG(TYPE, NAME __VA_OPT__(,) __VA_ARGS__))(TYPE, NAME, __VA_ARGS__)
+#define MNX_REQUIRED_CHILD(...) \
+    MNX_PP_CAT(MNX_REQUIRED_CHILD_, MNX_PP_NARG(__VA_ARGS__))(__VA_ARGS__)
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 
@@ -262,8 +242,8 @@
  * @param TYPE the type of the child object or array
  * @param NAME the name of the child object or array (no quotes)
  */
-#define MNX_OPTIONAL_CHILD(TYPE, NAME, ...) \
-    MNX_PP_CAT(MNX_OPTIONAL_CHILD_, MNX_PP_NARG(TYPE, NAME __VA_OPT__(,) __VA_ARGS__))(TYPE, NAME, __VA_ARGS__)
+#define MNX_OPTIONAL_CHILD(...) \
+    MNX_PP_CAT(MNX_OPTIONAL_CHILD_, MNX_PP_NARG(__VA_ARGS__))(__VA_ARGS__)
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 

@@ -130,9 +130,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Interval</b> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:a65ab6db7a20d6eefaa0c06137a503ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for existing <a class="el" href="classmnx_1_1NoteValue.html" title="Represents a symbolic note value (not necessarily a duration)">NoteValue</a> instances. <br /></td></tr>
 <tr class="separator:a65ab6db7a20d6eefaa0c06137a503ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ffba10d16d0996036e7d2380e89b5ca" id="r_a5ffba10d16d0996036e7d2380e89b5ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Interval.html#a5ffba10d16d0996036e7d2380e89b5ca">Interval</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, MNX_INTERVAL_CTOR_ARGS)</td></tr>
-<tr class="memdesc:a5ffba10d16d0996036e7d2380e89b5ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new Barline class as a child of a JSON element.  <br /></td></tr>
-<tr class="separator:a5ffba10d16d0996036e7d2380e89b5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4e522f5b622793df07aac483f9f53b0" id="r_ad4e522f5b622793df07aac483f9f53b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Interval.html#ad4e522f5b622793df07aac483f9f53b0">Interval</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, int staffDistance, int halfSteps)</td></tr>
+<tr class="memdesc:ad4e522f5b622793df07aac483f9f53b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new Barline class as a child of a JSON element.  <br /></td></tr>
+<tr class="separator:ad4e522f5b622793df07aac483f9f53b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3df83ba2ff620b6759afee47d55749c6" id="r_a3df83ba2ff620b6759afee47d55749c6"><td class="memItemLeft" align="right" valign="top"><a id="a3df83ba2ff620b6759afee47d55749c6" name="a3df83ba2ff620b6759afee47d55749c6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator Required</b> () const</td></tr>
 <tr class="memdesc:a3df83ba2ff620b6759afee47d55749c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion back to <a class="el" href="structmnx_1_1Interval_1_1Required.html" title="initializer class for Interval">Required</a>. <br /></td></tr>
@@ -203,10 +203,10 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af3af77aa533e57c4c4df74756b228c1a" id="r_af3af77aa533e57c4c4df74756b228c1a"><td class="memItemLeft" align="right" valign="top"><a id="af3af77aa533e57c4c4df74756b228c1a" name="af3af77aa533e57c4c4df74756b228c1a"></a>
-static <a class="el" href="structmnx_1_1Interval_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (MNX_INTERVAL_CTOR_ARGS)</td></tr>
-<tr class="memdesc:af3af77aa533e57c4c4df74756b228c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1Interval_1_1Required.html" title="initializer class for Interval">Required</a> instance for <a class="el" href="classmnx_1_1Interval.html#a65ab6db7a20d6eefaa0c06137a503ce2" title="Constructor for existing NoteValue instances.">Interval</a>. <br /></td></tr>
-<tr class="separator:af3af77aa533e57c4c4df74756b228c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a4af85fdbd5671da2308534fd50cb79" id="r_a2a4af85fdbd5671da2308534fd50cb79"><td class="memItemLeft" align="right" valign="top"><a id="a2a4af85fdbd5671da2308534fd50cb79" name="a2a4af85fdbd5671da2308534fd50cb79"></a>
+static <a class="el" href="structmnx_1_1Interval_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (int staffDistance, int halfSteps)</td></tr>
+<tr class="memdesc:a2a4af85fdbd5671da2308534fd50cb79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1Interval_1_1Required.html" title="initializer class for Interval">Required</a> instance for <a class="el" href="classmnx_1_1Interval.html#a65ab6db7a20d6eefaa0c06137a503ce2" title="Constructor for existing NoteValue instances.">Interval</a>. <br /></td></tr>
+<tr class="separator:a2a4af85fdbd5671da2308534fd50cb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -243,8 +243,8 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a musical chromatic interval. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5ffba10d16d0996036e7d2380e89b5ca" name="a5ffba10d16d0996036e7d2380e89b5ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ffba10d16d0996036e7d2380e89b5ca">&#9670;&#160;</a></span>Interval()</h2>
+<a id="ad4e522f5b622793df07aac483f9f53b0" name="ad4e522f5b622793df07aac483f9f53b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4e522f5b622793df07aac483f9f53b0">&#9670;&#160;</a></span>Interval()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,8 +267,14 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MNX_INTERVAL_CTOR_ARGS&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>staffDistance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>halfSteps</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

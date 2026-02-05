@@ -130,17 +130,17 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PartTransposition</b> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:ae7bce042eca93912112cb92a5e46c21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for existing <a class="el" href="classmnx_1_1part_1_1Clef.html" title="Represents a visible clef in the measure.">Clef</a> instances. <br /></td></tr>
 <tr class="separator:ae7bce042eca93912112cb92a5e46c21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7ca86c992c3b01c006da43772995966" id="r_ac7ca86c992c3b01c006da43772995966"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1part_1_1PartTransposition.html#ac7ca86c992c3b01c006da43772995966">PartTransposition</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, MNX_PART_PART_TRANSPOSITION_CTOR_ARGS)</td></tr>
-<tr class="memdesc:ac7ca86c992c3b01c006da43772995966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1part_1_1Clef.html" title="Represents a visible clef in the measure.">Clef</a> class as a child of a JSON element.  <br /></td></tr>
-<tr class="separator:ac7ca86c992c3b01c006da43772995966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d039c52741fda666085b6fdf5e04af" id="r_ad2d039c52741fda666085b6fdf5e04af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1part_1_1PartTransposition.html#ad2d039c52741fda666085b6fdf5e04af">PartTransposition</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, const <a class="el" href="structmnx_1_1Interval_1_1Required.html">Interval::Required</a> &amp;interval)</td></tr>
+<tr class="memdesc:ad2d039c52741fda666085b6fdf5e04af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1part_1_1Clef.html" title="Represents a visible clef in the measure.">Clef</a> class as a child of a JSON element.  <br /></td></tr>
+<tr class="separator:ad2d039c52741fda666085b6fdf5e04af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b00d651c18e2f19138dc26ae0028d38" id="r_a6b00d651c18e2f19138dc26ae0028d38"><td class="memItemLeft" align="right" valign="top"><a id="a6b00d651c18e2f19138dc26ae0028d38" name="a6b00d651c18e2f19138dc26ae0028d38"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator Required</b> () const</td></tr>
 <tr class="memdesc:a6b00d651c18e2f19138dc26ae0028d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion back to <a class="el" href="structmnx_1_1part_1_1PartTransposition_1_1Required.html" title="initializer class for PartTransposition">Required</a>. <br /></td></tr>
 <tr class="separator:a6b00d651c18e2f19138dc26ae0028d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae97ade0d6a79d5a3ee99801cd42f83e5" id="r_ae97ade0d6a79d5a3ee99801cd42f83e5"><td class="memItemLeft" align="right" valign="top"><a id="ae97ade0d6a79d5a3ee99801cd42f83e5" name="ae97ade0d6a79d5a3ee99801cd42f83e5"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1Interval.html">Interval</a>, interval, MNX_FIELDS_AS_TUPLES(MNX_INTERVAL_FIELDS))</td></tr>
-<tr class="memdesc:ae97ade0d6a79d5a3ee99801cd42f83e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">the transposition interval <br /></td></tr>
-<tr class="separator:ae97ade0d6a79d5a3ee99801cd42f83e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9770ac3764e21485891c449f5a06219a" id="r_a9770ac3764e21485891c449f5a06219a"><td class="memItemLeft" align="right" valign="top"><a id="a9770ac3764e21485891c449f5a06219a" name="a9770ac3764e21485891c449f5a06219a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1Interval.html">Interval</a>, interval,(int, staffDistance),(int, halfSteps))</td></tr>
+<tr class="memdesc:a9770ac3764e21485891c449f5a06219a"><td class="mdescLeft">&#160;</td><td class="mdescRight">the transposition interval <br /></td></tr>
+<tr class="separator:a9770ac3764e21485891c449f5a06219a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4de179f3a8bfe0077e997ce9c754d29d" id="r_a4de179f3a8bfe0077e997ce9c754d29d"><td class="memItemLeft" align="right" valign="top"><a id="a4de179f3a8bfe0077e997ce9c754d29d" name="a4de179f3a8bfe0077e997ce9c754d29d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (int, keyFifthsFlipAt)</td></tr>
 <tr class="memdesc:a4de179f3a8bfe0077e997ce9c754d29d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the number of sharps (positive) or flats (negative) at which to simplify the key signature <br /></td></tr>
@@ -209,10 +209,10 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a543a6d45303649b04f5adeda87f9eec9" id="r_a543a6d45303649b04f5adeda87f9eec9"><td class="memItemLeft" align="right" valign="top"><a id="a543a6d45303649b04f5adeda87f9eec9" name="a543a6d45303649b04f5adeda87f9eec9"></a>
-static <a class="el" href="structmnx_1_1part_1_1PartTransposition_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (MNX_PART_PART_TRANSPOSITION_CTOR_ARGS)</td></tr>
-<tr class="memdesc:a543a6d45303649b04f5adeda87f9eec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1part_1_1PartTransposition_1_1Required.html" title="initializer class for PartTransposition">Required</a> instance for <a class="el" href="classmnx_1_1part_1_1PartTransposition.html#ae7bce042eca93912112cb92a5e46c21d" title="Constructor for existing Clef instances.">PartTransposition</a>. <br /></td></tr>
-<tr class="separator:a543a6d45303649b04f5adeda87f9eec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a525213c90e2a1df58b214dd8f4381db6" id="r_a525213c90e2a1df58b214dd8f4381db6"><td class="memItemLeft" align="right" valign="top"><a id="a525213c90e2a1df58b214dd8f4381db6" name="a525213c90e2a1df58b214dd8f4381db6"></a>
+static <a class="el" href="structmnx_1_1part_1_1PartTransposition_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (const <a class="el" href="structmnx_1_1Interval_1_1Required.html">Interval::Required</a> &amp;interval)</td></tr>
+<tr class="memdesc:a525213c90e2a1df58b214dd8f4381db6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1part_1_1PartTransposition_1_1Required.html" title="initializer class for PartTransposition">Required</a> instance for <a class="el" href="classmnx_1_1part_1_1PartTransposition.html#ae7bce042eca93912112cb92a5e46c21d" title="Constructor for existing Clef instances.">PartTransposition</a>. <br /></td></tr>
+<tr class="separator:a525213c90e2a1df58b214dd8f4381db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -249,8 +249,8 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Describes a part's instrument transposition. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac7ca86c992c3b01c006da43772995966" name="ac7ca86c992c3b01c006da43772995966"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7ca86c992c3b01c006da43772995966">&#9670;&#160;</a></span>PartTransposition()</h2>
+<a id="ad2d039c52741fda666085b6fdf5e04af" name="ad2d039c52741fda666085b6fdf5e04af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d039c52741fda666085b6fdf5e04af">&#9670;&#160;</a></span>PartTransposition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,8 +273,8 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MNX_PART_PART_TRANSPOSITION_CTOR_ARGS&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">const <a class="el" href="structmnx_1_1Interval_1_1Required.html">Interval::Required</a> &amp;&#160;</td>
+          <td class="paramname"><em>interval</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

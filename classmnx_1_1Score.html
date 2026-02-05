@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Score</b> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:aff70e3722c5441a1dce544100269c769"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for existing system layouts. <br /></td></tr>
 <tr class="separator:aff70e3722c5441a1dce544100269c769"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaaaa2e45d88f01f1986335131765a37" id="r_adaaaa2e45d88f01f1986335131765a37"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Score.html#adaaaa2e45d88f01f1986335131765a37">Score</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, MNX_SCORE_SCORE_CTOR_ARGS)</td></tr>
-<tr class="memdesc:adaaaa2e45d88f01f1986335131765a37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1Score.html" title="Represents an element in the scores section of an MNX document.">Score</a> class as a child of a JSON element.  <br /></td></tr>
-<tr class="separator:adaaaa2e45d88f01f1986335131765a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc5faf70ad89de98781399204422992" id="r_a1fc5faf70ad89de98781399204422992"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Score.html#a1fc5faf70ad89de98781399204422992">Score</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, const std::string &amp;scoreName)</td></tr>
+<tr class="memdesc:a1fc5faf70ad89de98781399204422992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1Score.html" title="Represents an element in the scores section of an MNX document.">Score</a> class as a child of a JSON element.  <br /></td></tr>
+<tr class="separator:a1fc5faf70ad89de98781399204422992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f534783d8f5e9e0c0993fe34bd53843" id="r_a1f534783d8f5e9e0c0993fe34bd53843"><td class="memItemLeft" align="right" valign="top"><a id="a1f534783d8f5e9e0c0993fe34bd53843" name="a1f534783d8f5e9e0c0993fe34bd53843"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator Required</b> () const</td></tr>
 <tr class="memdesc:a1f534783d8f5e9e0c0993fe34bd53843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion back to <a class="el" href="structmnx_1_1Score_1_1Required.html" title="initializer class for Score">Required</a>. <br /></td></tr>
@@ -231,10 +231,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a70dd6810e6baeee05126dd90b92ad702" id="r_a70dd6810e6baeee05126dd90b92ad702"><td class="memItemLeft" align="right" valign="top"><a id="a70dd6810e6baeee05126dd90b92ad702" name="a70dd6810e6baeee05126dd90b92ad702"></a>
-static <a class="el" href="structmnx_1_1Score_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (MNX_SCORE_SCORE_CTOR_ARGS)</td></tr>
-<tr class="memdesc:a70dd6810e6baeee05126dd90b92ad702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1Score_1_1Required.html" title="initializer class for Score">Required</a> instance for <a class="el" href="classmnx_1_1Score.html#aff70e3722c5441a1dce544100269c769" title="Constructor for existing system layouts.">Score</a>. <br /></td></tr>
-<tr class="separator:a70dd6810e6baeee05126dd90b92ad702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa79b69e0c9fc54664d0864426ab4513b" id="r_aa79b69e0c9fc54664d0864426ab4513b"><td class="memItemLeft" align="right" valign="top"><a id="aa79b69e0c9fc54664d0864426ab4513b" name="aa79b69e0c9fc54664d0864426ab4513b"></a>
+static <a class="el" href="structmnx_1_1Score_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (const std::string &amp;scoreName)</td></tr>
+<tr class="memdesc:aa79b69e0c9fc54664d0864426ab4513b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1Score_1_1Required.html" title="initializer class for Score">Required</a> instance for <a class="el" href="classmnx_1_1Score.html#aff70e3722c5441a1dce544100269c769" title="Constructor for existing system layouts.">Score</a>. <br /></td></tr>
+<tr class="separator:aa79b69e0c9fc54664d0864426ab4513b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -271,8 +271,8 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents an element in the scores section of an MNX document. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="adaaaa2e45d88f01f1986335131765a37" name="adaaaa2e45d88f01f1986335131765a37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adaaaa2e45d88f01f1986335131765a37">&#9670;&#160;</a></span>Score()</h2>
+<a id="a1fc5faf70ad89de98781399204422992" name="a1fc5faf70ad89de98781399204422992"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fc5faf70ad89de98781399204422992">&#9670;&#160;</a></span>Score()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,8 +295,8 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MNX_SCORE_SCORE_CTOR_ARGS&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>scoreName</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

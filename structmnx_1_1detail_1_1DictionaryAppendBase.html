@@ -98,6 +98,11 @@ $(document).ready(function(){initNavTree('structmnx_1_1detail_1_1DictionaryAppen
   <div class="headertitle"><div class="title">mnx::detail::DictionaryAppendBase&lt; Derived, T &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> append implementation for dictionaries of Base-derived types.  
+ <a href="structmnx_1_1detail_1_1DictionaryAppendBase.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="BaseTypes_8h_source.html">BaseTypes.h</a>&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for mnx::detail::DictionaryAppendBase&lt; Derived, T &gt;:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -115,11 +120,58 @@ $(document).ready(function(){initNavTree('structmnx_1_1detail_1_1DictionaryAppen
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a07015d1d2eb4e0b055ed0936a1471b09" id="r_a07015d1d2eb4e0b055ed0936a1471b09"><td class="memTemplParams" colspan="2"><a id="a07015d1d2eb4e0b055ed0936a1471b09" name="a07015d1d2eb4e0b055ed0936a1471b09"></a>
-template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, int &gt;  = 0&gt; </td></tr>
-<tr class="memitem:a07015d1d2eb4e0b055ed0936a1471b09"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><b>append</b> (std::string_view key, Args &amp;&amp;... args)</td></tr>
+<tr class="memitem:a07015d1d2eb4e0b055ed0936a1471b09" id="r_a07015d1d2eb4e0b055ed0936a1471b09"><td class="memTemplParams" colspan="2">template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a07015d1d2eb4e0b055ed0936a1471b09"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structmnx_1_1detail_1_1DictionaryAppendBase.html#a07015d1d2eb4e0b055ed0936a1471b09">append</a> (std::string_view key, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a07015d1d2eb4e0b055ed0936a1471b09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a new element at the end of the array. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types)  <br /></td></tr>
 <tr class="separator:a07015d1d2eb4e0b055ed0936a1471b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename Derived, typename T&gt;<br />
+struct mnx::detail::DictionaryAppendBase&lt; Derived, T &gt;</div><p><a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> append implementation for dictionaries of Base-derived types. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a07015d1d2eb4e0b055ed0936a1471b09" name="a07015d1d2eb4e0b055ed0936a1471b09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07015d1d2eb4e0b055ed0936a1471b09">&#9670;&#160;</a></span>append()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived , typename T &gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = T, typename... Args, std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1Base.html">Base</a>, U &gt;, int &gt;  = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">U <a class="el" href="structmnx_1_1detail_1_1DictionaryAppendBase.html">mnx::detail::DictionaryAppendBase</a>&lt; Derived, T &gt;::append </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Append a new element at the end of the array. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types) </p>
+<dl class="section return"><dt>Returns</dt><dd>The newly created element. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -98,13 +98,53 @@ $(document).ready(function(){initNavTree('structmnx_1_1detail_1_1ArrayAppendFrom
   <div class="headertitle"><div class="title">mnx::detail::ArrayAppendFromMake&lt; T, MakeFunc &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implements <a class="el" href="classmnx_1_1Array.html" title="Represents an MNX array, encapsulating property access.">Array</a> append overloads from a type's <code>make(...)</code> signature.  
+ <a href="structmnx_1_1detail_1_1ArrayAppendFromMake_3_01T_00_01MakeFunc_01_4.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="BaseTypes_8h_source.html">BaseTypes.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7e61f655a1ea4e55e9dca932808d26d1" id="r_a7e61f655a1ea4e55e9dca932808d26d1"><td class="memItemLeft" align="right" valign="top"><a id="a7e61f655a1ea4e55e9dca932808d26d1" name="a7e61f655a1ea4e55e9dca932808d26d1"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (Args... args)</td></tr>
+<tr class="memitem:a7e61f655a1ea4e55e9dca932808d26d1" id="r_a7e61f655a1ea4e55e9dca932808d26d1"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1detail_1_1ArrayAppendFromMake_3_01T_00_01MakeFunc_01_4.html#a7e61f655a1ea4e55e9dca932808d26d1">append</a> (Args... args)</td></tr>
+<tr class="memdesc:a7e61f655a1ea4e55e9dca932808d26d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a new element at the end of the array. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types)  <br /></td></tr>
 <tr class="separator:a7e61f655a1ea4e55e9dca932808d26d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename R, typename... Args, R(*)(Args...) MakeFunc&gt;<br />
+struct mnx::detail::ArrayAppendFromMake&lt; T, MakeFunc &gt;</div><p>Implements <a class="el" href="classmnx_1_1Array.html" title="Represents an MNX array, encapsulating property access.">Array</a> append overloads from a type's <code>make(...)</code> signature. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7e61f655a1ea4e55e9dca932808d26d1" name="a7e61f655a1ea4e55e9dca932808d26d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e61f655a1ea4e55e9dca932808d26d1">&#9670;&#160;</a></span>append()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename R , typename... Args, R(*)(Args...) MakeFunc&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="structmnx_1_1detail_1_1ArrayAppendFromMake.html">mnx::detail::ArrayAppendFromMake</a>&lt; T, MakeFunc &gt;::append </td>
+          <td>(</td>
+          <td class="paramtype">Args...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Append a new element at the end of the array. (Available only for <a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> types) </p>
+<dl class="section return"><dt>Returns</dt><dd>The newly created element. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

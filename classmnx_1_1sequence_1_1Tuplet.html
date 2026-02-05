@@ -133,9 +133,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Tuplet</b> (const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt; &amp;<a class="el" href="classmnx_1_1Base.html#afacc705368b873d604044f3628a74f3c">root</a>, <a class="el" href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">json_pointer</a> <a class="el" href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">pointer</a>)</td></tr>
 <tr class="memdesc:a61f06a9a3e85675504c25ad79a50365b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for existing <a class="el" href="classmnx_1_1sequence_1_1Tuplet.html" title="Represents a tuplet sequence within a sequence.">Tuplet</a> objects. <br /></td></tr>
 <tr class="separator:a61f06a9a3e85675504c25ad79a50365b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a123137d9a469c2d49465f82f7dab8d78" id="r_a123137d9a469c2d49465f82f7dab8d78"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Tuplet.html#a123137d9a469c2d49465f82f7dab8d78">Tuplet</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, MNX_SEQUENCE_TUPLET_CTOR_ARGS)</td></tr>
-<tr class="memdesc:a123137d9a469c2d49465f82f7dab8d78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1sequence_1_1Tuplet.html" title="Represents a tuplet sequence within a sequence.">Tuplet</a> class as a child of a JSON element.  <br /></td></tr>
-<tr class="separator:a123137d9a469c2d49465f82f7dab8d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab0a584aa71ef58585484434c8b58c6e" id="r_aab0a584aa71ef58585484434c8b58c6e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Tuplet.html#aab0a584aa71ef58585484434c8b58c6e">Tuplet</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, const <a class="el" href="structmnx_1_1NoteValueQuantity_1_1Required.html">NoteValueQuantity::Required</a> &amp;innerNoteValueQuant, const <a class="el" href="structmnx_1_1NoteValueQuantity_1_1Required.html">NoteValueQuantity::Required</a> &amp;outerNoteValueQuant)</td></tr>
+<tr class="memdesc:aab0a584aa71ef58585484434c8b58c6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1sequence_1_1Tuplet.html" title="Represents a tuplet sequence within a sequence.">Tuplet</a> class as a child of a JSON element.  <br /></td></tr>
+<tr class="separator:aab0a584aa71ef58585484434c8b58c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38b7811b1dd3cf50d0f9f5d70d9c69b0" id="r_a38b7811b1dd3cf50d0f9f5d70d9c69b0"><td class="memItemLeft" align="right" valign="top"><a id="a38b7811b1dd3cf50d0f9f5d70d9c69b0" name="a38b7811b1dd3cf50d0f9f5d70d9c69b0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator Required</b> () const</td></tr>
 <tr class="memdesc:a38b7811b1dd3cf50d0f9f5d70d9c69b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion back to <a class="el" href="structmnx_1_1sequence_1_1Tuplet_1_1Required.html" title="initializer class for Tuplet">Required</a>. <br /></td></tr>
@@ -148,12 +148,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1ContentArray.html">ContentArray</a>, content)</td></tr>
 <tr class="memdesc:ad71aca0af36f1f98cd22aba8ff5f505a"><td class="mdescLeft">&#160;</td><td class="mdescRight">array of events, tuplets, and grace notes <br /></td></tr>
 <tr class="separator:ad71aca0af36f1f98cd22aba8ff5f505a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5be43fb2d2ae081ddf53dcea14312690" id="r_a5be43fb2d2ae081ddf53dcea14312690"><td class="memItemLeft" align="right" valign="top"><a id="a5be43fb2d2ae081ddf53dcea14312690" name="a5be43fb2d2ae081ddf53dcea14312690"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1NoteValueQuantity.html">NoteValueQuantity</a>, inner, MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_QUANTITY_FIELDS))</td></tr>
-<tr class="memdesc:a5be43fb2d2ae081ddf53dcea14312690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inner quantity: <b>3 quarters in the time</b> of 2 quarters. <br /></td></tr>
-<tr class="separator:a5be43fb2d2ae081ddf53dcea14312690"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a39d49a3c1c50fb87b23963ffdcdfce" id="r_a3a39d49a3c1c50fb87b23963ffdcdfce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Tuplet.html#a3a39d49a3c1c50fb87b23963ffdcdfce">MNX_REQUIRED_CHILD</a> (<a class="el" href="classmnx_1_1NoteValueQuantity.html">NoteValueQuantity</a>, outer, MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_QUANTITY_FIELDS))</td></tr>
-<tr class="separator:a3a39d49a3c1c50fb87b23963ffdcdfce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91827e99bd923e12200b6333f406b58d" id="r_a91827e99bd923e12200b6333f406b58d"><td class="memItemLeft" align="right" valign="top"><a id="a91827e99bd923e12200b6333f406b58d" name="a91827e99bd923e12200b6333f406b58d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1NoteValueQuantity.html">NoteValueQuantity</a>, inner,(unsigned, count),(const <a class="el" href="structmnx_1_1NoteValue_1_1Required.html">NoteValue::Required</a> &amp;, noteValue))</td></tr>
+<tr class="memdesc:a91827e99bd923e12200b6333f406b58d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inner quantity: <b>3 quarters in the time</b> of 2 quarters. <br /></td></tr>
+<tr class="separator:a91827e99bd923e12200b6333f406b58d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d6c8b5cc37ba5333411ade9277c12a6" id="r_a2d6c8b5cc37ba5333411ade9277c12a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Tuplet.html#a2d6c8b5cc37ba5333411ade9277c12a6">MNX_REQUIRED_CHILD</a> (<a class="el" href="classmnx_1_1NoteValueQuantity.html">NoteValueQuantity</a>, outer,(unsigned, count),(const <a class="el" href="structmnx_1_1NoteValue_1_1Required.html">NoteValue::Required</a> &amp;, noteValue))</td></tr>
+<tr class="separator:a2d6c8b5cc37ba5333411ade9277c12a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd060a3e508c5ee1faff3f3fd1441bb6" id="r_abd060a3e508c5ee1faff3f3fd1441bb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1sequence_1_1Tuplet.html#abd060a3e508c5ee1faff3f3fd1441bb6">MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</a> (<a class="el" href="namespacemnx.html#a9f98fd98d5106fa00063d9df29eea01f">TupletDisplaySetting</a>, showNumber, TupletDisplaySetting::Inner)</td></tr>
 <tr class="memdesc:abd060a3e508c5ee1faff3f3fd1441bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">How and whether to show the tuplet number(s)  <br /></td></tr>
 <tr class="separator:abd060a3e508c5ee1faff3f3fd1441bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -256,10 +256,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae36fad772c5a66b3ebe364928074f00f" id="r_ae36fad772c5a66b3ebe364928074f00f"><td class="memItemLeft" align="right" valign="top"><a id="ae36fad772c5a66b3ebe364928074f00f" name="ae36fad772c5a66b3ebe364928074f00f"></a>
-static <a class="el" href="structmnx_1_1sequence_1_1Tuplet_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (MNX_SEQUENCE_TUPLET_CTOR_ARGS)</td></tr>
-<tr class="memdesc:ae36fad772c5a66b3ebe364928074f00f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1sequence_1_1Tuplet_1_1Required.html" title="initializer class for Tuplet">Required</a> instance for <a class="el" href="classmnx_1_1sequence_1_1Tuplet.html#a61f06a9a3e85675504c25ad79a50365b" title="Constructor for existing Tuplet objects.">Tuplet</a>. <br /></td></tr>
-<tr class="separator:ae36fad772c5a66b3ebe364928074f00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a021eb3c925d2c39045d9b19805195994" id="r_a021eb3c925d2c39045d9b19805195994"><td class="memItemLeft" align="right" valign="top"><a id="a021eb3c925d2c39045d9b19805195994" name="a021eb3c925d2c39045d9b19805195994"></a>
+static <a class="el" href="structmnx_1_1sequence_1_1Tuplet_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (const <a class="el" href="structmnx_1_1NoteValueQuantity_1_1Required.html">NoteValueQuantity::Required</a> &amp;innerNoteValueQuant, const <a class="el" href="structmnx_1_1NoteValueQuantity_1_1Required.html">NoteValueQuantity::Required</a> &amp;outerNoteValueQuant)</td></tr>
+<tr class="memdesc:a021eb3c925d2c39045d9b19805195994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1sequence_1_1Tuplet_1_1Required.html" title="initializer class for Tuplet">Required</a> instance for <a class="el" href="classmnx_1_1sequence_1_1Tuplet.html#a61f06a9a3e85675504c25ad79a50365b" title="Constructor for existing Tuplet objects.">Tuplet</a>. <br /></td></tr>
+<tr class="separator:a021eb3c925d2c39045d9b19805195994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -308,8 +308,8 @@ static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bot
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a tuplet sequence within a sequence. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a123137d9a469c2d49465f82f7dab8d78" name="a123137d9a469c2d49465f82f7dab8d78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a123137d9a469c2d49465f82f7dab8d78">&#9670;&#160;</a></span>Tuplet()</h2>
+<a id="aab0a584aa71ef58585484434c8b58c6e" name="aab0a584aa71ef58585484434c8b58c6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab0a584aa71ef58585484434c8b58c6e">&#9670;&#160;</a></span>Tuplet()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -332,8 +332,14 @@ static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bot
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MNX_SEQUENCE_TUPLET_CTOR_ARGS&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">const <a class="el" href="structmnx_1_1NoteValueQuantity_1_1Required.html">NoteValueQuantity::Required</a> &amp;&#160;</td>
+          <td class="paramname"><em>innerNoteValueQuant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structmnx_1_1NoteValueQuantity_1_1Required.html">NoteValueQuantity::Required</a> &amp;&#160;</td>
+          <td class="paramname"><em>outerNoteValueQuant</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -399,8 +405,8 @@ static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bot
 
 </div>
 </div>
-<a id="a3a39d49a3c1c50fb87b23963ffdcdfce" name="a3a39d49a3c1c50fb87b23963ffdcdfce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a39d49a3c1c50fb87b23963ffdcdfce">&#9670;&#160;</a></span>MNX_REQUIRED_CHILD()</h2>
+<a id="a2d6c8b5cc37ba5333411ade9277c12a6" name="a2d6c8b5cc37ba5333411ade9277c12a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d6c8b5cc37ba5333411ade9277c12a6">&#9670;&#160;</a></span>MNX_REQUIRED_CHILD()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -420,7 +426,13 @@ static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bot
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MNX_FIELDS_AS_TUPLES(MNX_NOTE_VALUE_QUANTITY_FIELDS)&#160;</td>
+          <td class="paramtype">(unsigned, count)&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">(const <a class="el" href="structmnx_1_1NoteValue_1_1Required.html">NoteValue::Required</a> &amp;, noteValue)&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>

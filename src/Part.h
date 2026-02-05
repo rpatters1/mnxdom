@@ -65,14 +65,6 @@ public:
  * @class Clef
  * @brief Represents a visible clef in the measure
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_PART_CLEF_FIELDS(M) \
-    M(ClefSign, clefSign), \
-    M(int, staffPosition), \
-    M(OttavaAmountOrZero, octaveAdjustment, = OttavaAmountOrZero::NoTransposition)
-#define MNX_PART_CLEF_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_PART_CLEF_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Clef : public Object
 {
 public:
@@ -96,7 +88,7 @@ public:
     /// @param clefSign The type of clef symbol
     /// @param staffPosition Staff position offset from center of staff
     /// @param octaveAdjustment Octave adjustment (NoTransposition when unset)
-    Clef(Base& parent, std::string_view key, MNX_PART_CLEF_CTOR_ARGS)
+    Clef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition, OttavaAmountOrZero octaveAdjustment = OttavaAmountOrZero::NoTransposition)
         : Object(parent, key)
     {
         set_sign(clefSign);
@@ -108,7 +100,7 @@ public:
     operator Required() const { return { sign(), staffPosition(), octave() }; }
 
     /// @brief Create a Required instance for #Clef.
-    static Required make(MNX_PART_CLEF_CTOR_ARGS)
+    static Required make(ClefSign clefSign, int staffPosition, OttavaAmountOrZero octaveAdjustment = OttavaAmountOrZero::NoTransposition)
     { return { clefSign, staffPosition, octaveAdjustment }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);      ///< color to use when rendering the ending
@@ -123,13 +115,6 @@ public:
  * @class Dynamic
  * @brief Represents a dynamic positioned with the next event in the sequence.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_PART_DYNAMIC_FIELDS(M) \
-    M(const std::string&, value), \
-    M(const FractionValue&, position)
-#define MNX_PART_DYNAMIC_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_PART_DYNAMIC_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Dynamic : public ContentObject
 {
 public:
@@ -151,7 +136,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param value The value of the dynamic
     /// @param position The position within the measure
-    Dynamic(Base& parent, std::string_view key, MNX_PART_DYNAMIC_CTOR_ARGS)
+    Dynamic(Base& parent, std::string_view key, const std::string& value, const FractionValue& position)
         : ContentObject(parent, key)
     {
         set_value(value);
@@ -162,12 +147,12 @@ public:
     operator Required() const { return { value(), position().fraction() }; }
 
     /// @brief Create a Required instance for #Dynamic.
-    static Required make(MNX_PART_DYNAMIC_CTOR_ARGS) { return { value, position }; }
+    static Required make(const std::string& value, const FractionValue& position) { return { value, position }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
     MNX_REQUIRED_CHILD(
         RhythmicPosition, position,
-        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< The rhythmic position of the dynamic within the measure.
+        (const FractionValue&, position)); ///< The rhythmic position of the dynamic within the measure.
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this dynamic applies to
     MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this dynamic applies to.
@@ -177,15 +162,6 @@ public:
  * @class Ottava
  * @brief Represents an ottava starting with the next event in the sequence
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_PART_OTTAVA_FIELDS(M) \
-    M(OttavaAmount, value), \
-    M(const FractionValue&, position), \
-    M(int, endMeasureId), \
-    M(const FractionValue&, endPosition)
-#define MNX_PART_OTTAVA_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_PART_OTTAVA_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class       Ottava : public ArrayElementObject
 {
 public:
@@ -211,7 +187,7 @@ public:
     /// @param position The start position of the ottava
     /// @param endMeasureId The end measure of the ottava
     /// @param endPosition The position within the end measure
-    Ottava(Base& parent, std::string_view key, MNX_PART_OTTAVA_CTOR_ARGS)
+    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
         : ArrayElementObject(parent, key)
     {
         create_position(position);
@@ -226,14 +202,14 @@ public:
     }
 
     /// @brief Create a Required instance for #Ottava.
-    static Required make(MNX_PART_OTTAVA_CTOR_ARGS)
+    static Required make(OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
     { return { value, position, endMeasureId, endPosition }; }
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
-        MNX_FIELDS_AS_TUPLES(MNX_MEASURE_RHYTHMIC_POSITION_FIELDS)); ///< The end of the ottava (includes any events starting at this location)
+        (int, measureId), (const FractionValue&, position)); ///< The end of the ottava (includes any events starting at this location)
     /// @todo orient
     MNX_REQUIRED_CHILD(RhythmicPosition, position,
-        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< The start position of the ottava
+        (const FractionValue&, position)); ///< The start position of the ottava
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);              ///< The staff (within the part) this ottava applies to
     MNX_REQUIRED_PROPERTY(OttavaAmount, value);                     ///< The type of ottava (amount of displacement, in octaves)
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this ottava applies to.
@@ -243,12 +219,6 @@ public:
  * @class KitComponent
  * @brief Describes a single instrument of a drum kit associated with the part.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_PART_KIT_COMPONENT_FIELDS(M) \
-    M(int, staffPosition)
-#define MNX_PART_KIT_COMPONENT_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_PART_KIT_COMPONENT_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class KitComponent : public ArrayElementObject
 {
 public:
@@ -268,7 +238,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param staffPosition The staff position of the kit component
-    KitComponent(Base& parent, std::string_view key, MNX_PART_KIT_COMPONENT_CTOR_ARGS)
+    KitComponent(Base& parent, std::string_view key, int staffPosition)
         : ArrayElementObject(parent, key)
     {
         set_staffPosition(staffPosition);
@@ -278,7 +248,7 @@ public:
     operator Required() const { return { staffPosition() }; }
 
     /// @brief Create a Required instance for #KitComponent.
-    static Required make(MNX_PART_KIT_COMPONENT_CTOR_ARGS) { return { staffPosition }; }
+    static Required make(int staffPosition) { return { staffPosition }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, name);       ///< Human-readable name of the kit component
     MNX_OPTIONAL_PROPERTY(std::string, sound);      ///< The sound ID in `global.sounds`.
@@ -289,12 +259,6 @@ public:
  * @class PartTransposition
  * @brief Describes a part's instrument transposition
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_PART_PART_TRANSPOSITION_FIELDS(M) \
-    M(const Interval::Required&, interval)
-#define MNX_PART_PART_TRANSPOSITION_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_PART_PART_TRANSPOSITION_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class PartTransposition : public Object
 {
 public:
@@ -314,7 +278,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param interval The transposition interval for the part
-    PartTransposition(Base& parent, std::string_view key, MNX_PART_PART_TRANSPOSITION_CTOR_ARGS)
+    PartTransposition(Base& parent, std::string_view key, const Interval::Required& interval)
         : Object(parent, key)
     {
         create_interval(interval.staffDistance, interval.halfSteps);
@@ -324,10 +288,10 @@ public:
     operator Required() const { return { interval() }; }
 
     /// @brief Create a Required instance for #PartTransposition.
-    static Required make(MNX_PART_PART_TRANSPOSITION_CTOR_ARGS) { return { interval }; }
+    static Required make(const Interval::Required& interval) { return { interval }; }
 
     MNX_REQUIRED_CHILD(Interval, interval,
-        MNX_FIELDS_AS_TUPLES(MNX_INTERVAL_FIELDS)); ///< the transposition interval
+        (int, staffDistance), (int, halfSteps)); ///< the transposition interval
     MNX_OPTIONAL_PROPERTY(int, keyFifthsFlipAt);    ///< the number of sharps (positive) or flats (negative) at which to simplify the key signature
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, prefersWrittenPitches, false); ///< if true, this instrument prefers displaying written pitches even in the context of
                                                     ///< concert-pitch score. (Examples could be piccolo, double base, glockenspiel, etc.)
@@ -341,14 +305,6 @@ public:
  * @class PositionedClef
  * @brief Represents a positioned clef for the measure
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_PART_POSITIONED_CLEF_FIELDS(M) \
-    M(ClefSign, clefSign), \
-    M(int, staffPosition), \
-    M(OttavaAmountOrZero, octaveAdjustment, = OttavaAmountOrZero::NoTransposition)
-#define MNX_PART_POSITIONED_CLEF_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_PART_POSITIONED_CLEF_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class PositionedClef : public ArrayElementObject
 {
 public:
@@ -372,7 +328,7 @@ public:
     /// @param clefSign The type of clef symbol
     /// @param staffPosition Staff position offset from center of staff
     /// @param octaveAdjustment Optional octave adjustment
-    PositionedClef(Base& parent, std::string_view key, MNX_PART_POSITIONED_CLEF_CTOR_ARGS)
+    PositionedClef(Base& parent, std::string_view key, ClefSign clefSign, int staffPosition, OttavaAmountOrZero octaveAdjustment = OttavaAmountOrZero::NoTransposition)
         : ArrayElementObject(parent, key)
     {
         create_clef(clefSign, staffPosition, octaveAdjustment);
@@ -382,13 +338,13 @@ public:
     operator Required() const { return { clef().sign(), clef().staffPosition(), clef().octave() }; }
 
     /// @brief Create a Required instance for #PositionedClef.
-    static Required make(MNX_PART_POSITIONED_CLEF_CTOR_ARGS)
+    static Required make(ClefSign clefSign, int staffPosition, OttavaAmountOrZero octaveAdjustment = OttavaAmountOrZero::NoTransposition)
     { return { clefSign, staffPosition, octaveAdjustment }; }
 
     MNX_REQUIRED_CHILD(Clef, clef,
-        MNX_FIELDS_AS_TUPLES(MNX_PART_CLEF_FIELDS)); ///< the beats per minute of this tempo marking
+        (ClefSign, clefSign), (int, staffPosition), (OttavaAmountOrZero, octaveAdjustment)); ///< the beats per minute of this tempo marking
     MNX_OPTIONAL_CHILD(RhythmicPosition, position,
-        MNX_FIELDS_AS_TUPLES(MNX_RHYTHMIC_POSITION_FIELDS)); ///< location within the measure of the tempo marking
+        (const FractionValue&, position)); ///< location within the measure of the tempo marking
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number (for multistaff parts)
 };
 
@@ -456,7 +412,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, smuflFont);      ///< Name of SMuFL-font for notation elements in the part (can be overridden by children)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staves, 1); ///< The number of staves in this part.
     MNX_OPTIONAL_CHILD(part::PartTransposition, transposition,
-        MNX_FIELDS_AS_TUPLES(MNX_PART_PART_TRANSPOSITION_FIELDS)); ///< the instrument transposition for the part
+        (const Interval::Required&, interval)); ///< the instrument transposition for the part
 
     inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
 };

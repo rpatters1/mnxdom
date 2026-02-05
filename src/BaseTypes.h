@@ -53,6 +53,12 @@ class Base;
 template <typename T> class Array;
 template <typename T> class Dictionary;
 
+namespace sequence {
+class Space;
+class MultiNoteTremolo;
+class Tuplet;
+} // namespace sequence
+
 namespace validation {
 class SemanticValidator;
 }; // namespace validation
@@ -69,19 +75,25 @@ struct LayoutContent {};
 
 namespace detail {
 
+/// @brief Adds an `append(...)` overload that mirrors a type's static `make(...)` signature for arrays.
 template <typename T, auto MakeFunc>
 struct ArrayAppendFromMake;
 
+/// @brief Implements Array append overloads from a type's `make(...)` signature.
 template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
 struct ArrayAppendFromMake<T, MakeFunc>
 {
-    // Mirrors T::make signature for append IntelliSense without changing behavior.
+    /**
+     * @brief Append a new element at the end of the array. (Available only for Base types)
+     * @return The newly created element.
+    */
     T append(Args... args)
     {
         return static_cast<Array<T>&>(*this).template appendImpl<T>(std::forward<Args>(args)...);
     }
 };
 
+/// @brief Base append implementation for arrays of Base-derived types.
 template <typename Derived, typename T>
 struct ArrayAppendBase
 {
@@ -109,9 +121,11 @@ struct ArrayAppendOverloads<Derived, T, std::void_t<decltype(&T::make)>>
     using ArrayAppendFromMake<T, &T::make>::append;
 };
 
+/// @brief Adds an `append(key, ...)` overload that mirrors a type's static `make(...)` signature for dictionaries.
 template <typename T, auto MakeFunc>
 struct DictionaryAppendFromMake;
 
+/// @brief Implements Dictionary append overloads from a type's `make(...)` signature.
 template <typename T, typename R, typename... Args, R(*MakeFunc)(Args...)>
 struct DictionaryAppendFromMake<T, MakeFunc>
 {
@@ -125,9 +139,14 @@ struct DictionaryAppendFromMake<T, MakeFunc>
     }
 };
 
+/// @brief Base append implementation for dictionaries of Base-derived types.
 template <typename Derived, typename T>
 struct DictionaryAppendBase
 {
+    /**
+     * @brief Append a new element at the end of the array. (Available only for Base types)
+     * @return The newly created element.
+    */
     template <typename U = T, typename... Args,
               std::enable_if_t<std::is_base_of_v<Base, U>, int> = 0>
     U append(std::string_view key, Args&&... args)
@@ -714,13 +733,25 @@ public:
         return operator[](index).get<T>();
     }
 
-    /// @brief Append an element of the specified type
-    template <typename T, typename... Args>
-    T append(Args... args)
+    /// @brief Append an element of the specified type (default overload for no-arg content types).
+    template <typename T,
+              std::enable_if_t<std::is_base_of_v<ContentObject, T> &&
+                               !std::is_same_v<T, sequence::Space> &&
+                               !std::is_same_v<T, sequence::MultiNoteTremolo> &&
+                               !std::is_same_v<T, sequence::Tuplet>, int> = 0>
+    T append()
+    {
+        return appendWithType<T>();
+    }
+
+    /// @brief Append overload entry point for explicitly specialized argful content types.
+    template <typename T, typename... Args,
+              std::enable_if_t<std::is_base_of_v<ContentObject, T> && (sizeof...(Args) > 0), int> = 0>
+    T append(const Args&... args)
     {
         static_assert(!std::is_same_v<T, T>,
-                      "ContentArray::append requires an explicit specialization; update ContentArrayAppendOverloads.h.");
-        return appendImpl<T>(std::forward<Args>(args)...);
+                      "ContentArray::append requires explicit specialization for each content type.");
+        return appendWithType<T>(args...);
     }
 
     // Prevent untemplated append() calls; callers must use append<T>(...).
@@ -728,11 +759,11 @@ public:
 
 private:
     template <typename T, typename... Args>
-    T appendImpl(Args&&... args)
+    T appendWithType(Args&&... args)
     {
         auto result = BaseArray::append<T>(std::forward<Args>(args)...);
         if constexpr (T::ContentTypeValue != ContentObject::ContentTypeValueDefault) {
-            result.set_type(std::string(T::ContentTypeValue));            
+            result.set_type(std::string(T::ContentTypeValue));
         }
         return result;
     }

@@ -36,13 +36,6 @@ namespace score {
  * @class MultimeasureRest
  * @brief Represents a multimeasure rest in a score.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SCORE_MULTIMEASURE_REST_FIELDS(M) \
-    M(int, startMeasure), \
-    M(int, numMeasures)
-#define MNX_SCORE_MULTIMEASURE_REST_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SCORE_MULTIMEASURE_REST_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class MultimeasureRest : public ArrayElementObject
 {
 public:
@@ -64,7 +57,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
-    MultimeasureRest(Base& parent, std::string_view key, MNX_SCORE_MULTIMEASURE_REST_CTOR_ARGS)
+    MultimeasureRest(Base& parent, std::string_view key, int startMeasure, int numMeasures)
         : ArrayElementObject(parent, key)
     {
         set_start(startMeasure);
@@ -75,7 +68,7 @@ public:
     operator Required() const { return { start(), duration() }; }
 
     /// @brief Create a Required instance for #MultimeasureRest.
-    static Required make(MNX_SCORE_MULTIMEASURE_REST_CTOR_ARGS) { return { startMeasure, numMeasures }; }
+    static Required make(int startMeasure, int numMeasures) { return { startMeasure, numMeasures }; }
 
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the number of measures in the multimeasure rest
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< the label to place on the multimeasure rest, if provided.
@@ -86,14 +79,6 @@ public:
  * @class LayoutChange
  * @brief Represents a system layout change in a score
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SCORE_LAYOUT_CHANGE_FIELDS(M) \
-    M(const std::string&, layoutId), \
-    M(int, measureId), \
-    M(const FractionValue&, position)
-#define MNX_SCORE_LAYOUT_CHANGE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SCORE_LAYOUT_CHANGE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class LayoutChange : public ArrayElementObject
 {
 public:
@@ -117,7 +102,7 @@ public:
     /// @param layoutId The id of the layout to use for the layout change
     /// @param measureId The measure index of the measure of the position
     /// @param position The position of the LayoutChange within the measure
-    LayoutChange(Base& parent, std::string_view key, MNX_SCORE_LAYOUT_CHANGE_CTOR_ARGS)
+    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId, int measureId, const FractionValue& position)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);
@@ -128,24 +113,18 @@ public:
     operator Required() const { return { layout(), location().measure(), location().position().fraction() }; }
 
     /// @brief Create a Required instance for #LayoutChange.
-    static Required make(MNX_SCORE_LAYOUT_CHANGE_CTOR_ARGS)
+    static Required make(const std::string& layoutId, int measureId, const FractionValue& position)
     { return { layoutId, measureId, position }; }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, location,
-        MNX_FIELDS_AS_TUPLES(MNX_MEASURE_RHYTHMIC_POSITION_FIELDS)); ///< location where the new layout takes effect.
+        (int, measureId), (const FractionValue&, position)); ///< location where the new layout takes effect.
 };
 
 /**
  * @class System
  * @brief Represents a system on a page in a score.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SCORE_SYSTEM_FIELDS(M) \
-    M(int, startMeasure)
-#define MNX_SCORE_SYSTEM_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SCORE_SYSTEM_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class System : public ArrayElementObject
 {
 public:
@@ -165,7 +144,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the system
-    System(Base& parent, std::string_view key, MNX_SCORE_SYSTEM_CTOR_ARGS)
+    System(Base& parent, std::string_view key, int startMeasure)
         : ArrayElementObject(parent, key)
     {
         set_measure(startMeasure);
@@ -175,7 +154,7 @@ public:
     operator Required() const { return { measure() }; }
 
     /// @brief Create a Required instance for #System.
-    static Required make(MNX_SCORE_SYSTEM_CTOR_ARGS) { return { startMeasure }; }
+    static Required make(int startMeasure) { return { startMeasure }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<LayoutChange>, layoutChanges); ///< layout changes in the system (e.g., for changes in stem direction)
@@ -211,12 +190,6 @@ public:
  * @class Score
  * @brief Represents an element in the scores section of an MNX document.
  */
-#ifndef DOXYGEN_SHOULD_IGNORE_THIS
-#define MNX_SCORE_SCORE_FIELDS(M) \
-    M(const std::string&, scoreName)
-#define MNX_SCORE_SCORE_CTOR_ARGS \
-    MNX_FIELDS_AS_PARAMS(MNX_SCORE_SCORE_FIELDS)
-#endif // DOXYGEN_SHOULD_IGNORE_THIS
 class Score : public ArrayElementObject
 {
 public:
@@ -236,7 +209,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param scoreName The name of the score to be created
-    Score(Base& parent, std::string_view key, MNX_SCORE_SCORE_CTOR_ARGS)
+    Score(Base& parent, std::string_view key, const std::string& scoreName)
         : ArrayElementObject(parent, key)
     {
         set_name(scoreName);
@@ -246,7 +219,7 @@ public:
     operator Required() const { return { name() }; }
 
     /// @brief Create a Required instance for #Score.
-    static Required make(MNX_SCORE_SCORE_CTOR_ARGS) { return { scoreName }; }
+    static Required make(const std::string& scoreName) { return { scoreName }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);                             ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<score::MultimeasureRest>, multimeasureRests);  ///< List of multimeasure rests in the score.

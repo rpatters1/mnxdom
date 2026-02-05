@@ -115,7 +115,7 @@ void SemanticValidator::validateGlobal()
     if (const auto sounds = global.sounds()) {
         for (const auto& [soundId, sound] : sounds.value()) {
             if (auto midiNumber = sound.midiNumber()) {
-                if (midiNumber.value() < 0 || midiNumber.value() > 127) {
+                if (static_cast<int>(midiNumber.value()) < 0 || midiNumber.value() > 127) {
                     addError("Invalid midi number: " + std::to_string(midiNumber.value()), sound);
                 }
             }

@@ -3,6 +3,8 @@ project(mnxdom LANGUAGES CXX)
 
 include(FetchContent)
 
+option(BUILD_SHARED_LIBS "Build mnxdom as a shared library" OFF)
+
 # Set default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type (Release/Debug)" FORCE)
@@ -35,7 +37,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/cmake/MnxW3C.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 
 # Add library
-add_library(mnxdom STATIC
+add_library(mnxdom
     src/EnumerationMaps.cpp
     src/Implementations.cpp
     src/validation/SchemaValidate.cpp

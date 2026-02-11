@@ -91,3 +91,15 @@ if(mnxdom_BUILD_TESTING)
 else()
     message(STATUS "Testing not enabled for mnxdom_BUILD_TESTING.")
 endif()
+
+# Install rules
+install(TARGETS mnxdom
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
+# Install public headers
+install(DIRECTORY src/
+    DESTINATION include/mnxdom
+    FILES_MATCHING PATTERN "*.h"
+)

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(mnxdom LANGUAGES CXX)
+project(mnxdom LANGUAGES CXX VERSION 2.1)
+
+include(GNUInstallDirs)
 
 include(FetchContent)
 
@@ -117,12 +119,22 @@ endif()
 
 # Install rules
 install(TARGETS mnxdom
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 # Install public headers
 install(DIRECTORY src/
-    DESTINATION include/mnxdom
-    FILES_MATCHING PATTERN "*.h"
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mnxdom
+    FILES_MATCHING
+    PATTERN "*.h"
+)
+
+configure_file(
+    cmake/mnxdom.pc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/mnxdom.pc
+    @ONLY
+)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mnxdom.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )

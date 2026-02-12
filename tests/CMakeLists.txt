@@ -1,13 +1,33 @@
 # Add Google Test
 include(FetchContent)
-FetchContent_Declare(
-	googletest
-    URL https://github.com/google/googletest/releases/download/v1.15.2/googletest-1.15.2.tar.gz
-	DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+
+# Option for using system-installed googletest instead of fetching
+option(USE_SYSTEM_GOOGLETEST "Use system-installed googletest instead of fetching" OFF)
+
+# Define the version of googletest to use
+set(GOOGLETEST_VERSION 1.15.2)
+
+# Handle googletest: use system version or fetch
+if(USE_SYSTEM_GOOGLETEST)
+    find_package(GTest ${GOOGLETEST_VERSION} REQUIRED CONFIG)
+    message(STATUS "Using system-installed googletest")
+    # System GTest uses different target names
+    set(GTEST_MAIN_TARGET GTest::gtest_main)
+    set(GTEST_TARGET GTest::gtest)
+else()
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/releases/download/v${GOOGLETEST_VERSION}/googletest-${GOOGLETEST_VERSION}.tar.gz
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    )
+    FetchContent_MakeAvailable(googletest)
+    message(STATUS "Using fetched googletest")
+    # FetchContent GTest uses these target names
+    set(GTEST_MAIN_TARGET gtest_main)
+    set(GTEST_TARGET gtest)
+endif()
 
 # Add test executable
 add_executable(mnxdom_tests
@@ -38,7 +58,7 @@ endif()
 target_include_directories(mnxdom_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(mnxdom_tests PRIVATE
-    gtest_main
+    ${GTEST_MAIN_TARGET}
     mnxdom
 )
 

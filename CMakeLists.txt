@@ -60,6 +60,7 @@ set(NLOHMANN_JSON_VERSION 3.12.0)
 # Handle nlohmann_json: use system version or fetch
 if(USE_SYSTEM_NLOHMANN_JSON)
     find_package(nlohmann_json ${NLOHMANN_JSON_VERSION} REQUIRED CONFIG)
+    target_compile_definitions(mnxdom PRIVATE NLOHMANN_JSON_SYSTEM)
     message(STATUS "Using system-installed nlohmann_json")
 else()
     # Disable building tests for nlohmann_json

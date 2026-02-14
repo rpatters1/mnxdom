@@ -30,7 +30,11 @@
 #include <type_traits>
 #include <utility>
 
+#ifdef NLOHMANN_JSON_SYSTEM
+#include <nlohmann/json.hpp>
+#else
 #include "nlohmann/json.hpp"
+#endif
 #include "BoilerplateMacros.h"
 
 /**

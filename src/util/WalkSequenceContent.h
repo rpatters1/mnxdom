@@ -23,7 +23,7 @@
 
 #include <functional>
 
-#include "Sequence.h"
+#include "../Sequence.h"
 
 namespace mnx::util {
 

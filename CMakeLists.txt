@@ -130,6 +130,7 @@ install(DIRECTORY src/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mnxdom
     FILES_MATCHING
     PATTERN "*.h"
+    PATTERN "*.hpp"
 )
 
 configure_file(

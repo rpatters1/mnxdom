@@ -79,6 +79,7 @@ endif()
 # Handle json_schema_validator: use system version or fetch
 if(USE_SYSTEM_JSON_SCHEMA_VALIDATOR)
     find_package(nlohmann_json_schema_validator REQUIRED CONFIG)
+    target_compile_definitions(mnxdom PRIVATE JSON_SCHEMA_VALIDATOR_SYSTEM)
     message(STATUS "Using system-installed nlohmann_json_schema_validator")
 else()
     # Disable building tests for json_schema_validator

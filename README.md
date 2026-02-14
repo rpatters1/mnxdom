@@ -41,6 +41,8 @@ Note that this code never uses references. Since every MNX class in the model is
 
 ### Setup Instructions
 
+#### Via `FetchContent`
+
 Include the top header in your source file.
 
 ```cpp
@@ -61,6 +63,27 @@ FetchContent_MakeAvailable(musx)
 
 # Also add somewhere:
 target_link_libraries(project PRIVATE mnxdom) # replace "project" with your actual project name
+```
+
+#### Via a system installation
+
+Install the library using `sudo cmake --install`. This should install:
+
+- Headers in `/usr/local/include/mnxdom`
+- `pkg-config` file in `/usr/local/lib/pkgconfig/mnxdom.pc`
+
+If you use `cmake` in your project, use:
+
+```cmake
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(mnxdom REQUIRED IMPORTED_TARGET mnxdom)
+  target_link_libraries(project PRIVATE PkgConfig::mnxdom)
+```
+
+And include the top header in your source file with:
+
+```cpp
+#include <mnxdom/mnxdom.h>
 ```
 
 ### To Run the Tests

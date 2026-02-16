@@ -30,6 +30,15 @@
 #include <type_traits>
 #include <utility>
 
+// mnxdom provides enum (de)serialization; disable nlohmann's generic enum support.
+#if defined(NLOHMANN_JSON_HPP) && !defined(JSON_DISABLE_ENUM_SERIALIZATION)
+#error "nlohmann/json.hpp included before mnxdom without JSON_DISABLE_ENUM_SERIALIZATION=1"
+#endif
+
+#ifndef JSON_DISABLE_ENUM_SERIALIZATION
+#define JSON_DISABLE_ENUM_SERIALIZATION 1
+#endif
+
 #ifdef NLOHMANN_JSON_SYSTEM
 #include <nlohmann/json.hpp>
 #else

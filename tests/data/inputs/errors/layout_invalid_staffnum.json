@@ -4,10 +4,18 @@
     },
     "global": {
         "measures": [
-            {},
-            {},
-            {},
-            {}
+            {
+                "id": "m1"
+            },
+            {
+                "id": "m2"
+            },
+            {
+                "id": "m3"
+            },
+            {
+                "id": "m4"
+            }
         ]
     },
     "parts": [
@@ -18,31 +26,31 @@
             "staves": 2,
             "measures": [
                 {
-                   "clefs": [
-                      {
-                         "clef": {
-                            "sign": "G",
-                            "staffPosition": -2
-                         }
-                      },
-                      {
-                         "staff": 2,
-                         "clef": {
-                            "sign": "F",
-                            "staffPosition": 2
-                         }
-                      }
-                   ],
-                   "sequences": []
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "sign": "F",
+                                "staffPosition": 2
+                            }
+                        }
+                    ],
+                    "sequences": []
                 },
                 {
-                   "sequences": []
+                    "sequences": []
                 },
                 {
-                   "sequences": []
+                    "sequences": []
                 },
                 {
-                   "sequences": []
+                    "sequences": []
                 }
             ]
         }
@@ -51,7 +59,7 @@
         {
             "id": "badStaff",
             "content": [
-            {
+                {
                     "type": "group",
                     "label": "Harpsichord 1",
                     "symbol": "brace",

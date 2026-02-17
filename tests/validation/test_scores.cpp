@@ -40,7 +40,7 @@ TEST(Scores, InvalidScorePageLayoutId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "score_page_bad_layout.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticErrors(doc, inputPath, { "ID \"does-not-exist\" not found", "ID 1 not found" });
+    expectSemanticErrors(doc, inputPath, { "ID \"does-not-exist\" not found", "ID \"m1\" not found" });
 }
 
 TEST(Scores, InvalidScoreSystemLayoutId)
@@ -64,7 +64,7 @@ TEST(Scores, InvalidMMRestStartMeasure)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "score_mmrest_bad_start.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID 3 not found");
+    expectSemanticError(doc, inputPath, "ID \"m3\" not found");
 }
 
 TEST(Scores, InvalidMMRestSpan)
@@ -72,7 +72,7 @@ TEST(Scores, InvalidMMRestSpan)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "score_mmrest_bad_span.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "Multimeasure rest at measure 1 in score \"Score\" spans non-existent measures");
+    expectSemanticError(doc, inputPath, "Multimeasure rest at measure \"m1\" in score \"Score\" spans non-existent measures");
 }
 
 TEST(Scores, InvalidSystemStartMeasure)
@@ -80,7 +80,7 @@ TEST(Scores, InvalidSystemStartMeasure)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "score_system_bad_measure.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID 1 not found");
+    expectSemanticError(doc, inputPath, "ID \"m1\" not found");
 }
 
 TEST(Scores, InvalidSystemMeasureSequence)

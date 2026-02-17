@@ -5,13 +5,17 @@
     "global": {
         "measures": [
             {
-                "index": 1
+                "id": "m1"
             },
-            {},
             {
-                "index": 1
+                "id": "m2"
             },
-            {}
+            {
+                "id": "m1"
+            },
+            {
+                "id": "m2"
+            }
         ]
     },
     "parts": [
@@ -22,31 +26,31 @@
             "staves": 2,
             "measures": [
                 {
-                   "clefs": [
-                      {
-                         "clef": {
-                            "sign": "G",
-                            "staffPosition": -2
-                         }
-                      },
-                      {
-                         "staff": 2,
-                         "clef": {
-                            "sign": "F",
-                            "staffPosition": 2
-                         }
-                      }
-                   ],
-                   "sequences": []
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "sign": "F",
+                                "staffPosition": 2
+                            }
+                        }
+                    ],
+                    "sequences": []
                 },
                 {
-                   "sequences": []
+                    "sequences": []
                 },
                 {
-                   "sequences": []
+                    "sequences": []
                 },
                 {
-                   "sequences": []
+                    "sequences": []
                 }
             ]
         }

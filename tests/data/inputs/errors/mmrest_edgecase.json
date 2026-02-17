@@ -4,9 +4,15 @@
     },
     "global": {
         "measures": [
-            {},
-            {},
-            {}
+            {
+                "id": "m1"
+            },
+            {
+                "id": "m2"
+            },
+            {
+                "id": "m3"
+            }
         ]
     },
     "parts": [
@@ -44,11 +50,11 @@
         }
     ],
     "scores": [
-        {            
+        {
             "name": "Score",
             "multimeasureRests": [
                 {
-                    "start": 2,
+                    "start": "m2",
                     "duration": 2
                 }
             ]

@@ -27,7 +27,6 @@
 #include "EventMarkings.h"
 
 namespace mnx {
-
 class Sequence; // forward declaration
 
 /**
@@ -35,7 +34,6 @@ class Sequence; // forward declaration
  * @brief classes related to sequences in the part measure
  */
 namespace sequence {
-
 /**
  * @class AccidentalEnclosure
  * @brief Represents the enclosure on an accidental.
@@ -667,6 +665,26 @@ public:
     inline static constexpr std::string_view ContentTypeValue = "tuplet";   ///< type value that identifies the type within the content array
 };
 
+/**
+ * @class FullMeasureRest
+ * @brief Represents a page in a score.
+ */
+class FullMeasureRest : public Object
+{
+public:
+    using Object::Object;
+
+    /// @brief Creates a new Page class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    FullMeasureRest(Base& parent, std::string_view key)
+        : Object(parent, key)
+    {}
+
+    MNX_OPTIONAL_PROPERTY(int, staffPosition);      ///< the forced staff position of the full-measure rest
+    MNX_OPTIONAL_CHILD(NoteValue, visualDuration,
+        (NoteValueBase, base), (unsigned, dots));   ///< the visual duration of the full-measure rest (defaults to importer defaults).
+};
 } // namespace sequence
 
 /**
@@ -692,6 +710,7 @@ public:
     }
 
     MNX_REQUIRED_CHILD(ContentArray, content);          ///< the content of the sequence
+    MNX_OPTIONAL_CHILD(sequence::FullMeasureRest, fullMeasure); ///< If present, this sequence is a forced full-measure rest.
     /// @todo `orient` property
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number for this sequence
     MNX_OPTIONAL_PROPERTY(std::string, voice);          ///< the unique (per measure) voice label for this sequence.

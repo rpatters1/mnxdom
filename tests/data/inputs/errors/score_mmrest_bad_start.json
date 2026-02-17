@@ -4,7 +4,9 @@
     },
     "global": {
         "measures": [
-            {}
+            {
+                "id": "m1"
+            }
         ]
     },
     "parts": [
@@ -36,11 +38,11 @@
         }
     ],
     "scores": [
-        {            
+        {
             "name": "Score",
             "multimeasureRests": [
                 {
-                    "start": 3,
+                    "start": "m3",
                     "duration": 1
                 }
             ]

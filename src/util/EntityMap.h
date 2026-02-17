@@ -103,21 +103,20 @@ class mapping_error : public std::runtime_error
  * @brief Provides type-safe ID-based lookup for elements in an MNX document.
  *
  * Constructed from an mnx::Document, the EntityMap scans the document to index
- * all identifiable elements by ID or number. Supports lookup by type.
+ * all identifiable elements by ID. Supports lookup by type.
  */
 class EntityMap
 {
 private:
     /// @brief Adds a key to the mapping. If there is no error handler, it throws @ref mapping_error if there is a duplicate key.
     /// @tparam T The type to add
-    /// @tparam IdType The type of @p id
     /// @param id The ID to add.
     /// @param value The value to index.
     /// @throws mapping_error if the ID is a duplicate and there is no error handler.
-    template <typename T, typename IdType>
-    void add(const IdType& id, const T& value)
+    template <typename T>
+    void add(const std::string& id, const T& value)
     {
-        auto result = getMap<T>().emplace(id, MappedLocation{ value.pointer(), T::JsonSchemaTypeName });
+        auto result = m_objectMap.emplace(id, MappedLocation{ value.pointer(), T::JsonSchemaTypeName });
         if (!result.second) {
             mapping_error err("ID " + formatKeyString(id) + " already exists for type \"" + std::string(result.first->second.typeName)
                 + "\" at " + result.first->second.location.to_string());
@@ -180,7 +179,6 @@ public:
     /**
      * @brief Attempts to look up an object by string ID.
      * @tparam T The expected type (e.g., mnx::Part, mnx::Layout, mnx::sequence::Note).
-     * @tparam IdType The type of @p id.
      * @param id The ID to search for.
      * @param errorLocation The location in the document for error reporting purposes.
      * @return An instance of T if found; std::nullopt if the ID is not present.
@@ -191,14 +189,13 @@ public:
      * @note A type mismatch indicates an internal logic error in the ID mapping.
      *       This function only models the *absence* of an ID, not type ambiguity.
      */
-    template <typename T, typename IdType>
+    template <typename T>
     std::optional<T> tryGet(
-        const IdType& id,
+        const std::string& id,
         const std::optional<Base>& errorLocation = std::nullopt) const
     {
-        const auto& map = getMap<T>();
-        auto it = map.find(id);
-        if (it == map.end()) {
+        auto it = m_objectMap.find(id);
+        if (it == m_objectMap.end()) {
             return std::nullopt;
         }
         MNX_ASSERT_IF(!detail::matchesTypeName<T>(it->second.typeName)) {
@@ -217,14 +214,13 @@ public:
     /**
      * @brief Looks up an object by string ID.
      * @tparam T The expected type (e.g., mnx::Part, mnx::Layout, mnx::sequence::Note).
-     * @tparam IdType The type of @p id
      * @param id The ID to search for.
      * @param errorLocation The location in the document for error reporting purposes.
      * @return An instance of T if found.
      * @throws mapping_error if the ID is not found.
      */
-    template <typename T, typename IdType>
-    T get(const IdType& id, const std::optional<Base>& errorLocation = std::nullopt) const
+    template <typename T>
+    T get(const std::string& id, const std::optional<Base>& errorLocation = std::nullopt) const
     {
         if (auto v = tryGet<T>(id, errorLocation)) {
             return *std::move(v);
@@ -243,13 +239,12 @@ public:
     /// followed by #ArrayElementObject::calcArrayIndex().
     ///
     /// @tparam T The expected object type. Must derive from ArrayElementObject.
-    /// @tparam IdType The type of the ID used for lookup.
     /// @param id The ID of the object to locate.
     /// @param errorLocation Optional document location used for error reporting.
     /// @return The zero-based array index of the object.
     /// @throws mapping_error if the ID is not found or does not refer to an object of type @p T.
-    template <typename T, typename IdType>
-    size_t getIndexOf(const IdType& id, const std::optional<Base>& errorLocation = std::nullopt) const
+    template <typename T>
+    size_t getIndexOf(const std::string& id, const std::optional<Base>& errorLocation = std::nullopt) const
     {
         static_assert(std::is_base_of_v<ArrayElementObject, T>,
                     "getIndexOf<T> requires T to derive from ArrayElementObject");
@@ -259,12 +254,15 @@ public:
     }
 
 
-    /// @brief Returns whether the specified ID exists in the mapping
-    template <typename T, typename IdType>
-    bool exists(const IdType& id) const
+    /// @brief Returns whether the specified ID exists in the mapping with type @p T.
+    template <typename T>
+    bool exists(const std::string& id) const
     {
-        const auto& map = getMap<T>();
-        return map.find(id) != map.end();
+        const auto it = m_objectMap.find(id);
+        if (it == m_objectMap.end()) {
+            return false;
+        }
+        return detail::matchesTypeName<T>(it->second.typeName);
     }
 
     /// @brief Get the beam for an event, if it is mapped.
@@ -314,7 +312,6 @@ public:
     void clear()
     {
         m_objectMap.clear();
-        m_globalMeasures.clear();
         m_eventsInBeams.clear();
         m_eventOttavaShift.clear();
         m_lyricLineOrder.clear();
@@ -362,7 +359,6 @@ private:
         std::string_view typeName;      ///< schema name of type for this instance
     };
     std::unordered_map<std::string, MappedLocation> m_objectMap;
-    std::unordered_map<int, MappedLocation> m_globalMeasures;
     struct BeamMappingEntry
     {
         MappedLocation location;
@@ -372,32 +368,8 @@ private:
     std::unordered_map<std::string, int> m_eventOttavaShift;
     std::vector<std::string> m_lyricLineOrder;
 
-    template <typename T, typename Self>
-    static auto& getMapImpl(Self& self) {
-        if constexpr (std::is_same_v<T, global::Measure>) {
-            return self.m_globalMeasures;
-        } else {
-            return self.m_objectMap;
-        }
-    }
-
-    template <typename T>
-    const auto& getMap() const
-    { return getMapImpl<T>(*this); }
-
-    template <typename T>
-    auto& getMap()
-    { return getMapImpl<T>(*this); }
-
-    template <typename KeyType>
-    static std::string formatKeyString(const KeyType& key) {
-        if constexpr (std::is_same_v<KeyType, std::string>) {
-            return "\"" + key + "\"";
-        } else {
-            std::ostringstream oss;
-            oss << key;
-            return oss.str();
-        }
+    static std::string formatKeyString(const std::string& key) {
+        return "\"" + key + "\"";
     }
 
 };

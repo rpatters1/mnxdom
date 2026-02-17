@@ -475,6 +475,9 @@ void SemanticValidator::validateParts()
                     addError("Sequence references non-existent part staff for part " + part.id_or("<no-id>") + ".", sequence);
                     continue;
                 }
+                if (sequence.fullMeasure() && !sequence.content().empty()) {
+                    addError("Sequence \"" + sequence.id_or("<no-id>") + "\" has full measure rest but content is not empty.", sequence);
+                }
                 /// @todo check voice uniqueness
                 validateSequenceContent(sequence.content(), sequence, measureTime);
             }
@@ -543,7 +546,7 @@ void SemanticValidator::validateScores()
                     if (const auto measure = tryGetValue<mnx::global::Measure>(mmRest.start(), mmRest)) {
                         size_t index = measure.value().calcArrayIndex();
                         if (index + mmRest.duration() > document.global().measures().size()) {
-                            addError("Multimeasure rest at measure " + std::to_string(mmRest.start()) + " in score \""
+                            addError("Multimeasure rest at measure \"" + mmRest.start() + "\" in score \""
                                 + score.name() + "\" spans non-existent measures", mmRest);
                         }
                     }
@@ -570,7 +573,7 @@ void SemanticValidator::validateScores()
                             }
                         } else {
                             addError("Score \"" + score.name()
-                                + "\" references missing measure " + std::to_string(system.measure()), system);
+                                + "\" references missing measure \"" + system.measure() + "\"", system);
                             skipScore = true;
                             break;
                         }

@@ -476,7 +476,7 @@ public:
     /// @brief initializer class for #MeasureRhythmicPosition
     struct Required
     {
-        int measureId{};          ///< the measure id of the position
+        std::string measureId;    ///< the global measure id of the position
         FractionValue position{}; ///< the position within the measure
     };
 
@@ -491,7 +491,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param measureId The measure id of the position
     /// @param position The position within the measure
-    MeasureRhythmicPosition(Base& parent, std::string_view key, int measureId, const FractionValue& position)
+    MeasureRhythmicPosition(Base& parent, std::string_view key, const std::string& measureId, const FractionValue& position)
         : Object(parent, key)
     {
         set_measure(measureId);
@@ -502,9 +502,9 @@ public:
     operator Required() const { return { measure(), position().fraction() }; }
 
     /// @brief Create a Required instance for #MeasureRhythmicPosition.
-    static Required make(int measureId, const FractionValue& position) { return { measureId, position }; }
+    static Required make(const std::string& measureId, const FractionValue& position) { return { measureId, position }; }
 
-    MNX_REQUIRED_PROPERTY(int, measure);            ///< The measure id of the measure of this MeasureRhythmicPosition.
+    MNX_REQUIRED_PROPERTY(std::string, measure);    ///< The id of the global measure of this MeasureRhythmicPosition.
     MNX_REQUIRED_CHILD(
         RhythmicPosition, position,
         (const FractionValue&, position)); ///< The metric position, where 1/4 is a quarter note.

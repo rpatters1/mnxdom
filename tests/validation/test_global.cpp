@@ -32,7 +32,7 @@ TEST(Global, DuplicateMeasures)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "duplicate_measures.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID 1 already exists for type \"measure-global\" at /global/measures/0");
+    expectSemanticError(doc, inputPath, "ID \"m1\" already exists for type \"measure-global\" at /global/measures/0");
 }
 
 TEST(Global, InvalidLyricLineIds)
@@ -53,7 +53,7 @@ TEST(Global, MeasureIndices)
     auto measures = doc.global().measures();
     int firstIndex = 1;
     for (const auto measure : measures) {
-        EXPECT_EQ(measure.calcMeasureIndex(), firstIndex++);
+        EXPECT_EQ(measure.calcVisibleNumber(), firstIndex++);
     }
 }
 

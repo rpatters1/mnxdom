@@ -11,7 +11,8 @@
                 "time": {
                     "count": 4,
                     "unit": 4
-                }
+                },
+                "id": "m1"
             }
         ]
     },
@@ -73,7 +74,7 @@
                                     "duration": {
                                         "base": "quarter"
                                     },
-                                    "measure": true,
+                                    "measure": "m1",
                                     "id": "ev8",
                                     "rest": {}
                                 }

@@ -32,7 +32,8 @@ TEST(Scores, FromScratch)
 
     static constexpr int numBars = 5;
     for (int x = 0; x < numBars; x++) {
-        doc.global().measures().append();
+        auto globalMeasure = doc.global().measures().append();
+        globalMeasure.set_id("m" + std::to_string(x + 1));
     }
     EXPECT_EQ(doc.global().measures().size(), size_t(numBars));
 
@@ -41,13 +42,13 @@ TEST(Scores, FromScratch)
     auto score = scores.append("Full Score");
     auto pages = score.ensure_pages();
     auto page = pages.append();
-    auto system = page.systems().append(1);
-    EXPECT_EQ(system.measure(), 1);
-    EXPECT_EQ(page.systems().append(4).measure(), 4);
+    auto system = page.systems().append("m1");
+    EXPECT_EQ(system.measure(), "m1");
+    EXPECT_EQ(page.systems().append("m4").measure(), "m4");
     auto layoutChanges = system.ensure_layoutChanges();
-    auto layoutChange = layoutChanges.append("layout1", 2, FractionValue(3, 8));
+    auto layoutChange = layoutChanges.append("layout1", "m2", FractionValue(3, 8));
     EXPECT_EQ(layoutChange.layout(), "layout1");
-    EXPECT_EQ(layoutChange.location().measure(), 2);
+    EXPECT_EQ(layoutChange.location().measure(), "m2");
 
     auto frac = layoutChange.location().position().fraction();
     EXPECT_EQ(frac.numerator(), 3u);

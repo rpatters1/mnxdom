@@ -1,722 +1,725 @@
 {
-   "mnx": {
-      "version": 1
-   },
-   "global": {
-      "measures": [
-         {
-            "time": {
-               "count": 4,
-               "unit": 4
-            }
-         },
-         {
-            "time": {
-               "count": 4,
-               "unit": 4
-            }
-         },
-         {
-            "time": {
-               "count": 4,
-               "unit": 4
-            }
-         }
-      ]
-   },
-   "parts": [
-      {
-         "name": "Flute",
-         "measures": [
-            {
-               "clefs": [
-                  {
-                     "clef": {
-                        "sign": "G",
-                        "staffPosition": -2
-                     }
-                  }
-               ],
-               "ottavas": [
-                  {
-                     "voice": "lead",
-                     "position": {
-                        "fraction": [
-                           1,
-                           4
-                        ]
-                     },
-                     "end": {
-                        "measure": 2,
-                        "position": {
-                           "fraction": [
-                              3,
-                              4
-                           ]
-                        }
-                     },
-                     "value": 1
-                  }
-               ],
-               "sequences": [
-                  {
-                     "voice": "lead",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "fl1",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "fl2",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "D"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "fl3",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "E"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "grace",
-                           "content": [
-                              {
-                                 "type": "event",
-                                 "id": "flg1",
-                                 "duration": {
-                                    "base": "eighth"
-                                 },
-                                 "notes": [
-                                    {
-                                       "pitch": {
-                                          "octave": 5,
-                                          "step": "F"
-                                       }
-                                    }
-                                 ]
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "fl4",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "G"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
-            },
-            {
-               "ottavas": [
-                  {
-                     "position": {
-                        "fraction": [
-                           3,
-                           4
-                        ]
-                     },
-                     "end": {
-                        "measure": 3,
-                        "position": {
-                           "fraction": [
-                              1,
-                              2
-                           ],
-                           "graceIndex": 0
-                        }
-                     },
-                     "value": -1
-                  }
-               ],
-               "sequences": [
-                  {
-                     "voice": "lead",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "fl5",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "A"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "grace",
-                           "content": [
-                              {
-                                 "type": "event",
-                                 "id": "flg2",
-                                 "duration": {
-                                    "base": "eighth"
-                                 },
-                                 "notes": [
-                                    {
-                                       "pitch": {
-                                          "octave": 5,
-                                          "step": "B"
-                                       }
-                                    }
-                                 ]
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "fl6",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 6,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
-            },
-            {
-               "sequences": [
-                  {
-                     "voice": "lead",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "fl7",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "B"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "fl8",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "A"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "fl9",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "G"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "fl10",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "F"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
-            }
-         ]
-      },
-      {
-         "name": "Piano",
-        "staves": 2,
+    "mnx": {
+        "version": 1
+    },
+    "global": {
         "measures": [
-           {
-               "clefs": [
-                  {
-                     "clef": {
-                        "sign": "G",
-                        "staffPosition": -2
-                     }
-                  },
-                  {
-                     "staff": 2,
-                     "clef": {
-                        "sign": "F",
-                        "staffPosition": 2
-                     }
-                  }
-               ],
-               "ottavas": [
-                  {
-                     "staff": 1,
-                     "voice": "RH",
-                     "position": {
-                        "fraction": [
-                           1,
-                           4
-                        ]
-                     },
-                     "end": {
-                        "measure": 2,
-                        "position": {
-                           "fraction": [
-                              1,
-                              4
-                           ]
-                        }
-                     },
-                     "value": 1
-                  },
-                  {
-                     "staff": 2,
-                     "position": {
-                        "fraction": [
-                           1,
-                           2
-                        ]
-                     },
-                     "end": {
-                        "measure": 3,
-                        "position": {
-                           "fraction": [
-                              1,
-                              1
-                           ]
-                        }
-                     },
-                     "value": -1
-                  }
-               ],
-               "sequences": [
-                  {
-                     "staff": 1,
-                     "voice": "RH",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "pn1",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "E"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn2",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "F"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn3",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "G"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn4",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "A"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  {
-                     "staff": 2,
-                     "voice": "LH",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "pn5",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 3,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn6",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 2,
-                                    "step": "G"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
+            {
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
             },
             {
-               "ottavas": [
-                  {
-                     "voice": "inner",
-                     "position": {
-                        "fraction": [
-                           1,
-                           2
-                        ]
-                     },
-                     "end": {
-                        "measure": 2,
-                        "position": {
-                           "fraction": [
-                              1,
-                              1
-                           ]
-                        }
-                     },
-                     "value": 2
-                  }
-               ],
-               "sequences": [
-                  {
-                     "staff": 1,
-                     "voice": "inner",
-                     "content": [
-                        {
-                           "type": "grace",
-                           "content": [
-                              {
-                                 "type": "event",
-                                 "id": "pn_gr1",
-                                 "duration": {
-                                    "base": "eighth"
-                                 },
-                                 "notes": [
-                                    {
-                                       "pitch": {
-                                          "octave": 5,
-                                          "step": "B"
-                                       }
-                                    }
-                                 ]
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn7",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 6,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn8",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 6,
-                                    "step": "D"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn9",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 6,
-                                    "step": "E"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  {
-                     "staff": 2,
-                     "voice": "LH",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "pn10",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 3,
-                                    "step": "F"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn11",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 3,
-                                    "step": "G"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn12",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 3,
-                                    "step": "A"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m2"
             },
             {
-               "sequences": [
-                  {
-                     "staff": 1,
-                     "voice": "RH",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "pn13",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "E"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn14",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "D"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn15",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn16",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "B"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  {
-                     "staff": 2,
-                     "voice": "LH",
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "pn17",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 2,
-                                    "step": "B"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "pn18",
-                           "duration": {
-                              "base": "half"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 3,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m3"
             }
-         ]
-      }
-   ]
+        ]
+    },
+    "parts": [
+        {
+            "name": "Flute",
+            "measures": [
+                {
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        }
+                    ],
+                    "ottavas": [
+                        {
+                            "voice": "lead",
+                            "position": {
+                                "fraction": [
+                                    1,
+                                    4
+                                ]
+                            },
+                            "end": {
+                                "measure": "m2",
+                                "position": {
+                                    "fraction": [
+                                        3,
+                                        4
+                                    ]
+                                }
+                            },
+                            "value": 1
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "voice": "lead",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "fl1",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "fl2",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "D"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "fl3",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "E"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "grace",
+                                    "content": [
+                                        {
+                                            "type": "event",
+                                            "id": "flg1",
+                                            "duration": {
+                                                "base": "eighth"
+                                            },
+                                            "notes": [
+                                                {
+                                                    "pitch": {
+                                                        "octave": 5,
+                                                        "step": "F"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "fl4",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "G"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "ottavas": [
+                        {
+                            "position": {
+                                "fraction": [
+                                    3,
+                                    4
+                                ]
+                            },
+                            "end": {
+                                "measure": "m3",
+                                "position": {
+                                    "fraction": [
+                                        1,
+                                        2
+                                    ],
+                                    "graceIndex": 0
+                                }
+                            },
+                            "value": -1
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "voice": "lead",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "fl5",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "A"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "grace",
+                                    "content": [
+                                        {
+                                            "type": "event",
+                                            "id": "flg2",
+                                            "duration": {
+                                                "base": "eighth"
+                                            },
+                                            "notes": [
+                                                {
+                                                    "pitch": {
+                                                        "octave": 5,
+                                                        "step": "B"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "fl6",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 6,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sequences": [
+                        {
+                            "voice": "lead",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "fl7",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "B"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "fl8",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "A"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "fl9",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "G"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "fl10",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "F"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Piano",
+            "staves": 2,
+            "measures": [
+                {
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "sign": "F",
+                                "staffPosition": 2
+                            }
+                        }
+                    ],
+                    "ottavas": [
+                        {
+                            "staff": 1,
+                            "voice": "RH",
+                            "position": {
+                                "fraction": [
+                                    1,
+                                    4
+                                ]
+                            },
+                            "end": {
+                                "measure": "m2",
+                                "position": {
+                                    "fraction": [
+                                        1,
+                                        4
+                                    ]
+                                }
+                            },
+                            "value": 1
+                        },
+                        {
+                            "staff": 2,
+                            "position": {
+                                "fraction": [
+                                    1,
+                                    2
+                                ]
+                            },
+                            "end": {
+                                "measure": "m3",
+                                "position": {
+                                    "fraction": [
+                                        1,
+                                        1
+                                    ]
+                                }
+                            },
+                            "value": -1
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "staff": 1,
+                            "voice": "RH",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "pn1",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "E"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn2",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "F"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn3",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "G"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn4",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "A"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "staff": 2,
+                            "voice": "LH",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "pn5",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 3,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn6",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 2,
+                                                "step": "G"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "ottavas": [
+                        {
+                            "voice": "inner",
+                            "position": {
+                                "fraction": [
+                                    1,
+                                    2
+                                ]
+                            },
+                            "end": {
+                                "measure": "m2",
+                                "position": {
+                                    "fraction": [
+                                        1,
+                                        1
+                                    ]
+                                }
+                            },
+                            "value": 2
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "staff": 1,
+                            "voice": "inner",
+                            "content": [
+                                {
+                                    "type": "grace",
+                                    "content": [
+                                        {
+                                            "type": "event",
+                                            "id": "pn_gr1",
+                                            "duration": {
+                                                "base": "eighth"
+                                            },
+                                            "notes": [
+                                                {
+                                                    "pitch": {
+                                                        "octave": 5,
+                                                        "step": "B"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn7",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 6,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn8",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 6,
+                                                "step": "D"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn9",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 6,
+                                                "step": "E"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "staff": 2,
+                            "voice": "LH",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "pn10",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 3,
+                                                "step": "F"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn11",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 3,
+                                                "step": "G"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn12",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 3,
+                                                "step": "A"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sequences": [
+                        {
+                            "staff": 1,
+                            "voice": "RH",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "pn13",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "E"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn14",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "D"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn15",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn16",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "B"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "staff": 2,
+                            "voice": "LH",
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "pn17",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 2,
+                                                "step": "B"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "pn18",
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 3,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

@@ -5,12 +5,20 @@
     "global": {
         "measures": [
             {
-                "index": 2
+                "id": "m2"
             },
-            {},
-            {},
-            {},
-            {}
+            {
+                "id": "m3"
+            },
+            {
+                "id": "m4"
+            },
+            {
+                "id": "m5"
+            },
+            {
+                "id": "m6"
+            }
         ]
     },
     "parts": [],
@@ -21,13 +29,13 @@
                 {
                     "systems": [
                         {
-                            "measure": 2
+                            "measure": "m2"
                         },
                         {
-                            "measure": 4
+                            "measure": "m4"
                         },
                         {
-                            "measure": 3
+                            "measure": "m3"
                         }
                     ]
                 }

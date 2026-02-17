@@ -1,14 +1,17 @@
 {
-  "user": {
-    "id": 42,
-    "name": "Ada Boy",
-    "email": "ada@example.com",
-    "roles": ["admin", "editor"]
-  },
-  "preferences": {
-    "theme": "dark",
-    "notifications": true,
-    "language": "en-US"
-  },
-  "lastLogin": "2026-01-31T18:42:00Z"
+    "user": {
+        "id": 42,
+        "name": "Ada Boy",
+        "email": "ada@example.com",
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "preferences": {
+        "theme": "dark",
+        "notifications": true,
+        "language": "en-US"
+    },
+    "lastLogin": "2026-01-31T18:42:00Z"
 }

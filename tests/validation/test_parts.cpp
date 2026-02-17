@@ -80,6 +80,14 @@ TEST(Parts, EventErrors)
     });
 }
 
+TEST(Parts, FullMeasureWithNonEmptyContent)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "sequence_fullmeasure_nonempty_content.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "has full measure rest but content is not empty");
+}
+
 TEST(Parts, TieErrors)
 {
     setupTestDataPaths();

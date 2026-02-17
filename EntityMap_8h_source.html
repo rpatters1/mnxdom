@@ -133,12 +133,12 @@ $(document).ready(function(){initNavTree('EntityMap_8h_source.html',''); initRes
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &quot;BaseTypes.h&quot;</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;Global.h&quot;</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;Layout.h&quot;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;Part.h&quot;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;Score.h&quot;</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &quot;Sequence.h&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &quot;../BaseTypes.h&quot;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;../Global.h&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;../Layout.h&quot;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;../Part.h&quot;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;../Score.h&quot;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &quot;../Sequence.h&quot;</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">namespace </span>mnx::util {</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
@@ -464,7 +464,7 @@ $(document).ready(function(){initNavTree('EntityMap_8h_source.html',''); initRes
 </div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>} <span class="comment">// namespace mnx::util</span></div>
-<div class="ttc" id="aclassmnx_1_1Base_html_a1ef198706551096c7bbd023a3fae3406"><div class="ttname"><a href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">mnx::Base::pointer</a></div><div class="ttdeci">json_pointer pointer() const</div><div class="ttdoc">Returns the json_pointer for this node.</div><div class="ttdef"><b>Definition</b> BaseTypes.h:239</div></div>
+<div class="ttc" id="aclassmnx_1_1Base_html_a1ef198706551096c7bbd023a3fae3406"><div class="ttname"><a href="classmnx_1_1Base.html#a1ef198706551096c7bbd023a3fae3406">mnx::Base::pointer</a></div><div class="ttdeci">json_pointer pointer() const</div><div class="ttdoc">Returns the json_pointer for this node.</div><div class="ttdef"><b>Definition</b> BaseTypes.h:243</div></div>
 <div class="ttc" id="aclassmnx_1_1Document_html"><div class="ttname"><a href="classmnx_1_1Document.html">mnx::Document</a></div><div class="ttdoc">Represents an MNX document and provides methods for loading and saving.</div><div class="ttdef"><b>Definition</b> Document.h:102</div></div>
 <div class="ttc" id="aclassmnx_1_1part_1_1Beam_html"><div class="ttname"><a href="classmnx_1_1part_1_1Beam.html">mnx::part::Beam</a></div><div class="ttdoc">Contains information about each level of bea.</div><div class="ttdef"><b>Definition</b> Part.h:40</div></div>
 <div class="ttc" id="aclassmnx_1_1part_1_1Beam_html_a2931fe781192c4d70f46773838ae6e4f"><div class="ttname"><a href="classmnx_1_1part_1_1Beam.html#a2931fe781192c4d70f46773838ae6e4f">mnx::part::Beam::JsonSchemaTypeName</a></div><div class="ttdeci">static constexpr std::string_view JsonSchemaTypeName</div><div class="ttdoc">required for mapping</div><div class="ttdef"><b>Definition</b> Part.h:61</div></div>
@@ -483,7 +483,7 @@ $(document).ready(function(){initNavTree('EntityMap_8h_source.html',''); initRes
 <div class="ttc" id="aclassmnx_1_1util_1_1EntityMap_html_ab7d9b413010da179c58bad2905b1b605"><div class="ttname"><a href="classmnx_1_1util_1_1EntityMap.html#ab7d9b413010da179c58bad2905b1b605">mnx::util::EntityMap::get</a></div><div class="ttdeci">T get(const IdType &amp;id, const std::optional&lt; Base &gt; &amp;errorLocation=std::nullopt) const</div><div class="ttdoc">Looks up an object by string ID.</div><div class="ttdef"><b>Definition</b> EntityMap.h:227</div></div>
 <div class="ttc" id="aclassmnx_1_1util_1_1EntityMap_html_abbbc9e36b74a1cb998782def2fd70295"><div class="ttname"><a href="classmnx_1_1util_1_1EntityMap.html#abbbc9e36b74a1cb998782def2fd70295">mnx::util::EntityMap::getOttavaShift</a></div><div class="ttdeci">int getOttavaShift(const sequence::Event &amp;event) const</div><div class="ttdoc">Retrieve the ottava shift for an event. Returns 0 if not cached.</div><div class="ttdef"><b>Definition</b> EntityMap.h:334</div></div>
 <div class="ttc" id="aclassmnx_1_1util_1_1mapping__error_html"><div class="ttname"><a href="classmnx_1_1util_1_1mapping__error.html">mnx::util::mapping_error</a></div><div class="ttdoc">base class for mapping error exceptions</div><div class="ttdef"><b>Definition</b> EntityMap.h:97</div></div>
-<div class="ttc" id="anamespacemnx_html_a4bae3f49293d8a1d3aed78c5a8af26bc"><div class="ttname"><a href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">mnx::json_pointer</a></div><div class="ttdeci">json::json_pointer json_pointer</div><div class="ttdoc">JSON pointer class for MNX.</div><div class="ttdef"><b>Definition</b> BaseTypes.h:48</div></div>
+<div class="ttc" id="anamespacemnx_html_a4bae3f49293d8a1d3aed78c5a8af26bc"><div class="ttname"><a href="namespacemnx.html#a4bae3f49293d8a1d3aed78c5a8af26bc">mnx::json_pointer</a></div><div class="ttdeci">json::json_pointer json_pointer</div><div class="ttdoc">JSON pointer class for MNX.</div><div class="ttdef"><b>Definition</b> BaseTypes.h:52</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

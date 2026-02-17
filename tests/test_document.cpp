@@ -71,9 +71,13 @@ TEST(Document, MinimalFromScratch)
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
 
     auto mnx = doc.mnx();
-    EXPECT_EQ(mnx.version(), MNX_VERSION);
-    mnx.set_version(MNX_VERSION + 1);
-    EXPECT_EQ(doc.mnx().version(), MNX_VERSION + 1);
+    EXPECT_EQ(mnx.version(), getMnxSchemaVersion());
+    ASSERT_TRUE(mnx._x().has_value());
+    const auto schemaVersion = mnx.getExtension("schemaVersion");
+    ASSERT_TRUE(schemaVersion.has_value());
+    EXPECT_EQ(schemaVersion->at("value").get<std::string>(), getMnxSchemaId());
+    mnx.set_version(getMnxSchemaVersion() + 1);
+    EXPECT_EQ(doc.mnx().version(), getMnxSchemaVersion() + 1);
 
     auto support = mnx.ensure_support();
     support.set_useAccidentalDisplay(true);
@@ -122,8 +126,8 @@ TEST(Document, MissingRequiredFields)
 
     auto mnx = doc.mnx();
     EXPECT_THROW(static_cast<void>(mnx.version()), std::runtime_error);
-    mnx.set_version(MNX_VERSION);
-    EXPECT_EQ(doc.mnx().version(), MNX_VERSION);
+    mnx.set_version(getMnxSchemaVersion());
+    EXPECT_EQ(doc.mnx().version(), getMnxSchemaVersion());
     EXPECT_FALSE(validation::schemaValidate(doc)) << "after adding version, schema should still not validate";
 
     auto global = doc.global();

@@ -31,12 +31,12 @@
 #include <type_traits>
 #include <unordered_map>
 
-#include "BaseTypes.h"
-#include "Global.h"
-#include "Layout.h"
-#include "Part.h"
-#include "Score.h"
-#include "Sequence.h"
+#include "../BaseTypes.h"
+#include "../Global.h"
+#include "../Layout.h"
+#include "../Part.h"
+#include "../Score.h"
+#include "../Sequence.h"
 
 namespace mnx::util {
 

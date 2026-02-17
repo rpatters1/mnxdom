@@ -41,6 +41,8 @@ Note that this code never uses references. Since every MNX class in the model is
 
 ### Setup Instructions
 
+#### Via `FetchContent`
+
 Include the top header in your source file.
 
 ```cpp
@@ -61,6 +63,42 @@ FetchContent_MakeAvailable(musx)
 
 # Also add somewhere:
 target_link_libraries(project PRIVATE mnxdom) # replace "project" with your actual project name
+```
+
+#### Via a system installation
+
+Install the library using:
+
+```
+sudo cmake --install build
+```
+
+This should install:
+
+- Headers in `/usr/local/include/mnxdom`
+- `pkg-config` file in `/usr/local/lib/pkgconfig/mnxdom.pc`
+
+If you use `cmake` in your project, and assuming `pkg-config` on your system is configured to look for files in `/usr/local/lib/pkgconfig` too, you can use:
+
+```cmake
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(mnxdom REQUIRED IMPORTED_TARGET mnxdom)
+  target_link_libraries(project PRIVATE PkgConfig::mnxdom)
+```
+
+And include the top header in your source file with:
+
+```cpp
+#include <mnxdom/mnxdom.h>
+```
+
+#### Dependencies
+
+The dependencies [pboettch/json-schema-validator](https://github.com/pboettch/json-schema-validator) and [nlohmann/json](https://json.nlohmann.me/) are required by mnxdom. If you wish mnxdom to use the system versions of either of these dependencies, configure mnxdom with the following CMake flags:
+
+```sh
+-DUSE_SYSTEM_NLOHMANN_JSON=ON
+-DUSE_SYSTEM_JSON_SCHEMA_VALIDATOR=ON
 ```
 
 ### To Run the Tests

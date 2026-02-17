@@ -21,7 +21,11 @@
  */
 #include "mnxdom.h"
 
+#ifdef JSON_SCHEMA_VALIDATOR_SYSTEM
+#include <nlohmann/json-schema.hpp>
+#else
 #include "nlohmann/json-schema.hpp"
+#endif
 #include "mnx_schema.xxd"
 
 namespace mnx {

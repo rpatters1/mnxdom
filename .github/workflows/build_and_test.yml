@@ -56,3 +56,10 @@ jobs:
       # Step 6: Run tests
       - name: Run tests
         run: ctest --test-dir build --output-on-failure
+
+      # Step 7: Install with CMake
+      - name: Install
+        if: matrix.os != 'windows-latest'
+        run: |
+          mkdir -p /tmp/prefix
+          cmake --install build --prefix /tmp/prefix

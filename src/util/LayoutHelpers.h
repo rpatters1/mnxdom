@@ -28,9 +28,9 @@
 #include <unordered_set>
 #include <vector>
 
-#include "BaseTypes.h"
-#include "Global.h"
-#include "Layout.h"
+#include "../BaseTypes.h"
+#include "../Global.h"
+#include "../Layout.h"
 
 namespace mnx::util {
 

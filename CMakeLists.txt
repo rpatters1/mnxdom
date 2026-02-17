@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(mnxdom LANGUAGES CXX)
+project(mnxdom LANGUAGES CXX VERSION 2.1)
+
+include(GNUInstallDirs)
 
 include(FetchContent)
 
@@ -58,6 +60,7 @@ set(NLOHMANN_JSON_VERSION 3.12.0)
 # Handle nlohmann_json: use system version or fetch
 if(USE_SYSTEM_NLOHMANN_JSON)
     find_package(nlohmann_json ${NLOHMANN_JSON_VERSION} REQUIRED CONFIG)
+    target_compile_definitions(mnxdom PRIVATE NLOHMANN_JSON_SYSTEM)
     message(STATUS "Using system-installed nlohmann_json")
 else()
     # Disable building tests for nlohmann_json
@@ -76,6 +79,7 @@ endif()
 # Handle json_schema_validator: use system version or fetch
 if(USE_SYSTEM_JSON_SCHEMA_VALIDATOR)
     find_package(nlohmann_json_schema_validator REQUIRED CONFIG)
+    target_compile_definitions(mnxdom PRIVATE JSON_SCHEMA_VALIDATOR_SYSTEM)
     message(STATUS "Using system-installed nlohmann_json_schema_validator")
 else()
     # Disable building tests for json_schema_validator
@@ -117,12 +121,23 @@ endif()
 
 # Install rules
 install(TARGETS mnxdom
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 # Install public headers
 install(DIRECTORY src/
-    DESTINATION include/mnxdom
-    FILES_MATCHING PATTERN "*.h"
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mnxdom
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+)
+
+configure_file(
+    cmake/mnxdom.pc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/mnxdom.pc
+    @ONLY
+)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mnxdom.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )

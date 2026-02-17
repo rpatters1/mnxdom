@@ -180,16 +180,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
     for (const auto content : contentArray) {
         if (content.type() == mnx::sequence::Event::ContentTypeValue) {
             auto event = content.get<mnx::sequence::Event>();
-            if (event.measure()) {
-                if (event.duration().has_value()) {
-                    addError("Event \"" + event.id_or("<no-id>") + "\" has both full measure indicator and duration.", event);
-                }
-            } else {
-                if (!event.duration().has_value()) {
-                    addError("Event \"" + event.id_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
-                }
-            }
-            elapsedTime += event.calcDuration();
+            elapsedTime += event.duration();
             if (event.rest().has_value()) {
                 if (event.notes() && !event.notes().value().empty()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" is a rest but also has notes.", event);
@@ -372,10 +363,9 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                 } else {
                     voice = event.value().getSequence().voice_or("");
                 }
-                if (auto noteValue = event.value().duration()) {
-                    if (depth > noteValue.value().calcNumberOfFlags()) {
-                        addError("Event \"" + id + "\" cannot have " + std::to_string(depth) + " beams", beam);
-                    }
+                const auto noteValue = event.value().duration();
+                if (depth > noteValue.calcNumberOfFlags()) {
+                    addError("Event \"" + id + "\" cannot have " + std::to_string(depth) + " beams", beam);
                 }
             }
         }

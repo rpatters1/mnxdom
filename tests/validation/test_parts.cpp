@@ -76,8 +76,7 @@ TEST(Parts, EventErrors)
         "ID \"ev5n1\" already exists for type \"note\" at",
         "ID \"ev6\" already exists for type \"event\" at",
         "ID \"ev7\" already exists for type \"event\" at",
-        "Event \"ev7\" is a rest but also has notes",
-        "Event \"ev8\" has both full measure indicator and duration"
+        "Event \"ev7\" is a rest but also has notes"
     });
 }
 

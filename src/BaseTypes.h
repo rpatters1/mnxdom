@@ -58,6 +58,7 @@ template <typename T> class Array;
 template <typename T> class Dictionary;
 
 namespace sequence {
+class Event;
 class Space;
 class MultiNoteTremolo;
 class Tuplet;
@@ -740,6 +741,7 @@ public:
     /// @brief Append an element of the specified type (default overload for no-arg content types).
     template <typename T,
               std::enable_if_t<std::is_base_of_v<ContentObject, T> &&
+                               !std::is_same_v<T, sequence::Event> &&
                                !std::is_same_v<T, sequence::Space> &&
                                !std::is_same_v<T, sequence::MultiNoteTremolo> &&
                                !std::is_same_v<T, sequence::Tuplet>, int> = 0>

@@ -30,8 +30,7 @@ measure.create_clefs().append(mnx::ClefSign::GClef, -2, std::nullopt);
 auto event = measure.sequences()
     .append()
     .content()
-    .append<mnx::sequence::Event>();
-event.ensure_duration(mnx::NoteValueBase::Whole, 0);
+    .append<mnx::sequence::Event>(mnx::NoteValueBase::Whole);
 event.create_notes().append(mnx::sequence::Pitch::make(mnx::NoteStep::C, 4));
 // save to file
 doc.save("hello-world.json", 4); // indent with 4 spaces

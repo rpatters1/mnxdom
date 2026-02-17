@@ -45,8 +45,7 @@
  *
  * Example:
  * @code
- * mnx::sequence::Event evt(seq, "content");
- * evt.ensure_duration(NoteValueBase::Quarter, 1);
+ * mnx::sequence::Event evt(seq, "content", NoteValueBase::Quarter, 1);
  *
 * auto note = evt.ensure_notes().append(mnx::sequence::Pitch::make(NoteStep::C, 4));
  * @endcode

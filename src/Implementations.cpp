@@ -700,23 +700,6 @@ size_t sequence::Event::getSequenceIndex() const
     return result.value().calcArrayIndex();
 }
 
-FractionValue sequence::Event::calcDuration() const
-{
-    if (measure()) {
-        auto partMeasure = getEnclosingElement<part::Measure>();
-        MNX_ASSERT_IF(!partMeasure) {
-            throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a part measure.");
-        }
-        if (auto currentTime = partMeasure.value().calcCurrentTime()) {
-            return currentTime.value();
-        }
-    }
-    if (duration().has_value()) {
-        return duration().value();
-    }
-    return 0;
-}
-
 FractionValue sequence::Event::calcStartTime() const
 {
     auto sequence = getEnclosingElement<Sequence>();

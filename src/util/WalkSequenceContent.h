@@ -93,7 +93,7 @@ inline bool walkSequenceContent(Sequence sequence,
             if (item.type() == sequence::Event::ContentTypeValue) {
                 const auto event = item.get<sequence::Event>();
                 const auto start = ctxRef.elapsedTime;
-                const auto actualDuration = event.calcDuration() * ctxRef.timeRatio;
+                const auto actualDuration = event.duration() * ctxRef.timeRatio;
                 if (hooks.onEvent) {
                     if (!hooks.onEvent(event, start, actualDuration, ctxRef)) {
                         return false;

@@ -419,6 +419,12 @@ public:
 class Event : public ContentObject
 {
 public:
+    /// @brief initializer class for #Event
+    struct Required
+    {
+        NoteValue::Required duration{}; ///< Symbolic duration of the event.
+    };
+
     /// @brief Constructor for existing Event objects
     Event(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
@@ -428,17 +434,25 @@ public:
     /// @brief Creates a new Event class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    Event(Base& parent, std::string_view key)
+    /// @param base The note value base for the event duration.
+    /// @param dots Number of dots on the event duration.
+    Event(Base& parent, std::string_view key, NoteValueBase base, unsigned dots = 0)
         : ContentObject(parent, key)
     {
+        create_duration(base, dots);
     }
 
-    MNX_OPTIONAL_CHILD(NoteValue, duration,
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { duration() }; }
+
+    /// @brief Create a Required instance for #Event.
+    static Required make(NoteValueBase base, unsigned dots = 0) { return { { base, dots } }; }
+
+    MNX_REQUIRED_CHILD(NoteValue, duration,
         (NoteValueBase, base), (unsigned, dots)); ///< Symbolic duration of the event.
     MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, measure, false); ///< Whether this event is a whole-measure event.
     MNX_OPTIONAL_CHILD(Array<Note>, notes);                 ///< Note array
     /// @todo `orient`
     MNX_OPTIONAL_CHILD(Rest, rest);                         ///< indicates this event is a rest.
@@ -464,9 +478,6 @@ public:
     /// @brief Returns the index of the event (or its container) in the @ref Sequence instance for this event
     /// @throws std::logic_error if the json pointer does not contain a sequence (should be impossible)
     [[nodiscard]] size_t getSequenceIndex() const;
-
-    /// @brief Calculates and returns the duration of this event.
-    [[nodiscard]]  FractionValue calcDuration() const;
 
     /// @brief Calculates and returns the start time of this event within the measure.
     [[nodiscard]] FractionValue calcStartTime() const;

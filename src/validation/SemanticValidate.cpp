@@ -508,11 +508,14 @@ void SemanticValidator::validateLayouts()
                         self(self, group.content());
                     } else if (element.type() == mnx::layout::Staff::ContentTypeValue) {
                         auto staff = element.get<mnx::layout::Staff>();
-                        if (!util::analyzeLayoutStaffVoices(staff)) {
-                            addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has one or more part voices specified multiple times.", staff);
-                        }
+                        bool hasEmptyPartId = false;
                         /// @todo validate "labelref"?
                         for (const auto source : staff.sources()) {
+                            if (source.part().empty()) {
+                                addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has empty part id in source.", source);
+                                hasEmptyPartId = true;
+                                continue;
+                            }
                             if (const auto part = tryGetValue<mnx::Part>(source.part(), source)) {
                                 int staffNum = source.staff();
                                 int numStaves = part.value().staves();
@@ -523,6 +526,9 @@ void SemanticValidator::validateLayouts()
                             }
                             /// @todo validate "labelref"?
                             /// @todo validate "voice"?
+                        }
+                        if (!hasEmptyPartId && !util::analyzeLayoutStaffVoices(staff)) {
+                            addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has one or more part voices specified multiple times.", staff);
                         }
                     } else {
                         addError("Unknown content type \"" + element.type() + "\" encounterd in layout.", element);

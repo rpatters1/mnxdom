@@ -607,6 +607,50 @@ std::optional<TimeSignature> part::Measure::calcCurrentTime() const
     return getGlobalMeasure().calcCurrentTime();
 }
 
+// **************************
+// ***** layout::Group ******
+// **************************
+
+bool layout::Group::calcIsPartGroup() const
+{
+    std::set<std::string> partIds;
+    bool hasEmptyPartId = false;
+    const auto collectPartIds = [&](const auto& self, const ContentArray& groupContent) -> void {
+        for (auto element : groupContent) {
+            if (element.type() == layout::Group::ContentTypeValue) {
+                self(self, element.get<layout::Group>().content());
+            } else if (element.type() == layout::Staff::ContentTypeValue) {
+                for (const auto source : element.get<layout::Staff>().sources()) {
+                    const auto partId = source.part();
+                    if (partId.empty()) {
+                        hasEmptyPartId = true;
+                    } else {
+                        partIds.insert(partId);
+                    }
+                }
+            }
+        }
+    };
+
+    collectPartIds(collectPartIds, content());
+    return !hasEmptyPartId && partIds.size() == 1;
+}
+
+StaffGroupBarlineOverride layout::Group::calcBarlineOverride() const
+{
+    switch (barlineStyle()) {
+    case StaffGroupBarlineStyle::Individual:
+        return StaffGroupBarlineOverride::None;
+    case StaffGroupBarlineStyle::Instrument:
+        return calcIsPartGroup() ? StaffGroupBarlineOverride::Unified : StaffGroupBarlineOverride::None;
+    case StaffGroupBarlineStyle::Unified:
+        return StaffGroupBarlineOverride::Unified;
+    case StaffGroupBarlineStyle::Mensurstrich:
+        return StaffGroupBarlineOverride::Mensurstrich;
+    }
+    throw std::logic_error("Unknown StaffGroupBarlineStyle value.");
+}
+
 // ***********************************
 // ***** part::PartTransposition *****
 // ***********************************

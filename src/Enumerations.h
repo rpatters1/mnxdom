@@ -275,6 +275,19 @@ enum class StaffGroupBarlineStyle
 };
 
 /**
+ * @enum StaffGroupBarlineOverride
+ * @brief Resolved barline override setting for a layout staff group.
+ * @note This enum is currently an mnxdom-only helper and is not an official MNX schema enum.
+ * It models a proposed explicit override property that will replace StaffGroupBarlineStyle.
+ */
+enum class StaffGroupBarlineOverride
+{
+    None,           ///< no override
+    Unified,        ///< override with unified barline
+    Mensurstrich    ///< override with mensurstrich barline
+};
+
+/**
  * @enum StemDirection
  * @brief The values available in a labelref
  */

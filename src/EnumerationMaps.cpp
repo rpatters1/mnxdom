@@ -157,6 +157,13 @@ MNX_ENUM_MAPPING(SlurTieSide, {
     { "up",         SlurTieSide::Up }
 });
 
+MNX_ENUM_MAPPING(StaffGroupBarlineStyle, {
+    { "individual",     StaffGroupBarlineStyle::Individual },
+    { "instrument",     StaffGroupBarlineStyle::Instrument },
+    { "unified",        StaffGroupBarlineStyle::Unified },
+    { "mensurstrich",   StaffGroupBarlineStyle::Mensurstrich }
+});
+
 MNX_ENUM_MAPPING(StemDirection, {
     { "down",       StemDirection::Down },
     { "up",         StemDirection::Up }

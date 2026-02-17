@@ -260,6 +260,21 @@ enum class SlurTieSide
 };
 
 /**
+ * @enum StaffGroupBarlineStyle
+ * @brief The types of barline overrides for staff groups in layouts
+ * @todo This appears to be a misnomer, and there is an outstanding issue 495 to clarify it.
+ * Currently mnxdom treats these as override options. Of particular concern is the `instrument` option,
+ * which adds useless complexity in the context of staff groups.
+ */
+enum class StaffGroupBarlineStyle
+{
+    Individual,     ///< currently interpreted as no override
+    Instrument,     ///< currently interpreted as no override or unified, depending on whether the group is single- or multi-instrument
+    Unified,        ///< override with unified barline
+    Mensurstrich    ///< override with mensurstrich barline
+};
+
+/**
  * @enum StemDirection
  * @brief The values available in a labelref
  */

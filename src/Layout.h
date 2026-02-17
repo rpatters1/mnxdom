@@ -121,6 +121,7 @@ public:
         create_content();
     }
 
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(StaffGroupBarlineStyle, barlineStyle, StaffGroupBarlineStyle::Instrument); ///< barline override settings
     MNX_REQUIRED_CHILD(ContentArray, content);      ///< Required child containing the layout content (groups and staves).
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< Label to be rendered to the left of the group
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);    ///< The symbol down the left side.

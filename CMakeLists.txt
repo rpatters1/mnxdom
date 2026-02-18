@@ -98,7 +98,8 @@ endif()
 
 target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
 target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
-target_compile_definitions(mnxdom INTERFACE JSON_DISABLE_ENUM_SERIALIZATION=1)
+# nlohmann/json behavior config
+target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 # Export fetched mnx_w3c locations to dependents
 mnx_w3c_apply_interface_definitions(mnxdom)
 target_compile_options(mnxdom PUBLIC

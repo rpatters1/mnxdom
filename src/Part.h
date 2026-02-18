@@ -170,7 +170,7 @@ public:
     {
         OttavaAmount value{};        ///< the value (type) of ottava
         FractionValue position{};    ///< the start position of the ottava
-        int endMeasureId{};          ///< the end measure of the ottava
+        std::string endMeasureId;    ///< the global id of the end measure of the ottava
         FractionValue endPosition{}; ///< the position within the end measure
     };
 
@@ -187,7 +187,7 @@ public:
     /// @param position The start position of the ottava
     /// @param endMeasureId The end measure of the ottava
     /// @param endPosition The position within the end measure
-    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
+    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, const std::string& endMeasureId, const FractionValue& endPosition)
         : ArrayElementObject(parent, key)
     {
         create_position(position);
@@ -202,11 +202,11 @@ public:
     }
 
     /// @brief Create a Required instance for #Ottava.
-    static Required make(OttavaAmount value, const FractionValue& position, int endMeasureId, const FractionValue& endPosition)
+    static Required make(OttavaAmount value, const FractionValue& position, const std::string& endMeasureId, const FractionValue& endPosition)
     { return { value, position, endMeasureId, endPosition }; }
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
-        (int, measureId), (const FractionValue&, position)); ///< The end of the ottava (includes any events starting at this location)
+        (const std::string&, measureId), (const FractionValue&, position)); ///< The end of the ottava (includes any events starting at this location)
     /// @todo orient
     MNX_REQUIRED_CHILD(RhythmicPosition, position,
         (const FractionValue&, position)); ///< The start position of the ottava

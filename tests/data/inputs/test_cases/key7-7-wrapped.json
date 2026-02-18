@@ -17,16 +17,24 @@
                 "time": {
                     "count": 4,
                     "unit": 4
-                }
+                },
+                "id": "m1"
             },
             {
                 "key": {
                     "fifths": -7
-                }
+                },
+                "id": "m2"
             },
-            {},
-            {},
-            {}
+            {
+                "id": "m3"
+            },
+            {
+                "id": "m4"
+            },
+            {
+                "id": "m5"
+            }
         ]
     },
     "parts": [
@@ -186,8 +194,8 @@
         },
         {
             "id": "P2",
-            "name": "Clarinet in B♭",
-            "shortName": "B♭ Cl.",
+            "name": "Clarinet in B\u266d",
+            "shortName": "B\u266d Cl.",
             "transposition": {
                 "interval": {
                     "halfSteps": 2,
@@ -858,11 +866,11 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S0-Sys1"
                         },
                         {
-                            "measure": 2,
+                            "measure": "m2",
                             "layout": "S0-Sys2"
                         }
                     ]
@@ -870,7 +878,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 5,
+                            "measure": "m5",
                             "layout": "S0-Sys3"
                         }
                     ]

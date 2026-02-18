@@ -1,204 +1,207 @@
 {
-   "mnx": {
-      "version": 1
-   },
-   "global": {
-      "measures": [
-         {
-            "time": {
-               "count": 4,
-               "unit": 4
-            }
-         },
-         {}
-      ]
-   },
-   "parts": [
-      {
-         "measures": [
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
             {
-               "clefs": [
-                  {
-                     "clef": {
-                        "sign": "G",
-                        "staffPosition": -2
-                     }
-                  }
-               ],
-               "ottavas": [
-                  {
-                     "position": {
-                        "fraction": [
-                           0,
-                           1
-                        ]
-                     },
-                     "end": {
-                        "measure": 2,
-                        "position": {
-                           "fraction": [
-                              1,
-                              4
-                           ]
-                        }
-                     },
-                     "value": 1
-                  },
-                  {
-                     "position": {
-                        "fraction": [
-                           3,
-                           4
-                        ]
-                     },
-                     "end": {
-                        "measure": 1,
-                        "position": {
-                           "fraction": [
-                              1,
-                              1
-                           ]
-                        }
-                     },
-                     "value": 2
-                  }
-               ],
-               "sequences": [
-                  {
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "m1e1",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "m1e2",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "D"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "m1e3",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "E"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "m1e4",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "F"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
             },
             {
-               "sequences": [
-                  {
-                     "content": [
-                        {
-                           "type": "event",
-                           "id": "m2e1",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "G"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "m2e2",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "A"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "m2e3",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 4,
-                                    "step": "B"
-                                 }
-                              }
-                           ]
-                        },
-                        {
-                           "type": "event",
-                           "id": "m2e4",
-                           "duration": {
-                              "base": "quarter"
-                           },
-                           "notes": [
-                              {
-                                 "pitch": {
-                                    "octave": 5,
-                                    "step": "C"
-                                 }
-                              }
-                           ]
-                        }
-                     ]
-                  }
-               ]
+                "id": "m2"
             }
-         ]
-      }
-   ]
+        ]
+    },
+    "parts": [
+        {
+            "measures": [
+                {
+                    "clefs": [
+                        {
+                            "clef": {
+                                "sign": "G",
+                                "staffPosition": -2
+                            }
+                        }
+                    ],
+                    "ottavas": [
+                        {
+                            "position": {
+                                "fraction": [
+                                    0,
+                                    1
+                                ]
+                            },
+                            "end": {
+                                "measure": "m2",
+                                "position": {
+                                    "fraction": [
+                                        1,
+                                        4
+                                    ]
+                                }
+                            },
+                            "value": 1
+                        },
+                        {
+                            "position": {
+                                "fraction": [
+                                    3,
+                                    4
+                                ]
+                            },
+                            "end": {
+                                "measure": "m1",
+                                "position": {
+                                    "fraction": [
+                                        1,
+                                        1
+                                    ]
+                                }
+                            },
+                            "value": 2
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "m1e1",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "m1e2",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "D"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "m1e3",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "E"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "m1e4",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "F"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "id": "m2e1",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "G"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "m2e2",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "A"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "m2e3",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 4,
+                                                "step": "B"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "event",
+                                    "id": "m2e4",
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "octave": 5,
+                                                "step": "C"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

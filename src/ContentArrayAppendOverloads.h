@@ -26,6 +26,19 @@
 namespace mnx {
 
 template <>
+inline sequence::Event ContentArray::append<sequence::Event, NoteValueBase>(const NoteValueBase& base)
+{
+    return appendWithType<sequence::Event>(base);
+}
+
+template <>
+inline sequence::Event ContentArray::append<sequence::Event, NoteValueBase, unsigned>(
+    const NoteValueBase& base, const unsigned& dots)
+{
+    return appendWithType<sequence::Event>(base, dots);
+}
+
+template <>
 inline sequence::Space ContentArray::append<sequence::Space, FractionValue>(const FractionValue& duration)
 {
     return appendWithType<sequence::Space>(duration);

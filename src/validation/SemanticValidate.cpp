@@ -180,16 +180,7 @@ void SemanticValidator::validateSequenceContent(const mnx::ContentArray& content
     for (const auto content : contentArray) {
         if (content.type() == mnx::sequence::Event::ContentTypeValue) {
             auto event = content.get<mnx::sequence::Event>();
-            if (event.measure()) {
-                if (event.duration().has_value()) {
-                    addError("Event \"" + event.id_or("<no-id>") + "\" has both full measure indicator and duration.", event);
-                }
-            } else {
-                if (!event.duration().has_value()) {
-                    addError("Event \"" + event.id_or("<no-id>") + "\" has neither full measure indicator nor duration.", event);
-                }
-            }
-            elapsedTime += event.calcDuration();
+            elapsedTime += event.duration();
             if (event.rest().has_value()) {
                 if (event.notes() && !event.notes().value().empty()) {
                     addError("Event \"" + event.id_or("<no-id>") + "\" is a rest but also has notes.", event);
@@ -372,10 +363,9 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                 } else {
                     voice = event.value().getSequence().voice_or("");
                 }
-                if (auto noteValue = event.value().duration()) {
-                    if (depth > noteValue.value().calcNumberOfFlags()) {
-                        addError("Event \"" + id + "\" cannot have " + std::to_string(depth) + " beams", beam);
-                    }
+                const auto noteValue = event.value().duration();
+                if (depth > noteValue.calcNumberOfFlags()) {
+                    addError("Event \"" + id + "\" cannot have " + std::to_string(depth) + " beams", beam);
                 }
             }
         }
@@ -485,6 +475,9 @@ void SemanticValidator::validateParts()
                     addError("Sequence references non-existent part staff for part " + part.id_or("<no-id>") + ".", sequence);
                     continue;
                 }
+                if (sequence.fullMeasure() && !sequence.content().empty()) {
+                    addError("Sequence \"" + sequence.id_or("<no-id>") + "\" has full measure rest but content is not empty.", sequence);
+                }
                 /// @todo check voice uniqueness
                 validateSequenceContent(sequence.content(), sequence, measureTime);
             }
@@ -515,11 +508,14 @@ void SemanticValidator::validateLayouts()
                         self(self, group.content());
                     } else if (element.type() == mnx::layout::Staff::ContentTypeValue) {
                         auto staff = element.get<mnx::layout::Staff>();
-                        if (!util::analyzeLayoutStaffVoices(staff)) {
-                            addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has one or more part voices specified multiple times.", staff);
-                        }
+                        bool hasEmptyPartId = false;
                         /// @todo validate "labelref"?
                         for (const auto source : staff.sources()) {
+                            if (source.part().empty()) {
+                                addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has empty part id in source.", source);
+                                hasEmptyPartId = true;
+                                continue;
+                            }
                             if (const auto part = tryGetValue<mnx::Part>(source.part(), source)) {
                                 int staffNum = source.staff();
                                 int numStaves = part.value().staves();
@@ -530,6 +526,9 @@ void SemanticValidator::validateLayouts()
                             }
                             /// @todo validate "labelref"?
                             /// @todo validate "voice"?
+                        }
+                        if (!hasEmptyPartId && !util::analyzeLayoutStaffVoices(staff)) {
+                            addError("Layout staff \"" + staff.id_or("<no-id>") + "\" has one or more part voices specified multiple times.", staff);
                         }
                     } else {
                         addError("Unknown content type \"" + element.type() + "\" encounterd in layout.", element);
@@ -553,7 +552,7 @@ void SemanticValidator::validateScores()
                     if (const auto measure = tryGetValue<mnx::global::Measure>(mmRest.start(), mmRest)) {
                         size_t index = measure.value().calcArrayIndex();
                         if (index + mmRest.duration() > document.global().measures().size()) {
-                            addError("Multimeasure rest at measure " + std::to_string(mmRest.start()) + " in score \""
+                            addError("Multimeasure rest at measure \"" + mmRest.start() + "\" in score \""
                                 + score.name() + "\" spans non-existent measures", mmRest);
                         }
                     }
@@ -580,7 +579,7 @@ void SemanticValidator::validateScores()
                             }
                         } else {
                             addError("Score \"" + score.name()
-                                + "\" references missing measure " + std::to_string(system.measure()), system);
+                                + "\" references missing measure \"" + system.measure() + "\"", system);
                             skipScore = true;
                             break;
                         }

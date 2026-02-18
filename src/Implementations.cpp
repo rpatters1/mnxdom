@@ -191,10 +191,10 @@ void Document::buildEntityMap(EntityMapPolicies policies,
     // global measures
     const auto globalMeasures = global().measures();
     std::vector<FractionValue> measureDurations(globalMeasures.size(), FractionValue(1, 1));
-    int measureId = 0;
     for (const auto globalMeasure : globalMeasures) {
-        measureId = globalMeasure.index_or(measureId + 1);
-        m_entityMapping->add(measureId, globalMeasure);
+        if (const auto globalMeasureId = globalMeasure.id()) {
+            m_entityMapping->add(globalMeasureId.value(), globalMeasure);
+        }
         FractionValue duration(1, 1);
         if (const auto time = globalMeasure.calcCurrentTime()) {
             duration = static_cast<FractionValue>(*time);
@@ -547,22 +547,9 @@ BarlineType global::Measure::calcBarlineType() const
     return (arrayIndex + 1) == parentArray.size() ? BarlineType::Final : BarlineType::Regular;
 }
 
-int global::Measure::calcMeasureIndex() const
-{
-    if (auto thisIndex = index()) {
-        return thisIndex.value();
-    }
-    size_t arrayIndex = calcArrayIndex();
-    if (arrayIndex == 0) return 1;
-    const auto parentArray = parent<Array<global::Measure>>();
-    const auto prev = parentArray[arrayIndex - 1];
-    const auto prevIndex = prev.index();
-    return prevIndex.value_or(prev.calcMeasureIndex()) + 1;
-}
-
 int global::Measure::calcVisibleNumber() const
 {
-    return number_or(calcMeasureIndex());
+    return number_or(calcArrayIndex() + 1);
 }
 
 std::optional<TimeSignature> global::Measure::calcCurrentTime() const
@@ -618,6 +605,50 @@ global::Measure part::Measure::getGlobalMeasure() const
 std::optional<TimeSignature> part::Measure::calcCurrentTime() const
 {
     return getGlobalMeasure().calcCurrentTime();
+}
+
+// **************************
+// ***** layout::Group ******
+// **************************
+
+bool layout::Group::calcIsPartGroup() const
+{
+    std::set<std::string> partIds;
+    bool hasEmptyPartId = false;
+    const auto collectPartIds = [&](const auto& self, const ContentArray& groupContent) -> void {
+        for (auto element : groupContent) {
+            if (element.type() == layout::Group::ContentTypeValue) {
+                self(self, element.get<layout::Group>().content());
+            } else if (element.type() == layout::Staff::ContentTypeValue) {
+                for (const auto source : element.get<layout::Staff>().sources()) {
+                    const auto partId = source.part();
+                    if (partId.empty()) {
+                        hasEmptyPartId = true;
+                    } else {
+                        partIds.insert(partId);
+                    }
+                }
+            }
+        }
+    };
+
+    collectPartIds(collectPartIds, content());
+    return !hasEmptyPartId && partIds.size() == 1;
+}
+
+StaffGroupBarlineOverride layout::Group::calcBarlineOverride() const
+{
+    switch (barlineStyle()) {
+    case StaffGroupBarlineStyle::Individual:
+        return StaffGroupBarlineOverride::None;
+    case StaffGroupBarlineStyle::Instrument:
+        return calcIsPartGroup() ? StaffGroupBarlineOverride::Unified : StaffGroupBarlineOverride::None;
+    case StaffGroupBarlineStyle::Unified:
+        return StaffGroupBarlineOverride::Unified;
+    case StaffGroupBarlineStyle::Mensurstrich:
+        return StaffGroupBarlineOverride::Mensurstrich;
+    }
+    throw std::logic_error("Unknown StaffGroupBarlineStyle value.");
 }
 
 // ***********************************
@@ -698,23 +729,6 @@ size_t sequence::Event::getSequenceIndex() const
         throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" has no top-level sequence index.");
     }
     return result.value().calcArrayIndex();
-}
-
-FractionValue sequence::Event::calcDuration() const
-{
-    if (measure()) {
-        auto partMeasure = getEnclosingElement<part::Measure>();
-        MNX_ASSERT_IF(!partMeasure) {
-            throw std::logic_error("Event \"" + id_or("<no-id>") + "\" at \"" + pointer().to_string() + "\" is not contained in a part measure.");
-        }
-        if (auto currentTime = partMeasure.value().calcCurrentTime()) {
-            return currentTime.value();
-        }
-    }
-    if (duration().has_value()) {
-        return duration().value();
-    }
-    return 0;
 }
 
 FractionValue sequence::Event::calcStartTime() const

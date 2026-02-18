@@ -14,38 +14,99 @@
                 "time": {
                     "count": 4,
                     "unit": 4
-                }
+                },
+                "id": "m1"
             },
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {}
+            {
+                "id": "m2"
+            },
+            {
+                "id": "m3"
+            },
+            {
+                "id": "m4"
+            },
+            {
+                "id": "m5"
+            },
+            {
+                "id": "m6"
+            },
+            {
+                "id": "m7"
+            },
+            {
+                "id": "m8"
+            },
+            {
+                "id": "m9"
+            },
+            {
+                "id": "m10"
+            },
+            {
+                "id": "m11"
+            },
+            {
+                "id": "m12"
+            },
+            {
+                "id": "m13"
+            },
+            {
+                "id": "m14"
+            },
+            {
+                "id": "m15"
+            },
+            {
+                "id": "m16"
+            },
+            {
+                "id": "m17"
+            },
+            {
+                "id": "m18"
+            },
+            {
+                "id": "m19"
+            },
+            {
+                "id": "m20"
+            },
+            {
+                "id": "m21"
+            },
+            {
+                "id": "m22"
+            },
+            {
+                "id": "m23"
+            },
+            {
+                "id": "m24"
+            },
+            {
+                "id": "m25"
+            },
+            {
+                "id": "m26"
+            },
+            {
+                "id": "m27"
+            },
+            {
+                "id": "m28"
+            },
+            {
+                "id": "m29"
+            },
+            {
+                "id": "m30"
+            },
+            {
+                "id": "m31"
+            }
         ]
     },
     "parts": [
@@ -7302,7 +7363,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S0-Sys1"
                         }
                     ]
@@ -7310,7 +7371,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S0-Sys2"
                         }
                     ]
@@ -7318,7 +7379,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S0-Sys3"
                         }
                     ]
@@ -7326,7 +7387,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S0-Sys4"
                         }
                     ]
@@ -7334,7 +7395,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S0-Sys5"
                         }
                     ]
@@ -7342,7 +7403,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S0-Sys6"
                         }
                     ]
@@ -7350,7 +7411,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S0-Sys7"
                         }
                     ]
@@ -7358,7 +7419,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S0-Sys8"
                         }
                     ]
@@ -7372,35 +7433,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S1-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S1-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S1-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S1-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S1-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S1-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S1-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S1-Sys8"
                         }
                     ]
@@ -7414,35 +7475,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S2-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S2-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S2-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S2-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S2-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S2-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S2-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S2-Sys8"
                         }
                     ]
@@ -7456,35 +7517,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S3-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S3-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S3-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S3-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S3-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S3-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S3-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S3-Sys8"
                         }
                     ]
@@ -7498,35 +7559,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S4-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S4-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S4-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S4-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S4-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S4-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S4-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S4-Sys8"
                         }
                     ]
@@ -7534,41 +7595,41 @@
             ]
         },
         {
-            "name": "B♭ Clarinet 1",
+            "name": "B\u266d Clarinet 1",
             "layout": "S5-ScrVw",
             "pages": [
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S5-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S5-Sys2"
                         },
                         {
-                            "measure": 7,
+                            "measure": "m7",
                             "layout": "S5-Sys3"
                         },
                         {
-                            "measure": 10,
+                            "measure": "m10",
                             "layout": "S5-Sys4"
                         },
                         {
-                            "measure": 13,
+                            "measure": "m13",
                             "layout": "S5-Sys5"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S5-Sys6"
                         },
                         {
-                            "measure": 19,
+                            "measure": "m19",
                             "layout": "S5-Sys7"
                         },
                         {
-                            "measure": 22,
+                            "measure": "m22",
                             "layout": "S5-Sys8"
                         }
                     ]
@@ -7576,15 +7637,15 @@
                 {
                     "systems": [
                         {
-                            "measure": 25,
+                            "measure": "m25",
                             "layout": "S5-Sys9"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S5-Sys10"
                         },
                         {
-                            "measure": 31,
+                            "measure": "m31",
                             "layout": "S5-Sys11"
                         }
                     ]
@@ -7592,41 +7653,41 @@
             ]
         },
         {
-            "name": "B♭ Clarinet 2",
+            "name": "B\u266d Clarinet 2",
             "layout": "S6-ScrVw",
             "pages": [
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S6-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S6-Sys2"
                         },
                         {
-                            "measure": 7,
+                            "measure": "m7",
                             "layout": "S6-Sys3"
                         },
                         {
-                            "measure": 10,
+                            "measure": "m10",
                             "layout": "S6-Sys4"
                         },
                         {
-                            "measure": 13,
+                            "measure": "m13",
                             "layout": "S6-Sys5"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S6-Sys6"
                         },
                         {
-                            "measure": 19,
+                            "measure": "m19",
                             "layout": "S6-Sys7"
                         },
                         {
-                            "measure": 22,
+                            "measure": "m22",
                             "layout": "S6-Sys8"
                         }
                     ]
@@ -7634,15 +7695,15 @@
                 {
                     "systems": [
                         {
-                            "measure": 25,
+                            "measure": "m25",
                             "layout": "S6-Sys9"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S6-Sys10"
                         },
                         {
-                            "measure": 31,
+                            "measure": "m31",
                             "layout": "S6-Sys11"
                         }
                     ]
@@ -7656,35 +7717,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S7-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S7-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S7-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S7-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S7-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S7-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S7-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S7-Sys8"
                         }
                     ]
@@ -7698,35 +7759,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S8-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S8-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S8-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S8-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S8-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S8-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S8-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S8-Sys8"
                         }
                     ]
@@ -7740,35 +7801,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S9-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S9-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S9-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S9-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S9-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S9-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S9-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S9-Sys8"
                         }
                     ]
@@ -7782,35 +7843,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S10-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S10-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S10-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S10-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S10-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S10-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S10-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S10-Sys8"
                         }
                     ]
@@ -7824,35 +7885,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S11-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S11-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S11-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S11-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S11-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S11-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S11-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S11-Sys8"
                         }
                     ]
@@ -7866,35 +7927,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S12-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S12-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S12-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S12-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S12-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S12-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S12-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S12-Sys8"
                         }
                     ]
@@ -7908,35 +7969,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S13-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S13-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S13-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S13-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S13-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S13-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S13-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S13-Sys8"
                         }
                     ]
@@ -7950,19 +8011,19 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S14-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S14-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S14-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S14-Sys4"
                         }
                     ]
@@ -7970,19 +8031,19 @@
                 {
                     "systems": [
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S14-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S14-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S14-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S14-Sys8"
                         }
                     ]
@@ -7996,35 +8057,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S15-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S15-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S15-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S15-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S15-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S15-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S15-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S15-Sys8"
                         }
                     ]
@@ -8038,35 +8099,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S16-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S16-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S16-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S16-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S16-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S16-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S16-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S16-Sys8"
                         }
                     ]
@@ -8080,35 +8141,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S17-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S17-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S17-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S17-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S17-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S17-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S17-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S17-Sys8"
                         }
                     ]
@@ -8122,35 +8183,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S18-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S18-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S18-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S18-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S18-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S18-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S18-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S18-Sys8"
                         }
                     ]
@@ -8164,35 +8225,35 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S19-Sys1"
                         },
                         {
-                            "measure": 4,
+                            "measure": "m4",
                             "layout": "S19-Sys2"
                         },
                         {
-                            "measure": 8,
+                            "measure": "m8",
                             "layout": "S19-Sys3"
                         },
                         {
-                            "measure": 12,
+                            "measure": "m12",
                             "layout": "S19-Sys4"
                         },
                         {
-                            "measure": 16,
+                            "measure": "m16",
                             "layout": "S19-Sys5"
                         },
                         {
-                            "measure": 20,
+                            "measure": "m20",
                             "layout": "S19-Sys6"
                         },
                         {
-                            "measure": 24,
+                            "measure": "m24",
                             "layout": "S19-Sys7"
                         },
                         {
-                            "measure": 28,
+                            "measure": "m28",
                             "layout": "S19-Sys8"
                         }
                     ]

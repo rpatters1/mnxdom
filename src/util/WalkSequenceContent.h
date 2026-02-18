@@ -23,7 +23,7 @@
 
 #include <functional>
 
-#include "../Sequence.h"
+#include "../Part.h"
 
 namespace mnx::util {
 
@@ -56,6 +56,13 @@ struct SequenceWalkHooks
                        const FractionValue& actualDuration,
                        SequenceWalkContext& ctx)> onEvent;
 
+    /// @brief Called when the sequence is a full-measure rest.
+    std::function<bool(const Sequence& sequence,
+                       const sequence::FullMeasureRest& fullMeasure,
+                       const FractionValue& startDuration,
+                       const FractionValue& actualDuration,
+                       SequenceWalkContext& ctx)> onFullMeasure;
+
     /// @brief Called for every content object after recursion / time advancement.
     std::function<void(const ContentObject& item,
                        SequenceWalkContext& ctx)> onAfterItem;
@@ -72,6 +79,22 @@ inline bool walkSequenceContent(Sequence sequence,
 {
     SequenceWalkContext localCtx;
     SequenceWalkContext& c = ctx ? *ctx : localCtx;
+
+    if (const auto fullMeasure = sequence.fullMeasure()) {
+        FractionValue fullMeasureDuration { 0 };
+        if (const auto measure = sequence.getEnclosingElement<part::Measure>()) {
+            if (const auto time = measure->calcCurrentTime()) {
+                fullMeasureDuration = static_cast<FractionValue>(*time);
+            }
+        }
+        const auto start = c.elapsedTime;
+        if (hooks.onFullMeasure) {
+            if (!hooks.onFullMeasure(sequence, fullMeasure.value(), start, fullMeasureDuration, c)) {
+                return false;
+            }
+        }
+        c.elapsedTime += fullMeasureDuration;
+    }
 
     auto walkImpl = [&](ContentArray current,
                         SequenceWalkContext& ctxRef,
@@ -93,7 +116,7 @@ inline bool walkSequenceContent(Sequence sequence,
             if (item.type() == sequence::Event::ContentTypeValue) {
                 const auto event = item.get<sequence::Event>();
                 const auto start = ctxRef.elapsedTime;
-                const auto actualDuration = event.calcDuration() * ctxRef.timeRatio;
+                const auto actualDuration = event.duration() * ctxRef.timeRatio;
                 if (hooks.onEvent) {
                     if (!hooks.onEvent(event, start, actualDuration, ctxRef)) {
                         return false;

@@ -14,7 +14,8 @@
                 "time": {
                     "count": 4,
                     "unit": 4
-                }
+                },
+                "id": "m1"
             }
         ]
     },
@@ -215,7 +216,7 @@
                 {
                     "systems": [
                         {
-                            "measure": 1,
+                            "measure": "m1",
                             "layout": "S0-Sys1"
                         }
                     ]

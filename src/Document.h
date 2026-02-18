@@ -67,7 +67,8 @@ public:
         : Object(parent, key)
     {
         // required children
-        set_version(MNX_VERSION);
+        set_version(getMnxSchemaVersion());
+        setExtension("schemaVersion", json{ { "value", getMnxSchemaId() } });
     }
 
     /**

@@ -1,0 +1,29 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": []
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "measures": []
+        }
+    ],
+    "layouts": [
+        {
+            "id": "S0-ScrVw",
+            "content": [
+                {
+                    "type": "staff",
+                    "sources": [
+                        {
+                            "part": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

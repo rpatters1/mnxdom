@@ -116,3 +116,39 @@ TEST(TestSequences, TransposedPitchesNoWrap)
         checkSequence(part.measures()[1], 0, -4, { NoteStep::A, 5, -1 });
     }
 }
+
+TEST(TestSequences, WalkFullMeasureRest)
+{
+    auto doc = Document();
+    auto globalMeasure = doc.global().measures().append();
+    globalMeasure.ensure_time(4, TimeSignatureUnit::Quarter);
+    auto part = doc.parts().append();
+    auto measure = part.create_measures().append();
+    auto sequence = measure.sequences().append();
+    auto fullMeasure = sequence.ensure_fullMeasure();
+
+    int fullMeasureCalls = 0;
+    FractionValue fullMeasureStart = 0;
+    FractionValue fullMeasureDuration = 0;
+    util::SequenceWalkContext ctx;
+    util::SequenceWalkHooks hooks;
+    hooks.onFullMeasure = [&](const Sequence& callbackSequence,
+                              const sequence::FullMeasureRest& callbackFullMeasure,
+                              const FractionValue& startDuration,
+                              const FractionValue& actualDuration,
+                              util::SequenceWalkContext&) -> bool {
+        ++fullMeasureCalls;
+        EXPECT_EQ(callbackSequence.pointer(), sequence.pointer());
+        EXPECT_EQ(callbackFullMeasure.pointer(), fullMeasure.pointer());
+        fullMeasureStart = startDuration;
+        fullMeasureDuration = actualDuration;
+        return true;
+    };
+
+    const bool walked = util::walkSequenceContent(sequence, hooks, &ctx);
+    ASSERT_TRUE(walked);
+    EXPECT_EQ(fullMeasureCalls, 1);
+    EXPECT_EQ(fullMeasureStart, FractionValue(0));
+    EXPECT_EQ(fullMeasureDuration, static_cast<FractionValue>(globalMeasure.time().value()));
+    EXPECT_EQ(ctx.elapsedTime, fullMeasureDuration);
+}

@@ -331,7 +331,6 @@ public:
         (int, duration)); ///< optional ending ("volta bracket") for this measure
     MNX_OPTIONAL_CHILD(Fine, fine,
         (const FractionValue&, position)); ///< optional fine direction for this measure
-    MNX_OPTIONAL_PROPERTY(int, index);              ///< the measure index which is used to refer to this measure by other classes in the MNX document
     MNX_OPTIONAL_CHILD(Jump, jump,
         (JumpType, jumpType), (const FractionValue&, position)); ///< optional jump direction for this measure
     MNX_OPTIONAL_CHILD(KeySignature, key,
@@ -349,10 +348,6 @@ public:
     /// @brief Calculates the barline type for this measure.
     /// @return barline().type() if barline() has a value. Otherwise the default (as defined in the MNX specification.)
     [[nodiscard]] BarlineType calcBarlineType() const;
-
-    /// @brief Calculates the measure index for this measure.
-    /// @return index() if it has a value or the default value (defined in the MNX specification) if it does not.
-    [[nodiscard]] int calcMeasureIndex() const;
 
     /// @brief Calculates the visible measure number for this measure.
     /// @return The visible measure number. MNX currenty does not provide a mechanism to exclude a measure from numbering.

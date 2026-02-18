@@ -103,4 +103,42 @@ TEST(Layouts, BuildLayoutSpans)
     EXPECT_EQ(s[5].depth, 2u);
     ASSERT_TRUE(s[5].label.has_value());
     EXPECT_EQ(*s[5].label, "S3");
+
+    EXPECT_EQ(s[0].barlineOverride, StaffGroupBarlineOverride::None);
+    EXPECT_EQ(s[1].barlineOverride, StaffGroupBarlineOverride::None);
+    EXPECT_EQ(s[2].barlineOverride, StaffGroupBarlineOverride::Unified);
+    EXPECT_EQ(s[3].barlineOverride, StaffGroupBarlineOverride::None);
+    EXPECT_EQ(s[4].barlineOverride, StaffGroupBarlineOverride::None);
+    EXPECT_EQ(s[5].barlineOverride, StaffGroupBarlineOverride::None);
+}
+
+TEST(Layouts, StaffGroupBarlineOverride)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "layoutspans.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(validateSchema(doc, inputPath)) << "schema validation failed";
+
+    doc.buildEntityMap();
+    auto layout = doc.getEntityMap().tryGet<mnx::Layout>("S0-ScrVw");
+    ASSERT_TRUE(layout);
+    ASSERT_EQ(layout->content().size(), 1u);
+
+    auto groupA = layout->content()[0].get<layout::Group>();
+    EXPECT_FALSE(groupA.calcIsPartGroup());
+    EXPECT_EQ(groupA.calcBarlineOverride(), StaffGroupBarlineOverride::None);
+
+    ASSERT_EQ(groupA.content().size(), 4u);
+    auto groupB = groupA.content()[1].get<layout::Group>();
+    EXPECT_TRUE(groupB.calcIsPartGroup());
+    EXPECT_EQ(groupB.calcBarlineOverride(), StaffGroupBarlineOverride::Unified);
+
+    groupB.set_barlineStyle(StaffGroupBarlineStyle::Unified);
+    EXPECT_EQ(groupB.calcBarlineOverride(), StaffGroupBarlineOverride::Unified);
+
+    groupB.set_barlineStyle(StaffGroupBarlineStyle::Mensurstrich);
+    EXPECT_EQ(groupB.calcBarlineOverride(), StaffGroupBarlineOverride::Mensurstrich);
+
+    groupB.set_barlineStyle(StaffGroupBarlineStyle::Individual);
+    EXPECT_EQ(groupB.calcBarlineOverride(), StaffGroupBarlineOverride::None);
 }

@@ -42,8 +42,8 @@ public:
     /// @brief initializer class for #MultimeasureRest
     struct Required
     {
-        int startMeasure{}; ///< the measure index of the first measure in the multimeasure rest
-        int numMeasures{};  ///< the number of measures in the multimeasure rest
+        std::string startMeasure{}; ///< the measure index of the first measure in the multimeasure rest
+        int numMeasures{};          ///< the number of measures in the multimeasure rest
     };
 
     /// @brief Constructor for existing mm rests
@@ -55,9 +55,9 @@ public:
     /// @brief Creates a new MultimeasureRest class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param startMeasure The measure index of the first measure in the multimeasure rest
+    /// @param startMeasure The global measure id of the first measure in the multimeasure rest
     /// @param numMeasures The number of measures in the multimeasure rest
-    MultimeasureRest(Base& parent, std::string_view key, int startMeasure, int numMeasures)
+    MultimeasureRest(Base& parent, std::string_view key, const std::string& startMeasure, int numMeasures)
         : ArrayElementObject(parent, key)
     {
         set_start(startMeasure);
@@ -68,11 +68,11 @@ public:
     operator Required() const { return { start(), duration() }; }
 
     /// @brief Create a Required instance for #MultimeasureRest.
-    static Required make(int startMeasure, int numMeasures) { return { startMeasure, numMeasures }; }
+    static Required make(const std::string& startMeasure, int numMeasures) { return { startMeasure, numMeasures }; }
 
     MNX_REQUIRED_PROPERTY(int, duration);           ///< the number of measures in the multimeasure rest
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< the label to place on the multimeasure rest, if provided.
-    MNX_REQUIRED_PROPERTY(int, start);              ///< the start measure of the multimeasure rest
+    MNX_REQUIRED_PROPERTY(std::string, start);      ///< the global measure id of the start measure of the multimeasure rest
 };
 
 /**
@@ -86,7 +86,7 @@ public:
     struct Required
     {
         std::string layoutId;     ///< the id of the layout to use for the layout change
-        int measureId{};          ///< the measure index of the measure of the position
+        std::string measureId;    ///< the global measure id of the measure of the position
         FractionValue position{}; ///< the position of the LayoutChange within the measure
     };
 
@@ -102,7 +102,7 @@ public:
     /// @param layoutId The id of the layout to use for the layout change
     /// @param measureId The measure index of the measure of the position
     /// @param position The position of the LayoutChange within the measure
-    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId, int measureId, const FractionValue& position)
+    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId, const std::string& measureId, const FractionValue& position)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);
@@ -113,12 +113,12 @@ public:
     operator Required() const { return { layout(), location().measure(), location().position().fraction() }; }
 
     /// @brief Create a Required instance for #LayoutChange.
-    static Required make(const std::string& layoutId, int measureId, const FractionValue& position)
+    static Required make(const std::string& layoutId, const std::string& measureId, const FractionValue& position)
     { return { layoutId, measureId, position }; }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, location,
-        (int, measureId), (const FractionValue&, position)); ///< location where the new layout takes effect.
+        (const std::string&, measureId), (const FractionValue&, position)); ///< location where the new layout takes effect.
 };
 
 /**
@@ -131,7 +131,7 @@ public:
     /// @brief initializer class for #System
     struct Required
     {
-        int startMeasure{}; ///< the measure index of the first measure in the system
+        std::string startMeasure{}; ///< the measure index of the first measure in the system
     };
 
     /// @brief Constructor for existing system layouts
@@ -144,7 +144,7 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param startMeasure The measure index of the first measure in the system
-    System(Base& parent, std::string_view key, int startMeasure)
+    System(Base& parent, std::string_view key, const std::string& startMeasure)
         : ArrayElementObject(parent, key)
     {
         set_measure(startMeasure);
@@ -154,11 +154,11 @@ public:
     operator Required() const { return { measure() }; }
 
     /// @brief Create a Required instance for #System.
-    static Required make(int startMeasure) { return { startMeasure }; }
+    static Required make(const std::string& startMeasure) { return { startMeasure }; }
 
     MNX_OPTIONAL_PROPERTY(std::string, layout);     ///< Layout id, referring to an element in the root-level layouts array.
     MNX_OPTIONAL_CHILD(Array<LayoutChange>, layoutChanges); ///< layout changes in the system (e.g., for changes in stem direction)
-    MNX_REQUIRED_PROPERTY(int, measure);            ///< The first measure in the system
+    MNX_REQUIRED_PROPERTY(std::string, measure);    ///< The global measure if of the first measure in the system
 };
 
 /**

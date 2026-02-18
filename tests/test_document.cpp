@@ -56,11 +56,11 @@ TEST(Document, Minimal)
     EXPECT_EQ(measures.size(), 0u);
     measures.append();
     ASSERT_EQ(doc.global().measures().size(), 1u);
-    measures[0].set_index(3);  // use non const operator[]
+    measures[0].set_id("m3");  // use non const operator[]
     const auto measuresConst = doc.global().measures();
     const auto measure = measuresConst[0]; // use const operator[]
-    EXPECT_EQ(measure.index(), 3);
-    EXPECT_EQ(doc.global().measures()[0].index(), 3);
+    EXPECT_EQ(measure.id(), "m3");
+    EXPECT_EQ(doc.global().measures()[0].id(), "m3");
 
     EXPECT_EQ(doc.parts().size(), 0u);
 }
@@ -71,9 +71,13 @@ TEST(Document, MinimalFromScratch)
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate and return no error";
 
     auto mnx = doc.mnx();
-    EXPECT_EQ(mnx.version(), MNX_VERSION);
-    mnx.set_version(MNX_VERSION + 1);
-    EXPECT_EQ(doc.mnx().version(), MNX_VERSION + 1);
+    EXPECT_EQ(mnx.version(), getMnxSchemaVersion());
+    ASSERT_TRUE(mnx._x().has_value());
+    const auto schemaVersion = mnx.getExtension("schemaVersion");
+    ASSERT_TRUE(schemaVersion.has_value());
+    EXPECT_EQ(schemaVersion->at("value").get<std::string>(), getMnxSchemaId());
+    mnx.set_version(getMnxSchemaVersion() + 1);
+    EXPECT_EQ(doc.mnx().version(), getMnxSchemaVersion() + 1);
 
     auto support = mnx.ensure_support();
     support.set_useAccidentalDisplay(true);
@@ -122,8 +126,8 @@ TEST(Document, MissingRequiredFields)
 
     auto mnx = doc.mnx();
     EXPECT_THROW(static_cast<void>(mnx.version()), std::runtime_error);
-    mnx.set_version(MNX_VERSION);
-    EXPECT_EQ(doc.mnx().version(), MNX_VERSION);
+    mnx.set_version(getMnxSchemaVersion());
+    EXPECT_EQ(doc.mnx().version(), getMnxSchemaVersion());
     EXPECT_FALSE(validation::schemaValidate(doc)) << "after adding version, schema should still not validate";
 
     auto global = doc.global();

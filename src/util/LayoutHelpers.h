@@ -199,7 +199,7 @@ flattenLayoutStaves(const Layout& layout)
  * after the layout hierarchy has been flattened. Each span records
  * the range of staff indices it covers in the flattened staff list,
  * its nesting depth in the layout hierarchy, and any visual metadata
- * (label, label reference, or symbol) associated with it.
+ * (label, label reference, symbol, and resolved barline override) associated with it.
  *
  * Spans are typically sorted by ascending startIndex and then by
  * ascending depth, so that outer groups precede inner groups and
@@ -276,6 +276,14 @@ struct LayoutSpan
     std::optional<LayoutSymbol> symbol;
 
     /**
+     * @brief Resolved barline override associated with this span.
+     *
+     * For group spans, this is Group::calcBarlineOverride(). For staff spans,
+     * this is StaffGroupBarlineOverride::None.
+     */
+    StaffGroupBarlineOverride barlineOverride = StaffGroupBarlineOverride::None;
+
+    /**
      * @brief Optional staff sources associated with this span.
      *
      * For staff spans, this corresponds to Staff::sources. For group
@@ -349,6 +357,7 @@ buildLayoutSpans(const mnx::Layout& layout)
                 span.symbol     = s.symbol();
                 span.label      = s.label();
                 span.labelref   = s.labelref();
+                span.barlineOverride = StaffGroupBarlineOverride::None;
                 span.sources    = util::analyzeLayoutStaffVoices(s);
 
                 tagged.push_back({ std::move(span), SortKey{i, depth + 1, encounter++} });
@@ -374,6 +383,7 @@ buildLayoutSpans(const mnx::Layout& layout)
                 span.endIndex   = cLast;
                 span.symbol     = g.symbol();
                 span.label      = g.label();
+                span.barlineOverride = g.calcBarlineOverride();
 
                 tagged.push_back({ std::move(span), SortKey{cFirst, depth, encounter++} });
 
@@ -447,6 +457,7 @@ buildDefaultLayoutSpans(const Array<Part>& parts)
             groupSpan.startIndex = staffIdx;
             groupSpan.endIndex = staffIdx + numStaves - 1;
             groupSpan.label = part.name();
+            groupSpan.barlineOverride = StaffGroupBarlineOverride::Unified;
             staffNameNeeded = false;
             result.emplace_back(std::move(groupSpan));
         }
@@ -456,6 +467,7 @@ buildDefaultLayoutSpans(const Array<Part>& parts)
             staffSpan.kind = LayoutSpan::Kind::Staff;
             staffSpan.startIndex = staffIdx;
             staffSpan.endIndex = staffIdx;
+            staffSpan.barlineOverride = StaffGroupBarlineOverride::None;
             if (staffNameNeeded) {
                 staffSpan.label = part.name();
             }

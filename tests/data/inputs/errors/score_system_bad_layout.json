@@ -4,7 +4,9 @@
     },
     "global": {
         "measures": [
-            {}
+            {
+                "id": "m1"
+            }
         ]
     },
     "parts": [
@@ -149,7 +151,7 @@
                     "systems": [
                         {
                             "layout": "does-not-exist",
-                            "measure": 1
+                            "measure": "m1"
                         }
                     ]
                 }

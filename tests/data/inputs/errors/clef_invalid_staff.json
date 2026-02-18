@@ -4,7 +4,9 @@
     },
     "global": {
         "measures": [
-            {}
+            {
+                "id": "m1"
+            }
         ]
     },
     "parts": [

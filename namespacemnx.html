@@ -97,6 +97,7 @@ $(document).ready(function(){initNavTree('namespacemnx.html',''); initResizable(
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">mnx Namespace Reference</div></div>
 </div><!--header-->
@@ -382,6 +383,19 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a9ed98bf9309c8a441c873e4763429a64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the direction of a slur or tie.  <a href="namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64">More...</a><br /></td></tr>
 <tr class="separator:a9ed98bf9309c8a441c873e4763429a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad48565fded88559edcaeec446b9e1d8f" id="r_ad48565fded88559edcaeec446b9e1d8f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8f">StaffGroupBarlineStyle</a> { <a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8fa2dd4472245a696bc0b4b944db2a8b519">Individual</a>
+, <a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8fa4bad3e7b155943ebf27d1da56ae2e258">Instrument</a>
+, <a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8fa1dbd464eef96e9cc4151734185a50c7a">Unified</a>
+, <a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8faf32d0c0397796d8dc8984d1e544ddd17">Mensurstrich</a>
+ }</td></tr>
+<tr class="memdesc:ad48565fded88559edcaeec446b9e1d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The types of barline overrides for staff groups in layouts.  <a href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8f">More...</a><br /></td></tr>
+<tr class="separator:ad48565fded88559edcaeec446b9e1d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07e43dee64d5f909f672da5ec99921a9" id="r_a07e43dee64d5f909f672da5ec99921a9"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9">StaffGroupBarlineOverride</a> { <a class="el" href="namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9a6adf97f83acf6453d4a6a4b1070f3754">None</a>
+, <a class="el" href="namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9a1dbd464eef96e9cc4151734185a50c7a">Unified</a>
+, <a class="el" href="namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9af32d0c0397796d8dc8984d1e544ddd17">Mensurstrich</a>
+ }</td></tr>
+<tr class="memdesc:a07e43dee64d5f909f672da5ec99921a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolved barline override setting for a layout staff group.  <a href="namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9">More...</a><br /></td></tr>
+<tr class="separator:a07e43dee64d5f909f672da5ec99921a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf37722bc87abf052775661825640121" id="r_acf37722bc87abf052775661825640121"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#acf37722bc87abf052775661825640121">StemDirection</a> { <a class="el" href="namespacemnx.html#acf37722bc87abf052775661825640121a08a38277b0309070706f6652eeae9a53">Down</a>
 , <a class="el" href="namespacemnx.html#acf37722bc87abf052775661825640121a258f49887ef8d14ac268c92b02503aaa">Up</a>
  }</td></tr>
@@ -415,12 +429,23 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:a9f98fd98d5106fa00063d9df29eea01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls display of a tuplet's number or note value. <br /></td></tr>
 <tr class="separator:a9f98fd98d5106fa00063d9df29eea01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a86e00ac3489b813478b7985b491a9ae9" id="r_a86e00ac3489b813478b7985b491a9ae9"><td class="memItemLeft" align="right" valign="top"><a id="a86e00ac3489b813478b7985b491a9ae9" name="a86e00ac3489b813478b7985b491a9ae9"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMnxSchemaId</b> ()</td></tr>
+<tr class="memdesc:a86e00ac3489b813478b7985b491a9ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the MNX schema id from the embedded schema. <br /></td></tr>
+<tr class="separator:a86e00ac3489b813478b7985b491a9ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7f15615dff0f6cdcb867af398b32e80" id="r_ac7f15615dff0f6cdcb867af398b32e80"><td class="memItemLeft" align="right" valign="top"><a id="ac7f15615dff0f6cdcb867af398b32e80" name="ac7f15615dff0f6cdcb867af398b32e80"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getMnxSchemaVersion</b> ()</td></tr>
+<tr class="memdesc:ac7f15615dff0f6cdcb867af398b32e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the MNX version extracted from the trailing segment of schema <code>$id</code>. <br /></td></tr>
+<tr class="separator:ac7f15615dff0f6cdcb867af398b32e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:addfbe4fd4a7f0e3dfbb32ebf68bee020" id="r_addfbe4fd4a7f0e3dfbb32ebf68bee020"><td class="memItemLeft" align="right" valign="top"><a id="addfbe4fd4a7f0e3dfbb32ebf68bee020" name="addfbe4fd4a7f0e3dfbb32ebf68bee020"></a>
-constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_VERSION</b> = 1</td></tr>
-<tr class="memdesc:addfbe4fd4a7f0e3dfbb32ebf68bee020"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MNX version for files generated by the DOM. <br /></td></tr>
-<tr class="separator:addfbe4fd4a7f0e3dfbb32ebf68bee020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cd0ba846ca3299297f341bc77185832" id="r_a7cd0ba846ca3299297f341bc77185832"><td class="memItemLeft" align="right" valign="top"><a id="a7cd0ba846ca3299297f341bc77185832" name="a7cd0ba846ca3299297f341bc77185832"></a>
+const int&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_VERSION</b> = <a class="el" href="namespacemnx.html#ac7f15615dff0f6cdcb867af398b32e80">getMnxSchemaVersion</a>()</td></tr>
+<tr class="memdesc:a7cd0ba846ca3299297f341bc77185832"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MNX version for files generated by the DOM. <br /></td></tr>
+<tr class="separator:a7cd0ba846ca3299297f341bc77185832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>object model for MNX format </p>
@@ -953,6 +978,74 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_VERSION<
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9ed98bf9309c8a441c873e4763429a64a08a38277b0309070706f6652eeae9a53" name="a9ed98bf9309c8a441c873e4763429a64a08a38277b0309070706f6652eeae9a53"></a>Down&#160;</td><td class="fielddoc"><p>curved down, the tips face up </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a9ed98bf9309c8a441c873e4763429a64a258f49887ef8d14ac268c92b02503aaa" name="a9ed98bf9309c8a441c873e4763429a64a258f49887ef8d14ac268c92b02503aaa"></a>Up&#160;</td><td class="fielddoc"><p>curved up, the tips face down </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a07e43dee64d5f909f672da5ec99921a9" name="a07e43dee64d5f909f672da5ec99921a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07e43dee64d5f909f672da5ec99921a9">&#9670;&#160;</a></span>StaffGroupBarlineOverride</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9">mnx::StaffGroupBarlineOverride</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resolved barline override setting for a layout staff group. </p>
+<dl class="section note"><dt>Note</dt><dd>This enum is currently an mnxdom-only helper and is not an official MNX schema enum. It models a proposed explicit override property that will replace StaffGroupBarlineStyle. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a07e43dee64d5f909f672da5ec99921a9a6adf97f83acf6453d4a6a4b1070f3754" name="a07e43dee64d5f909f672da5ec99921a9a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>no override </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a07e43dee64d5f909f672da5ec99921a9a1dbd464eef96e9cc4151734185a50c7a" name="a07e43dee64d5f909f672da5ec99921a9a1dbd464eef96e9cc4151734185a50c7a"></a>Unified&#160;</td><td class="fielddoc"><p>override with unified barline </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a07e43dee64d5f909f672da5ec99921a9af32d0c0397796d8dc8984d1e544ddd17" name="a07e43dee64d5f909f672da5ec99921a9af32d0c0397796d8dc8984d1e544ddd17"></a>Mensurstrich&#160;</td><td class="fielddoc"><p>override with mensurstrich barline </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ad48565fded88559edcaeec446b9e1d8f" name="ad48565fded88559edcaeec446b9e1d8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad48565fded88559edcaeec446b9e1d8f">&#9670;&#160;</a></span>StaffGroupBarlineStyle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8f">mnx::StaffGroupBarlineStyle</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The types of barline overrides for staff groups in layouts. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>This appears to be a misnomer, and there is an outstanding issue 495 to clarify it. Currently mnxdom treats these as override options. Of particular concern is the <code>instrument</code> option, which adds useless complexity in the context of staff groups. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad48565fded88559edcaeec446b9e1d8fa2dd4472245a696bc0b4b944db2a8b519" name="ad48565fded88559edcaeec446b9e1d8fa2dd4472245a696bc0b4b944db2a8b519"></a>Individual&#160;</td><td class="fielddoc"><p>currently interpreted as no override </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad48565fded88559edcaeec446b9e1d8fa4bad3e7b155943ebf27d1da56ae2e258" name="ad48565fded88559edcaeec446b9e1d8fa4bad3e7b155943ebf27d1da56ae2e258"></a>Instrument&#160;</td><td class="fielddoc"><p>currently interpreted as no override or unified, depending on whether the group is single- or multi-instrument </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad48565fded88559edcaeec446b9e1d8fa1dbd464eef96e9cc4151734185a50c7a" name="ad48565fded88559edcaeec446b9e1d8fa1dbd464eef96e9cc4151734185a50c7a"></a>Unified&#160;</td><td class="fielddoc"><p>override with unified barline </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad48565fded88559edcaeec446b9e1d8faf32d0c0397796d8dc8984d1e544ddd17" name="ad48565fded88559edcaeec446b9e1d8faf32d0c0397796d8dc8984d1e544ddd17"></a>Mensurstrich&#160;</td><td class="fielddoc"><p>override with mensurstrich barline </p>
 </td></tr>
 </table>
 

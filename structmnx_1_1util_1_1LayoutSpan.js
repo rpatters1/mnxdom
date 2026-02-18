@@ -4,6 +4,7 @@ var structmnx_1_1util_1_1LayoutSpan =
       [ "Staff", "structmnx_1_1util_1_1LayoutSpan.html#ad9be833ec703c9a9b0605bc0ce56def6a8f7f93630c366dc55aec88eb8e9640d0", null ],
       [ "Group", "structmnx_1_1util_1_1LayoutSpan.html#ad9be833ec703c9a9b0605bc0ce56def6a03937134cedab9078be39a77ee3a48a0", null ]
     ] ],
+    [ "barlineOverride", "structmnx_1_1util_1_1LayoutSpan.html#ad5577003cec395f94264c4a61f0d7c5b", null ],
     [ "depth", "structmnx_1_1util_1_1LayoutSpan.html#acabcc139dd420fefbb53d9f61de447e6", null ],
     [ "endIndex", "structmnx_1_1util_1_1LayoutSpan.html#ac1bf0dd789bab3ee669a6862311b3d05", null ],
     [ "kind", "structmnx_1_1util_1_1LayoutSpan.html#ae4567543061cd6d15d26b9587b6fffa0", null ],

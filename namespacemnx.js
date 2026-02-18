@@ -156,6 +156,17 @@ var namespacemnx =
       [ "Down", "namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64a08a38277b0309070706f6652eeae9a53", null ],
       [ "Up", "namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64a258f49887ef8d14ac268c92b02503aaa", null ]
     ] ],
+    [ "StaffGroupBarlineOverride", "namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9", [
+      [ "None", "namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Unified", "namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9a1dbd464eef96e9cc4151734185a50c7a", null ],
+      [ "Mensurstrich", "namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9af32d0c0397796d8dc8984d1e544ddd17", null ]
+    ] ],
+    [ "StaffGroupBarlineStyle", "namespacemnx.html#ad48565fded88559edcaeec446b9e1d8f", [
+      [ "Individual", "namespacemnx.html#ad48565fded88559edcaeec446b9e1d8fa2dd4472245a696bc0b4b944db2a8b519", null ],
+      [ "Instrument", "namespacemnx.html#ad48565fded88559edcaeec446b9e1d8fa4bad3e7b155943ebf27d1da56ae2e258", null ],
+      [ "Unified", "namespacemnx.html#ad48565fded88559edcaeec446b9e1d8fa1dbd464eef96e9cc4151734185a50c7a", null ],
+      [ "Mensurstrich", "namespacemnx.html#ad48565fded88559edcaeec446b9e1d8faf32d0c0397796d8dc8984d1e544ddd17", null ]
+    ] ],
     [ "StemDirection", "namespacemnx.html#acf37722bc87abf052775661825640121", [
       [ "Down", "namespacemnx.html#acf37722bc87abf052775661825640121a08a38277b0309070706f6652eeae9a53", null ],
       [ "Up", "namespacemnx.html#acf37722bc87abf052775661825640121a258f49887ef8d14ac268c92b02503aaa", null ]
@@ -181,5 +192,7 @@ var namespacemnx =
       [ "NoNumber", "namespacemnx.html#a9f98fd98d5106fa00063d9df29eea01fa69c491581a6e9a9a7c8d24ec1fe951fc", null ],
       [ "Both", "namespacemnx.html#a9f98fd98d5106fa00063d9df29eea01fa130c5b3473c57faa76e2a1c54e26f88e", null ]
     ] ],
-    [ "MNX_VERSION", "namespacemnx.html#addfbe4fd4a7f0e3dfbb32ebf68bee020", null ]
+    [ "getMnxSchemaId", "namespacemnx.html#a86e00ac3489b813478b7985b491a9ae9", null ],
+    [ "getMnxSchemaVersion", "namespacemnx.html#ac7f15615dff0f6cdcb867af398b32e80", null ],
+    [ "MNX_VERSION", "namespacemnx.html#a7cd0ba846ca3299297f341bc77185832", null ]
 ];

@@ -4,7 +4,6 @@ var classmnx_1_1global_1_1Measure =
     [ "calcCurrentKey", "classmnx_1_1global_1_1Measure.html#ac1b8e0959c5aafd0a23a23c663e2af6c", null ],
     [ "calcCurrentKeyFields", "classmnx_1_1global_1_1Measure.html#a397f6b72c24cf4840ed9d79771b03037", null ],
     [ "calcCurrentTime", "classmnx_1_1global_1_1Measure.html#a1bd736b2c877a7365956670ff363e302", null ],
-    [ "calcMeasureIndex", "classmnx_1_1global_1_1Measure.html#ace3decd66b97313b05e81a409aa2f30c", null ],
     [ "calcVisibleNumber", "classmnx_1_1global_1_1Measure.html#a8aed2c5f9b7690e13b425e2640df7188", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#a021e53c7e09b74563649864f56dacdb9", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#ab467c8ef2da8ddf130c282be5b93f6c0", null ],
@@ -16,6 +15,5 @@ var classmnx_1_1global_1_1Measure =
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#a6fe22c70999ad375cc1267119333f863", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#a20b833e4c206b10ac9908bca47b20ef1", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1global_1_1Measure.html#ac149289c8dba372d985eff76dc26c3f9", null ],
-    [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1global_1_1Measure.html#a1e68a3663fc72fca5f774e3049289cc4", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1global_1_1Measure.html#aa9b3167b25c9b646405b7a9f7e4e72d5", null ]
 ];

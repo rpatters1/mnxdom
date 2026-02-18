@@ -106,6 +106,7 @@ var hierarchy =
           [ "mnx::sequence::Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
         ] ],
         [ "mnx::sequence::EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", null ],
+        [ "mnx::sequence::FullMeasureRest", "classmnx_1_1sequence_1_1FullMeasureRest.html", null ],
         [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ],
         [ "mnx::sequence::TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", null ]
       ] ],
@@ -157,6 +158,7 @@ var hierarchy =
     [ "mnx::score::System::Required", "structmnx_1_1score_1_1System_1_1Required.html", null ],
     [ "mnx::sequence::AccidentalDisplay::Required", "structmnx_1_1sequence_1_1AccidentalDisplay_1_1Required.html", null ],
     [ "mnx::sequence::AccidentalEnclosure::Required", "structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html", null ],
+    [ "mnx::sequence::Event::Required", "structmnx_1_1sequence_1_1Event_1_1Required.html", null ],
     [ "mnx::sequence::EventLyricLine::Required", "structmnx_1_1sequence_1_1EventLyricLine_1_1Required.html", null ],
     [ "mnx::sequence::KitNote::Required", "structmnx_1_1sequence_1_1KitNote_1_1Required.html", null ],
     [ "mnx::sequence::MultiNoteTremolo::Required", "structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html", null ],

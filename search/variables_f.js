@@ -10,7 +10,7 @@ var searchData=
   ['standard_5fdiatonic_5fsteps_7',['STANDARD_DIATONIC_STEPS',['../namespacemusic__theory.html#ab35adc6b33ebe9aa9f6606f04216c1d5',1,'music_theory']]],
   ['standard_5fnumber_5fof_5fstafflines_8',['STANDARD_NUMBER_OF_STAFFLINES',['../namespacemusic__theory.html#a210de35d79a74652575c3fdbe5a829ab',1,'music_theory']]],
   ['startindex_9',['startIndex',['../structmnx_1_1util_1_1LayoutSpan.html#a488e6f47db64d53b45f9980b665d3200',1,'mnx::util::LayoutSpan']]],
-  ['startmeasure_10',['startmeasure',['../structmnx_1_1score_1_1System_1_1Required.html#a1564ae2bfdb80b5db66c703fd336d5a2',1,'mnx::score::System::Required::startMeasure'],['../structmnx_1_1score_1_1MultimeasureRest_1_1Required.html#a9a8de8edbf8a518c0fde0fb464321877',1,'mnx::score::MultimeasureRest::Required::startMeasure']]],
+  ['startmeasure_10',['startmeasure',['../structmnx_1_1score_1_1System_1_1Required.html#a65291c3ae91e8979ed34658d6fc9420f',1,'mnx::score::System::Required::startMeasure'],['../structmnx_1_1score_1_1MultimeasureRest_1_1Required.html#a9ec6f2aebe9a3912f1f22dc576ce0772',1,'mnx::score::MultimeasureRest::Required::startMeasure']]],
   ['step_11',['step',['../structmnx_1_1sequence_1_1Pitch_1_1Required.html#a1ec809463a7728ce2dc260d9fe7fcd29',1,'mnx::sequence::Pitch::Required']]],
   ['syllabletext_12',['syllableText',['../structmnx_1_1sequence_1_1EventLyricLine_1_1Required.html#a3c848acb704f0daff8c474968851857a',1,'mnx::sequence::EventLyricLine::Required']]],
   ['symbol_13',['symbol',['../structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html#ab40115748fd246d0b9007cf36f6318c1',1,'mnx::sequence::AccidentalEnclosure::Required::symbol'],['../structmnx_1_1util_1_1LayoutSpan.html#a8673fff04fbdfca5cd03bddae8b8c0f3',1,'mnx::util::LayoutSpan::symbol']]]

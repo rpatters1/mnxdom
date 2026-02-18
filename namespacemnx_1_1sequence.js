@@ -9,6 +9,7 @@ var namespacemnx_1_1sequence =
     [ "EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", "classmnx_1_1sequence_1_1EventLyrics" ],
     [ "EventMarkingBase", "classmnx_1_1sequence_1_1EventMarkingBase.html", "classmnx_1_1sequence_1_1EventMarkingBase" ],
     [ "EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", "classmnx_1_1sequence_1_1EventMarkings" ],
+    [ "FullMeasureRest", "classmnx_1_1sequence_1_1FullMeasureRest.html", "classmnx_1_1sequence_1_1FullMeasureRest" ],
     [ "Grace", "classmnx_1_1sequence_1_1Grace.html", "classmnx_1_1sequence_1_1Grace" ],
     [ "KitNote", "classmnx_1_1sequence_1_1KitNote.html", "classmnx_1_1sequence_1_1KitNote" ],
     [ "MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", "classmnx_1_1sequence_1_1MultiNoteTremolo" ],

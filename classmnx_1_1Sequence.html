@@ -126,8 +126,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5bdaaf20ef9397550c85d441cfd6663c" id="r_a5bdaaf20ef9397550c85d441cfd6663c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Sequence.html#a5bdaaf20ef9397550c85d441cfd6663c">Sequence</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key)</td></tr>
 <tr class="memdesc:a5bdaaf20ef9397550c85d441cfd6663c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1Sequence.html" title="A sequence of events and other items in this measure for a voice in a part.">Sequence</a> class as a child of a JSON element.  <br /></td></tr>
 <tr class="separator:a5bdaaf20ef9397550c85d441cfd6663c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7ddb60e107204aa451c3bd5cb7961d7" id="r_ad7ddb60e107204aa451c3bd5cb7961d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Sequence.html#ad7ddb60e107204aa451c3bd5cb7961d7">MNX_REQUIRED_CHILD</a> (<a class="el" href="classmnx_1_1ContentArray.html">ContentArray</a>, content)</td></tr>
+<tr class="memitem:ad7ddb60e107204aa451c3bd5cb7961d7" id="r_ad7ddb60e107204aa451c3bd5cb7961d7"><td class="memItemLeft" align="right" valign="top"><a id="ad7ddb60e107204aa451c3bd5cb7961d7" name="ad7ddb60e107204aa451c3bd5cb7961d7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1ContentArray.html">ContentArray</a>, content)</td></tr>
+<tr class="memdesc:ad7ddb60e107204aa451c3bd5cb7961d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">the content of the sequence <br /></td></tr>
 <tr class="separator:ad7ddb60e107204aa451c3bd5cb7961d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2851b132bb4f5f364d9358e9bdd3bde" id="r_af2851b132bb4f5f364d9358e9bdd3bde"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Sequence.html#af2851b132bb4f5f364d9358e9bdd3bde">MNX_OPTIONAL_CHILD</a> (<a class="el" href="classmnx_1_1sequence_1_1FullMeasureRest.html">sequence::FullMeasureRest</a>, fullMeasure)</td></tr>
+<tr class="separator:af2851b132bb4f5f364d9358e9bdd3bde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d338edfb354fc70d165e847f9ee1025" id="r_a4d338edfb354fc70d165e847f9ee1025"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Sequence.html#a4d338edfb354fc70d165e847f9ee1025">MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</a> (int, staff, 1)</td></tr>
 <tr class="memdesc:a4d338edfb354fc70d165e847f9ee1025"><td class="mdescLeft">&#160;</td><td class="mdescRight">the staff number for this sequence  <br /></td></tr>
 <tr class="separator:a4d338edfb354fc70d165e847f9ee1025"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +173,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (std::string, id)</td></tr>
 <tr class="memdesc:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniquely identifies the object. <br /></td></tr>
 <tr class="separator:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object" id="r_a9d7b38d6351e9356034134e01de589e3"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setExtension</b> (const std::string &amp;key, const <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &amp;value)</td></tr>
+<tr class="memdesc:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a vendor extension value in <code>_x</code>, creating <code>_x</code> when needed. <br /></td></tr>
+<tr class="separator:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object" id="r_ab4bd74194b906169b98462e49d4cb68a"><td class="memItemLeft" align="right" valign="top">
+std::optional&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getExtension</b> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vendor extension value from <code>_x</code>. <br /></td></tr>
+<tr class="separator:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmnx_1_1Base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1Base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1Base.html">mnx::Base</a></td></tr>
 <tr class="memitem:aa9fde0d4b169deb16f2ac1ba97c5219f inherit pub_methods_classmnx_1_1Base" id="r_aa9fde0d4b169deb16f2ac1ba97c5219f"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Base</b> (const <a class="el" href="classmnx_1_1Base.html">Base</a> &amp;src)</td></tr>
@@ -287,6 +299,35 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af2851b132bb4f5f364d9358e9bdd3bde" name="af2851b132bb4f5f364d9358e9bdd3bde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2851b132bb4f5f364d9358e9bdd3bde">&#9670;&#160;</a></span>MNX_OPTIONAL_CHILD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mnx::Sequence::MNX_OPTIONAL_CHILD </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmnx_1_1sequence_1_1FullMeasureRest.html">sequence::FullMeasureRest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fullMeasure&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If present, this sequence is a forced full-measure rest. </p>
+
+</div>
+</div>
 <a id="a4d338edfb354fc70d165e847f9ee1025" name="a4d338edfb354fc70d165e847f9ee1025"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d338edfb354fc70d165e847f9ee1025">&#9670;&#160;</a></span>MNX_OPTIONAL_PROPERTY_WITH_DEFAULT()</h2>
 
@@ -320,36 +361,7 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 </div><div class="memdoc">
 
 <p>the staff number for this sequence </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd><code>orient</code> property </dd></dl>
-
-</div>
-</div>
-<a id="ad7ddb60e107204aa451c3bd5cb7961d7" name="ad7ddb60e107204aa451c3bd5cb7961d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7ddb60e107204aa451c3bd5cb7961d7">&#9670;&#160;</a></span>MNX_REQUIRED_CHILD()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">mnx::Sequence::MNX_REQUIRED_CHILD </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmnx_1_1ContentArray.html">ContentArray</a>&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">content&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>the content of the sequence </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd><code>orient</code> property </dd></dl>
 
 </div>
 </div>

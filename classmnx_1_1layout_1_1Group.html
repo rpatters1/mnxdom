@@ -124,6 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a84d843a885173fd0c6a42a849f373d36" id="r_a84d843a885173fd0c6a42a849f373d36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1layout_1_1Group.html#a84d843a885173fd0c6a42a849f373d36">Group</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key)</td></tr>
 <tr class="memdesc:a84d843a885173fd0c6a42a849f373d36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1layout_1_1Group.html" title="Represents a groups of staves within an MNX layout.">Group</a> class as a child of a JSON element.  <br /></td></tr>
 <tr class="separator:a84d843a885173fd0c6a42a849f373d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab37712c691319494ecdade7094233c49" id="r_ab37712c691319494ecdade7094233c49"><td class="memItemLeft" align="right" valign="top"><a id="ab37712c691319494ecdade7094233c49" name="ab37712c691319494ecdade7094233c49"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</b> (<a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8f">StaffGroupBarlineStyle</a>, barlineStyle, <a class="el" href="namespacemnx.html#ad48565fded88559edcaeec446b9e1d8fa4bad3e7b155943ebf27d1da56ae2e258">StaffGroupBarlineStyle::Instrument</a>)</td></tr>
+<tr class="memdesc:ab37712c691319494ecdade7094233c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">barline override settings <br /></td></tr>
+<tr class="separator:ab37712c691319494ecdade7094233c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84f9f0d47235c08f9d82cfff5d8739f1" id="r_a84f9f0d47235c08f9d82cfff5d8739f1"><td class="memItemLeft" align="right" valign="top"><a id="a84f9f0d47235c08f9d82cfff5d8739f1" name="a84f9f0d47235c08f9d82cfff5d8739f1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_REQUIRED_CHILD</b> (<a class="el" href="classmnx_1_1ContentArray.html">ContentArray</a>, content)</td></tr>
 <tr class="memdesc:a84f9f0d47235c08f9d82cfff5d8739f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Required child containing the layout content (groups and staves). <br /></td></tr>
@@ -136,6 +140,14 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (<a class="el" href="namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485">LayoutSymbol</a>, symbol)</td></tr>
 <tr class="memdesc:a7ac2f3e6267eb6199bd1993eb6db4ffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The symbol down the left side. <br /></td></tr>
 <tr class="separator:a7ac2f3e6267eb6199bd1993eb6db4ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8b72be235c8f82376a48afa79d90d8" id="r_a5d8b72be235c8f82376a48afa79d90d8"><td class="memItemLeft" align="right" valign="top"><a id="a5d8b72be235c8f82376a48afa79d90d8" name="a5d8b72be235c8f82376a48afa79d90d8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>calcIsPartGroup</b> () const</td></tr>
+<tr class="memdesc:a5d8b72be235c8f82376a48afa79d90d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates whether all staves in this group subtree use the same part id. <br /></td></tr>
+<tr class="separator:a5d8b72be235c8f82376a48afa79d90d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e1e98981194091c6cff5d319d02664a" id="r_a4e1e98981194091c6cff5d319d02664a"><td class="memItemLeft" align="right" valign="top"><a id="a4e1e98981194091c6cff5d319d02664a" name="a4e1e98981194091c6cff5d319d02664a"></a>
+<a class="el" href="namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9">StaffGroupBarlineOverride</a>&#160;</td><td class="memItemRight" valign="bottom"><b>calcBarlineOverride</b> () const</td></tr>
+<tr class="memdesc:a4e1e98981194091c6cff5d319d02664a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the effective barline override. <br /></td></tr>
+<tr class="separator:a4e1e98981194091c6cff5d319d02664a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmnx_1_1ContentObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1ContentObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1ContentObject.html">mnx::ContentObject</a></td></tr>
 <tr class="memitem:a32e118e7e9277021bcd684919bdbf18d inherit pub_methods_classmnx_1_1ContentObject" id="r_a32e118e7e9277021bcd684919bdbf18d"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</b> (std::string, type, std::string(<a class="el" href="classmnx_1_1ContentObject.html#aaabcf2ab2d34b87d60a3b59bbff38d9f">ContentTypeValueDefault</a>))</td></tr>
@@ -184,6 +196,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (std::string, id)</td></tr>
 <tr class="memdesc:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniquely identifies the object. <br /></td></tr>
 <tr class="separator:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object" id="r_a9d7b38d6351e9356034134e01de589e3"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setExtension</b> (const std::string &amp;key, const <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &amp;value)</td></tr>
+<tr class="memdesc:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a vendor extension value in <code>_x</code>, creating <code>_x</code> when needed. <br /></td></tr>
+<tr class="separator:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object" id="r_ab4bd74194b906169b98462e49d4cb68a"><td class="memItemLeft" align="right" valign="top">
+std::optional&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getExtension</b> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vendor extension value from <code>_x</code>. <br /></td></tr>
+<tr class="separator:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmnx_1_1Base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1Base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1Base.html">mnx::Base</a></td></tr>
 <tr class="memitem:aa9fde0d4b169deb16f2ac1ba97c5219f inherit pub_methods_classmnx_1_1Base" id="r_aa9fde0d4b169deb16f2ac1ba97c5219f"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Base</b> (const <a class="el" href="classmnx_1_1Base.html">Base</a> &amp;src)</td></tr>

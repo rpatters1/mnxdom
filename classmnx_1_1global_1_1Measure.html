@@ -132,10 +132,6 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1global_1_1Fine.html">Fine</a>, fine,(const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;, position))</td></tr>
 <tr class="memdesc:a965297907d895f8505657915b8472f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">optional fine direction for this measure <br /></td></tr>
 <tr class="separator:a965297907d895f8505657915b8472f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e68a3663fc72fca5f774e3049289cc4" id="r_a1e68a3663fc72fca5f774e3049289cc4"><td class="memItemLeft" align="right" valign="top"><a id="a1e68a3663fc72fca5f774e3049289cc4" name="a1e68a3663fc72fca5f774e3049289cc4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (int, index)</td></tr>
-<tr class="memdesc:a1e68a3663fc72fca5f774e3049289cc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">the measure index which is used to refer to this measure by other classes in the MNX document <br /></td></tr>
-<tr class="separator:a1e68a3663fc72fca5f774e3049289cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0d99cf18bbdd53c2dbd6b760f043d67" id="r_ad0d99cf18bbdd53c2dbd6b760f043d67"><td class="memItemLeft" align="right" valign="top"><a id="ad0d99cf18bbdd53c2dbd6b760f043d67" name="ad0d99cf18bbdd53c2dbd6b760f043d67"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_CHILD</b> (<a class="el" href="classmnx_1_1global_1_1Jump.html">Jump</a>, jump,(<a class="el" href="namespacemnx.html#a20eecc3eed798a3f30f6c488465deca8">JumpType</a>, jumpType),(const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;, position))</td></tr>
 <tr class="memdesc:ad0d99cf18bbdd53c2dbd6b760f043d67"><td class="mdescLeft">&#160;</td><td class="mdescRight">optional jump direction for this measure <br /></td></tr>
@@ -169,9 +165,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acaf57dd54e79125d1daeff29ba450ab1" id="r_acaf57dd54e79125d1daeff29ba450ab1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9">BarlineType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1global_1_1Measure.html#acaf57dd54e79125d1daeff29ba450ab1">calcBarlineType</a> () const</td></tr>
 <tr class="memdesc:acaf57dd54e79125d1daeff29ba450ab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the barline type for this measure.  <br /></td></tr>
 <tr class="separator:acaf57dd54e79125d1daeff29ba450ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace3decd66b97313b05e81a409aa2f30c" id="r_ace3decd66b97313b05e81a409aa2f30c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1global_1_1Measure.html#ace3decd66b97313b05e81a409aa2f30c">calcMeasureIndex</a> () const</td></tr>
-<tr class="memdesc:ace3decd66b97313b05e81a409aa2f30c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the measure index for this measure.  <br /></td></tr>
-<tr class="separator:ace3decd66b97313b05e81a409aa2f30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aed2c5f9b7690e13b425e2640df7188" id="r_a8aed2c5f9b7690e13b425e2640df7188"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1global_1_1Measure.html#a8aed2c5f9b7690e13b425e2640df7188">calcVisibleNumber</a> () const</td></tr>
 <tr class="memdesc:a8aed2c5f9b7690e13b425e2640df7188"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the visible measure number for this measure.  <br /></td></tr>
 <tr class="separator:a8aed2c5f9b7690e13b425e2640df7188"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +211,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> 
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (std::string, id)</td></tr>
 <tr class="memdesc:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniquely identifies the object. <br /></td></tr>
 <tr class="separator:aba3107608d5f547dbca6d864ffb5d7b5 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object" id="r_a9d7b38d6351e9356034134e01de589e3"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setExtension</b> (const std::string &amp;key, const <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &amp;value)</td></tr>
+<tr class="memdesc:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a vendor extension value in <code>_x</code>, creating <code>_x</code> when needed. <br /></td></tr>
+<tr class="separator:a9d7b38d6351e9356034134e01de589e3 inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object" id="r_ab4bd74194b906169b98462e49d4cb68a"><td class="memItemLeft" align="right" valign="top">
+std::optional&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getExtension</b> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vendor extension value from <code>_x</code>. <br /></td></tr>
+<tr class="separator:ab4bd74194b906169b98462e49d4cb68a inherit pub_methods_classmnx_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmnx_1_1Base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1Base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1Base.html">mnx::Base</a></td></tr>
 <tr class="memitem:aa9fde0d4b169deb16f2ac1ba97c5219f inherit pub_methods_classmnx_1_1Base" id="r_aa9fde0d4b169deb16f2ac1ba97c5219f"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Base</b> (const <a class="el" href="classmnx_1_1Base.html">Base</a> &amp;src)</td></tr>
@@ -374,26 +375,6 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 
 <p>Calculates the current time signature by searching backwards. </p>
 <dl class="section return"><dt>Returns</dt><dd>The current time signature or std::nullopt if none found. </dd></dl>
-
-</div>
-</div>
-<a id="ace3decd66b97313b05e81a409aa2f30c" name="ace3decd66b97313b05e81a409aa2f30c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace3decd66b97313b05e81a409aa2f30c">&#9670;&#160;</a></span>calcMeasureIndex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int mnx::global::Measure::calcMeasureIndex </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Calculates the measure index for this measure. </p>
-<dl class="section return"><dt>Returns</dt><dd>index() if it has a value or the default value (defined in the MNX specification) if it does not. </dd></dl>
 
 </div>
 </div>

@@ -549,7 +549,7 @@ BarlineType global::Measure::calcBarlineType() const
 
 int global::Measure::calcVisibleNumber() const
 {
-    return number_or(calcArrayIndex() + 1);
+    return number_or(static_cast<int>(calcArrayIndex()) + 1);
 }
 
 std::optional<TimeSignature> global::Measure::calcCurrentTime() const

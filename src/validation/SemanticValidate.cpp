@@ -454,6 +454,7 @@ void SemanticValidator::validateParts()
         }
         // first pass: validateSequenceContent creates the eventList and the noteList
         for (const auto measure : measures) {
+            std::unordered_map<std::string, std::string> measureVoices;
             if (auto clefs = measure.clefs()) {
                 for (const auto clef : clefs.value()) {
                     const int staffNumber = clef.staff();
@@ -478,7 +479,13 @@ void SemanticValidator::validateParts()
                 if (sequence.fullMeasure() && !sequence.content().empty()) {
                     addError("Sequence \"" + sequence.id_or("<no-id>") + "\" has full measure rest but content is not empty.", sequence);
                 }
-                /// @todo check voice uniqueness
+                if (const auto voice = sequence.voice()) {
+                    if (voice->empty()) {
+                        addError("Sequence \"" + sequence.id_or("<no-id>") + "\" has empty voice identifier.", sequence);
+                    } else if (auto insert = measureVoices.emplace(voice.value(), sequence.pointer().to_string()); !insert.second) {
+                        addError("Voice \"" + voice.value() + "\" already exists at " + insert.first->second + ".", sequence);
+                    }
+                }
                 validateSequenceContent(sequence.content(), sequence, measureTime);
             }
         }

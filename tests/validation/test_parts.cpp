@@ -88,6 +88,22 @@ TEST(Parts, FullMeasureWithNonEmptyContent)
     expectSemanticError(doc, inputPath, "has full measure rest but content is not empty");
 }
 
+TEST(Parts, DuplicateSequenceVoice)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "duplicate_sequence_voice.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "Voice \"layer1\" already exists at");
+}
+
+TEST(Parts, EmptySequenceVoice)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "empty_sequence_voice.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "has empty voice identifier");
+}
+
 TEST(Parts, TieErrors)
 {
     setupTestDataPaths();

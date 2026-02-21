@@ -383,10 +383,10 @@ void SemanticValidator::validateOttavas(const mnx::part::Measure& measure, const
     for (const auto ottava : ottavas) {
         if (auto endMeasure = tryGetValue<mnx::global::Measure>(ottava.end().measure(), ottava)) {
             size_t thisMeasureIndex = measure.calcArrayIndex();
-            size_t endMeasureInbdex = endMeasure.value().calcArrayIndex();
-            if (thisMeasureIndex > endMeasureInbdex) {
+            size_t endMeasureIndex = endMeasure.value().calcArrayIndex();
+            if (thisMeasureIndex > endMeasureIndex) {
                 addError("Ottava ends before it begins", ottava);
-            } else if (thisMeasureIndex == endMeasureInbdex && ottava.position().fraction() > ottava.end().position().fraction()) {
+            } else if (thisMeasureIndex == endMeasureIndex && ottava.position().fraction() > ottava.end().position().fraction()) {
                 addError("Ottava ends before it begins (in the same measure)", ottava);
             }
         }
@@ -454,6 +454,7 @@ void SemanticValidator::validateParts()
         }
         // first pass: validateSequenceContent creates the eventList and the noteList
         for (const auto measure : measures) {
+            std::unordered_map<std::string, std::string> measureVoices;
             if (auto clefs = measure.clefs()) {
                 for (const auto clef : clefs.value()) {
                     const int staffNumber = clef.staff();
@@ -478,7 +479,13 @@ void SemanticValidator::validateParts()
                 if (sequence.fullMeasure() && !sequence.content().empty()) {
                     addError("Sequence \"" + sequence.id_or("<no-id>") + "\" has full measure rest but content is not empty.", sequence);
                 }
-                /// @todo check voice uniqueness
+                if (const auto voice = sequence.voice()) {
+                    if (voice->empty()) {
+                        addError("Sequence \"" + sequence.id_or("<no-id>") + "\" has empty voice identifier.", sequence);
+                    } else if (auto insert = measureVoices.emplace(voice.value(), sequence.pointer().to_string()); !insert.second) {
+                        addError("Voice \"" + voice.value() + "\" already exists at " + insert.first->second + ".", sequence);
+                    }
+                }
                 validateSequenceContent(sequence.content(), sequence, measureTime);
             }
         }

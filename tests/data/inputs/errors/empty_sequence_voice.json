@@ -1,0 +1,93 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "measures": [
+                {
+                    "sequences": [
+                        {
+                            "voice": "",
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "whole"
+                                    },
+                                    "id": "ev1",
+                                    "rest": {}
+                                }
+                            ]
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "layouts": [
+        {
+            "id": "S0-ScrVw",
+            "content": [
+                {
+                    "type": "staff",
+                    "sources": [
+                        {
+                            "part": "P1",
+                            "labelref": "name"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S0-Sys1",
+            "content": [
+                {
+                    "type": "staff",
+                    "sources": [
+                        {
+                            "part": "P1",
+                            "labelref": "name"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scores": [
+        {
+            "name": "Score",
+            "layout": "S0-ScrVw",
+            "pages": [
+                {
+                    "systems": [
+                        {
+                            "measure": "m1",
+                            "layout": "S0-Sys1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

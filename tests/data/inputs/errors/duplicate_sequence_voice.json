@@ -1,0 +1,115 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "staves": 2,
+            "measures": [
+                {
+                    "sequences": [
+                        {
+                            "staff": 1,
+                            "voice": "layer1",
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "whole"
+                                    },
+                                    "id": "ev1",
+                                    "rest": {}
+                                }
+                            ]
+                        },
+                        {
+                            "staff": 2,
+                            "voice": "layer1",
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "whole"
+                                    },
+                                    "id": "ev2",
+                                    "rest": {}
+                                }
+                            ]
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "staffPosition": 2,
+                                "sign": "F"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "layouts": [
+        {
+            "id": "S0-ScrVw",
+            "content": [
+                {
+                    "type": "staff",
+                    "sources": [
+                        {
+                            "part": "P1",
+                            "labelref": "name"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "S0-Sys1",
+            "content": [
+                {
+                    "type": "staff",
+                    "sources": [
+                        {
+                            "part": "P1",
+                            "labelref": "name"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scores": [
+        {
+            "name": "Score",
+            "layout": "S0-ScrVw",
+            "pages": [
+                {
+                    "systems": [
+                        {
+                            "measure": "m1",
+                            "layout": "S0-Sys1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

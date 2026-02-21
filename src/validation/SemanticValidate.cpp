@@ -383,10 +383,10 @@ void SemanticValidator::validateOttavas(const mnx::part::Measure& measure, const
     for (const auto ottava : ottavas) {
         if (auto endMeasure = tryGetValue<mnx::global::Measure>(ottava.end().measure(), ottava)) {
             size_t thisMeasureIndex = measure.calcArrayIndex();
-            size_t endMeasureInbdex = endMeasure.value().calcArrayIndex();
-            if (thisMeasureIndex > endMeasureInbdex) {
+            size_t endMeasureIndex = endMeasure.value().calcArrayIndex();
+            if (thisMeasureIndex > endMeasureIndex) {
                 addError("Ottava ends before it begins", ottava);
-            } else if (thisMeasureIndex == endMeasureInbdex && ottava.position().fraction() > ottava.end().position().fraction()) {
+            } else if (thisMeasureIndex == endMeasureIndex && ottava.position().fraction() > ottava.end().position().fraction()) {
                 addError("Ottava ends before it begins (in the same measure)", ottava);
             }
         }

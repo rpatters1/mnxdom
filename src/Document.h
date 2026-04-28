@@ -110,7 +110,7 @@ public:
      * @brief Constructs an empty MNX document. The resulting instance contains all
      * required fields and should validate against the schema.
      */
-    Document() : Object(std::make_shared<json>(json::object()), json_pointer{})
+    Document() : Object()
     {
         // create required children
         create_mnx();

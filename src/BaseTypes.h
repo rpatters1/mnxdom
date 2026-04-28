@@ -411,6 +411,10 @@ using ErrorHandler = std::function<void(const std::string& message, const Base& 
 class Object : public Base
 {
 public:
+    /// @brief Constructor fresh document or detached instance
+    Object() : Base(std::make_shared<json>(json::object()), json_pointer{})
+    {}
+        
     /// @brief Wraps an Object class around an existing JSON object node
     /// @param root Reference to the document root
     /// @param pointer The json_pointer value for the node

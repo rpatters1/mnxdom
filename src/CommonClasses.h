@@ -33,6 +33,20 @@
 namespace mnx {
 
 /**
+ * @class Fermata
+ * @brief Defines a fermata.
+ */
+class Fermata : public Object
+{
+public:
+    using Object::Object;
+
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(FermataDuration, duration, FermataDuration::Auto);   ///< subjective playback duration of the fermata
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(Orientation, orient, Orientation::Auto);             ///< vertical visual orientation of the fermata symbol
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(FermataSymbol, symbol, FermataSymbol::Normal);       ///< the style of symbol for the fermata
+};
+
+/**
  * @class FractionValue
  * @brief Represents a detached arithmetic fraction with normalization.
  *

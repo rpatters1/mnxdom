@@ -98,6 +98,37 @@ enum class ClefSign
 };
 
 /**
+ * @enum FermataDuration
+ * @brief Specifies the subjective playback duration of a fermata.
+ */
+enum class FermataDuration
+{
+    Auto,           ///< unspecified (the default)
+    Long,           ///< long fermata
+    None,           ///< playback should ignore fermata
+    Normal,         ///< normal length fermata
+    Short,          ///< short fermata
+    VeryLong,       ///< very long fermata
+    VeryShort       ///< very short fermata
+};
+
+/**
+ * @enum FermataSymbol
+ * @brief Specifies the symbol style for the fermat.
+ */
+enum class FermataSymbol
+{
+    Normal,         ///< standard curved fermata symbol with single dot (the default)
+    Angled,         ///< angled fermata symbol (often used to denote short duration)
+    Curlew,         ///< double-curve (used by Britten in Curlew River to denote holding until a synchronization point)
+    DoubleAngled,   ///< double-angled fermata symbol (often used to denote very short duration)
+    DoubleDot,      ///< curved fermata symbol with two dots (used by Henze to denote long duration)
+    DoubleSquare,   ///< double-square fermata symbol (often used to denote very long duration)
+    HalfCurve,      ///< half-curve fermata symbol (used by Henze to denote short duration)
+    Square          ///< square fermata symbol (often used to denote long duration)
+};
+
+/**
  * @enum GraceType
  * @brief Options for how to perform grace notes.
  */
@@ -213,6 +244,17 @@ enum class NoteValueBase
     Longa,
     Maxima,
     DuplexMaxima
+};
+
+/**
+ * @enum Orientation
+ * @brief Specifies the vertical visual orientation of a glyph with respect to its corresponding notation
+ */
+enum class Orientation
+{
+    Auto,       ///< the default value determined by implementation
+    Above,      ///< glyph should be above its corresponding notation
+    Below       ///< glyph should be below its corresponding notation
 };
 
 /**

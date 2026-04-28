@@ -329,6 +329,7 @@ public:
         (BarlineType, barlineType)); ///< optional barline for this measure
     MNX_OPTIONAL_CHILD(Ending, ending,
         (int, duration)); ///< optional ending ("volta bracket") for this measure
+    MNX_OPTIONAL_CHILD(Fermata, fermata);           ///< Information about a fermata aligned with the barline at the end of this measure.
     MNX_OPTIONAL_CHILD(Fine, fine,
         (const FractionValue&, position)); ///< optional fine direction for this measure
     MNX_OPTIONAL_CHILD(Jump, jump,

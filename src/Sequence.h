@@ -447,7 +447,8 @@ public:
     static Required make(NoteValueBase base, unsigned dots = 0) { return { { base, dots } }; }
 
     MNX_REQUIRED_CHILD(NoteValue, duration,
-        (NoteValueBase, base), (unsigned, dots)); ///< Symbolic duration of the event.
+        (NoteValueBase, base), (unsigned, dots));           ///< Symbolic duration of the event.
+    MNX_OPTIONAL_CHILD(Fermata, fermata);                   ///< Information about a fermata on the event, if any.
     MNX_OPTIONAL_CHILD(Array<KitNote>, kitNotes);           ///< KitNote array for percussion kit notation.
     MNX_OPTIONAL_CHILD(EventLyrics, lyrics);                ///< The lyric syllables on this event.
     MNX_OPTIONAL_CHILD(EventMarkings, markings);            ///< Articulation markings on this event.
@@ -681,6 +682,7 @@ public:
         : Object(parent, key)
     {}
 
+    MNX_OPTIONAL_CHILD(Fermata, fermata);           ///< Information about a fermata on the full measure rest, if any.
     MNX_OPTIONAL_PROPERTY(int, staffPosition);      ///< the forced staff position of the full-measure rest
     MNX_OPTIONAL_CHILD(NoteValue, visualDuration,
         (NoteValueBase, base), (unsigned, dots));   ///< the visual duration of the full-measure rest (defaults to importer defaults).

@@ -175,6 +175,7 @@
  * It creates the following class methods.
  *
  * - `NAME()` returns the child.
+ * - `set_NAME(value)` sets the child from an existing object or array.
  * - `create_NAME(...)` creates the child from constructor parameters (variadic form only).
  * - `create_NAME()` creates the child with a default constructor (non-variadic form only).
  *
@@ -193,6 +194,7 @@
 
 #define MNX_REQUIRED_CHILD_CORE(TYPE, NAME, CREATE_BODY) \
     [[nodiscard]] TYPE NAME() const { return getChild<TYPE>(#NAME); } \
+    TYPE set_##NAME(const TYPE& value) { return setChild(#NAME, value); } \
     CREATE_BODY \
     static_assert(true, "") // require semicolon after macro
 
@@ -230,6 +232,7 @@
  * It creates the following class methods.
  *
  * - `NAME()` returns a std::optional<TYPE> containing the child or std::nullopt if none.
+ * - `set_NAME(value)` sets the child from an existing object or array.
  * - `ensure_NAME(...)` if the child does not exist, creates it from constructor parameters (variadic form only).
  * - `ensure_NAME()` if the child does not exist, creates it with a default constructor (non-variadic form only).
  * - `clear_NAME()` clears the child from JSON document.
@@ -249,6 +252,7 @@
 
 #define MNX_OPTIONAL_CHILD_CORE(TYPE, NAME, ENSURE_BODY) \
     [[nodiscard]] std::optional<TYPE> NAME() const { return getOptionalChild<TYPE>(#NAME); } \
+    TYPE set_##NAME(const TYPE& value) { return setChild(#NAME, value); } \
     ENSURE_BODY \
     void clear_##NAME() { ref().erase(#NAME); } \
     static_assert(true, "") // require semicolon after macro

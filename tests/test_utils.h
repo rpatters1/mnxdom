@@ -50,6 +50,6 @@ bool validateSchema(const mnx::Document& doc, const std::filesystem::path& fileP
 bool validateSemantics(const mnx::Document& doc, const std::filesystem::path& filePath);
 bool fullValidate(const mnx::Document& doc, const std::filesystem::path& filePath);
 
-void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path& filePath, const std::vector<std::string>& errors);
-inline void expectSemanticError(const mnx::Document& doc, const std::filesystem::path& filePath, const std::string& error)
-{ expectSemanticErrors(doc, filePath, { error }); }
+void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path& filePath, const std::vector<std::string>& errors, bool skipSchema = false);
+inline void expectSemanticError(const mnx::Document& doc, const std::filesystem::path& filePath, const std::string& error, bool skipSchema = false)
+{ expectSemanticErrors(doc, filePath, { error }, skipSchema); }

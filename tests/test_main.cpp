@@ -135,12 +135,14 @@ bool fullValidate(const mnx::Document& doc, const std::filesystem::path& filePat
     return false;
 }
 
-void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path& filePath, const std::vector<std::string>& errors)
+void expectSemanticErrors(const mnx::Document& doc, const std::filesystem::path& filePath, const std::vector<std::string>& errors, bool skipSchema)
 {
-    bool schemaResult = validateSchema(doc, filePath);
-    EXPECT_TRUE(schemaResult) << "schema validation failed for " << pathString(filePath);
-    if (!schemaResult) return;
-
+    if (!skipSchema) {
+        bool schemaResult = validateSchema(doc, filePath);
+        EXPECT_TRUE(schemaResult) << "schema validation failed for " << pathString(filePath);
+        if (!schemaResult) return;
+    }
+    
     auto semanticResult = mnx::validation::semanticValidate(doc);
     EXPECT_FALSE(semanticResult) << "semantic validation succeeded for " << pathString(filePath.filename()) << " but expected failure";
 

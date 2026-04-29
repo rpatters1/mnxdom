@@ -81,6 +81,27 @@ MNX_ENUM_MAPPING(ClefSign, {
     { "G",          ClefSign::GClef }
 });
 
+MNX_ENUM_MAPPING(FermataDuration, {
+    { "auto",       FermataDuration::Auto },
+    { "long",       FermataDuration::Long },
+    { "none",       FermataDuration::None },
+    { "normal",     FermataDuration::Normal },
+    { "short",      FermataDuration::Short },
+    { "veryLong",   FermataDuration::VeryLong },
+    { "veryShort",  FermataDuration::VeryShort }
+});
+
+MNX_ENUM_MAPPING(FermataSymbol, {
+    { "normal",         FermataSymbol::Normal },
+    { "angled",         FermataSymbol::Angled },
+    { "curlew",         FermataSymbol::Curlew },
+    { "doubleAngled",   FermataSymbol::DoubleAngled },
+    { "doubleDot",      FermataSymbol::DoubleDot },
+    { "doubleSquare",   FermataSymbol::DoubleSquare },
+    { "halfCurve",      FermataSymbol::HalfCurve },
+    { "square",         FermataSymbol::Square }
+});
+
 MNX_ENUM_MAPPING(GraceType, {
     { "makeTime",       GraceType::MakeTime },
     { "stealFollowing", GraceType::StealFollowing },
@@ -122,6 +143,12 @@ MNX_ENUM_MAPPING(MarkingUpDown, {
     { "up",         MarkingUpDown::Up }
 });
 
+MNX_ENUM_MAPPING(MarkingUpDownAuto, {
+    { "auto",       MarkingUpDownAuto::Auto},
+    { "down",       MarkingUpDownAuto::Down },
+    { "up",         MarkingUpDownAuto::Up }
+});
+
 MNX_ENUM_MAPPING(NoteStep, {
     { "C", NoteStep::C },
     { "D", NoteStep::D },
@@ -150,6 +177,12 @@ MNX_ENUM_MAPPING(NoteValueBase, {
     { "longa",        NoteValueBase::Longa },
     { "maxima",       NoteValueBase::Maxima },
     { "duplexMaxima", NoteValueBase::DuplexMaxima }
+});
+
+MNX_ENUM_MAPPING(Orientation, {
+    { "auto",       Orientation::Auto },
+    { "above",      Orientation::Above },
+    { "below",      Orientation::Below }
 });
 
 MNX_ENUM_MAPPING(SlurTieSide, {

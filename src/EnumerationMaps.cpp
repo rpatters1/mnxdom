@@ -143,6 +143,12 @@ MNX_ENUM_MAPPING(MarkingUpDown, {
     { "up",         MarkingUpDown::Up }
 });
 
+MNX_ENUM_MAPPING(MarkingUpDownAuto, {
+    { "auto",       MarkingUpDownAuto::Auto},
+    { "down",       MarkingUpDownAuto::Down },
+    { "up",         MarkingUpDownAuto::Up }
+});
+
 MNX_ENUM_MAPPING(NoteStep, {
     { "C", NoteStep::C },
     { "D", NoteStep::D },

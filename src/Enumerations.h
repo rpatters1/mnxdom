@@ -196,10 +196,21 @@ enum class LyricLineType
 
 /**
  * @enum MarkingUpDown
- * @brief The values available in an event marking "pointing" property
+ * @brief Specifies up or down for a marking symbol
  */
 enum class MarkingUpDown
 {
+    Down,           ///< down
+    Up              ///< up
+};
+
+/**
+ * @enum MarkingUpDownAuto
+ * @brief Specifies up or down or auto for a marking symbol
+ */
+enum class MarkingUpDownAuto
+{
+    Auto,           ///< determined by consuming property
     Down,           ///< down (default)
     Up              ///< up
 };

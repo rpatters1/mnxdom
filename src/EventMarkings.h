@@ -35,6 +35,8 @@ class EventMarkingBase : public Object
 {
 public:
     using Object::Object;
+
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(Orientation, orient, Orientation::Auto);     ///< Whether the marking is above or below its associated event
 };
 
 /**
@@ -45,8 +47,51 @@ class Accent : public EventMarkingBase
 {
 public:
     using EventMarkingBase::EventMarkingBase;
+};
 
-    MNX_OPTIONAL_PROPERTY(MarkingUpDown, pointing);     ///< Specifies if the accent points upward or downward.
+/**
+ * @class BowDirection
+ * @brief Class that represents down- or up-bow marking
+ */
+class BowDirection : public EventMarkingBase
+{
+public:
+    /// @brief initializer class for #SingleNoteTremolo
+    struct Required
+    {
+        MarkingUpDown direction{}; ///< whether it is a down-bow or up-bow marking
+    };
+
+    /// @brief Constructor for detatched instance
+    /// @param direction Whether it is a down-bow or up-bow marking
+    BowDirection(MarkingUpDown direction) : EventMarkingBase()
+    {
+        set_direction(direction);
+    }
+
+    /// @brief Constructor for existing BowDirection objects
+    BowDirection(const std::shared_ptr<json>& root, json_pointer pointer)
+        : EventMarkingBase(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new BowDirection class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param direction Whether it is a down-bow or up-bow marking
+    BowDirection(Base& parent, std::string_view key, MarkingUpDown direction)
+        : EventMarkingBase(parent, key)
+    {
+        set_direction(direction);
+    }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { direction() }; }
+
+    /// @brief Create a Required instance for #SingleNoteTremolo.
+    static Required make(MarkingUpDown direction) { return { direction }; }
+
+    MNX_REQUIRED_PROPERTY(MarkingUpDown, direction);     ///< whether it is a down bow or up bow
 };
 
 /**
@@ -120,7 +165,7 @@ class StrongAccent : public EventMarkingBase
 public:
     using EventMarkingBase::EventMarkingBase;
 
-    MNX_OPTIONAL_PROPERTY(MarkingUpDown, pointing);     ///< Specifies if the accent points upward or downward.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(MarkingUpDownAuto, pointing, MarkingUpDownAuto::Auto);   ///< Specifies if the accent points upward or downward.
 };
 
 /**
@@ -150,6 +195,13 @@ public:
     SingleNoteTremolo(const std::shared_ptr<json>& root, json_pointer pointer)
         : EventMarkingBase(root, pointer)
     {
+    }
+
+    /// @brief Constructor for detached instance
+    /// @param marks The number of marks
+    SingleNoteTremolo(unsigned marks) : EventMarkingBase()
+    {
+        set_marks(marks);
     }
 
     /// @brief Creates a new SingleNoteTremolo class as a child of a JSON element
@@ -191,6 +243,8 @@ public:
     using Object::Object;
 
     MNX_OPTIONAL_CHILD(Accent, accent);                 ///< An accent mark
+    MNX_OPTIONAL_CHILD(BowDirection, bowDirection,
+        (MarkingUpDown, direction));                    ///< A bow direction mark
     MNX_OPTIONAL_CHILD(BreathMark, breath);             ///< A breath mark
     MNX_OPTIONAL_CHILD(SoftAccent, softAccent);         ///< A soft accent mark
     MNX_OPTIONAL_CHILD(Spiccato, spiccato);             ///< A spiccato mark
@@ -200,7 +254,7 @@ public:
     MNX_OPTIONAL_CHILD(StrongAccent, strongAccent);     ///< A strong accent mark
     MNX_OPTIONAL_CHILD(Tenuto, tenuto);                 ///< A stress mark
     MNX_OPTIONAL_CHILD(SingleNoteTremolo, tremolo,
-        (unsigned, marks)); ///< A single-note tremolo mark
+        (unsigned, marks));                             ///< A single-note tremolo mark
     MNX_OPTIONAL_CHILD(Unstress, unstress);             ///< A stress mark
 };
 

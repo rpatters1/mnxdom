@@ -48,7 +48,7 @@ TEST(Layouts, EmptyPartId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "layout_with_empty_part.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "Layout staff \"<no-id>\" has empty part id in source.");
+    expectSemanticError(doc, inputPath, "Layout staff \"<no-id>\" has empty part id in source.", /*skipSchema*/ true);
 }
 
 TEST(Layouts, NonexistentStaffNumber)

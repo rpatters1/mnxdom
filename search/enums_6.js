@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kind_0',['Kind',['../structmnx_1_1util_1_1LayoutSpan.html#ad9be833ec703c9a9b0605bc0ce56def6',1,'mnx::util::LayoutSpan']]]
+  ['jumptype_0',['JumpType',['../namespacemnx.html#a20eecc3eed798a3f30f6c488465deca8',1,'mnx']]]
 ];

@@ -37,5 +37,6 @@ var searchData=
   ['count_34',['count',['../structmnx_1_1TimeSignature_1_1Required.html#a2c8f52da6faa63e88be3872e5f92d720',1,'mnx::TimeSignature::Required::count'],['../structmnx_1_1NoteValueQuantity_1_1Required.html#ab79fcee095f4c2e694f05d3cf61f762d',1,'mnx::NoteValueQuantity::Required::count']]],
   ['create_35',['create',['../classmnx_1_1Document.html#a5494915a76ef3b0d4c91c08ddb3a1f32',1,'mnx::Document::create(const std::filesystem::path &amp;inputPath)'],['../classmnx_1_1Document.html#a443497cd6b0cee8b86dbb655aa95c8d6',1,'mnx::Document::create(const Byte *data, std::size_t size)']]],
   ['crossjump_36',['CrossJump',['../namespacemnx.html#a961d9beb0e598614b7157949964d33efacc517bad3a0101ca47b6933a5ad22ee0',1,'mnx']]],
-  ['crossvoice_37',['CrossVoice',['../namespacemnx.html#a961d9beb0e598614b7157949964d33efac5dc1837e20fc639f037002606f064bd',1,'mnx']]]
+  ['crossvoice_37',['CrossVoice',['../namespacemnx.html#a961d9beb0e598614b7157949964d33efac5dc1837e20fc639f037002606f064bd',1,'mnx']]],
+  ['curlew_38',['Curlew',['../namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922ad904e12f8994cb3d883fb602d6cd2527',1,'mnx']]]
 ];

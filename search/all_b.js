@@ -12,9 +12,10 @@ var searchData=
   ['linetype_9',['LineType',['../namespacemnx.html#a28144cefaba3e535366ea178e05f7d9a',1,'mnx']]],
   ['list_10',['Todo List',['../todo.html',1,'']]],
   ['locrian_11',['Locrian',['../namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683cea957b71824981a76ee8367e6684065f5d',1,'music_theory']]],
-  ['lydian_12',['Lydian',['../namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683ceab1cfb8d73516579a3d9e11d16377205a',1,'music_theory']]],
-  ['lyriclinemetadata_13',['LyricLineMetadata',['../classmnx_1_1global_1_1LyricLineMetadata.html',1,'mnx::global']]],
-  ['lyriclines_14',['lyricLines',['../structmnx_1_1validation_1_1SemanticValidationResult.html#afc062dace0308c1dcb6e072343f89a59',1,'mnx::validation::SemanticValidationResult']]],
-  ['lyriclinetype_15',['LyricLineType',['../namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afc',1,'mnx']]],
-  ['lyricsglobal_16',['LyricsGlobal',['../classmnx_1_1global_1_1LyricsGlobal.html',1,'mnx::global']]]
+  ['long_12',['Long',['../namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a8394f0347c184cf156ac5924dccb773b',1,'mnx']]],
+  ['lydian_13',['Lydian',['../namespacemusic__theory.html#a04ed1b374e50ea532b72ed1bb66683ceab1cfb8d73516579a3d9e11d16377205a',1,'music_theory']]],
+  ['lyriclinemetadata_14',['LyricLineMetadata',['../classmnx_1_1global_1_1LyricLineMetadata.html',1,'mnx::global']]],
+  ['lyriclines_15',['lyricLines',['../structmnx_1_1validation_1_1SemanticValidationResult.html#afc062dace0308c1dcb6e072343f89a59',1,'mnx::validation::SemanticValidationResult']]],
+  ['lyriclinetype_16',['LyricLineType',['../namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afc',1,'mnx']]],
+  ['lyricsglobal_17',['LyricsGlobal',['../classmnx_1_1global_1_1LyricsGlobal.html',1,'mnx::global']]]
 ];

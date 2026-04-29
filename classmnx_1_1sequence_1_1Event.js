@@ -14,6 +14,7 @@ var classmnx_1_1sequence_1_1Event =
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#a5f81806105980b706269838472fac2a1", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#aa4fbcc789699b7fcd98a7774b9a5672c", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#a8aef381a3e3c2543584b1cc55a041cb0", null ],
+    [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#a5570a8b269e37b3b6f71bf4d1bb3b799", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1sequence_1_1Event.html#a512fd7582706b9eee8efcdc402a37ca4", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1sequence_1_1Event.html#ab0e481542a5bd440a05e519afd343663", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1sequence_1_1Event.html#a26075284165b6b39c5bc0da8ccd1b5b6", null ],

@@ -15,6 +15,7 @@ var namespacemnx =
     [ "Document", "classmnx_1_1Document.html", "classmnx_1_1Document" ],
     [ "EntityMapPolicies", "structmnx_1_1EntityMapPolicies.html", "structmnx_1_1EntityMapPolicies" ],
     [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
+    [ "Fermata", "classmnx_1_1Fermata.html", "classmnx_1_1Fermata" ],
     [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
     [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],
     [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],
@@ -73,6 +74,25 @@ var namespacemnx =
       [ "FClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a0945e63d7277b87a5b01102815984c5e", null ],
       [ "GClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a9e1beb330f7d6cf5e497773713f81186", null ]
     ] ],
+    [ "FermataDuration", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1", [
+      [ "Auto", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a06b9281e396db002010bde1de57262eb", null ],
+      [ "Long", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a8394f0347c184cf156ac5924dccb773b", null ],
+      [ "None", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Normal", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a960b44c579bc2f6818d2daaf9e4c16f0", null ],
+      [ "Short", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a30bb747c98bccdd11b3f89e644c4d0ad", null ],
+      [ "VeryLong", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1ae3b7e7f3b3d0c99ab8e635c76450a58e", null ],
+      [ "VeryShort", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a02b8e87d1c1d8ea6af55e4314319106b", null ]
+    ] ],
+    [ "FermataSymbol", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922", [
+      [ "Normal", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922a960b44c579bc2f6818d2daaf9e4c16f0", null ],
+      [ "Angled", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922ad0c44a00ece5baed8493314aa9cbc896", null ],
+      [ "Curlew", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922ad904e12f8994cb3d883fb602d6cd2527", null ],
+      [ "DoubleAngled", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922abfbf56ac9d1409d3f972b4d709e87f56", null ],
+      [ "DoubleDot", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922a043f76a942a3ab264bd2ff8ab805dce3", null ],
+      [ "DoubleSquare", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922ab8f751bf6cbf1f9ad5fc9f5823a8c90a", null ],
+      [ "HalfCurve", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922a90bd3467613dcbaf7ee6d7f6c19c35aa", null ],
+      [ "Square", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922aceb46ca115d05c51aa5a16a8867c3304", null ]
+    ] ],
     [ "GraceType", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870f", [
       [ "StealPrevious", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870fa2a84f4241eab6f257fe571797ffe0683", null ],
       [ "StealFollowing", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870fa2e8f815389e8cf3484317394f24d473d", null ],
@@ -107,6 +127,11 @@ var namespacemnx =
       [ "Down", "namespacemnx.html#aef9fb8ab9a62640138018b7387b578aaa08a38277b0309070706f6652eeae9a53", null ],
       [ "Up", "namespacemnx.html#aef9fb8ab9a62640138018b7387b578aaa258f49887ef8d14ac268c92b02503aaa", null ]
     ] ],
+    [ "MarkingUpDownAuto", "namespacemnx.html#a21337ff290b73b5c4072858a5acc5f54", [
+      [ "Auto", "namespacemnx.html#a21337ff290b73b5c4072858a5acc5f54a06b9281e396db002010bde1de57262eb", null ],
+      [ "Down", "namespacemnx.html#a21337ff290b73b5c4072858a5acc5f54a08a38277b0309070706f6652eeae9a53", null ],
+      [ "Up", "namespacemnx.html#a21337ff290b73b5c4072858a5acc5f54a258f49887ef8d14ac268c92b02503aaa", null ]
+    ] ],
     [ "NoteStep", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63", [
       [ "C", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63a0d61f8370cad1d412f80b84d143e1257", null ],
       [ "D", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63af623e75af30e62bbd73d6df5b50bb7b5", null ],
@@ -134,6 +159,11 @@ var namespacemnx =
       [ "Longa", "namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79a30cba0c98833cb8bf807c5d2280b17be", null ],
       [ "Maxima", "namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79abc3292567552688d69e5ddc95781245b", null ],
       [ "DuplexMaxima", "namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79a2635498b180d3b852b2837d34c5f21c1", null ]
+    ] ],
+    [ "Orientation", "namespacemnx.html#af1d43c931c6f3b639b4bddcc2fa4554c", [
+      [ "Auto", "namespacemnx.html#af1d43c931c6f3b639b4bddcc2fa4554ca06b9281e396db002010bde1de57262eb", null ],
+      [ "Above", "namespacemnx.html#af1d43c931c6f3b639b4bddcc2fa4554ca5b469fd01889ec12f1e84c6e66829fc1", null ],
+      [ "Below", "namespacemnx.html#af1d43c931c6f3b639b4bddcc2fa4554cae59dd8d25c0b6bb6697eac0617ccd412", null ]
     ] ],
     [ "OttavaAmount", "namespacemnx.html#a361b2c550a67bec829901cf59aec117e", [
       [ "OctaveDown", "namespacemnx.html#a361b2c550a67bec829901cf59aec117eab41646df7c887cc0e3647ba5f8b26afe", null ],

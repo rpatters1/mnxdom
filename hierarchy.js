@@ -69,6 +69,7 @@ var hierarchy =
         ] ],
         [ "mnx::Dictionary< T >", "classmnx_1_1Dictionary.html", null ],
         [ "mnx::Document", "classmnx_1_1Document.html", null ],
+        [ "mnx::Fermata", "classmnx_1_1Fermata.html", null ],
         [ "mnx::Global", "classmnx_1_1Global.html", null ],
         [ "mnx::Interval", "classmnx_1_1Interval.html", null ],
         [ "mnx::KeySignature", "classmnx_1_1KeySignature.html", null ],
@@ -94,6 +95,7 @@ var hierarchy =
         [ "mnx::sequence::EventLyrics", "classmnx_1_1sequence_1_1EventLyrics.html", null ],
         [ "mnx::sequence::EventMarkingBase", "classmnx_1_1sequence_1_1EventMarkingBase.html", [
           [ "mnx::sequence::Accent", "classmnx_1_1sequence_1_1Accent.html", null ],
+          [ "mnx::sequence::BowDirection", "classmnx_1_1sequence_1_1BowDirection.html", null ],
           [ "mnx::sequence::BreathMark", "classmnx_1_1sequence_1_1BreathMark.html", null ],
           [ "mnx::sequence::SingleNoteTremolo", "classmnx_1_1sequence_1_1SingleNoteTremolo.html", null ],
           [ "mnx::sequence::SoftAccent", "classmnx_1_1sequence_1_1SoftAccent.html", null ],
@@ -158,6 +160,7 @@ var hierarchy =
     [ "mnx::score::System::Required", "structmnx_1_1score_1_1System_1_1Required.html", null ],
     [ "mnx::sequence::AccidentalDisplay::Required", "structmnx_1_1sequence_1_1AccidentalDisplay_1_1Required.html", null ],
     [ "mnx::sequence::AccidentalEnclosure::Required", "structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html", null ],
+    [ "mnx::sequence::BowDirection::Required", "structmnx_1_1sequence_1_1BowDirection_1_1Required.html", null ],
     [ "mnx::sequence::Event::Required", "structmnx_1_1sequence_1_1Event_1_1Required.html", null ],
     [ "mnx::sequence::EventLyricLine::Required", "structmnx_1_1sequence_1_1EventLyricLine_1_1Required.html", null ],
     [ "mnx::sequence::KitNote::Required", "structmnx_1_1sequence_1_1KitNote_1_1Required.html", null ],

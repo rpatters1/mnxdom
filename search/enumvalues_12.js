@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['wavy_0',['Wavy',['../namespacemnx.html#a28144cefaba3e535366ea178e05f7d9aa0e9498bd18e441969b23cb70819abc3c',1,'mnx']]],
-  ['whole_1',['Whole',['../namespacemnx.html#a55805e9c21a5eb737c16ba29e01f3afcac8d2fc8ed10b21e647d7f58d4436b050',1,'mnx']]]
+  ['verylong_0',['VeryLong',['../namespacemnx.html#ac47100f45e293be73a048ddd73d529d1ae3b7e7f3b3d0c99ab8e635c76450a58e',1,'mnx']]],
+  ['veryshort_1',['VeryShort',['../namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a02b8e87d1c1d8ea6af55e4314319106b',1,'mnx']]]
 ];

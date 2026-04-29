@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['slurtieside_0',['SlurTieSide',['../namespacemnx.html#a9ed98bf9309c8a441c873e4763429a64',1,'mnx']]],
-  ['staffgroupbarlineoverride_1',['StaffGroupBarlineOverride',['../namespacemnx.html#a07e43dee64d5f909f672da5ec99921a9',1,'mnx']]],
-  ['staffgroupbarlinestyle_2',['StaffGroupBarlineStyle',['../namespacemnx.html#ad48565fded88559edcaeec446b9e1d8f',1,'mnx']]],
-  ['stemdirection_3',['StemDirection',['../namespacemnx.html#acf37722bc87abf052775661825640121',1,'mnx']]]
+  ['orientation_0',['Orientation',['../namespacemnx.html#af1d43c931c6f3b639b4bddcc2fa4554c',1,'mnx']]],
+  ['ottavaamount_1',['OttavaAmount',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117e',1,'mnx']]],
+  ['ottavaamountorzero_2',['OttavaAmountOrZero',['../namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9',1,'mnx']]]
 ];

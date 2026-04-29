@@ -57,12 +57,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
-"classmnx_1_1Layout.html#a4e044642d68c0d5c015a75a212c44f54",
-"classmnx_1_1global_1_1Measure.html#a8aed2c5f9b7690e13b425e2640df7188",
-"classmnx_1_1score_1_1LayoutChange.html#a18144b4ff32480469c8eeb30f445d672",
-"classmnx_1_1sequence_1_1Pitch.html#aa36dbd2a0ca336bb5dd57561cf96b971",
-"namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a3cbfeb45aff39f7d69abcb551d2badb7",
-"structmnx_1_1detail_1_1DictionaryAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html"
+"classmnx_1_1Interval.html#ad4e522f5b622793df07aac483f9f53b0",
+"classmnx_1_1global_1_1LyricsGlobal.html",
+"classmnx_1_1part_1_1PartTransposition.html#a2912336198cbdc8521ec2005f883d74e",
+"classmnx_1_1sequence_1_1Grace.html#add00b65d1a8a9257b3932231b2ad6ce7",
+"functions_k.html",
+"structmnx_1_1FractionValue.html#a165ff3b23210bd57341c10f3ae8f87dd",
+"structmnx_1_1util_1_1LayoutSpan.html#ad9be833ec703c9a9b0605bc0ce56def6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

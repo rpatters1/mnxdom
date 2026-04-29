@@ -54,9 +54,10 @@ var annotated_dup =
         [ "System", "classmnx_1_1score_1_1System.html", "classmnx_1_1score_1_1System" ]
       ] ],
       [ "sequence", "namespacemnx_1_1sequence.html", [
-        [ "Accent", "classmnx_1_1sequence_1_1Accent.html", "classmnx_1_1sequence_1_1Accent" ],
+        [ "Accent", "classmnx_1_1sequence_1_1Accent.html", null ],
         [ "AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", "classmnx_1_1sequence_1_1AccidentalDisplay" ],
         [ "AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", "classmnx_1_1sequence_1_1AccidentalEnclosure" ],
+        [ "BowDirection", "classmnx_1_1sequence_1_1BowDirection.html", "classmnx_1_1sequence_1_1BowDirection" ],
         [ "BreathMark", "classmnx_1_1sequence_1_1BreathMark.html", "classmnx_1_1sequence_1_1BreathMark" ],
         [ "Event", "classmnx_1_1sequence_1_1Event.html", "classmnx_1_1sequence_1_1Event" ],
         [ "EventLyricLine", "classmnx_1_1sequence_1_1EventLyricLine.html", "classmnx_1_1sequence_1_1EventLyricLine" ],
@@ -108,6 +109,7 @@ var annotated_dup =
       [ "Document", "classmnx_1_1Document.html", "classmnx_1_1Document" ],
       [ "EntityMapPolicies", "structmnx_1_1EntityMapPolicies.html", "structmnx_1_1EntityMapPolicies" ],
       [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
+      [ "Fermata", "classmnx_1_1Fermata.html", "classmnx_1_1Fermata" ],
       [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
       [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],
       [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],

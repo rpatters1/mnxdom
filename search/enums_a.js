@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['ottavaamount_0',['OttavaAmount',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117e',1,'mnx']]],
-  ['ottavaamountorzero_1',['OttavaAmountOrZero',['../namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9',1,'mnx']]]
+  ['notename_0',['NoteName',['../namespacemusic__theory.html#acb68e55d250cfd1ba7a7d5ca0bcbb869',1,'music_theory']]],
+  ['notestep_1',['NoteStep',['../namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63',1,'mnx']]],
+  ['notevaluebase_2',['NoteValueBase',['../namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79',1,'mnx']]]
 ];

@@ -1,5 +1,6 @@
 var classmnx_1_1Object =
 [
+    [ "Object", "classmnx_1_1Object.html#a52b65416bd31d8dfe6c884db79f71995", null ],
     [ "Object", "classmnx_1_1Object.html#a4988843f33731e91af29f49660111eb6", null ],
     [ "Object", "classmnx_1_1Object.html#ae22e4613f2e67d4fb6c0951f1cf86a74", null ],
     [ "getExtension", "classmnx_1_1Object.html#ab4bd74194b906169b98462e49d4cb68a", null ],

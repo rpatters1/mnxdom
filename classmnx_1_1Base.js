@@ -6,6 +6,7 @@ var classmnx_1_1Base =
     [ "Base", "classmnx_1_1Base.html#a0bd1084c2a090fb4a3a97b71cca86831", null ],
     [ "document", "classmnx_1_1Base.html#af14d0aec0e1a12a893bc0bd2cc7880a9", null ],
     [ "dump", "classmnx_1_1Base.html#acc6b9a0fb528ece04ed42227796b6137", null ],
+    [ "empty", "classmnx_1_1Base.html#aa4fe0451f9bf7d306870cae014eeffa1", null ],
     [ "getChild", "classmnx_1_1Base.html#a716986623a990dc5e8335e8ddfc9b004", null ],
     [ "getEnclosingElement", "classmnx_1_1Base.html#a9a73783497762ab5afd1cf04ca4be433", null ],
     [ "getOptionalChild", "classmnx_1_1Base.html#a9004086ecbdbcccecaf288f3d5d60716", null ],

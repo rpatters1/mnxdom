@@ -262,6 +262,9 @@ public:
     /// @brief Returns the document root
     [[nodiscard]] Document document() const;
 
+    /// @brief Returns true if the object is empty.
+    [[nodiscard]] bool empty() const { return ref().empty(); }
+
 protected:
     /**
      * @brief Convert this node for retrieval.

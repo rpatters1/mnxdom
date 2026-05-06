@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"functions_g.html":[2,3,0,6],
+"functions_h.html":[2,3,0,7],
 "functions_i.html":[2,3,0,8],
 "functions_j.html":[2,3,0,9],
 "functions_k.html":[2,3,0,10],
@@ -242,12 +244,10 @@ var NAVTREEINDEX5 =
 "namespacemusic__theory.html#af0e72207b9ce2605cdf0bae1e2176ef1":[1,0,1,15],
 "namespaces.html":[1,0],
 "pages.html":[],
-"structmnx_1_1EntityMapPolicies.html":[1,0,0,13],
 "structmnx_1_1EntityMapPolicies.html":[2,0,0,16],
-"structmnx_1_1EntityMapPolicies.html#a35dd7177b85409cd060ceacd2ca3588a":[1,0,0,13,1],
+"structmnx_1_1EntityMapPolicies.html":[1,0,0,13],
 "structmnx_1_1EntityMapPolicies.html#a35dd7177b85409cd060ceacd2ca3588a":[2,0,0,16,1],
+"structmnx_1_1EntityMapPolicies.html#a35dd7177b85409cd060ceacd2ca3588a":[1,0,0,13,1],
 "structmnx_1_1EntityMapPolicies.html#a585bbaf2efe5eaed4afe405a8d90d1e9":[2,0,0,16,0],
-"structmnx_1_1EntityMapPolicies.html#a585bbaf2efe5eaed4afe405a8d90d1e9":[1,0,0,13,0],
-"structmnx_1_1EnumStringMapping.html":[2,0,0,17],
-"structmnx_1_1EnumStringMapping.html":[1,0,0,14]
+"structmnx_1_1EntityMapPolicies.html#a585bbaf2efe5eaed4afe405a8d90d1e9":[1,0,0,13,0]
 };

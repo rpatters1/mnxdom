@@ -165,7 +165,8 @@ class StrongAccent : public EventMarkingBase
 public:
     using EventMarkingBase::EventMarkingBase;
 
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(MarkingUpDownAuto, pointing, MarkingUpDownAuto::Auto);   ///< Specifies if the accent points upward or downward.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(MarkingUpDownAuto, pointing, MarkingUpDownAuto::Auto);   ///< Specifies if the accent points upward or downward,
+                                                                                                ///< irrespective of above/below orientation.
 };
 
 /**

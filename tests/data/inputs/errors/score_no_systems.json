@@ -1,0 +1,26 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "id": "m1"
+            }
+        ]
+    },
+    "parts": [],
+    "scores": [
+        {
+            "name": "Score",
+            "pages": [
+                {
+                    "systems": []
+                },
+                {
+                    "systems": []
+                }
+            ]
+        }
+    ]
+}

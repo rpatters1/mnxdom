@@ -99,6 +99,14 @@ TEST(Scores, InvalidSystemMeasureSequence2)
     expectSemanticError(doc, inputPath, "The first system in score \"Score\" starts after the first measure");
 }
 
+TEST(Scores, InvalidScoreWithPagesButNoSystems)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "score_no_systems.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath, "Score \"Score\" has pages but no systems");
+}
+
 TEST(Scores, EdgeCaseMMRest)
 {
     setupTestDataPaths();

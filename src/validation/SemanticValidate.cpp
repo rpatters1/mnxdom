@@ -567,6 +567,7 @@ void SemanticValidator::validateScores()
             }
             std::optional<size_t> lastSystemMeasure;
             bool isFirstSystem = true;
+            bool hasSystem = false;
             bool skipScore = false;
             if (auto pages = score.pages()) {
                 for (const auto page : pages.value()) {
@@ -574,6 +575,7 @@ void SemanticValidator::validateScores()
                         tryGetValue<mnx::Layout>(layout.value(), page); // adds error if index not found.
                     }
                     for (const auto system : page.systems()) {
+                        hasSystem = true;
                         if (const auto layout = system.layout()) {
                             tryGetValue<mnx::Layout>(layout.value(), system); // adds error if index not found.
                         }
@@ -612,6 +614,9 @@ void SemanticValidator::validateScores()
                     if (skipScore) {
                         break;
                     }
+                }
+                if (!skipScore && !hasSystem) {
+                    addError("Score \"" + score.name() + "\" has pages but no systems", score);
                 }
             }
         }

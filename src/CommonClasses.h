@@ -462,22 +462,23 @@ public:
     /// @brief Creates a new IdPair class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
-    /// @param position The rhythmic position value to use.
+    /// @param startId The start id.
+    /// @param endId The end id.
     IdPair(Base& parent, std::string_view key, const std::string& startId, const std::string& endId)
         : Object(parent, key)
     {
-        set_startId(startId);
-        set_endId(endId);
+        set_start(startId);
+        set_end(endId);
     }
 
     /// @brief Implicit conversion back to Required.
-    operator Required() const { return { startId(), endId() }; }
+    operator Required() const { return { start(), end() }; }
 
     /// @brief Create a Required instance for #RhythmicPosition.
     static Required make(const std::string& startId, const std::string& endId) { return { startId, endId }; }
 
-    MNX_REQUIRED_PROPERTY(std::string, startId);        ///< the start id of the pair
-    MNX_REQUIRED_PROPERTY(std::string, endId);          ///< the end id of the pair
+    MNX_REQUIRED_PROPERTY(std::string, start);          ///< the start id of the pair
+    MNX_REQUIRED_PROPERTY(std::string, end);            ///< the end id of the pair
 };
 
 /**
@@ -508,12 +509,31 @@ public:
     {
         create_fraction(position);
     }
+    
+    /// @brief Creates a stand-alone RhythmicPosition instance unattached to any JSON document
+    /// @param position The rhythmic position value to use.
+    RhythmicPosition(const FractionValue& position)
+        : Object()
+    {
+        create_fraction(position);
+    }
 
     /// @brief Implicit conversion back to Required.
     operator Required() const { return { fraction() }; }
 
     /// @brief Create a Required instance for #RhythmicPosition.
     static Required make(const FractionValue& position) { return { position }; }
+
+    /// @brief Compare two rhythmic positions within the same measure.
+    /// @param lhs The left-hand position to compare.
+    /// @param rhs The right-hand position to compare.
+    /// @param rhsIncludesTrailingGrace When true, a right-hand position with
+    ///        `graceIndex == 0` is treated as also including trailing grace notes
+    ///        at the same fractional position.
+    /// @return -1 if @p lhs is earlier, 1 if later, or 0 if equivalent for the requested policy.
+    [[nodiscard]] static int compare(const RhythmicPosition& lhs,
+                                     const RhythmicPosition& rhs,
+                                     bool rhsIncludesTrailingGrace = false);
 
     MNX_REQUIRED_CHILD(
         Fraction, fraction,
@@ -549,6 +569,16 @@ public:
     /// @param position The position within the measure
     MeasureRhythmicPosition(Base& parent, std::string_view key, const std::string& measureId, const FractionValue& position)
         : Object(parent, key)
+    {
+        set_measure(measureId);
+        create_position(position);
+    }
+    
+    /// @brief Creates a stand-alone MeasureRhythmicPosition class unattached to any json document
+    /// @param measureId The measure id of the position
+    /// @param position The position within the measure
+    MeasureRhythmicPosition(const std::string& measureId, const FractionValue& position)
+        : Object()
     {
         set_measure(measureId);
         create_position(position);

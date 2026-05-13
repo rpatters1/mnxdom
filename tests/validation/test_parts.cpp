@@ -174,3 +174,31 @@ TEST(Parts, BeamOutOfOrder)
         "Beam events are out of sequence."
     });
 }
+
+TEST(Parts, ArpeggioSpanPositionError)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "arpeggio_bad_position.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Arpeggio span notes must be in the same rhythmic position."
+    });
+}
+
+TEST(Parts, NonArpeggioPitchOrderError)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "non_arpeggio_bad_order.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Non-arpeggio span start note must be lower in sounded pitch than the end note."
+    });
+}
+
+TEST(Parts, ValidArpeggioSpan)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "test_cases" / "arpeggio_valid.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
+}

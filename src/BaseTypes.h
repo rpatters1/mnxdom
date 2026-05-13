@@ -265,6 +265,12 @@ public:
     /// @brief Returns true if the object is empty.
     [[nodiscard]] bool empty() const { return ref().empty(); }
 
+    /// @brief Returns true if this node and @p other wrap structurally equal JSON.
+    [[nodiscard]] bool equalJson(const Base& other) const
+    {
+        return ref() == other.ref();
+    }
+
 protected:
     /**
      * @brief Convert this node for retrieval.
@@ -490,7 +496,7 @@ public:
     }
 
     /// @brief Equality comparison with value type
-    bool operator==(const T& src) const
+    [[nodiscard]] bool operator==(const T& src) const
     {
         return src == ref().template get<T>();
     }

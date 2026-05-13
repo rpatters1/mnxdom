@@ -1,0 +1,103 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "key": {
+                    "fifths": 0
+                },
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "staves": 2,
+            "measures": [
+                {
+                    "arpeggios": [
+                        {
+                            "position": {
+                                "fraction": [0, 1],
+                                "graceIndex": 0
+                            },
+                            "span": {
+                                "start": "lower",
+                                "end": "upper"
+                            },
+                            "direction": "up"
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "staff": 1,
+                            "voice": "upper",
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "whole"
+                                    },
+                                    "type": "event",
+                                    "id": "ev1",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "E",
+                                                "octave": 5
+                                            },
+                                            "id": "upper"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "staff": 2,
+                            "voice": "lower",
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "whole"
+                                    },
+                                    "type": "event",
+                                    "id": "ev2",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "C",
+                                                "octave": 3
+                                            },
+                                            "id": "lower"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        },
+                        {
+                            "staff": 2,
+                            "clef": {
+                                "staffPosition": 2,
+                                "sign": "F"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

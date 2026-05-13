@@ -107,6 +107,26 @@ class mapping_error : public std::runtime_error
  */
 class EntityMap
 {
+public:
+    /// @brief Canonical position value used by EntityMap for measure-relative comparisons and caches.
+    struct MappedPosition
+    {
+        std::string measureId;
+        FractionValue fraction;
+        std::optional<unsigned> graceIndex;
+
+        MappedPosition(const std::string& measureId, const FractionValue& fraction,
+                       std::optional<unsigned> graceIndex = std::nullopt)
+            : measureId(measureId), fraction(fraction), graceIndex(graceIndex)
+        {
+        }
+
+        MappedPosition(const MeasureRhythmicPosition& position)
+            : measureId(position.measure()), fraction(position.position().fraction()), graceIndex(position.position().graceIndex())
+        {
+        }
+    };
+
 private:
     /// @brief Adds a key to the mapping. If there is no error handler, it throws @ref mapping_error if there is a duplicate key.
     /// @tparam T The type to add
@@ -165,9 +185,16 @@ private:
         m_eventOttavaShift[eventPointer] = shift;
     }
 
+    /// @brief Cache the mapped position for a specific event pointer.
+    void setEventPosition(const std::string& eventPointer, const MappedPosition& position)
+    {
+        m_eventPositions.insert_or_assign(eventPointer, position);
+    }
+
     friend class mnx::Document;
 
 public:
+
     /**
      * @brief Constructs the index for a given document.
      * @param documentRoot Shared pointer to the document's JSON root.
@@ -313,6 +340,7 @@ public:
     {
         m_objectMap.clear();
         m_eventsInBeams.clear();
+        m_eventPositions.clear();
         m_eventOttavaShift.clear();
         m_lyricLineOrder.clear();
     }
@@ -335,6 +363,41 @@ public:
         }
         return 0;
     }
+
+    /// @brief Retrieve the cached mapped position for an event (if known).
+    [[nodiscard]] std::optional<MappedPosition> tryGetEventPosition(const sequence::Event& event) const
+    {
+        const auto it = m_eventPositions.find(event.pointer().to_string());
+        if (it == m_eventPositions.end()) {
+            return std::nullopt;
+        }
+        return it->second;
+    }
+
+    /// @brief Retrieve the cached mapped position for an event.
+    [[nodiscard]] MappedPosition getEventPosition(const sequence::Event& event) const
+    {
+        if (auto position = tryGetEventPosition(event)) {
+            return *std::move(position);
+        }
+        throw std::logic_error("No mapped position cached for event at " + event.pointer().to_string());
+    }
+
+    /// @brief Compare two mapped positions using global measure order and grace-note targeting.
+    /// @details The inputs may be native MappedPosition values or regular document-backed
+    ///          MeasureRhythmicPosition objects converted implicitly to MappedPosition,
+    ///          provided their `measureId` values refer to global measure IDs already present
+    ///          in this EntityMap.
+    /// @param lhs The left-hand position to compare.
+    /// @param rhs The right-hand position to compare.
+    /// @param rhsIncludesTrailingGrace When true, a right-hand position with
+    ///        `graceIndex == 0` is treated as also including trailing grace notes
+    ///        at the same fractional position, so those grace positions compare
+    ///        equal to @p rhs rather than later than it.
+    /// @return -1 if @p lhs is earlier, 1 if later, or 0 if equivalent for the requested policy.
+    [[nodiscard]] int comparePositions(const MappedPosition& lhs,
+                                       const MappedPosition& rhs,
+                                       bool rhsIncludesTrailingGrace = false) const;
 
     /// @brief Retrieve the lyric line order.
     [[nodiscard]] const std::vector<std::string>& getLyricLineOrder() const
@@ -365,6 +428,7 @@ private:
         int startLevel{0};
     };
     std::unordered_map<std::string, BeamMappingEntry> m_eventsInBeams;
+    std::unordered_map<std::string, MappedPosition> m_eventPositions;
     std::unordered_map<std::string, int> m_eventOttavaShift;
     std::vector<std::string> m_lyricLineOrder;
 

@@ -1,0 +1,76 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "key": {
+                    "fifths": 0
+                },
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "measures": [
+                {
+                    "nonArpeggios": [
+                        {
+                            "position": {
+                                "fraction": [0, 1]
+                            },
+                            "span": {
+                                "start": "high",
+                                "end": "low"
+                            }
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "whole"
+                                    },
+                                    "type": "event",
+                                    "id": "ev1",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "G",
+                                                "octave": 5
+                                            },
+                                            "id": "high"
+                                        },
+                                        {
+                                            "pitch": {
+                                                "step": "C",
+                                                "octave": 4
+                                            },
+                                            "id": "low"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

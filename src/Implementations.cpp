@@ -131,43 +131,6 @@ void Document::buildEntityMap(EntityMapPolicies policies,
 {
     m_entityMapping.reset();
     m_entityMapping = std::make_shared<util::EntityMap>(root(), errorHandler);
-    struct Position
-    {
-        int measureIndex{};
-        FractionValue beat{};
-        std::optional<unsigned> graceIndex;
-    };
-    auto compareGrace = [](const std::optional<unsigned>& lhs,
-                           const std::optional<unsigned>& rhs,
-                           bool rhsIncludesTrailingMeasureGrace) -> int {
-        if (rhsIncludesTrailingMeasureGrace && rhs && rhs.value() == 0 && lhs && lhs.value() > 0) {
-            return 0;
-        }
-        if (!lhs && !rhs) {
-            return 0;
-        }
-        if (!lhs) {
-            return -1;
-        }
-        if (!rhs) {
-            return 1;
-        }
-        if (*lhs == *rhs) {
-            return 0;
-        }
-        return *lhs < *rhs ? -1 : 1;
-    };
-    auto comparePosition = [&](const Position& lhs,
-                               const Position& rhs,
-                               bool rhsIncludesTrailingGrace) -> int {
-        if (lhs.measureIndex != rhs.measureIndex) {
-            return lhs.measureIndex < rhs.measureIndex ? -1 : 1;
-        }
-        if (lhs.beat != rhs.beat) {
-            return lhs.beat < rhs.beat ? -1 : 1;
-        }
-        return compareGrace(lhs.graceIndex, rhs.graceIndex, rhsIncludesTrailingGrace);
-    };
     auto adaptGraceIndex = [&](std::optional<unsigned> value) -> std::optional<unsigned> {
         if (!policies.ottavasRespectGraceTargets) {
             return std::nullopt;
@@ -196,7 +159,7 @@ void Document::buildEntityMap(EntityMapPolicies policies,
             m_entityMapping->add(globalMeasureId.value(), globalMeasure);
         }
         FractionValue duration(1, 1);
-        if (const auto time = globalMeasure.calcCurrentTime()) {
+        if (const auto time = globalMeasure.time()) {
             duration = static_cast<FractionValue>(*time);
         }
         measureDurations[globalMeasure.calcArrayIndex()] = duration;
@@ -210,19 +173,20 @@ void Document::buildEntityMap(EntityMapPolicies policies,
         {
             int staff{ 1 };
             std::optional<std::string> voice;
-            int startMeasure{};
-            FractionValue startBeat{};
-            std::optional<unsigned> startGraceIndex;
-            int endMeasure{};
-            FractionValue endBeat{};
-            std::optional<unsigned> endGraceIndex;
+            std::optional<util::EntityMap::MappedPosition> start;
+            std::optional<util::EntityMap::MappedPosition> end;
             int value{};
             bool endsAtMeasureEnd{ false };
         };
         std::vector<OttavaSpan> ottavaSpans;
+        const auto makeMappedPosition = [&](const global::Measure& globalMeasure,
+                                            const FractionValue& fraction,
+                                            std::optional<unsigned> graceIndex) {
+            return util::EntityMap::MappedPosition(globalMeasure.id_or(""), fraction, graceIndex);
+        };
         const auto calcOttavaShift = [&](int staff,
                                          const std::optional<std::string>& voice,
-                                         const Position& position) {
+                                         const util::EntityMap::MappedPosition& position) {
             int total = 0;
             for (const auto& span : ottavaSpans) {
                 if (staff != span.staff) {
@@ -231,12 +195,10 @@ void Document::buildEntityMap(EntityMapPolicies policies,
                 if (span.voice && (!voice || *voice != *span.voice)) {
                     continue;
                 }
-                Position start{ span.startMeasure, span.startBeat, span.startGraceIndex };
-                if (comparePosition(position, start, false) < 0) {
+                if (!span.start || m_entityMapping->comparePositions(position, span.start.value(), false) < 0) {
                     continue;
                 }
-                Position end{ span.endMeasure, span.endBeat, span.endGraceIndex };
-                if (comparePosition(position, end, span.endsAtMeasureEnd) > 0) {
+                if (!span.end || m_entityMapping->comparePositions(position, span.end.value(), span.endsAtMeasureEnd) > 0) {
                     continue;
                 }
                 total += span.value;
@@ -244,25 +206,21 @@ void Document::buildEntityMap(EntityMapPolicies policies,
             return total;
         };
         for (const auto measure : part.measures()) {
-            const int measureIndex = static_cast<int>(measure.calcArrayIndex());
+            const auto globalMeasure = measure.getGlobalMeasure();
             if (const auto& ottavas = measure.ottavas()) {
                 for (const auto& ottava : ottavas.value()) {
                     OttavaSpan span;
                     span.staff = ottava.staff();
                     span.voice = adaptVoiceTarget(ottava.voice());
-                    span.startMeasure = measureIndex;
-                    span.startBeat = ottava.position().fraction();
-                    span.startGraceIndex = adaptGraceIndex(ottava.position().graceIndex());
+                    span.start.emplace(makeMappedPosition(globalMeasure, ottava.position().fraction(),
+                        adaptGraceIndex(ottava.position().graceIndex())));
                     const auto endMeasure = m_entityMapping->get<mnx::global::Measure>(ottava.end().measure(), ottava);
-                    span.endMeasure = static_cast<int>(endMeasure.calcArrayIndex());
-                    span.endBeat = ottava.end().position().fraction();
-                    span.endGraceIndex = adaptGraceIndex(ottava.end().position().graceIndex());
+                    span.end.emplace(makeMappedPosition(endMeasure, ottava.end().position().fraction(),
+                        adaptGraceIndex(ottava.end().position().graceIndex())));
                     span.value = static_cast<int>(ottava.value());
-                    if (span.endMeasure >= 0) {
-                        const auto measureIdx = static_cast<size_t>(span.endMeasure);
-                        if (measureIdx < measureDurations.size()) {
-                            span.endsAtMeasureEnd = span.endBeat == measureDurations[measureIdx];
-                        }
+                    const auto measureIdx = endMeasure.calcArrayIndex();
+                    if (measureIdx < measureDurations.size()) {
+                        span.endsAtMeasureEnd = span.end->fraction == measureDurations[measureIdx];
                     }
                     ottavaSpans.push_back(std::move(span));
                 }
@@ -285,7 +243,9 @@ void Document::buildEntityMap(EntityMapPolicies policies,
                                             std::optional<unsigned> graceIndex,
                                             int staffNumber,
                                             const std::optional<std::string>& voiceLabel) {
-                    Position position{ measureIndex, start, adaptGraceIndex(graceIndex) };
+                    util::EntityMap::MappedPosition position = makeMappedPosition(globalMeasure, start,
+                        adaptGraceIndex(graceIndex));
+                    m_entityMapping->setEventPosition(event.pointer().to_string(), position);
                     const int shift = calcOttavaShift(staffNumber, voiceLabel, position);
                     m_entityMapping->setEventOttavaShift(event.pointer().to_string(), shift);
                 };
@@ -533,6 +493,41 @@ NoteValue::operator FractionValue() const
     return FractionValue(num, den).reduced();
 }
 
+// ****************************
+// ***** RhythmicPosition *****
+// ****************************
+
+int RhythmicPosition::compare(const RhythmicPosition& lhs,
+                              const RhythmicPosition& rhs,
+                              bool rhsIncludesTrailingGrace)
+{
+    const auto compareGrace = [](const std::optional<unsigned>& lhsGrace,
+                                 const std::optional<unsigned>& rhsGrace,
+                                 bool rhsIncludesTrailingMeasureGrace) -> int {
+        if (rhsIncludesTrailingMeasureGrace && rhsGrace && rhsGrace.value() == 0 && lhsGrace && lhsGrace.value() > 0) {
+            return 0;
+        }
+        if (!lhsGrace && !rhsGrace) {
+            return 0;
+        }
+        if (!lhsGrace) {
+            return -1;
+        }
+        if (!rhsGrace) {
+            return 1;
+        }
+        if (*lhsGrace == *rhsGrace) {
+            return 0;
+        }
+        return *lhsGrace < *rhsGrace ? -1 : 1;
+    };
+
+    if (lhs.fraction() != rhs.fraction()) {
+        return lhs.fraction() < rhs.fraction() ? -1 : 1;
+    }
+    return compareGrace(lhs.graceIndex(), rhs.graceIndex(), rhsIncludesTrailingGrace);
+}
+
 // ***************************
 // ***** global::Measure *****
 // ***************************
@@ -588,25 +583,6 @@ KeySignature::Required global::Measure::calcCurrentKeyFields() const
     return KeySignature::make(0);
 }
 
-// *************************
-// ***** part::Measure *****
-// *************************
-
-global::Measure part::Measure::getGlobalMeasure() const
-{
-    const size_t measureIndex = calcArrayIndex();
-    auto globalMeasures = document().global().measures();
-    MNX_ASSERT_IF (measureIndex >= globalMeasures.size()) {
-        throw std::logic_error("Part measure has higher index than global measure at " + dump());
-    }
-    return globalMeasures[measureIndex];
-}
-
-std::optional<TimeSignature> part::Measure::calcCurrentTime() const
-{
-    return getGlobalMeasure().calcCurrentTime();
-}
-
 // **************************
 // ***** layout::Group ******
 // **************************
@@ -634,6 +610,25 @@ bool layout::Group::calcIsPartGroup() const
 
     collectPartIds(collectPartIds, content());
     return !hasEmptyPartId && partIds.size() == 1;
+}
+
+// *************************
+// ***** part::Measure *****
+// *************************
+
+global::Measure part::Measure::getGlobalMeasure() const
+{
+    const size_t measureIndex = calcArrayIndex();
+    auto globalMeasures = document().global().measures();
+    MNX_ASSERT_IF (measureIndex >= globalMeasures.size()) {
+        throw std::logic_error("Part measure has higher index than global measure at " + dump());
+    }
+    return globalMeasures[measureIndex];
+}
+
+std::optional<TimeSignature> part::Measure::calcCurrentTime() const
+{
+    return getGlobalMeasure().calcCurrentTime();
 }
 
 StaffGroupBarlineOverride layout::Group::calcBarlineOverride() const
@@ -808,6 +803,32 @@ sequence::Pitch::Required sequence::Pitch::calcTransposed() const
         return { NoteStep(newNoteType), newOctaves + 4, newAlter };
     }
     return *this;
+}
+
+// ***************************
+// ***** util::EntityMap *****
+// ***************************
+
+int util::EntityMap::comparePositions(const MappedPosition& lhs,
+                                      const MappedPosition& rhs,
+                                      bool rhsIncludesTrailingGrace) const
+{
+    const auto lhsMeasure = get<mnx::global::Measure>(lhs.measureId);
+    const auto rhsMeasure = get<mnx::global::Measure>(rhs.measureId);
+    const auto lhsMeasureIndex = lhsMeasure.calcArrayIndex();
+    const auto rhsMeasureIndex = rhsMeasure.calcArrayIndex();
+    if (lhsMeasureIndex != rhsMeasureIndex) {
+        return lhsMeasureIndex < rhsMeasureIndex ? -1 : 1;
+    }
+    RhythmicPosition lhsPosition(lhs.fraction);
+    RhythmicPosition rhsPosition(rhs.fraction);
+    if (lhs.graceIndex) {
+        lhsPosition.set_graceIndex(*lhs.graceIndex);
+    }
+    if (rhs.graceIndex) {
+        rhsPosition.set_graceIndex(*rhs.graceIndex);
+    }
+    return RhythmicPosition::compare(lhsPosition, rhsPosition, rhsIncludesTrailingGrace);
 }
 
 } // namespace mnx

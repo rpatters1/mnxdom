@@ -474,7 +474,7 @@ public:
     /// @brief Implicit conversion back to Required.
     operator Required() const { return { start(), end() }; }
 
-    /// @brief Create a Required instance for #RhythmicPosition.
+    /// @brief Create a Required instance for #IdPair.
     static Required make(const std::string& startId, const std::string& endId) { return { startId, endId }; }
 
     MNX_REQUIRED_PROPERTY(std::string, start);          ///< the start id of the pair

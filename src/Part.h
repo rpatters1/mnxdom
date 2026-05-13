@@ -48,6 +48,8 @@ public:
     /// @brief Creates a new Beam class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
+    /// @param position The position within the measure.
+    /// @param span The span of notes of the arpeggio.
     ArpeggioBase(Base& parent, std::string_view key, const FractionValue& position, const IdPair::Required& span)
         : ArrayElementObject(parent, key)
     {

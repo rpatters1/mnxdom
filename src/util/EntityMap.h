@@ -111,16 +111,18 @@ public:
     /// @brief Canonical position value used by EntityMap for measure-relative comparisons and caches.
     struct MappedPosition
     {
-        std::string measureId;
-        FractionValue fraction;
-        std::optional<unsigned> graceIndex;
+        std::string measureId;                  ///< the measure id of the measure
+        FractionValue fraction;                 ///< the rhythmic position within the measure
+        std::optional<unsigned> graceIndex;     ///< the grace index of the event, if any
 
+        /// @brief Constructor function
         MappedPosition(const std::string& measureId, const FractionValue& fraction,
                        std::optional<unsigned> graceIndex = std::nullopt)
             : measureId(measureId), fraction(fraction), graceIndex(graceIndex)
         {
         }
 
+        /// @brief Constructor function from @ref MeasureRhythmicPosition.
         MappedPosition(const MeasureRhythmicPosition& position)
             : measureId(position.measure()), fraction(position.position().fraction()), graceIndex(position.position().graceIndex())
         {

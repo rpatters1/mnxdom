@@ -206,6 +206,12 @@ void Document::buildEntityMap(EntityMapPolicies policies,
             return total;
         };
         for (const auto measure : part.measures()) {
+            const int measureIndex = static_cast<int>(measure.calcArrayIndex());
+            if (measureIndex >= global().measures().size()) {
+                // do not let mapping fail if global.measures has too few measures.
+                // semantic validation flags this if it happens.
+                break;
+            }
             const auto globalMeasure = measure.getGlobalMeasure();
             if (const auto& ottavas = measure.ottavas()) {
                 for (const auto& ottava : ottavas.value()) {

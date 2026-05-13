@@ -9,7 +9,7 @@ else()
     FetchContent_Declare(
         mnx_w3c
         GIT_REPOSITORY https://github.com/w3c/mnx.git
-        GIT_TAG bda1084e7628b512e7022601b1fb768fb37a155b
+        GIT_TAG 38706d8a00e8aaa0c1dc213dd122256701b5a836
         SOURCE_SUBDIR _cmake_disabled_please_ignore # this is a hack to prevent FetchContent_Declare from running the fetched content cmake.
         # see https://stackoverflow.com/questions/79261625/cmake-fetchcontent-with-header-only-project/79261858#79261858
     )

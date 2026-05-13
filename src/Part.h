@@ -33,8 +33,63 @@ namespace mnx {
 namespace part {
 
 /**
+ * @class ArpeggioBase
+ * @brief Contains information about both arpeggios and non arpeggios
+ */
+class ArpeggioBase : public ArrayElementObject
+{
+public:
+    /// @brief Constructor for existing Beam objects
+    ArpeggioBase(const std::shared_ptr<json>& root, json_pointer pointer)
+        : ArrayElementObject(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new Beam class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    ArpeggioBase(Base& parent, std::string_view key, const FractionValue& position, const IdPair::Required& span)
+        : ArrayElementObject(parent, key)
+    {
+        create_position(position);
+        create_span(span.startId, span.endId);
+    }
+
+    MNX_REQUIRED_CHILD(
+        RhythmicPosition, position,
+        (FractionValue, value));            ///< the rhythmic position of the arpeggio
+    MNX_REQUIRED_CHILD(
+        IdPair, span,
+        (const std::string&, startId),
+        (const std::string&, endId));       ///< the span of the arpeggio
+};
+
+/**
+ * @class Arpeggio
+ * @brief Contains information about arpeggios
+ */
+class Arpeggio : public ArpeggioBase
+{
+public:
+    using ArpeggioBase::ArpeggioBase;
+
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, arrow, false);                                     ///< specifies if the arpeggio has an arrow
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(MarkingUpDownAuto, direction, MarkingUpDownAuto::Auto);  ///< the direction of the arpeggio
+};
+
+/**
+ * @class NonArpeggio
+ * @brief Contains information about non-arpeggios
+ */
+class NonArpeggio : public ArpeggioBase
+{
+public:
+    using ArpeggioBase::ArpeggioBase;
+};
+
+/**
  * @class Beam
- * @brief Contains information about each level of bea
+ * @brief Contains information about each level of beam
  */
 class Beam : public ArrayElementObject
 {
@@ -367,11 +422,13 @@ public:
         create_sequences();
     }
 
-    MNX_OPTIONAL_CHILD(Array<Beam>, beams);             ///< the beams in this measure
-    MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);   ///< the clef changes in this bar
-    MNX_OPTIONAL_CHILD(Array<Dynamic>, dynamics);       ///< the dynamics in this measure
-    MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);         ///< the ottavas in this measure
-    MNX_REQUIRED_CHILD(Array<Sequence>, sequences);     ///< sequences that contain all the musical details in each measure
+    MNX_OPTIONAL_CHILD(Array<Arpeggio>, arpeggios);         ///< the arpeggios in this measure
+    MNX_OPTIONAL_CHILD(Array<Beam>, beams);                 ///< the beams in this measure
+    MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);       ///< the clef changes in this bar
+    MNX_OPTIONAL_CHILD(Array<Dynamic>, dynamics);           ///< the dynamics in this measure
+    MNX_OPTIONAL_CHILD(Array<NonArpeggio>, nonArpeggios);   ///< the non-arpeggios in this measure
+    MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);             ///< the ottavas in this measure
+    MNX_REQUIRED_CHILD(Array<Sequence>, sequences);         ///< sequences that contain all the musical details in each measure
 
     /// @brief Returns the global measure for this part measure.
     /// @throws std::logic_error if the global measure does not exist.

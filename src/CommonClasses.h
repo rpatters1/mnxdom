@@ -440,6 +440,47 @@ public:
 };
 
 /**
+ * @class IdPair
+ * @brief Represents a start and end id pair.
+ */
+class IdPair : public Object
+{
+public:
+    /// @brief initializer class for #IdPair
+    struct Required
+    {
+        std::string startId;    ///< the start id of the pair
+        std::string endId;      ///< the end id of the pair
+    };
+
+    /// @brief Constructor for existing id pairs
+    IdPair(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+    
+    /// @brief Creates a new IdPair class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param position The rhythmic position value to use.
+    IdPair(Base& parent, std::string_view key, const std::string& startId, const std::string& endId)
+        : Object(parent, key)
+    {
+        set_startId(startId);
+        set_endId(endId);
+    }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { startId(), endId() }; }
+
+    /// @brief Create a Required instance for #RhythmicPosition.
+    static Required make(const std::string& startId, const std::string& endId) { return { startId, endId }; }
+
+    MNX_REQUIRED_PROPERTY(std::string, startId);        ///< the start id of the pair
+    MNX_REQUIRED_PROPERTY(std::string, endId);          ///< the end id of the pair
+};
+
+/**
  * @class RhythmicPosition
  * @brief Represents a system on a page in a score.
  */

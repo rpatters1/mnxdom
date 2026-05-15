@@ -41,6 +41,8 @@ struct ArpeggioSpanEndpoints
     sequence::Note endNote;
     sequence::Event startEvent;
     sequence::Event endEvent;
+    Sequence startSequence;
+    Sequence endSequence;
     part::Measure startMeasure;
     part::Measure endMeasure;
     Part startPart;
@@ -50,19 +52,29 @@ struct ArpeggioSpanEndpoints
 };
 
 [[nodiscard]] bool sameRhythmicPosition(const util::EntityMap::MappedPosition& lhs,
-                                        const util::EntityMap::MappedPosition& rhs)
+                                        const util::EntityMap::MappedPosition& rhs,
+                                        bool requireGraceIndexMatch)
 {
-    return lhs.fraction == rhs.fraction && lhs.graceIndex == rhs.graceIndex;
+    if (lhs.fraction != rhs.fraction) {
+        return false;
+    }
+    if (!requireGraceIndexMatch) {
+        return true;
+    }
+    return lhs.graceIndex == rhs.graceIndex;
 }
 
-[[nodiscard]] RhythmicPosition makeRhythmicPosition(const util::EntityMap::MappedPosition& src)
+[[nodiscard]] bool sameRhythmicPosition(const RhythmicPosition& lhs,
+                                        const util::EntityMap::MappedPosition& rhs,
+                                        bool requireGraceIndexMatch)
 {
-    auto root = std::make_shared<json>(json::object());
-    (*root)["fraction"] = json::array({ src.fraction.numerator(), src.fraction.denominator() });
-    if (src.graceIndex.has_value()) {
-        (*root)["graceIndex"] = src.graceIndex.value();
+    if (lhs.fraction() != rhs.fraction) {
+        return false;
     }
-    return RhythmicPosition(root, json_pointer());
+    if (!requireGraceIndexMatch) {
+        return true;
+    }
+    return lhs.graceIndex() == rhs.graceIndex;
 }
 
 [[nodiscard]] int calcSoundedPitchSemitones(const sequence::Note& note)
@@ -132,12 +144,14 @@ std::optional<ArpeggioSpanEndpoints> SemanticValidator::resolveArpeggioSpanEndpo
 
     auto startEvent = startNote->parent<Array<sequence::Note>>().template parent<sequence::Event>();
     auto endEvent = endNote->parent<Array<sequence::Note>>().template parent<sequence::Event>();
+    auto startSequence = startNote->getEnclosingElement<Sequence>();
+    auto endSequence = endNote->getEnclosingElement<Sequence>();
     auto startMeasure = startNote->getEnclosingElement<part::Measure>();
     auto endMeasure = endNote->getEnclosingElement<part::Measure>();
     auto startPart = startNote->getEnclosingElement<Part>();
     auto endPart = endNote->getEnclosingElement<Part>();
 
-    if (!startMeasure || !endMeasure || !startPart || !endPart) {
+    if (!startSequence || !endSequence || !startMeasure || !endMeasure || !startPart || !endPart) {
         addError("Unable to resolve arpeggio span endpoints.", arpeggioBase);
         return std::nullopt;
     }
@@ -154,6 +168,8 @@ std::optional<ArpeggioSpanEndpoints> SemanticValidator::resolveArpeggioSpanEndpo
         endNote.value(),
         startEvent,
         endEvent,
+        startSequence.value(),
+        endSequence.value(),
         startMeasure.value(),
         endMeasure.value(),
         startPart.value(),
@@ -185,11 +201,12 @@ std::optional<ArpeggioSpanEndpoints> SemanticValidator::validateArpeggioBase(con
         || endpoints->endMeasure.calcArrayIndex() != measure.calcArrayIndex()) {
         addError(std::string(objectName) + " span notes must be in the same bar as the " + std::string(objectName) + ".", arpeggioBase);
     }
-    if (!sameRhythmicPosition(endpoints->startPosition, endpoints->endPosition)) {
+    const bool sameSequence = endpoints->startSequence.pointer() == endpoints->endSequence.pointer();
+    if (!sameRhythmicPosition(endpoints->startPosition, endpoints->endPosition, sameSequence)) {
         addError(std::string(objectName) + " span notes must be in the same rhythmic position.", arpeggioBase);
         return std::nullopt;
     }
-    if (!makeRhythmicPosition(endpoints->startPosition).equalJson(arpeggioBase.position())) {
+    if (!sameRhythmicPosition(arpeggioBase.position(), endpoints->startPosition, sameSequence)) {
         addError(std::string(objectName) + " position must match the span notes' rhythmic position.", arpeggioBase);
     }
 

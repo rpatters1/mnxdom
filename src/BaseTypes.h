@@ -265,12 +265,6 @@ public:
     /// @brief Returns true if the object is empty.
     [[nodiscard]] bool empty() const { return ref().empty(); }
 
-    /// @brief Returns true if this node and @p other wrap structurally equal JSON.
-    [[nodiscard]] bool equalJson(const Base& other) const
-    {
-        return ref() == other.ref();
-    }
-
 protected:
     /**
      * @brief Convert this node for retrieval.

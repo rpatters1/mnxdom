@@ -258,7 +258,7 @@ void Document::buildEntityMap(EntityMapPolicies policies,
 
                 auto flushPendingGraceEvents = [&]() {
                     if (pendingGraceEvents.empty()) {
-                        return;
+                        return false;
                     }
                     unsigned graceIndex = 1;
                     for (auto it = pendingGraceEvents.rbegin(); it != pendingGraceEvents.rend(); ++it) {
@@ -270,6 +270,7 @@ void Document::buildEntityMap(EntityMapPolicies policies,
                         ++graceIndex;
                     }
                     pendingGraceEvents.clear();
+                    return true;
                 };
 
                 util::SequenceWalkHooks hooks;
@@ -313,10 +314,10 @@ void Document::buildEntityMap(EntityMapPolicies policies,
                         });
                         return true;
                     }
-                    flushPendingGraceEvents();
+                    const bool hasLeadingGrace = flushPendingGraceEvents();
                     storeOttavaShift(event,
                                      startTime,
-                                     std::optional<unsigned>(0),
+                                     hasLeadingGrace ? std::optional<unsigned>(0) : std::nullopt,
                                      eventStaff,
                                      sequenceVoice);
                     return true;

@@ -206,7 +206,7 @@ void Document::buildEntityMap(EntityMapPolicies policies,
             return total;
         };
         for (const auto measure : part.measures()) {
-            const int measureIndex = static_cast<int>(measure.calcArrayIndex());
+            const auto measureIndex = measure.calcArrayIndex();
             if (measureIndex >= global().measures().size()) {
                 // do not let mapping fail if global.measures has too few measures.
                 // semantic validation flags this if it happens.
@@ -624,7 +624,7 @@ bool layout::Group::calcIsPartGroup() const
 
 global::Measure part::Measure::getGlobalMeasure() const
 {
-    const size_t measureIndex = calcArrayIndex();
+    const auto measureIndex = calcArrayIndex();
     auto globalMeasures = document().global().measures();
     MNX_ASSERT_IF (measureIndex >= globalMeasures.size()) {
         throw std::logic_error("Part measure has higher index than global measure at " + dump());

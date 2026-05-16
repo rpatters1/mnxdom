@@ -314,10 +314,10 @@ void Document::buildEntityMap(EntityMapPolicies policies,
                         });
                         return true;
                     }
-                    const bool hasLeadingGrace = flushPendingGraceEvents();
+                    flushPendingGraceEvents();
                     storeOttavaShift(event,
                                      startTime,
-                                     hasLeadingGrace ? std::optional<unsigned>(0) : std::nullopt,
+                                     std::optional<unsigned>(0),
                                      eventStaff,
                                      sequenceVoice);
                     return true;

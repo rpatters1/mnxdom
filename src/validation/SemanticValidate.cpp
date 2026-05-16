@@ -71,7 +71,7 @@ struct ArpeggioSpanEndpoints
     if (lhs.fraction() != rhs.fraction) {
         return false;
     }
-    if (!requireGraceIndexMatch) {
+    if (!requireGraceIndexMatch || !lhs.graceIndex()) {
         return true;
     }
     return lhs.graceIndex() == rhs.graceIndex;

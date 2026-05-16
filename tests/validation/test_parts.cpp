@@ -211,6 +211,22 @@ TEST(Parts, ValidArpeggioSpanImplicitPrimaryGraceIndex)
     EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
 }
 
+TEST(Parts, ValidArpeggioSameSequenceImplicitPrimaryGraceIndex)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "test_cases" / "arpeggio_same_sequence_implicit_primary_valid.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
+}
+
+TEST(Parts, ValidArpeggioSameSequenceImplicitGraceIndex)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "test_cases" / "arpeggio_same_sequence_implicit_grace_index_valid.json";
+    auto doc = mnx::Document::create(inputPath);
+    EXPECT_TRUE(fullValidate(doc, inputPath)) << "full validation";
+}
+
 TEST(Parts, ArpeggioSameSequenceGraceIndexMismatch)
 {
     setupTestDataPaths();
@@ -218,15 +234,5 @@ TEST(Parts, ArpeggioSameSequenceGraceIndexMismatch)
     auto doc = mnx::Document::create(inputPath);
     expectSemanticErrors(doc, inputPath, {
         "Arpeggio span notes must be in the same rhythmic position."
-    });
-}
-
-TEST(Parts, ArpeggioSameSequenceImplicitGraceIndexMismatch)
-{
-    setupTestDataPaths();
-    std::filesystem::path inputPath = getInputPath() / "errors" / "arpeggio_same_sequence_implicit_grace_index_mismatch.json";
-    auto doc = mnx::Document::create(inputPath);
-    expectSemanticErrors(doc, inputPath, {
-        "Arpeggio position must match the span notes' rhythmic position."
     });
 }

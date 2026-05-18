@@ -264,7 +264,7 @@ public:
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
         (const std::string&, measureId), (const FractionValue&, position)); ///< The end of the ottava (includes any events starting at this location)
-    /// @todo orient
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(Orientation, orient, Orientation::Auto); ///< Whether the ottava is above or below the staff                
     MNX_REQUIRED_CHILD(RhythmicPosition, position,
         (const FractionValue&, position)); ///< The start position of the ottava
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);              ///< The staff (within the part) this ottava applies to

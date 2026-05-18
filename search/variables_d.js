@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['octave_0',['octave',['../structmnx_1_1sequence_1_1Pitch_1_1Required.html#a7fc9ddf70f78850782a3301f31afb02b',1,'mnx::sequence::Pitch::Required']]],
-  ['octaveadjustment_1',['octaveadjustment',['../structmnx_1_1part_1_1Clef_1_1Required.html#acbfc4981dd1ddab6ce80579e26d5fbd3',1,'mnx::part::Clef::Required::octaveAdjustment'],['../structmnx_1_1part_1_1PositionedClef_1_1Required.html#af1b0748e5fffb7756d7baaafbef5b019',1,'mnx::part::PositionedClef::Required::octaveAdjustment']]],
-  ['onafteritem_2',['onAfterItem',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a0e17f629c463be165685bc8b2a398870',1,'mnx::util::SequenceWalkHooks']]],
-  ['onevent_3',['onEvent',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a0a3e4619fc811ee24be7c44e311fb5ac',1,'mnx::util::SequenceWalkHooks']]],
-  ['onfullmeasure_4',['onFullMeasure',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a8a8bf22e8a195bbc2fa71205b5cb8f6b',1,'mnx::util::SequenceWalkHooks']]],
-  ['onitem_5',['onItem',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a50502946b9edb0a0b148d7dee16be3c3',1,'mnx::util::SequenceWalkHooks']]],
-  ['ottavasrespectgracetargets_6',['ottavasRespectGraceTargets',['../structmnx_1_1EntityMapPolicies.html#a585bbaf2efe5eaed4afe405a8d90d1e9',1,'mnx::EntityMapPolicies']]],
-  ['ottavasrespectvoicetargets_7',['ottavasRespectVoiceTargets',['../structmnx_1_1EntityMapPolicies.html#a35dd7177b85409cd060ceacd2ca3588a',1,'mnx::EntityMapPolicies']]],
-  ['outernotevaluequant_8',['outerNoteValueQuant',['../structmnx_1_1sequence_1_1Tuplet_1_1Required.html#aaba89bfddb12be3360d05551409c23d1',1,'mnx::sequence::Tuplet::Required']]]
+  ['notevalue_0',['notevalue',['../structmnx_1_1NoteValueQuantity_1_1Required.html#ac9775c314a196320b684aaa0860ddd1a',1,'mnx::NoteValueQuantity::Required::noteValue'],['../structmnx_1_1global_1_1Tempo_1_1Required.html#abbca9377b31ba8d731c018bac560821c',1,'mnx::global::Tempo::Required::noteValue']]],
+  ['notevaluequant_1',['noteValueQuant',['../structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html#a78ff12a827ce00977348027965ef1fd3',1,'mnx::sequence::MultiNoteTremolo::Required']]],
+  ['numberofmarks_2',['numberOfMarks',['../structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html#a9b86cf7bb679e2702b21e6db0aca97dd',1,'mnx::sequence::MultiNoteTremolo::Required']]],
+  ['nummeasures_3',['numMeasures',['../structmnx_1_1score_1_1MultimeasureRest_1_1Required.html#ae88e99d2cba7cffc40e0b0af3baeede8',1,'mnx::score::MultimeasureRest::Required']]]
 ];

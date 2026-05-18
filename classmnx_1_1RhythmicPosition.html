@@ -133,6 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8cd498b83cee3d3260622612a1d49fa9" id="r_a8cd498b83cee3d3260622612a1d49fa9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1RhythmicPosition.html#a8cd498b83cee3d3260622612a1d49fa9">RhythmicPosition</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;position)</td></tr>
 <tr class="memdesc:a8cd498b83cee3d3260622612a1d49fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1RhythmicPosition.html" title="Represents a system on a page in a score.">RhythmicPosition</a> class as a child of a JSON element.  <br /></td></tr>
 <tr class="separator:a8cd498b83cee3d3260622612a1d49fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6f3fae3381ff07b775d129069b6f605" id="r_ad6f3fae3381ff07b775d129069b6f605"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1RhythmicPosition.html#ad6f3fae3381ff07b775d129069b6f605">RhythmicPosition</a> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;position)</td></tr>
+<tr class="memdesc:ad6f3fae3381ff07b775d129069b6f605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a stand-alone <a class="el" href="classmnx_1_1RhythmicPosition.html" title="Represents a system on a page in a score.">RhythmicPosition</a> instance unattached to any JSON document.  <br /></td></tr>
+<tr class="separator:ad6f3fae3381ff07b775d129069b6f605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a261405f0808a63083d0236f33a375d91" id="r_a261405f0808a63083d0236f33a375d91"><td class="memItemLeft" align="right" valign="top"><a id="a261405f0808a63083d0236f33a375d91" name="a261405f0808a63083d0236f33a375d91"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator Required</b> () const</td></tr>
 <tr class="memdesc:a261405f0808a63083d0236f33a375d91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion back to <a class="el" href="structmnx_1_1RhythmicPosition_1_1Required.html" title="initializer class for RhythmicPosition">Required</a>. <br /></td></tr>
@@ -221,6 +224,9 @@ Static Public Member Functions</h2></td></tr>
 static <a class="el" href="structmnx_1_1RhythmicPosition_1_1Required.html">Required</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make</b> (const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;position)</td></tr>
 <tr class="memdesc:ac57be5e37728336259095f560290aa72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="structmnx_1_1RhythmicPosition_1_1Required.html" title="initializer class for RhythmicPosition">Required</a> instance for <a class="el" href="classmnx_1_1RhythmicPosition.html#a02fec0f5ee9771bea6d593b5ce316562" title="Constructor for existing rhythmic position instances.">RhythmicPosition</a>. <br /></td></tr>
 <tr class="separator:ac57be5e37728336259095f560290aa72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e59934c4b64a4413a6c24478a9f5aa7" id="r_a8e59934c4b64a4413a6c24478a9f5aa7"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1RhythmicPosition.html#a8e59934c4b64a4413a6c24478a9f5aa7">compare</a> (const <a class="el" href="classmnx_1_1RhythmicPosition.html">RhythmicPosition</a> &amp;lhs, const <a class="el" href="classmnx_1_1RhythmicPosition.html">RhythmicPosition</a> &amp;rhs, bool rhsIncludesTrailingGrace=false)</td></tr>
+<tr class="memdesc:a8e59934c4b64a4413a6c24478a9f5aa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare two rhythmic positions within the same measure.  <br /></td></tr>
+<tr class="separator:a8e59934c4b64a4413a6c24478a9f5aa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -258,7 +264,7 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 <div class="textblock"><p>Represents a system on a page in a score. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8cd498b83cee3d3260622612a1d49fa9" name="a8cd498b83cee3d3260622612a1d49fa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cd498b83cee3d3260622612a1d49fa9">&#9670;&#160;</a></span>RhythmicPosition()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cd498b83cee3d3260622612a1d49fa9">&#9670;&#160;</a></span>RhythmicPosition() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,7 +315,94 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 
 </div>
 </div>
+<a id="ad6f3fae3381ff07b775d129069b6f605" name="ad6f3fae3381ff07b775d129069b6f605"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6f3fae3381ff07b775d129069b6f605">&#9670;&#160;</a></span>RhythmicPosition() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mnx::RhythmicPosition::RhythmicPosition </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a stand-alone <a class="el" href="classmnx_1_1RhythmicPosition.html" title="Represents a system on a page in a score.">RhythmicPosition</a> instance unattached to any JSON document. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>The rhythmic position value to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8e59934c4b64a4413a6c24478a9f5aa7" name="a8e59934c4b64a4413a6c24478a9f5aa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e59934c4b64a4413a6c24478a9f5aa7">&#9670;&#160;</a></span>compare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int mnx::RhythmicPosition::compare </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmnx_1_1RhythmicPosition.html">RhythmicPosition</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmnx_1_1RhythmicPosition.html">RhythmicPosition</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>rhsIncludesTrailingGrace</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compare two rhythmic positions within the same measure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>The left-hand position to compare. </td></tr>
+    <tr><td class="paramname">rhs</td><td>The right-hand position to compare. </td></tr>
+    <tr><td class="paramname">rhsIncludesTrailingGrace</td><td>When true, a right-hand position with <code>graceIndex == 0</code> is treated as also including trailing grace notes at the same fractional position. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>-1 if <code>lhs</code> is earlier, 1 if later, or 0 if equivalent for the requested policy. </dd></dl>
+
+</div>
+</div>
 <a id="a37e384399b4fb8b653f8907e48ad09a0" name="a37e384399b4fb8b653f8907e48ad09a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37e384399b4fb8b653f8907e48ad09a0">&#9670;&#160;</a></span>MNX_OPTIONAL_PROPERTY()</h2>
 

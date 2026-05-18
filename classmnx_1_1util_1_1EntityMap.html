@@ -106,6 +106,12 @@ $(document).ready(function(){initNavTree('classmnx_1_1util_1_1EntityMap.html',''
 
 <p><code>#include &lt;<a class="el" href="EntityMap_8h_source.html">EntityMap.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html">MappedPosition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Canonical position value used by <a class="el" href="classmnx_1_1util_1_1EntityMap.html" title="Provides type-safe ID-based lookup for elements in an MNX document.">EntityMap</a> for measure-relative comparisons and caches.  <a href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8cffd129d5aa66223dd307a2cc4496c8" id="r_a8cffd129d5aa66223dd307a2cc4496c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1util_1_1EntityMap.html#a8cffd129d5aa66223dd307a2cc4496c8">EntityMap</a> (std::weak_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &gt; documentRoot, const std::optional&lt; <a class="el" href="namespacemnx.html#a1ecfb36b8c75b494f064bfd002c4c119">ErrorHandler</a> &gt; &amp;errorHandler=std::nullopt)</td></tr>
@@ -151,6 +157,17 @@ std::optional&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getOttavaShift</b> (const <a class="el" href="classmnx_1_1sequence_1_1Event.html">sequence::Event</a> &amp;event) const</td></tr>
 <tr class="memdesc:abbbc9e36b74a1cb998782def2fd70295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the ottava shift for an event. Returns 0 if not cached. <br /></td></tr>
 <tr class="separator:abbbc9e36b74a1cb998782def2fd70295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7c882e3ac6cc8051201be897745b943" id="r_af7c882e3ac6cc8051201be897745b943"><td class="memItemLeft" align="right" valign="top"><a id="af7c882e3ac6cc8051201be897745b943" name="af7c882e3ac6cc8051201be897745b943"></a>
+std::optional&lt; <a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html">MappedPosition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tryGetEventPosition</b> (const <a class="el" href="classmnx_1_1sequence_1_1Event.html">sequence::Event</a> &amp;event) const</td></tr>
+<tr class="memdesc:af7c882e3ac6cc8051201be897745b943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the cached mapped position for an event (if known). <br /></td></tr>
+<tr class="separator:af7c882e3ac6cc8051201be897745b943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc55190ceb406ff6fdbcb96f1e74d14" id="r_a5fc55190ceb406ff6fdbcb96f1e74d14"><td class="memItemLeft" align="right" valign="top"><a id="a5fc55190ceb406ff6fdbcb96f1e74d14" name="a5fc55190ceb406ff6fdbcb96f1e74d14"></a>
+<a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html">MappedPosition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getEventPosition</b> (const <a class="el" href="classmnx_1_1sequence_1_1Event.html">sequence::Event</a> &amp;event) const</td></tr>
+<tr class="memdesc:a5fc55190ceb406ff6fdbcb96f1e74d14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the cached mapped position for an event. <br /></td></tr>
+<tr class="separator:a5fc55190ceb406ff6fdbcb96f1e74d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac9cd899249722b47fbbca7244dc1398" id="r_aac9cd899249722b47fbbca7244dc1398"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1util_1_1EntityMap.html#aac9cd899249722b47fbbca7244dc1398">comparePositions</a> (const <a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html">MappedPosition</a> &amp;lhs, const <a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html">MappedPosition</a> &amp;rhs, bool rhsIncludesTrailingGrace=false) const</td></tr>
+<tr class="memdesc:aac9cd899249722b47fbbca7244dc1398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare two mapped positions using global measure order and grace-note targeting.  <br /></td></tr>
+<tr class="separator:aac9cd899249722b47fbbca7244dc1398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e72106b5e3598ba6fdd3236cefac3a9" id="r_a7e72106b5e3598ba6fdd3236cefac3a9"><td class="memItemLeft" align="right" valign="top"><a id="a7e72106b5e3598ba6fdd3236cefac3a9" name="a7e72106b5e3598ba6fdd3236cefac3a9"></a>
 const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getLyricLineOrder</b> () const</td></tr>
 <tr class="memdesc:a7e72106b5e3598ba6fdd3236cefac3a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the lyric line order. <br /></td></tr>
@@ -212,6 +229,51 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>mnx::Document</b></t
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aac9cd899249722b47fbbca7244dc1398" name="aac9cd899249722b47fbbca7244dc1398"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac9cd899249722b47fbbca7244dc1398">&#9670;&#160;</a></span>comparePositions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int mnx::util::EntityMap::comparePositions </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html">MappedPosition</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html">MappedPosition</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>rhsIncludesTrailingGrace</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compare two mapped positions using global measure order and grace-note targeting. </p>
+<p>The inputs may be native <a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html" title="Canonical position value used by EntityMap for measure-relative comparisons and caches.">MappedPosition</a> values or regular document-backed <a class="el" href="classmnx_1_1MeasureRhythmicPosition.html" title="Represents a system on a page in a score.">MeasureRhythmicPosition</a> objects converted implicitly to <a class="el" href="structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html" title="Canonical position value used by EntityMap for measure-relative comparisons and caches.">MappedPosition</a>, provided their <code>measureId</code> values refer to global measure IDs already present in this <a class="el" href="classmnx_1_1util_1_1EntityMap.html" title="Provides type-safe ID-based lookup for elements in an MNX document.">EntityMap</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>The left-hand position to compare. </td></tr>
+    <tr><td class="paramname">rhs</td><td>The right-hand position to compare. </td></tr>
+    <tr><td class="paramname">rhsIncludesTrailingGrace</td><td>When true, a right-hand position with <code>graceIndex == 0</code> is treated as also including trailing grace notes at the same fractional position, so those grace positions compare equal to <code>rhs</code> rather than later than it. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>-1 if <code>lhs</code> is earlier, 1 if later, or 0 if equivalent for the requested policy. </dd></dl>
+
+</div>
+</div>
 <a id="ae72930d235dc58e52f749d9917502700" name="ae72930d235dc58e52f749d9917502700"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae72930d235dc58e52f749d9917502700">&#9670;&#160;</a></span>get()</h2>
 

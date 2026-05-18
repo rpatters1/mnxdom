@@ -19,6 +19,7 @@ var namespacemnx =
     [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
     [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],
     [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],
+    [ "IdPair", "classmnx_1_1IdPair.html", "classmnx_1_1IdPair" ],
     [ "Interval", "classmnx_1_1Interval.html", "classmnx_1_1Interval" ],
     [ "KeySignature", "classmnx_1_1KeySignature.html", "classmnx_1_1KeySignature" ],
     [ "Layout", "classmnx_1_1Layout.html", "classmnx_1_1Layout" ],

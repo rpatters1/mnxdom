@@ -133,6 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a44fba4893a93ece67a6e80b7493a9b8c" id="r_a44fba4893a93ece67a6e80b7493a9b8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1MeasureRhythmicPosition.html#a44fba4893a93ece67a6e80b7493a9b8c">MeasureRhythmicPosition</a> (<a class="el" href="classmnx_1_1Base.html">Base</a> &amp;<a class="el" href="classmnx_1_1Base.html#a4bbd397a39dc2f5db959ac639d954335">parent</a>, std::string_view key, const std::string &amp;measureId, const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;position)</td></tr>
 <tr class="memdesc:a44fba4893a93ece67a6e80b7493a9b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classmnx_1_1MeasureRhythmicPosition.html" title="Represents a system on a page in a score.">MeasureRhythmicPosition</a> class as a child of a JSON element.  <br /></td></tr>
 <tr class="separator:a44fba4893a93ece67a6e80b7493a9b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25aa1ea11b3cf8b1ea41ba92f1c2cbfc" id="r_a25aa1ea11b3cf8b1ea41ba92f1c2cbfc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1MeasureRhythmicPosition.html#a25aa1ea11b3cf8b1ea41ba92f1c2cbfc">MeasureRhythmicPosition</a> (const std::string &amp;measureId, const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;position)</td></tr>
+<tr class="memdesc:a25aa1ea11b3cf8b1ea41ba92f1c2cbfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a stand-alone <a class="el" href="classmnx_1_1MeasureRhythmicPosition.html" title="Represents a system on a page in a score.">MeasureRhythmicPosition</a> class unattached to any json document.  <br /></td></tr>
+<tr class="separator:a25aa1ea11b3cf8b1ea41ba92f1c2cbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89927cf17d2910b2ce03f041a1eb5fef" id="r_a89927cf17d2910b2ce03f041a1eb5fef"><td class="memItemLeft" align="right" valign="top"><a id="a89927cf17d2910b2ce03f041a1eb5fef" name="a89927cf17d2910b2ce03f041a1eb5fef"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator Required</b> () const</td></tr>
 <tr class="memdesc:a89927cf17d2910b2ce03f041a1eb5fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion back to <a class="el" href="structmnx_1_1MeasureRhythmicPosition_1_1Required.html" title="initializer class for MeasureRhythmicPosition">Required</a>. <br /></td></tr>
@@ -260,7 +263,7 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 <div class="textblock"><p>Represents a system on a page in a score. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a44fba4893a93ece67a6e80b7493a9b8c" name="a44fba4893a93ece67a6e80b7493a9b8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44fba4893a93ece67a6e80b7493a9b8c">&#9670;&#160;</a></span>MeasureRhythmicPosition()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a44fba4893a93ece67a6e80b7493a9b8c">&#9670;&#160;</a></span>MeasureRhythmicPosition() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -310,6 +313,51 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
   <table class="params">
     <tr><td class="paramname">parent</td><td>The parent class instance </td></tr>
     <tr><td class="paramname">key</td><td>The JSON key to use for embedding in parent. </td></tr>
+    <tr><td class="paramname">measureId</td><td>The measure id of the position </td></tr>
+    <tr><td class="paramname">position</td><td>The position within the measure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a25aa1ea11b3cf8b1ea41ba92f1c2cbfc" name="a25aa1ea11b3cf8b1ea41ba92f1c2cbfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25aa1ea11b3cf8b1ea41ba92f1c2cbfc">&#9670;&#160;</a></span>MeasureRhythmicPosition() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mnx::MeasureRhythmicPosition::MeasureRhythmicPosition </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>measureId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structmnx_1_1FractionValue.html">FractionValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a stand-alone <a class="el" href="classmnx_1_1MeasureRhythmicPosition.html" title="Represents a system on a page in a score.">MeasureRhythmicPosition</a> class unattached to any json document. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
     <tr><td class="paramname">measureId</td><td>The measure id of the position </td></tr>
     <tr><td class="paramname">position</td><td>The position within the measure </td></tr>
   </table>

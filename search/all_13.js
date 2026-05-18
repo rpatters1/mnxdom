@@ -22,9 +22,10 @@ var searchData=
   ['tryget_19',['tryGet',['../classmnx_1_1util_1_1EntityMap.html#ab242841ccae6f8d73450f7191991b42c',1,'mnx::util::EntityMap']]],
   ['trygetbeam_20',['tryGetBeam',['../classmnx_1_1util_1_1EntityMap.html#a08ea07b7caee6b9e1cb8bacac61eda55',1,'mnx::util::EntityMap']]],
   ['trygetbeamstartlevel_21',['tryGetBeamStartLevel',['../classmnx_1_1util_1_1EntityMap.html#a1b200ff8c5af18c0e7432c64593dd1e4',1,'mnx::util::EntityMap']]],
-  ['trygetottavashift_22',['tryGetOttavaShift',['../classmnx_1_1util_1_1EntityMap.html#a12dd8cc2213e334374c705931c0c54c4',1,'mnx::util::EntityMap']]],
-  ['tuplet_23',['tuplet',['../classmnx_1_1sequence_1_1Tuplet.html#a61f06a9a3e85675504c25ad79a50365b',1,'mnx::sequence::Tuplet::Tuplet()'],['../classmnx_1_1sequence_1_1Tuplet.html',1,'mnx::sequence::Tuplet'],['../classmnx_1_1sequence_1_1Tuplet.html#aab0a584aa71ef58585484434c8b58c6e',1,'mnx::sequence::Tuplet::Tuplet()']]],
-  ['tupletdisplaysetting_24',['TupletDisplaySetting',['../namespacemnx.html#a9f98fd98d5106fa00063d9df29eea01f',1,'mnx']]],
-  ['twooctavesdown_25',['twooctavesdown',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea3e464ec7a7d7edf51b4d6fcf2941da25',1,'mnx::TwoOctavesDown'],['../namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a3e464ec7a7d7edf51b4d6fcf2941da25',1,'mnx::TwoOctavesDown']]],
-  ['twooctavesup_26',['twooctavesup',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea962c3ff88330f1f80321975efddcd744',1,'mnx::TwoOctavesUp'],['../namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a962c3ff88330f1f80321975efddcd744',1,'mnx::TwoOctavesUp']]]
+  ['trygeteventposition_22',['tryGetEventPosition',['../classmnx_1_1util_1_1EntityMap.html#af7c882e3ac6cc8051201be897745b943',1,'mnx::util::EntityMap']]],
+  ['trygetottavashift_23',['tryGetOttavaShift',['../classmnx_1_1util_1_1EntityMap.html#a12dd8cc2213e334374c705931c0c54c4',1,'mnx::util::EntityMap']]],
+  ['tuplet_24',['tuplet',['../classmnx_1_1sequence_1_1Tuplet.html#aab0a584aa71ef58585484434c8b58c6e',1,'mnx::sequence::Tuplet::Tuplet()'],['../classmnx_1_1sequence_1_1Tuplet.html',1,'mnx::sequence::Tuplet'],['../classmnx_1_1sequence_1_1Tuplet.html#a61f06a9a3e85675504c25ad79a50365b',1,'mnx::sequence::Tuplet::Tuplet()']]],
+  ['tupletdisplaysetting_25',['TupletDisplaySetting',['../namespacemnx.html#a9f98fd98d5106fa00063d9df29eea01f',1,'mnx']]],
+  ['twooctavesdown_26',['twooctavesdown',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea3e464ec7a7d7edf51b4d6fcf2941da25',1,'mnx::TwoOctavesDown'],['../namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a3e464ec7a7d7edf51b4d6fcf2941da25',1,'mnx::TwoOctavesDown']]],
+  ['twooctavesup_27',['twooctavesup',['../namespacemnx.html#a361b2c550a67bec829901cf59aec117ea962c3ff88330f1f80321975efddcd744',1,'mnx::TwoOctavesUp'],['../namespacemnx.html#a70be29bf5b4e51a04312d21a6353e4e9a962c3ff88330f1f80321975efddcd744',1,'mnx::TwoOctavesUp']]]
 ];

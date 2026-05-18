@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['jsonschematypename_0',['jsonschematypename',['../classmnx_1_1global_1_1Measure.html#af1652983089ae678107d28d3ae23d10e',1,'mnx::global::Measure::JsonSchemaTypeName'],['../classmnx_1_1Layout.html#ad2944963ab874ea9303ce05cd7add4c1',1,'mnx::Layout::JsonSchemaTypeName'],['../classmnx_1_1part_1_1Beam.html#a2931fe781192c4d70f46773838ae6e4f',1,'mnx::part::Beam::JsonSchemaTypeName'],['../classmnx_1_1part_1_1Measure.html#a8ff4cdf17c41244d4a91793cbd8549a7',1,'mnx::part::Measure::JsonSchemaTypeName'],['../classmnx_1_1Part.html#a4216d9b3c8e5153be57718afc6a2bcb9',1,'mnx::Part::JsonSchemaTypeName'],['../classmnx_1_1sequence_1_1KitNote.html#a5558f68b47a326f09afdfff7d01ef726',1,'mnx::sequence::KitNote::JsonSchemaTypeName'],['../classmnx_1_1sequence_1_1Note.html#acd125cb578580d16c46715eb0aa16df0',1,'mnx::sequence::Note::JsonSchemaTypeName'],['../classmnx_1_1sequence_1_1Event.html#a194a66ae405c0d281bc00733f4238028',1,'mnx::sequence::Event::JsonSchemaTypeName']]],
-  ['jumptype_1',['jumpType',['../structmnx_1_1global_1_1Jump_1_1Required.html#a5b91aff590d22499d204acd1b9df7d8c',1,'mnx::global::Jump::Required']]]
+  ['ingrace_0',['inGrace',['../structmnx_1_1util_1_1SequenceWalkContext.html#a2358fc756b68494638f70274435ad718',1,'mnx::util::SequenceWalkContext']]],
+  ['innernotevaluequant_1',['innerNoteValueQuant',['../structmnx_1_1sequence_1_1Tuplet_1_1Required.html#a93c452c738f56a7fd53adbeaaee56cc0',1,'mnx::sequence::Tuplet::Required']]],
+  ['instance_2',['instance',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#a1adda86fc4504ee4dea9f4357f0ec868',1,'mnx::validation::ValidationResult::Error']]],
+  ['interval_3',['interval',['../structmnx_1_1part_1_1PartTransposition_1_1Required.html#acbf34d81f3b627b01fdfcebc6811bbd3',1,'mnx::part::PartTransposition::Required']]]
 ];

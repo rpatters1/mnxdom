@@ -1,7 +1,12 @@
 var searchData=
 [
-  ['partid_0',['partid',['../structmnx_1_1layout_1_1StaffSource_1_1Required.html#aefacdcabe6fa62a1009e4c2922dac164',1,'mnx::layout::StaffSource::Required::partId'],['../structmnx_1_1util_1_1StaffKey.html#a1809d5ea22ea5711474d48333194611b',1,'mnx::util::StaffKey::partId']]],
-  ['pitch_1',['pitch',['../structmnx_1_1sequence_1_1Note_1_1Required.html#ab203f33d3ff9a39983a1db063bda1ce5',1,'mnx::sequence::Note::Required']]],
-  ['pointer_2',['pointer',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#a40acbb014740670b2682a5050a52c65e',1,'mnx::validation::ValidationResult::Error']]],
-  ['position_3',['position',['../structmnx_1_1RhythmicPosition_1_1Required.html#a9917acda3ac495d1a606a2beb7845a0d',1,'mnx::RhythmicPosition::Required::position'],['../structmnx_1_1MeasureRhythmicPosition_1_1Required.html#ac6a1722db5cb0ec17f33d5f902da1427',1,'mnx::MeasureRhythmicPosition::Required::position'],['../structmnx_1_1global_1_1Fine_1_1Required.html#aa4e3bbdf1bb167c3e0d7b4638897baec',1,'mnx::global::Fine::Required::position'],['../structmnx_1_1global_1_1Jump_1_1Required.html#a352c142fb1a798ab6902d5e62725c1dc',1,'mnx::global::Jump::Required::position'],['../structmnx_1_1global_1_1Segno_1_1Required.html#ae20f08f2047207d554c7ac2abbdec988',1,'mnx::global::Segno::Required::position'],['../structmnx_1_1part_1_1Dynamic_1_1Required.html#a4ef4ac86463c7c53e97f5cb8b02894bf',1,'mnx::part::Dynamic::Required::position'],['../structmnx_1_1part_1_1Ottava_1_1Required.html#a02a4a92bd9e45deb3bec9622e505f274',1,'mnx::part::Ottava::Required::position'],['../structmnx_1_1score_1_1LayoutChange_1_1Required.html#a7a47c22a731aa2437ebff643f35b06f6',1,'mnx::score::LayoutChange::Required::position']]]
+  ['octave_0',['octave',['../structmnx_1_1sequence_1_1Pitch_1_1Required.html#a7fc9ddf70f78850782a3301f31afb02b',1,'mnx::sequence::Pitch::Required']]],
+  ['octaveadjustment_1',['octaveadjustment',['../structmnx_1_1part_1_1Clef_1_1Required.html#acbfc4981dd1ddab6ce80579e26d5fbd3',1,'mnx::part::Clef::Required::octaveAdjustment'],['../structmnx_1_1part_1_1PositionedClef_1_1Required.html#af1b0748e5fffb7756d7baaafbef5b019',1,'mnx::part::PositionedClef::Required::octaveAdjustment']]],
+  ['onafteritem_2',['onAfterItem',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a0e17f629c463be165685bc8b2a398870',1,'mnx::util::SequenceWalkHooks']]],
+  ['onevent_3',['onEvent',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a0a3e4619fc811ee24be7c44e311fb5ac',1,'mnx::util::SequenceWalkHooks']]],
+  ['onfullmeasure_4',['onFullMeasure',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a8a8bf22e8a195bbc2fa71205b5cb8f6b',1,'mnx::util::SequenceWalkHooks']]],
+  ['onitem_5',['onItem',['../structmnx_1_1util_1_1SequenceWalkHooks.html#a50502946b9edb0a0b148d7dee16be3c3',1,'mnx::util::SequenceWalkHooks']]],
+  ['ottavasrespectgracetargets_6',['ottavasRespectGraceTargets',['../structmnx_1_1EntityMapPolicies.html#a585bbaf2efe5eaed4afe405a8d90d1e9',1,'mnx::EntityMapPolicies']]],
+  ['ottavasrespectvoicetargets_7',['ottavasRespectVoiceTargets',['../structmnx_1_1EntityMapPolicies.html#a35dd7177b85409cd060ceacd2ca3588a',1,'mnx::EntityMapPolicies']]],
+  ['outernotevaluequant_8',['outerNoteValueQuant',['../structmnx_1_1sequence_1_1Tuplet_1_1Required.html#aaba89bfddb12be3360d05551409c23d1',1,'mnx::sequence::Tuplet::Required']]]
 ];

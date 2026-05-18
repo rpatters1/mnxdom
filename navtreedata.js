@@ -57,13 +57,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
-"classmnx_1_1Interval.html#a65ab6db7a20d6eefaa0c06137a503ce2",
-"classmnx_1_1global_1_1LyricLineMetadata.html#ae047b63d2b40cca92d6b410e8e226de3",
-"classmnx_1_1part_1_1Ottava.html#aec5316a7f3a45fdb64e44590f21c8591",
-"classmnx_1_1sequence_1_1Grace.html#ad5e48d207f4017bee369c349d577a3d2",
-"functions_g.html",
-"structmnx_1_1EnumStringMapping.html",
-"structmnx_1_1util_1_1LayoutSpan.html#aba19b3a5bc74d921503f1cc30595b5bd"
+"classmnx_1_1IdPair.html#acc34c9355c7b6103a1fb7ed43e62c54c",
+"classmnx_1_1global_1_1Fine.html#ac1f1aa29235693eda8c7358cdeccbae7",
+"classmnx_1_1part_1_1KitComponent.html#af702cd92ed4419243420e4d0349dad29",
+"classmnx_1_1sequence_1_1EventMarkings.html#a52b65416bd31d8dfe6c884db79f71995",
+"classmusic__theory_1_1Transposer.html#a0514e0c7d959d81e6c118e58acf7ed08",
+"namespacemnx_1_1validation.html#a94f02ad6bb8ceac641a8773d2588ea9a",
+"structmnx_1_1sequence_1_1BowDirection_1_1Required.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

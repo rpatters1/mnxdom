@@ -27,11 +27,66 @@
 #include <vector>
 
 #include "mnxdom.h"
+#include "music_theory/music_theory.hpp"
 
 namespace mnx {
 namespace validation {
 
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
+
+namespace {
+struct ArpeggioSpanEndpoints
+{
+    sequence::Note startNote;
+    sequence::Note endNote;
+    sequence::Event startEvent;
+    sequence::Event endEvent;
+    Sequence startSequence;
+    Sequence endSequence;
+    part::Measure startMeasure;
+    part::Measure endMeasure;
+    Part startPart;
+    Part endPart;
+    util::EntityMap::MappedPosition startPosition;
+    util::EntityMap::MappedPosition endPosition;
+};
+
+[[nodiscard]] bool sameRhythmicPosition(const util::EntityMap::MappedPosition& lhs,
+                                        const util::EntityMap::MappedPosition& rhs,
+                                        bool requireGraceIndexMatch)
+{
+    if (lhs.fraction != rhs.fraction) {
+        return false;
+    }
+    if (!requireGraceIndexMatch) {
+        return true;
+    }
+    return lhs.graceIndex == rhs.graceIndex;
+}
+
+[[nodiscard]] bool sameRhythmicPosition(const RhythmicPosition& lhs,
+                                        const util::EntityMap::MappedPosition& rhs,
+                                        bool requireGraceIndexMatch)
+{
+    if (lhs.fraction() != rhs.fraction) {
+        return false;
+    }
+    if (!requireGraceIndexMatch || !lhs.graceIndex()) {
+        return true;
+    }
+    return lhs.graceIndex() == rhs.graceIndex;
+}
+
+[[nodiscard]] int calcSoundedPitchSemitones(const sequence::Note& note)
+{
+    const auto pitch = static_cast<sequence::Pitch::Required>(note.pitch());
+    return music_theory::calc12EdoHalfstepsInInterval(
+        music_theory::calcDisplacement(int(pitch.step), pitch.octave),
+        pitch.alter
+    );
+}
+
+} // namespace
 
 class SemanticValidator
 {
@@ -54,6 +109,10 @@ public:
 private:
     void validateSequenceContent(const mnx::ContentArray& contentArray, const Base& location,
         FractionValue expectedDuration, bool allowEventsOnly = false, bool requireExactDuration = false, FractionValue* actualElapsedOut = nullptr);
+    std::optional<ArpeggioSpanEndpoints> resolveArpeggioSpanEndpoints(const part::ArpeggioBase& arpeggioBase);
+    std::optional<ArpeggioSpanEndpoints> validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName);
+    void validateArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Arpeggio>& arpeggios);
+    void validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
 
@@ -73,6 +132,85 @@ std::optional<T> SemanticValidator::tryGetValue(const KeyType& key, const Base& 
         // already reported error, so fall through
     }
     return std::nullopt;
+}
+
+std::optional<ArpeggioSpanEndpoints> SemanticValidator::resolveArpeggioSpanEndpoints(const part::ArpeggioBase& arpeggioBase)
+{
+    auto startNote = tryGetValue<sequence::Note>(arpeggioBase.span().start(), arpeggioBase);
+    auto endNote = tryGetValue<sequence::Note>(arpeggioBase.span().end(), arpeggioBase);
+    if (!startNote || !endNote) {
+        return std::nullopt;
+    }
+
+    auto startEvent = startNote->parent<Array<sequence::Note>>().template parent<sequence::Event>();
+    auto endEvent = endNote->parent<Array<sequence::Note>>().template parent<sequence::Event>();
+    auto startSequence = startNote->getEnclosingElement<Sequence>();
+    auto endSequence = endNote->getEnclosingElement<Sequence>();
+    auto startMeasure = startNote->getEnclosingElement<part::Measure>();
+    auto endMeasure = endNote->getEnclosingElement<part::Measure>();
+    auto startPart = startNote->getEnclosingElement<Part>();
+    auto endPart = endNote->getEnclosingElement<Part>();
+
+    if (!startSequence || !endSequence || !startMeasure || !endMeasure || !startPart || !endPart) {
+        addError("Unable to resolve arpeggio span endpoints.", arpeggioBase);
+        return std::nullopt;
+    }
+
+    auto startPosition = document.getEntityMap().tryGetEventPosition(startEvent);
+    auto endPosition = document.getEntityMap().tryGetEventPosition(endEvent);
+    if (!startPosition || !endPosition) {
+        addError("Unable to resolve arpeggio span endpoints.", arpeggioBase);
+        return std::nullopt;
+    }
+
+    return ArpeggioSpanEndpoints{
+        startNote.value(),
+        endNote.value(),
+        startEvent,
+        endEvent,
+        startSequence.value(),
+        endSequence.value(),
+        startMeasure.value(),
+        endMeasure.value(),
+        startPart.value(),
+        endPart.value(),
+        startPosition.value(),
+        endPosition.value()
+    };
+}
+
+std::optional<ArpeggioSpanEndpoints> SemanticValidator::validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName)
+{
+    if (arpeggioBase.span().start() == arpeggioBase.span().end()) {
+        addError(std::string(objectName) + " span start and end must reference different notes.", arpeggioBase);
+        return std::nullopt;
+    }
+
+    auto endpoints = resolveArpeggioSpanEndpoints(arpeggioBase);
+    if (!endpoints) {
+        return std::nullopt;
+    }
+
+    if (endpoints->startPart.calcArrayIndex() != endpoints->endPart.calcArrayIndex()) {
+        addError(std::string(objectName) + " span notes must be in the same part.", arpeggioBase);
+    }
+    if (endpoints->startMeasure.calcArrayIndex() != endpoints->endMeasure.calcArrayIndex()) {
+        addError(std::string(objectName) + " span notes must be in the same bar.", arpeggioBase);
+    }
+    if (endpoints->startMeasure.calcArrayIndex() != measure.calcArrayIndex()
+        || endpoints->endMeasure.calcArrayIndex() != measure.calcArrayIndex()) {
+        addError(std::string(objectName) + " span notes must be in the same bar as the " + std::string(objectName) + ".", arpeggioBase);
+    }
+    const bool sameSequence = endpoints->startSequence.pointer() == endpoints->endSequence.pointer();
+    if (!sameRhythmicPosition(endpoints->startPosition, endpoints->endPosition, sameSequence)) {
+        addError(std::string(objectName) + " span notes must be in the same rhythmic position.", arpeggioBase);
+        return std::nullopt;
+    }
+    if (!sameRhythmicPosition(arpeggioBase.position(), endpoints->startPosition, sameSequence)) {
+        addError(std::string(objectName) + " position must match the span notes' rhythmic position.", arpeggioBase);
+    }
+
+    return endpoints;
 }
 
 void SemanticValidator::validateGlobal()
@@ -378,6 +516,40 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
     }
 }
 
+void SemanticValidator::validateArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Arpeggio>& arpeggios)
+{
+    for (const auto arpeggio : arpeggios) {
+        auto endpoints = validateArpeggioBase(measure, arpeggio, "Arpeggio");
+        if (!endpoints) {
+            continue;
+        }
+
+        const int startPitch = calcSoundedPitchSemitones(endpoints->startNote);
+        const int endPitch = calcSoundedPitchSemitones(endpoints->endNote);
+        if (arpeggio.direction() == MarkingUpDownAuto::Up && startPitch > endPitch) {
+            addError("Arpeggio with direction \"up\" must start on a lower sounded pitch than it ends on.", arpeggio);
+        } else if (arpeggio.direction() == MarkingUpDownAuto::Down && startPitch < endPitch) {
+            addError("Arpeggio with direction \"down\" must start on a higher sounded pitch than it ends on.", arpeggio);
+        }
+    }
+}
+
+void SemanticValidator::validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios)
+{
+    for (const auto nonArpeggio : nonArpeggios) {
+        auto endpoints = validateArpeggioBase(measure, nonArpeggio, "Non-arpeggio");
+        if (!endpoints) {
+            continue;
+        }
+
+        const int startPitch = calcSoundedPitchSemitones(endpoints->startNote);
+        const int endPitch = calcSoundedPitchSemitones(endpoints->endNote);
+        if (startPitch >= endPitch) {
+            addError("Non-arpeggio span start note must be lower in sounded pitch than the end note.", nonArpeggio);
+        }
+    }
+}
+
 void SemanticValidator::validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas)
 {    
     for (const auto ottava : ottavas) {
@@ -493,6 +665,12 @@ void SemanticValidator::validateParts()
         for (const auto measure : measures) {
             if (auto beams = measure.beams()) {
                 validateBeams(beams.value(), 1);
+            }
+            if (auto arpeggios = measure.arpeggios()) {
+                validateArpeggios(measure, arpeggios.value());
+            }
+            if (auto nonArpeggios = measure.nonArpeggios()) {
+                validateNonArpeggios(measure, nonArpeggios.value());
             }
             if (auto ottavas = measure.ottavas()) {
                 validateOttavas(measure, ottavas.value());

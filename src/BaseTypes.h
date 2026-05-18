@@ -490,7 +490,7 @@ public:
     }
 
     /// @brief Equality comparison with value type
-    bool operator==(const T& src) const
+    [[nodiscard]] bool operator==(const T& src) const
     {
         return src == ref().template get<T>();
     }

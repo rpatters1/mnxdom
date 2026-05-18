@@ -1,0 +1,96 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "key": {
+                    "fifths": 0
+                },
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "measures": [
+                {
+                    "arpeggios": [
+                        {
+                            "position": {
+                                "fraction": [1, 4]
+                            },
+                            "span": {
+                                "start": "n1",
+                                "end": "n2"
+                            }
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "staff": 1,
+                            "voice": "v1",
+                            "content": [
+                                {
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "type": "event",
+                                    "id": "ev1",
+                                    "rest": {}
+                                },
+                                {
+                                    "duration": {
+                                        "base": "quarter"
+                                    },
+                                    "type": "event",
+                                    "id": "ev2",
+                                    "notes": [
+                                        {
+                                            "pitch": {
+                                                "step": "D",
+                                                "alter": 1,
+                                                "octave": 4
+                                            },
+                                            "id": "n1"
+                                        },
+                                        {
+                                            "pitch": {
+                                                "step": "E",
+                                                "alter": -1,
+                                                "octave": 4
+                                            },
+                                            "id": "n2"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "duration": {
+                                        "base": "half"
+                                    },
+                                    "type": "event",
+                                    "id": "ev3",
+                                    "rest": {}
+                                }
+                            ]
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -56,7 +56,7 @@ public:
 class BowDirection : public EventMarkingBase
 {
 public:
-    /// @brief initializer class for #SingleNoteTremolo
+    /// @brief initializer class for #BowDirection
     struct Required
     {
         MarkingUpDown direction{}; ///< whether it is a down-bow or up-bow marking
@@ -88,7 +88,7 @@ public:
     /// @brief Implicit conversion back to Required.
     operator Required() const { return { direction() }; }
 
-    /// @brief Create a Required instance for #SingleNoteTremolo.
+    /// @brief Create a Required instance for #BowDirection.
     static Required make(MarkingUpDown direction) { return { direction }; }
 
     MNX_REQUIRED_PROPERTY(MarkingUpDown, direction);     ///< whether it is a down bow or up bow

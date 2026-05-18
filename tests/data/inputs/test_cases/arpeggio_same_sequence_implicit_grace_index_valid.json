@@ -1,0 +1,89 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            {
+                "key": {
+                    "fifths": 0
+                },
+                "time": {
+                    "count": 4,
+                    "unit": 4
+                },
+                "id": "m1"
+            }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "measures": [
+                {
+                    "arpeggios": [
+                        {
+                            "position": {
+                                "fraction": [0, 1]
+                            },
+                            "span": {
+                                "start": "g1",
+                                "end": "g2"
+                            }
+                        }
+                    ],
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "type": "grace",
+                                    "content": [
+                                        {
+                                            "duration": {
+                                                "base": "eighth"
+                                            },
+                                            "type": "event",
+                                            "id": "evg1",
+                                            "notes": [
+                                                {
+                                                    "pitch": {
+                                                        "step": "C",
+                                                        "octave": 4
+                                                    },
+                                                    "id": "g1"
+                                                },
+                                                {
+                                                    "pitch": {
+                                                        "step": "E",
+                                                        "octave": 4
+                                                    },
+                                                    "id": "g2"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "duration": {
+                                        "base": "whole"
+                                    },
+                                    "type": "event",
+                                    "id": "ev1",
+                                    "rest": {}
+                                }
+                            ]
+                        }
+                    ],
+                    "clefs": [
+                        {
+                            "clef": {
+                                "staffPosition": -2,
+                                "sign": "G"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

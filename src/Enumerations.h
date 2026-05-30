@@ -129,6 +129,26 @@ enum class FermataSymbol
 };
 
 /**
+ * @enum FontStyle
+ * @brief Specifies the style of text glyphs.
+ */
+enum class FontStyle
+{
+    Plain,          ///< plain (non-italic) text
+    Italic          ///< italic text
+};
+
+/**
+ * @enum FontWeight
+ * @brief Specifies the weight of text glyphs.
+ */
+enum class FontWeight
+{
+    Plain,          ///< plain (non-bold) text
+    Bold            ///< bold text
+};
+
+/**
  * @enum GraceType
  * @brief Options for how to perform grace notes.
  */

@@ -102,6 +102,16 @@ MNX_ENUM_MAPPING(FermataSymbol, {
     { "square",         FermataSymbol::Square }
 });
 
+MNX_ENUM_MAPPING(FontStyle, {
+    { "plain",          FontStyle::Plain },
+    { "italic",         FontStyle::Italic }
+});
+
+MNX_ENUM_MAPPING(FontWeight, {
+    { "plain",          FontWeight::Plain },
+    { "bold",           FontWeight::Bold }
+});
+
 MNX_ENUM_MAPPING(GraceType, {
     { "makeTime",       GraceType::MakeTime },
     { "stealFollowing", GraceType::StealFollowing },

@@ -57,7 +57,9 @@ public:
     using Object::Object;
 
     MNX_OPTIONAL_PROPERTY(std::string, font);       ///< the name of the font
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(FontStyle, fontStyle, FontStyle::Plain);  ///< the font style
     MNX_OPTIONAL_PROPERTY(double, size);            ///< the font size
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(FontWeight, weight, FontWeight::Plain);  ///< the font weight
 };
 
 /**

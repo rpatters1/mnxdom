@@ -415,7 +415,7 @@ class Object : public Base
 {
 public:
     /// @brief Constructor fresh document or detached instance
-    Object() : Base(std::make_shared<json>(json::object()), json_pointer{})
+    Object() : Object(std::make_shared<json>(json::object()), json_pointer{})
     {}
         
     /// @brief Wraps an Object class around an existing JSON object node
@@ -534,6 +534,10 @@ public:
 
     using iterator = iter<Array>;               ///< non-const iterator type
     using const_iterator = iter<const Array>;   ///< const iterator type
+
+    /// @brief Constructor for detached array instance
+    Array() : Array(std::make_shared<json>(json::array()), json_pointer{})
+    {}
 
     /// @brief Wraps an Array class around an existing JSON array node
     /// @param root Reference to the document root
@@ -691,12 +695,12 @@ class ContentArray;
 class ContentObject : public ArrayElementObject
 {
 protected:
-    static constexpr std::string_view ContentTypeValueDefault = "event"; ///< default type value that identifies the type within the content array
+    virtual std::string_view defaultType() const;
 
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(std::string, type, std::string(ContentTypeValueDefault));   ///< determines our type in the JSON
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(std::string, type, std::string(defaultType()));   ///< determines our type in the JSON
 
     /// @brief Retrieve an element as a specific type
     template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
@@ -810,7 +814,7 @@ private:
     T appendWithType(Args&&... args)
     {
         auto result = BaseArray::append<T>(std::forward<Args>(args)...);
-        if constexpr (T::ContentTypeValue != ContentObject::ContentTypeValueDefault) {
+        if (T::ContentTypeValue != result.defaultType()) {
             result.set_type(std::string(T::ContentTypeValue));
         }
         return result;

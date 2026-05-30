@@ -481,8 +481,8 @@ public:
     /// @brief Calculates and returns the start time of this event within the measure.
     [[nodiscard]] FractionValue calcStartTime() const;
 
-    inline static constexpr std::string_view ContentTypeValue = ContentObject::ContentTypeValueDefault; ///< type value that identifies the type within the content array
-    inline static constexpr std::string_view JsonSchemaTypeName = "event";     ///< required for mapping
+    inline static constexpr std::string_view ContentTypeValue = "event";    ///< type value that identifies the type within the content array
+    inline static constexpr std::string_view JsonSchemaTypeName = "event";  ///< required for mapping
 };
 
 /**

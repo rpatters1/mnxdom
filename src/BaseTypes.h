@@ -813,8 +813,11 @@ private:
     template <typename T, typename... Args>
     T appendWithType(Args&&... args)
     {
+        static_assert(std::is_base_of_v<ContentObject, T>,
+                      "ContentArray::appendWithType requires a ContentObject-derived type.");
         auto result = BaseArray::append<T>(std::forward<Args>(args)...);
-        if (T::ContentTypeValue != result.defaultType()) {
+        const ContentObject& contentObject = result;
+        if (T::ContentTypeValue != contentObject.defaultType()) {
             result.set_type(std::string(T::ContentTypeValue));
         }
         return result;

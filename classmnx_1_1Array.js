@@ -3,6 +3,7 @@ var classmnx_1_1Array =
     [ "const_iterator", "classmnx_1_1Array.html#a35260bb1d3e38e02a4b74e805b8c7b52", null ],
     [ "iterator", "classmnx_1_1Array.html#a302af380b7058c862d97146fd0cd1101", null ],
     [ "value_type", "classmnx_1_1Array.html#a370cd11de6dd31c99c2042d94f36a03f", null ],
+    [ "Array", "classmnx_1_1Array.html#ab51397dcdf9ad3000a39e24730996320", null ],
     [ "Array", "classmnx_1_1Array.html#abe20cb3f95cee1491a0fe46a11cb1bfd", null ],
     [ "Array", "classmnx_1_1Array.html#a3fc676b2d5484d189bd905ad6bd1ec4d", null ],
     [ "at", "classmnx_1_1Array.html#ad3f9afe3548f6babc1664c31e5ed80bb", null ],

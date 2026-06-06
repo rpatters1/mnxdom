@@ -20,8 +20,9 @@ var searchData=
   ['getsequenceindex_17',['getSequenceIndex',['../classmnx_1_1sequence_1_1Event.html#a8f9eb9b91448c54ebb066c19291591fa',1,'mnx::sequence::Event']]],
   ['gettypedobject_18',['getTypedObject',['../classmnx_1_1ContentObject.html#ae69dfb2b381b5744a4b7edeb06bf082f',1,'mnx::ContentObject']]],
   ['global_19',['global',['../classmnx_1_1Global.html#aaeb1b6a1c49ce86aa3a9c3a66b44db61',1,'mnx::Global::Global()'],['../classmnx_1_1Global.html',1,'mnx::Global']]],
-  ['grace_20',['grace',['../classmnx_1_1sequence_1_1Grace.html',1,'mnx::sequence::Grace'],['../classmnx_1_1sequence_1_1Grace.html#a72c92cc9dbfa2bac7ddfd1db78934c37',1,'mnx::sequence::Grace::Grace(Base &amp;parent, std::string_view key)'],['../classmnx_1_1sequence_1_1Grace.html#adaf017787733646d9c59931b4b9aa468',1,'mnx::sequence::Grace::Grace(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)']]],
-  ['graceindex_21',['graceIndex',['../structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html#a594a15134231b4b682a3ce898a7efa4d',1,'mnx::util::EntityMap::MappedPosition']]],
-  ['gracetype_22',['GraceType',['../namespacemnx.html#acb425d5f036205992cc10fea3ea3870f',1,'mnx']]],
-  ['group_23',['group',['../classmnx_1_1layout_1_1Group.html#a84d843a885173fd0c6a42a849f373d36',1,'mnx::layout::Group::Group()'],['../structmnx_1_1util_1_1LayoutSpan.html#ad9be833ec703c9a9b0605bc0ce56def6a03937134cedab9078be39a77ee3a48a0',1,'mnx::util::LayoutSpan::Group'],['../classmnx_1_1layout_1_1Group.html',1,'mnx::layout::Group']]]
+  ['glyphs_20',['glyphs',['../structmnx_1_1text_1_1Smufl_1_1Required.html#ae7e944fc1707fb526fbac09a6ebf3729',1,'mnx::text::Smufl::Required']]],
+  ['grace_21',['grace',['../classmnx_1_1sequence_1_1Grace.html',1,'mnx::sequence::Grace'],['../classmnx_1_1sequence_1_1Grace.html#a72c92cc9dbfa2bac7ddfd1db78934c37',1,'mnx::sequence::Grace::Grace(Base &amp;parent, std::string_view key)'],['../classmnx_1_1sequence_1_1Grace.html#adaf017787733646d9c59931b4b9aa468',1,'mnx::sequence::Grace::Grace(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)']]],
+  ['graceindex_22',['graceIndex',['../structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html#a594a15134231b4b682a3ce898a7efa4d',1,'mnx::util::EntityMap::MappedPosition']]],
+  ['gracetype_23',['GraceType',['../namespacemnx.html#acb425d5f036205992cc10fea3ea3870f',1,'mnx']]],
+  ['group_24',['group',['../classmnx_1_1layout_1_1Group.html#a84d843a885173fd0c6a42a849f373d36',1,'mnx::layout::Group::Group()'],['../structmnx_1_1util_1_1LayoutSpan.html#ad9be833ec703c9a9b0605bc0ce56def6a03937134cedab9078be39a77ee3a48a0',1,'mnx::util::LayoutSpan::Group'],['../classmnx_1_1layout_1_1Group.html',1,'mnx::layout::Group']]]
 ];

@@ -90,6 +90,12 @@ var annotated_dup =
         [ "Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", "classmnx_1_1sequence_1_1Tuplet" ],
         [ "Unstress", "classmnx_1_1sequence_1_1Unstress.html", null ]
       ] ],
+      [ "text", "namespacemnx_1_1text.html", [
+        [ "Smufl", "classmnx_1_1text_1_1Smufl.html", "classmnx_1_1text_1_1Smufl" ],
+        [ "Style", "classmnx_1_1text_1_1Style.html", "classmnx_1_1text_1_1Style" ],
+        [ "Text", "classmnx_1_1text_1_1Text.html", "classmnx_1_1text_1_1Text" ],
+        [ "TextContentObject", "classmnx_1_1text_1_1TextContentObject.html", null ]
+      ] ],
       [ "util", null, [
         [ "EntityMap", "classmnx_1_1util_1_1EntityMap.html", "classmnx_1_1util_1_1EntityMap" ],
         [ "LayoutSpan", "structmnx_1_1util_1_1LayoutSpan.html", "structmnx_1_1util_1_1LayoutSpan" ],
@@ -113,6 +119,7 @@ var annotated_dup =
       [ "EntityMapPolicies", "structmnx_1_1EntityMapPolicies.html", "structmnx_1_1EntityMapPolicies" ],
       [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
       [ "Fermata", "classmnx_1_1Fermata.html", "classmnx_1_1Fermata" ],
+      [ "FormattedText", "classmnx_1_1FormattedText.html", null ],
       [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
       [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],
       [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],

@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('classmnx_1_1ContentObject.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classmnx_1_1ContentObject-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mnx::ContentObject Class Reference</div></div>
@@ -124,15 +124,16 @@ $(document).ready(function(){initNavTree('classmnx_1_1ContentObject.html',''); i
 <area href="classmnx_1_1sequence_1_1MultiNoteTremolo.html" title="Represents a multi-note tremolo sequence within a sequence." alt="mnx::sequence::MultiNoteTremolo" shape="rect" coords="208,504,406,528"/>
 <area href="classmnx_1_1sequence_1_1Space.html" title="Occupies metric space without showing anything." alt="mnx::sequence::Space" shape="rect" coords="208,560,406,584"/>
 <area href="classmnx_1_1sequence_1_1Tuplet.html" title="Represents a tuplet sequence within a sequence." alt="mnx::sequence::Tuplet" shape="rect" coords="208,616,406,640"/>
+<area href="classmnx_1_1text_1_1TextContentObject.html" title="Base class for formatted-text content objects." alt="mnx::text::TextContentObject" shape="rect" coords="208,672,406,696"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a32e118e7e9277021bcd684919bdbf18d" id="r_a32e118e7e9277021bcd684919bdbf18d"><td class="memItemLeft" align="right" valign="top"><a id="a32e118e7e9277021bcd684919bdbf18d" name="a32e118e7e9277021bcd684919bdbf18d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</b> (std::string, type, std::string(<a class="el" href="classmnx_1_1ContentObject.html#aaabcf2ab2d34b87d60a3b59bbff38d9f">ContentTypeValueDefault</a>))</td></tr>
-<tr class="memdesc:a32e118e7e9277021bcd684919bdbf18d"><td class="mdescLeft">&#160;</td><td class="mdescRight">determines our type in the JSON <br /></td></tr>
-<tr class="separator:a32e118e7e9277021bcd684919bdbf18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9267eaa005e05d59fc2b82a93eb985d0" id="r_a9267eaa005e05d59fc2b82a93eb985d0"><td class="memItemLeft" align="right" valign="top"><a id="a9267eaa005e05d59fc2b82a93eb985d0" name="a9267eaa005e05d59fc2b82a93eb985d0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</b> (std::string, type, std::string(defaultType()))</td></tr>
+<tr class="memdesc:a9267eaa005e05d59fc2b82a93eb985d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">determines our type in the JSON <br /></td></tr>
+<tr class="separator:a9267eaa005e05d59fc2b82a93eb985d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb9adbcff9476efbc56af33463c63cc4" id="r_abb9adbcff9476efbc56af33463c63cc4"><td class="memTemplParams" colspan="2"><a id="abb9adbcff9476efbc56af33463c63cc4" name="abb9adbcff9476efbc56af33463c63cc4"></a>
 template&lt;typename T , std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1ContentObject.html">ContentObject</a>, T &gt;, int &gt;  = 0&gt; </td></tr>
 <tr class="memitem:abb9adbcff9476efbc56af33463c63cc4"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> () const</td></tr>
@@ -233,21 +234,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</t
 <tr class="memdesc:aa4fe0451f9bf7d306870cae014eeffa1 inherit pub_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the object is empty. <br /></td></tr>
 <tr class="separator:aa4fe0451f9bf7d306870cae014eeffa1 inherit pub_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:aaabcf2ab2d34b87d60a3b59bbff38d9f" id="r_aaabcf2ab2d34b87d60a3b59bbff38d9f"><td class="memItemLeft" align="right" valign="top"><a id="aaabcf2ab2d34b87d60a3b59bbff38d9f" name="aaabcf2ab2d34b87d60a3b59bbff38d9f"></a>
-static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>ContentTypeValueDefault</b> = &quot;event&quot;</td></tr>
-<tr class="memdesc:aaabcf2ab2d34b87d60a3b59bbff38d9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">default type value that identifies the type within the content array <br /></td></tr>
-<tr class="separator:aaabcf2ab2d34b87d60a3b59bbff38d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:abbe2ed73c827edeb3d1d6d63861d5274" id="r_abbe2ed73c827edeb3d1d6d63861d5274"><td class="memItemLeft" align="right" valign="top"><a id="abbe2ed73c827edeb3d1d6d63861d5274" name="abbe2ed73c827edeb3d1d6d63861d5274"></a>
-class&#160;</td><td class="memItemRight" valign="bottom"><b>ContentArray</b></td></tr>
-<tr class="separator:abbe2ed73c827edeb3d1d6d63861d5274"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a6420823e9f305c50bb37ad0b24cfa9eb" id="r_a6420823e9f305c50bb37ad0b24cfa9eb"><td class="memItemLeft" align="right" valign="top"><a id="a6420823e9f305c50bb37ad0b24cfa9eb" name="a6420823e9f305c50bb37ad0b24cfa9eb"></a>
+virtual std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>defaultType</b> () const</td></tr>
+<tr class="separator:a6420823e9f305c50bb37ad0b24cfa9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classmnx_1_1Base"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classmnx_1_1Base')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classmnx_1_1Base.html">mnx::Base</a></td></tr>
 <tr class="memitem:a033e93ec071a36612d1fa26c39ff75e0 inherit pro_methods_classmnx_1_1Base" id="r_a033e93ec071a36612d1fa26c39ff75e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a033e93ec071a36612d1fa26c39ff75e0">ref</a> () const</td></tr>
 <tr class="memdesc:a033e93ec071a36612d1fa26c39ff75e0 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this node for retrieval.  <br /></td></tr>
@@ -277,6 +268,12 @@ const std::shared_ptr&lt; <a class="el" href="namespacemnx.html#a1c2980125e66d52
 <tr class="memitem:a9004086ecbdbcccecaf288f3d5d60716 inherit pro_methods_classmnx_1_1Base"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a9004086ecbdbcccecaf288f3d5d60716">getOptionalChild</a> (std::string_view key) const</td></tr>
 <tr class="memdesc:a9004086ecbdbcccecaf288f3d5d60716 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves an optional child node.  <br /></td></tr>
 <tr class="separator:a9004086ecbdbcccecaf288f3d5d60716 inherit pro_methods_classmnx_1_1Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:abbe2ed73c827edeb3d1d6d63861d5274" id="r_abbe2ed73c827edeb3d1d6d63861d5274"><td class="memItemLeft" align="right" valign="top"><a id="abbe2ed73c827edeb3d1d6d63861d5274" name="abbe2ed73c827edeb3d1d6d63861d5274"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>ContentArray</b></td></tr>
+<tr class="separator:abbe2ed73c827edeb3d1d6d63861d5274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes.">Base</a> class for objects that are elements of content arrays. </p>

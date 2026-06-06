@@ -8,7 +8,9 @@ var hierarchy =
       [ "mnx::detail::ArrayAppendOverloads< Array< unsigned >, unsigned >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
       [ "mnx::detail::ArrayAppendOverloads< Derived, T, typename >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", [
         [ "mnx::Array< ContentObject >", "classmnx_1_1Array.html", [
-          [ "mnx::ContentArray", "classmnx_1_1ContentArray.html", null ]
+          [ "mnx::ContentArray", "classmnx_1_1ContentArray.html", [
+            [ "mnx::FormattedText", "classmnx_1_1FormattedText.html", null ]
+          ] ]
         ] ],
         [ "mnx::Array< unsigned >", "classmnx_1_1Array.html", [
           [ "mnx::Fraction", "classmnx_1_1Fraction.html", null ]
@@ -38,7 +40,11 @@ var hierarchy =
             [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
             [ "mnx::sequence::MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", null ],
             [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
-            [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ]
+            [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ],
+            [ "mnx::text::TextContentObject", "classmnx_1_1text_1_1TextContentObject.html", [
+              [ "mnx::text::Smufl", "classmnx_1_1text_1_1Smufl.html", null ],
+              [ "mnx::text::Text", "classmnx_1_1text_1_1Text.html", null ]
+            ] ]
           ] ],
           [ "mnx::Layout", "classmnx_1_1Layout.html", null ],
           [ "mnx::Part", "classmnx_1_1Part.html", null ],
@@ -115,7 +121,8 @@ var hierarchy =
         [ "mnx::sequence::EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", null ],
         [ "mnx::sequence::FullMeasureRest", "classmnx_1_1sequence_1_1FullMeasureRest.html", null ],
         [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ],
-        [ "mnx::sequence::TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", null ]
+        [ "mnx::sequence::TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", null ],
+        [ "mnx::text::Style", "classmnx_1_1text_1_1Style.html", null ]
       ] ],
       [ "mnx::SimpleType< T, >", "classmnx_1_1SimpleType.html", null ]
     ] ],
@@ -178,6 +185,8 @@ var hierarchy =
     [ "mnx::sequence::Slur::Required", "structmnx_1_1sequence_1_1Slur_1_1Required.html", null ],
     [ "mnx::sequence::Space::Required", "structmnx_1_1sequence_1_1Space_1_1Required.html", null ],
     [ "mnx::sequence::Tuplet::Required", "structmnx_1_1sequence_1_1Tuplet_1_1Required.html", null ],
+    [ "mnx::text::Smufl::Required", "structmnx_1_1text_1_1Smufl_1_1Required.html", null ],
+    [ "mnx::text::Text::Required", "structmnx_1_1text_1_1Text_1_1Required.html", null ],
     [ "mnx::TimeSignature::Required", "structmnx_1_1TimeSignature_1_1Required.html", null ],
     [ "std::runtime_error", null, [
       [ "mnx::util::mapping_error", "classmnx_1_1util_1_1mapping__error.html", null ]

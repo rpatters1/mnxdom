@@ -5,6 +5,7 @@ var namespacemnx =
     [ "part", "namespacemnx_1_1part.html", "namespacemnx_1_1part" ],
     [ "score", "namespacemnx_1_1score.html", "namespacemnx_1_1score" ],
     [ "sequence", "namespacemnx_1_1sequence.html", "namespacemnx_1_1sequence" ],
+    [ "text", "namespacemnx_1_1text.html", "namespacemnx_1_1text" ],
     [ "validation", "namespacemnx_1_1validation.html", "namespacemnx_1_1validation" ],
     [ "Array", "classmnx_1_1Array.html", "classmnx_1_1Array" ],
     [ "ArrayElementObject", "classmnx_1_1ArrayElementObject.html", "classmnx_1_1ArrayElementObject" ],
@@ -16,6 +17,7 @@ var namespacemnx =
     [ "EntityMapPolicies", "structmnx_1_1EntityMapPolicies.html", "structmnx_1_1EntityMapPolicies" ],
     [ "EnumStringMapping", "structmnx_1_1EnumStringMapping.html", null ],
     [ "Fermata", "classmnx_1_1Fermata.html", "classmnx_1_1Fermata" ],
+    [ "FormattedText", "classmnx_1_1FormattedText.html", null ],
     [ "Fraction", "classmnx_1_1Fraction.html", "classmnx_1_1Fraction" ],
     [ "FractionValue", "structmnx_1_1FractionValue.html", "structmnx_1_1FractionValue" ],
     [ "Global", "classmnx_1_1Global.html", "classmnx_1_1Global" ],
@@ -93,6 +95,14 @@ var namespacemnx =
       [ "DoubleSquare", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922ab8f751bf6cbf1f9ad5fc9f5823a8c90a", null ],
       [ "HalfCurve", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922a90bd3467613dcbaf7ee6d7f6c19c35aa", null ],
       [ "Square", "namespacemnx.html#a3889d7e09f893061e56a2c2d94a76922aceb46ca115d05c51aa5a16a8867c3304", null ]
+    ] ],
+    [ "FontStyle", "namespacemnx.html#aad90f0c5544573f7751c6f66a0ec8251", [
+      [ "Plain", "namespacemnx.html#aad90f0c5544573f7751c6f66a0ec8251a4cd8413207629a963225f4314b53adcd", null ],
+      [ "Italic", "namespacemnx.html#aad90f0c5544573f7751c6f66a0ec8251a1d874710ccdcd46b95397049d2e7500c", null ]
+    ] ],
+    [ "FontWeight", "namespacemnx.html#a7f6bc6c3cc455de994f7fb502fb67d50", [
+      [ "Plain", "namespacemnx.html#a7f6bc6c3cc455de994f7fb502fb67d50a4cd8413207629a963225f4314b53adcd", null ],
+      [ "Bold", "namespacemnx.html#a7f6bc6c3cc455de994f7fb502fb67d50a114c3050111d8b8ddd830b99ccebd246", null ]
     ] ],
     [ "GraceType", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870f", [
       [ "StealPrevious", "namespacemnx.html#acb425d5f036205992cc10fea3ea3870fa2a84f4241eab6f257fe571797ffe0683", null ],

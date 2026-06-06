@@ -181,11 +181,8 @@ std::optional<ArpeggioSpanEndpoints> SemanticValidator::resolveArpeggioSpanEndpo
 
 std::optional<ArpeggioSpanEndpoints> SemanticValidator::validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName)
 {
-    if (arpeggioBase.span().start() == arpeggioBase.span().end()) {
-        addError(std::string(objectName) + " span start and end must reference different notes.", arpeggioBase);
-        return std::nullopt;
-    }
-
+    // start and end notes may be equal.
+    
     auto endpoints = resolveArpeggioSpanEndpoints(arpeggioBase);
     if (!endpoints) {
         return std::nullopt;

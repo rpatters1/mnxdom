@@ -58,6 +58,18 @@ inline sequence::Tuplet ContentArray::append<sequence::Tuplet, NoteValueQuantity
     return appendWithType<sequence::Tuplet>(innerNoteValueQuant, outerNoteValueQuant);
 }
 
+template <>
+inline text::Text ContentArray::append<text::Text, std::string>(const std::string& text)
+{
+    return appendWithType<text::Text>(text);
+}
+
+template <>
+inline text::Smufl ContentArray::append<text::Smufl, std::vector<std::string>>(const std::vector<std::string>& glyphs)
+{
+    return appendWithType<text::Smufl>(glyphs);
+}
+
 } // namespace mnx
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS

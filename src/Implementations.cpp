@@ -122,6 +122,15 @@ Document Base::document() const
     return Document(root());
 }
 
+// *************************
+// ***** ContentObject *****
+// *************************
+
+std::string_view ContentObject::defaultType() const
+{
+    return sequence::Event::ContentTypeValue;
+}
+
 // ********************
 // ***** Document *****
 // ********************

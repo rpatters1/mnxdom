@@ -172,7 +172,7 @@ public:
  * @class Dynamic
  * @brief Represents a dynamic positioned with the next event in the sequence.
  */
-class Dynamic : public ContentObject
+class Dynamic : public ArrayElementObject
 {
 public:
     /// @brief initializer class for #Dynamic
@@ -184,7 +184,7 @@ public:
 
     /// @brief Constructor for existing Space objects
     Dynamic(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
+        : ArrayElementObject(root, pointer)
     {
     }
 
@@ -194,7 +194,7 @@ public:
     /// @param value The value of the dynamic
     /// @param position The position within the measure
     Dynamic(Base& parent, std::string_view key, const std::string& value, const FractionValue& position)
-        : ContentObject(parent, key)
+        : ArrayElementObject(parent, key)
     {
         set_value(value);
         create_position(position);

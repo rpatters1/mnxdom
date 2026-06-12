@@ -1042,7 +1042,7 @@ struct adl_serializer<EnumType, std::enable_if_t<std::is_enum_v<EnumType>>>
     {
         // Lookup the string in the specialized map.
         const auto& map = ::mnx::EnumStringMapping<EnumType>::stringToEnum();
-        auto it = map.find(j.get<std::string>());
+        auto it = map.find(j.template get<std::string>());
         if (it != map.end()) {
             return it->second;
         }

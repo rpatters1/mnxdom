@@ -6,6 +6,8 @@ var classmnx_1_1Array =
     [ "Array", "classmnx_1_1Array.html#ab51397dcdf9ad3000a39e24730996320", null ],
     [ "Array", "classmnx_1_1Array.html#abe20cb3f95cee1491a0fe46a11cb1bfd", null ],
     [ "Array", "classmnx_1_1Array.html#a3fc676b2d5484d189bd905ad6bd1ec4d", null ],
+    [ "assign", "classmnx_1_1Array.html#a00e7ef4ca9310cc2f38c28da9fec0a33", null ],
+    [ "assign", "classmnx_1_1Array.html#a06f3d192243f70bf9aef123be051777a", null ],
     [ "at", "classmnx_1_1Array.html#ad3f9afe3548f6babc1664c31e5ed80bb", null ],
     [ "back", "classmnx_1_1Array.html#aa9148a0f6c01309edbc04f82b7e777fb", null ],
     [ "begin", "classmnx_1_1Array.html#a086b39fbc63d4cd4a9793ee617f7a16c", null ],

@@ -135,10 +135,7 @@ public:
     Smufl(Base& parent, std::string_view key, const std::vector<std::string>& glyphs)
         : TextContentObject(parent, key)
     {
-        auto glyphArray = create_glyphs();
-        for (const auto& glyph : glyphs) {
-            glyphArray.push_back(glyph);
-        }
+        create_glyphs().assign(glyphs);
     }
 
     /// @brief Implicit conversion back to Required.

@@ -610,6 +610,25 @@ public:
         ref().push_back(value);
     }
 
+    /** @brief Replace all elements with values from an iterator range. (Available only for primitive types) */
+    template <typename InputIt, typename U = T>
+    std::enable_if_t<!std::is_base_of_v<Base, U>, void>
+    assign(InputIt first, InputIt last)
+    {
+        ref() = json::array();
+        for (; first != last; ++first) {
+            ref().push_back(*first);
+        }
+    }
+
+    /** @brief Replace all elements with values from a vector. (Available only for primitive types) */
+    template <typename U = T>
+    std::enable_if_t<!std::is_base_of_v<Base, U>, void>
+    assign(const std::vector<U>& values)
+    {
+        assign(values.begin(), values.end());
+    }
+
     /** @brief Remove an element at a given index. */
     void erase(size_t index)
     {

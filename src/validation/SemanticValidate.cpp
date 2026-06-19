@@ -112,7 +112,7 @@ private:
     std::optional<ArpeggioSpanEndpoints> resolveArpeggioSpanEndpoints(const part::ArpeggioBase& arpeggioBase);
     std::optional<ArpeggioSpanEndpoints> validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName);
     void validateArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Arpeggio>& arpeggios);
-    void validateDynamics(const mnx::Array<mnx::part::DynamicGroup>& dynamics);
+    void validateDynamics(const mnx::ContentArray& dynamics);
     void validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
@@ -532,7 +532,7 @@ void SemanticValidator::validateArpeggios(const mnx::part::Measure& measure, con
     }
 }
 
-void SemanticValidator::validateDynamics(const mnx::Array<mnx::part::DynamicGroup>& dynamics)
+void SemanticValidator::validateDynamics(const mnx::ContentArray& dynamics)
 {
     for (const auto dynamic : dynamics) {
         const auto dynamicType = dynamic.type();
@@ -544,14 +544,14 @@ void SemanticValidator::validateDynamics(const mnx::Array<mnx::part::DynamicGrou
         };
 
         if (dynamicType == mnx::part::DynamicImmediate::ContentTypeValue) {
-            requireField(dynamic.value().has_value(), "value");
+            requireField(dynamicJson.contains("value"), "value");
         } else if (dynamicType == mnx::part::DynamicGradual::ContentTypeValue) {
             requireField(dynamicJson.contains("end"), "end");
             requireField(dynamicJson.contains("wedgeType"), "wedgeType");
         } else if (dynamicType == mnx::part::DynamicRelative::ContentTypeValue) {
             requireField(dynamicJson.contains("relativeValue"), "relativeValue");
         } else if (dynamicType == mnx::part::DynamicAccent::ContentTypeValue) {
-            requireField(dynamic.value().has_value(), "value");
+            requireField(dynamicJson.contains("value"), "value");
         }
     }
 }

@@ -1,0 +1,73 @@
+{
+  "mnx": {
+    "version": 1
+  },
+  "global": {
+    "measures": [
+      {
+        "id": "m1",
+        "time": {
+          "count": 4,
+          "unit": 4
+        }
+      }
+    ]
+  },
+  "parts": [
+    {
+      "id": "P1",
+      "staves": 1,
+      "measures": [
+        {
+          "clefs": [
+            {
+              "clef": {
+                "sign": "G",
+                "staffPosition": -2
+              }
+            }
+          ],
+          "dynamics": [
+            {
+              "position": {
+                "fraction": [
+                  0,
+                  1
+                ]
+              },
+              "type": "immediate"
+            },
+            {
+              "position": {
+                "fraction": [
+                  1,
+                  4
+                ]
+              },
+              "type": "gradual"
+            },
+            {
+              "position": {
+                "fraction": [
+                  2,
+                  4
+                ]
+              },
+              "type": "relative"
+            },
+            {
+              "position": {
+                "fraction": [
+                  3,
+                  4
+                ]
+              },
+              "type": "accent"
+            }
+          ],
+          "sequences": []
+        }
+      ]
+    }
+  ]
+}

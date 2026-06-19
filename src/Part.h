@@ -22,6 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
+#include "Dynamics.h"
 #include "Sequence.h"
 
 namespace mnx {
@@ -166,53 +167,6 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, showOctave, true); ///< if octave is non-zero, this value determines whether the octave should be displayed on the clef
     MNX_REQUIRED_PROPERTY(ClefSign, sign);          ///< the clef sign
     MNX_REQUIRED_PROPERTY(int, staffPosition);      ///< staff position offset from center of staff (in half-spaces)
-};
-
-/**
- * @class Dynamic
- * @brief Represents a dynamic positioned with the next event in the sequence.
- */
-class Dynamic : public ArrayElementObject
-{
-public:
-    /// @brief initializer class for #Dynamic
-    struct Required
-    {
-        std::string value;          ///< the value of the dynamic
-        FractionValue position{};   ///< the position within the measure
-    };
-
-    /// @brief Constructor for existing Space objects
-    Dynamic(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ArrayElementObject(root, pointer)
-    {
-    }
-
-    /// @brief Creates a new Space class as a child of a JSON element.
-    /// @param parent The parent class instance.
-    /// @param key The JSON key to use for embedding in parent.
-    /// @param value The value of the dynamic
-    /// @param position The position within the measure
-    Dynamic(Base& parent, std::string_view key, const std::string& value, const FractionValue& position)
-        : ArrayElementObject(parent, key)
-    {
-        set_value(value);
-        create_position(position);
-    }
-
-    /// @brief Implicit conversion back to Required.
-    operator Required() const { return { value(), position().fraction() }; }
-
-    /// @brief Create a Required instance for #Dynamic.
-    static Required make(const std::string& value, const FractionValue& position) { return { value, position }; }
-
-    MNX_OPTIONAL_PROPERTY(std::string, glyph);                      ///< The SMuFL glyph name (if any)
-    MNX_REQUIRED_CHILD(
-        RhythmicPosition, position,
-        (const FractionValue&, position)); ///< The rhythmic position of the dynamic within the measure.
-    MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this dynamic applies to
-    MNX_REQUIRED_PROPERTY(std::string, value);                      ///< The value of the dynamic. Currently the MNX spec allows any string here.
-    MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this dynamic applies to.
 };
 
 /**
@@ -427,7 +381,7 @@ public:
     MNX_OPTIONAL_CHILD(Array<Arpeggio>, arpeggios);         ///< the arpeggios in this measure
     MNX_OPTIONAL_CHILD(Array<Beam>, beams);                 ///< the beams in this measure
     MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);       ///< the clef changes in this bar
-    MNX_OPTIONAL_CHILD(Array<Dynamic>, dynamics);           ///< the dynamics in this measure
+    MNX_OPTIONAL_CHILD(Array<DynamicGroup>, dynamics);      ///< the dynamics in this measure
     MNX_OPTIONAL_CHILD(Array<NonArpeggio>, nonArpeggios);   ///< the non-arpeggios in this measure
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);             ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);         ///< sequences that contain all the musical details in each measure

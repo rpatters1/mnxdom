@@ -81,6 +81,28 @@ MNX_ENUM_MAPPING(ClefSign, {
     { "G",          ClefSign::GClef }
 });
 
+MNX_ENUM_MAPPING(DynamicRelativeValue, {
+    { "louder",     DynamicRelativeValue::Louder },
+    { "softer",     DynamicRelativeValue::Softer }
+});
+
+MNX_ENUM_MAPPING(DynamicValue, {
+    { "f",          DynamicValue::f },
+    { "ff",         DynamicValue::ff },
+    { "fff",        DynamicValue::fff },
+    { "mf",         DynamicValue::mf },
+    { "mp",         DynamicValue::mp },
+    { "n",          DynamicValue::n },
+    { "p",          DynamicValue::p },
+    { "pp",         DynamicValue::pp },
+    { "ppp",        DynamicValue::ppp }
+});
+
+MNX_ENUM_MAPPING(DynamicWedgeType, {
+    { "decreasing", DynamicWedgeType::Decreasing },
+    { "increasing", DynamicWedgeType::Increasing }
+});
+
 MNX_ENUM_MAPPING(FermataDuration, {
     { "auto",       FermataDuration::Auto },
     { "long",       FermataDuration::Long },
@@ -157,6 +179,13 @@ MNX_ENUM_MAPPING(MarkingUpDownAuto, {
     { "auto",       MarkingUpDownAuto::Auto},
     { "down",       MarkingUpDownAuto::Down },
     { "up",         MarkingUpDownAuto::Up }
+});
+
+MNX_ENUM_MAPPING(MultiStaffOrientation, {
+    { "auto",       MultiStaffOrientation::Auto },
+    { "above",      MultiStaffOrientation::Above },
+    { "below",      MultiStaffOrientation::Below },
+    { "between",    MultiStaffOrientation::Between }
 });
 
 MNX_ENUM_MAPPING(NoteStep, {

@@ -236,3 +236,17 @@ TEST(Parts, ArpeggioSameSequenceGraceIndexMismatch)
         "Arpeggio span notes must be in the same rhythmic position."
     });
 }
+
+TEST(Parts, DynamicsMissingRequiredAttributesByType)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "dynamics_missing_required_attrs.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticErrors(doc, inputPath, {
+        "Dynamic of type \"immediate\" requires field \"value\".",
+        "Dynamic of type \"gradual\" requires field \"end\".",
+        "Dynamic of type \"gradual\" requires field \"wedgeType\".",
+        "Dynamic of type \"relative\" requires field \"relativeValue\".",
+        "Dynamic of type \"accent\" requires field \"value\"."
+    });
+}

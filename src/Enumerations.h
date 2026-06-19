@@ -98,6 +98,41 @@ enum class ClefSign
 };
 
 /**
+ * @enum DynamicRelativeValue
+ * @brief The possible relative changes in dynamic value
+ */
+enum class DynamicRelativeValue
+{
+    Louder,             ///< relative increase
+    Softer              ///< relative decrease
+};
+
+/// @enum Dynamic Value
+/// @brief Dynamic values permitted by MNX
+enum class DynamicValue
+{
+    f,
+    ff,
+    fff,
+    mf,
+    mp,
+    n,
+    p,
+    pp,
+    ppp
+};
+
+/**
+ * @enum DynamicWedgeType
+ * @brief The types of dynamic wedges (hairpins)
+ */
+enum class DynamicWedgeType
+{
+    Decreasing,     ///< hairpin diminuendo
+    Increasing      ///< hairpin crescendo
+};
+
+/**
  * @enum FermataDuration
  * @brief Specifies the subjective playback duration of a fermata.
  */
@@ -233,6 +268,18 @@ enum class MarkingUpDownAuto
     Auto,           ///< determined by consuming property
     Down,           ///< down (default)
     Up              ///< up
+};
+
+/**
+ * @enum MultiStaffOrientation
+ * @brief Specifies the vertical visual orientation of a symbol with respect to its part's staves
+ */
+enum class MultiStaffOrientation
+{
+    Auto,       ///< the default value determined by implementation
+    Above,      ///< symbol should be above its part staves
+    Below,      ///< symbol should be below its part staves
+    Between     ///< symbol should be between its part staves
 };
 
 /**

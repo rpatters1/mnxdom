@@ -217,7 +217,7 @@ public:
     { return { value, position, endMeasureId, endPosition }; }
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
-        (const std::string&, measureId), (const FractionValue&, position)); ///< The end of the ottava (includes any events starting at this location)
+        (const std::string&, measureId), (const FractionValue&, position)); ///< The end of the ottava; omit graceIndex at the start to include preceding grace notes, and use graceIndex 0 at the end to include them there
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(Orientation, orient, Orientation::Auto); ///< Whether the ottava is above or below the staff                
     MNX_REQUIRED_CHILD(RhythmicPosition, position,
         (const FractionValue&, position)); ///< The start position of the ottava

@@ -151,7 +151,7 @@ public:
     { return { wedgeType, position, endMeasureId, endPosition }; }
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
-        (const std::string&, measureId), (const FractionValue&, position));     ///< the end position of the hairpin dynamic
+        (const std::string&, measureId), (const FractionValue&, position));     ///< the end position of the hairpin dynamic; set graceIndex to 0 to include preceding grace notes at the end boundary
     MNX_REQUIRED_PROPERTY(DynamicWedgeType, wedgeType);                         ///< the type of hairpin dynamic
 
     inline static constexpr std::string_view ContentTypeValue = "gradual";      ///< type value that identifies the type of dynamic

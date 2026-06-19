@@ -161,22 +161,40 @@ $(document).ready(function(){initNavTree('ContentArrayAppendOverloads_8h_source.
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">inline</span> text::Text ContentArray::append&lt;text::Text, std::string&gt;(<span class="keyword">const</span> std::string&amp; text)</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>{</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">return</span> appendWithType&lt;text::Text&gt;(text);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">inline</span> text::Smufl ContentArray::append&lt;text::Smufl, std::vector&lt;std::string&gt;&gt;(<span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; glyphs)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">return</span> appendWithType&lt;text::Smufl&gt;(glyphs);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>} <span class="comment">// namespace mnx</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">inline</span> part::DynamicAccent ContentArray::append&lt;part::DynamicAccent, DynamicValue, FractionValue&gt;(</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">const</span> DynamicValue&amp; value, <span class="keyword">const</span> FractionValue&amp; position)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>{</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> appendWithType&lt;part::DynamicAccent&gt;(value, position);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">inline</span> part::DynamicGradual ContentArray::append&lt;part::DynamicGradual, DynamicWedgeType, FractionValue, MeasureRhythmicPosition::Required&gt;(</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">const</span> <a class="code hl_enumeration" href="namespacemnx.html#a0c98e62013b01d589b6e4b04f67b12d5">DynamicWedgeType</a>&amp; wedgeType, <span class="keyword">const</span> FractionValue&amp; position, <span class="keyword">const</span> MeasureRhythmicPosition::Required&amp; endPosition)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> appendWithType&lt;part::DynamicGradual&gt;(wedgeType, position, endPosition);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#endif </span><span class="comment">// DOXYGEN_SHOULD_IGNORE_THIS</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="keyword">inline</span> part::DynamicImmediate ContentArray::append&lt;part::DynamicImmediate, DynamicValue, FractionValue&gt;(</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">const</span> DynamicValue&amp; value, <span class="keyword">const</span> FractionValue&amp; position)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> appendWithType&lt;part::DynamicImmediate&gt;(value, position);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">inline</span> part::DynamicRelative ContentArray::append&lt;part::DynamicRelative, DynamicRelativeValue, FractionValue&gt;(</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">const</span> <a class="code hl_enumeration" href="namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3b">DynamicRelativeValue</a>&amp; relativeValue, <span class="keyword">const</span> FractionValue&amp; position)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>{</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">return</span> appendWithType&lt;part::DynamicRelative&gt;(relativeValue, position);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>}</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>} <span class="comment">// namespace mnx</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">#endif </span><span class="comment">// DOXYGEN_SHOULD_IGNORE_THIS</span></div>
 <div class="ttc" id="anamespacemnx_html"><div class="ttname"><a href="namespacemnx.html">mnx</a></div><div class="ttdoc">object model for MNX format</div></div>
-<div class="ttc" id="anamespacemnx_html_aedcf62c90c7ec3ac99e89b55a70d7b79"><div class="ttname"><a href="namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79">mnx::NoteValueBase</a></div><div class="ttdeci">NoteValueBase</div><div class="ttdoc">The note values allowed in MNX.</div><div class="ttdef"><b>Definition</b> Enumerations.h:260</div></div>
+<div class="ttc" id="anamespacemnx_html_a0c98e62013b01d589b6e4b04f67b12d5"><div class="ttname"><a href="namespacemnx.html#a0c98e62013b01d589b6e4b04f67b12d5">mnx::DynamicWedgeType</a></div><div class="ttdeci">DynamicWedgeType</div><div class="ttdoc">The types of dynamic wedges (hairpins)</div><div class="ttdef"><b>Definition</b> Enumerations.h:130</div></div>
+<div class="ttc" id="anamespacemnx_html_a78c45e0f146aed99c0e9b5a7e3e1ec3b"><div class="ttname"><a href="namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3b">mnx::DynamicRelativeValue</a></div><div class="ttdeci">DynamicRelativeValue</div><div class="ttdoc">The possible relative changes in dynamic value.</div><div class="ttdef"><b>Definition</b> Enumerations.h:105</div></div>
+<div class="ttc" id="anamespacemnx_html_aedcf62c90c7ec3ac99e89b55a70d7b79"><div class="ttname"><a href="namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79">mnx::NoteValueBase</a></div><div class="ttdeci">NoteValueBase</div><div class="ttdoc">The note values allowed in MNX.</div><div class="ttdef"><b>Definition</b> Enumerations.h:307</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

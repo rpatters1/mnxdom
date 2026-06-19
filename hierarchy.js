@@ -35,6 +35,12 @@ var hierarchy =
           [ "mnx::ContentObject", "classmnx_1_1ContentObject.html", [
             [ "mnx::layout::Group", "classmnx_1_1layout_1_1Group.html", null ],
             [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ],
+            [ "mnx::part::DynamicGroup", "classmnx_1_1part_1_1DynamicGroup.html", [
+              [ "mnx::part::DynamicAccent", "classmnx_1_1part_1_1DynamicAccent.html", null ],
+              [ "mnx::part::DynamicGradual", "classmnx_1_1part_1_1DynamicGradual.html", null ],
+              [ "mnx::part::DynamicImmediate", "classmnx_1_1part_1_1DynamicImmediate.html", null ],
+              [ "mnx::part::DynamicRelative", "classmnx_1_1part_1_1DynamicRelative.html", null ]
+            ] ],
             [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
             [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
             [ "mnx::sequence::MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", null ],
@@ -59,7 +65,6 @@ var hierarchy =
             [ "mnx::part::NonArpeggio", "classmnx_1_1part_1_1NonArpeggio.html", null ]
           ] ],
           [ "mnx::part::Beam", "classmnx_1_1part_1_1Beam.html", null ],
-          [ "mnx::part::Dynamic", "classmnx_1_1part_1_1Dynamic.html", null ],
           [ "mnx::part::KitComponent", "classmnx_1_1part_1_1KitComponent.html", null ],
           [ "mnx::part::Measure", "classmnx_1_1part_1_1Measure.html", null ],
           [ "mnx::part::Ottava", "classmnx_1_1part_1_1Ottava.html", null ],
@@ -162,7 +167,10 @@ var hierarchy =
     [ "mnx::NoteValue::Required", "structmnx_1_1NoteValue_1_1Required.html", null ],
     [ "mnx::NoteValueQuantity::Required", "structmnx_1_1NoteValueQuantity_1_1Required.html", null ],
     [ "mnx::part::Clef::Required", "structmnx_1_1part_1_1Clef_1_1Required.html", null ],
-    [ "mnx::part::Dynamic::Required", "structmnx_1_1part_1_1Dynamic_1_1Required.html", null ],
+    [ "mnx::part::DynamicAccent::Required", "structmnx_1_1part_1_1DynamicAccent_1_1Required.html", null ],
+    [ "mnx::part::DynamicGradual::Required", "structmnx_1_1part_1_1DynamicGradual_1_1Required.html", null ],
+    [ "mnx::part::DynamicImmediate::Required", "structmnx_1_1part_1_1DynamicImmediate_1_1Required.html", null ],
+    [ "mnx::part::DynamicRelative::Required", "structmnx_1_1part_1_1DynamicRelative_1_1Required.html", null ],
     [ "mnx::part::KitComponent::Required", "structmnx_1_1part_1_1KitComponent_1_1Required.html", null ],
     [ "mnx::part::Ottava::Required", "structmnx_1_1part_1_1Ottava_1_1Required.html", null ],
     [ "mnx::part::PartTransposition::Required", "structmnx_1_1part_1_1PartTransposition_1_1Required.html", null ],

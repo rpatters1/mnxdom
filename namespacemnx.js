@@ -77,6 +77,14 @@ var namespacemnx =
       [ "FClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a0945e63d7277b87a5b01102815984c5e", null ],
       [ "GClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a9e1beb330f7d6cf5e497773713f81186", null ]
     ] ],
+    [ "DynamicRelativeValue", "namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3b", [
+      [ "Louder", "namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3ba6e8f7e13c0f56cff983d762fb3e519ab", null ],
+      [ "Softer", "namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3ba50ad8fee75e1601fc44cff875a96b802", null ]
+    ] ],
+    [ "DynamicWedgeType", "namespacemnx.html#a0c98e62013b01d589b6e4b04f67b12d5", [
+      [ "Decreasing", "namespacemnx.html#a0c98e62013b01d589b6e4b04f67b12d5a2e6a9b0375c021e8f650a5eb22012b5b", null ],
+      [ "Increasing", "namespacemnx.html#a0c98e62013b01d589b6e4b04f67b12d5af3ff61f20d0c8eedfa348b0298df5edd", null ]
+    ] ],
     [ "FermataDuration", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1", [
       [ "Auto", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a06b9281e396db002010bde1de57262eb", null ],
       [ "Long", "namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a8394f0347c184cf156ac5924dccb773b", null ],
@@ -142,6 +150,12 @@ var namespacemnx =
       [ "Auto", "namespacemnx.html#a21337ff290b73b5c4072858a5acc5f54a06b9281e396db002010bde1de57262eb", null ],
       [ "Down", "namespacemnx.html#a21337ff290b73b5c4072858a5acc5f54a08a38277b0309070706f6652eeae9a53", null ],
       [ "Up", "namespacemnx.html#a21337ff290b73b5c4072858a5acc5f54a258f49887ef8d14ac268c92b02503aaa", null ]
+    ] ],
+    [ "MultiStaffOrientation", "namespacemnx.html#a916529be475b78726237297e7b030329", [
+      [ "Auto", "namespacemnx.html#a916529be475b78726237297e7b030329a06b9281e396db002010bde1de57262eb", null ],
+      [ "Above", "namespacemnx.html#a916529be475b78726237297e7b030329a5b469fd01889ec12f1e84c6e66829fc1", null ],
+      [ "Below", "namespacemnx.html#a916529be475b78726237297e7b030329ae59dd8d25c0b6bb6697eac0617ccd412", null ],
+      [ "Between", "namespacemnx.html#a916529be475b78726237297e7b030329a5ccb72b3b258508dc7918070eaeb214c", null ]
     ] ],
     [ "NoteStep", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63", [
       [ "C", "namespacemnx.html#a9c640b95a4e3f2faf13da2f85669cc63a0d61f8370cad1d412f80b84d143e1257", null ],

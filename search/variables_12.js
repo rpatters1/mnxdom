@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['unit_0',['unit',['../structmnx_1_1TimeSignature_1_1Required.html#af27b795d611f4932369e5dbe283c6326',1,'mnx::TimeSignature::Required']]]
+  ['target_0',['target',['../structmnx_1_1sequence_1_1Slur_1_1Required.html#a9d9c072545b4e4de055a647b0f9d2bde',1,'mnx::sequence::Slur::Required']]],
+  ['text_1',['text',['../structmnx_1_1text_1_1Text_1_1Required.html#af947e0084ea45067d04be85896a4bbb6',1,'mnx::text::Text::Required']]],
+  ['timeratio_2',['timeRatio',['../structmnx_1_1util_1_1SequenceWalkContext.html#a3fc3d87b6f8ef424ff7eba278aaacd51',1,'mnx::util::SequenceWalkContext']]]
 ];

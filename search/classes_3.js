@@ -11,5 +11,9 @@ var searchData=
   ['dictionaryappendoverloads_3c_20derived_2c_20t_2c_20std_3a_3avoid_5ft_3c_20decltype_28_26t_3a_3amake_29_3e_20_3e_8',['DictionaryAppendOverloads&lt; Derived, T, std::void_t&lt; decltype(&amp;T::make)&gt; &gt;',['../structmnx_1_1detail_1_1DictionaryAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html',1,'mnx::detail']]],
   ['dictionaryappendoverloads_3c_20dictionary_3c_20t_20_3e_2c_20t_20_3e_9',['DictionaryAppendOverloads&lt; Dictionary&lt; T &gt;, T &gt;',['../structmnx_1_1detail_1_1DictionaryAppendOverloads.html',1,'mnx::detail']]],
   ['document_10',['Document',['../classmnx_1_1Document.html',1,'mnx']]],
-  ['dynamic_11',['Dynamic',['../classmnx_1_1part_1_1Dynamic.html',1,'mnx::part']]]
+  ['dynamicaccent_11',['DynamicAccent',['../classmnx_1_1part_1_1DynamicAccent.html',1,'mnx::part']]],
+  ['dynamicgradual_12',['DynamicGradual',['../classmnx_1_1part_1_1DynamicGradual.html',1,'mnx::part']]],
+  ['dynamicgroup_13',['DynamicGroup',['../classmnx_1_1part_1_1DynamicGroup.html',1,'mnx::part']]],
+  ['dynamicimmediate_14',['DynamicImmediate',['../classmnx_1_1part_1_1DynamicImmediate.html',1,'mnx::part']]],
+  ['dynamicrelative_15',['DynamicRelative',['../classmnx_1_1part_1_1DynamicRelative.html',1,'mnx::part']]]
 ];

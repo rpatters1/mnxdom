@@ -59,11 +59,11 @@ var NAVTREEINDEX =
 "BaseTypes_8h_source.html",
 "classmnx_1_1IdPair.html",
 "classmnx_1_1global_1_1Fine.html#a11fca7a0ecf3be6b3a5f15dd0d2eb468",
-"classmnx_1_1part_1_1KitComponent.html#abc6f3cb91c383ac9278717f4b52b1088",
-"classmnx_1_1sequence_1_1EventMarkings.html#a28f80e012ecfa6cdb25ba09e9814b9cd",
-"classmnx_1_1text_1_1Style.html#a0c076615a22cecb634aa6ecd5d311311",
-"namespacemnx.html#acb425d5f036205992cc10fea3ea3870fae19e6e10aa8e2a392f93679d938f83e1",
-"structmnx_1_1part_1_1KitComponent_1_1Required.html"
+"classmnx_1_1part_1_1DynamicGroup.html#a247f56f890da1aac731d4d2dbd45b2b4",
+"classmnx_1_1sequence_1_1Event.html#aa5eed6eff5596742c16d5f86bd39f300",
+"classmnx_1_1sequence_1_1TransposeWritten.html#a52b65416bd31d8dfe6c884db79f71995",
+"namespacemnx.html#a961d9beb0e598614b7157949964d33efada34e2b724bdb42347569c86723e76f0",
+"structmnx_1_1detail_1_1ArrayAppendFromMake_3_01T_00_01MakeFunc_01_4.html#a7e61f655a1ea4e55e9dca932808d26d1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -59,15 +59,31 @@ inline sequence::Tuplet ContentArray::append<sequence::Tuplet, NoteValueQuantity
 }
 
 template <>
-inline text::Text ContentArray::append<text::Text, std::string>(const std::string& text)
+inline part::DynamicAccent ContentArray::append<part::DynamicAccent, DynamicValue, FractionValue>(
+    const DynamicValue& value, const FractionValue& position)
 {
-    return appendWithType<text::Text>(text);
+    return appendWithType<part::DynamicAccent>(value, position);
 }
 
 template <>
-inline text::Smufl ContentArray::append<text::Smufl, std::vector<std::string>>(const std::vector<std::string>& glyphs)
+inline part::DynamicGradual ContentArray::append<part::DynamicGradual, DynamicWedgeType, FractionValue, MeasureRhythmicPosition::Required>(
+    const DynamicWedgeType& wedgeType, const FractionValue& position, const MeasureRhythmicPosition::Required& endPosition)
 {
-    return appendWithType<text::Smufl>(glyphs);
+    return appendWithType<part::DynamicGradual>(wedgeType, position, endPosition);
+}
+
+template <>
+inline part::DynamicImmediate ContentArray::append<part::DynamicImmediate, DynamicValue, FractionValue>(
+    const DynamicValue& value, const FractionValue& position)
+{
+    return appendWithType<part::DynamicImmediate>(value, position);
+}
+
+template <>
+inline part::DynamicRelative ContentArray::append<part::DynamicRelative, DynamicRelativeValue, FractionValue>(
+    const DynamicRelativeValue& relativeValue, const FractionValue& position)
+{
+    return appendWithType<part::DynamicRelative>(relativeValue, position);
 }
 
 } // namespace mnx

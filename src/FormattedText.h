@@ -29,6 +29,12 @@
 namespace mnx {
 
 /**
+ * @note Experimental helper types for formatted text.
+ * These are not currently part of the published MNX schema and are therefore
+ * not included by default from mnxdom.h.
+ */
+
+/**
  * @namespace mnx::text
  * @brief classes related to formatted text objects
  */
@@ -160,5 +166,17 @@ class FormattedText : public ContentArray
 public:
     using ContentArray::ContentArray;
 };
+
+template <>
+inline text::Text ContentArray::append<text::Text, std::string>(const std::string& text)
+{
+    return appendWithType<text::Text>(text);
+}
+
+template <>
+inline text::Smufl ContentArray::append<text::Smufl, std::vector<std::string>>(const std::vector<std::string>& glyphs)
+{
+    return appendWithType<text::Smufl>(glyphs);
+}
 
 } // namespace mnx

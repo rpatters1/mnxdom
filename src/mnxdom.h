@@ -62,7 +62,6 @@
 #include "Enumerations.h"
 #include "Global.h"
 #include "Layout.h"
-#include "FormattedText.h"
 #include "Part.h"
 #include "Score.h"
 #include "Document.h"

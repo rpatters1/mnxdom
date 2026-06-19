@@ -112,6 +112,7 @@ private:
     std::optional<ArpeggioSpanEndpoints> resolveArpeggioSpanEndpoints(const part::ArpeggioBase& arpeggioBase);
     std::optional<ArpeggioSpanEndpoints> validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName);
     void validateArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Arpeggio>& arpeggios);
+    void validateDynamics(const mnx::Array<mnx::part::DynamicGroup>& dynamics);
     void validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
@@ -531,6 +532,30 @@ void SemanticValidator::validateArpeggios(const mnx::part::Measure& measure, con
     }
 }
 
+void SemanticValidator::validateDynamics(const mnx::Array<mnx::part::DynamicGroup>& dynamics)
+{
+    for (const auto dynamic : dynamics) {
+        const auto dynamicType = dynamic.type();
+        const auto dynamicJson = json::parse(dynamic.dump());
+        const auto requireField = [&](bool present, std::string_view fieldName) {
+            if (!present) {
+                addError("Dynamic of type \"" + dynamicType + "\" requires field \"" + std::string(fieldName) + "\".", dynamic);
+            }
+        };
+
+        if (dynamicType == mnx::part::DynamicImmediate::ContentTypeValue) {
+            requireField(dynamic.value().has_value(), "value");
+        } else if (dynamicType == mnx::part::DynamicGradual::ContentTypeValue) {
+            requireField(dynamicJson.contains("end"), "end");
+            requireField(dynamicJson.contains("wedgeType"), "wedgeType");
+        } else if (dynamicType == mnx::part::DynamicRelative::ContentTypeValue) {
+            requireField(dynamicJson.contains("relativeValue"), "relativeValue");
+        } else if (dynamicType == mnx::part::DynamicAccent::ContentTypeValue) {
+            requireField(dynamic.value().has_value(), "value");
+        }
+    }
+}
+
 void SemanticValidator::validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios)
 {
     for (const auto nonArpeggio : nonArpeggios) {
@@ -662,6 +687,9 @@ void SemanticValidator::validateParts()
         for (const auto measure : measures) {
             if (auto beams = measure.beams()) {
                 validateBeams(beams.value(), 1);
+            }
+            if (auto dynamics = measure.dynamics()) {
+                validateDynamics(dynamics.value());
             }
             if (auto arpeggios = measure.arpeggios()) {
                 validateArpeggios(measure, arpeggios.value());

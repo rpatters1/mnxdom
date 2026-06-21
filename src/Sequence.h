@@ -29,7 +29,6 @@
 
 namespace mnx {
 class Sequence; // forward declaration
-class SequenceContent;
 
 /**
  * @namespace mnx::sequence
@@ -54,11 +53,11 @@ class SequenceContent : public ContentArray<SequenceContentObject>
 public:
     using ContentArray<SequenceContentObject>::ContentArray;
 
-    [[nodiscard]] Event appendEvent(NoteValueBase base, unsigned dots = 0);
-    [[nodiscard]] Grace appendGrace();
-    [[nodiscard]] MultiNoteTremolo appendMultiNoteTremolo(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant);
-    [[nodiscard]] Space appendSpace(const FractionValue& duration);
-    [[nodiscard]] Tuplet appendTuplet(const NoteValueQuantity::Required& innerNoteValueQuant,
+    Event appendEvent(NoteValueBase base, unsigned dots = 0);
+    Grace appendGrace();
+    MultiNoteTremolo appendMultiNoteTremolo(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant);
+    Space appendSpace(const FractionValue& duration);
+    Tuplet appendTuplet(const NoteValueQuantity::Required& innerNoteValueQuant,
         const NoteValueQuantity::Required& outerNoteValueQuant);
 };
 

@@ -26,6 +26,7 @@
 
 #include "BaseTypes.h"
 #include "ContentArray.h"
+#include "Enumerations.h"
 
 namespace mnx {
 
@@ -45,7 +46,7 @@ namespace text {
  * @class TextContentObject
  * @brief Base class for formatted-text content objects.
  */
-class TextContentObject : public ContentObject<TextContentObject
+class TextContentObject : public ContentObject<TextContentObject>
 {
 public:
     using ContentObject::ContentObject;
@@ -162,10 +163,10 @@ class FormattedText : public ContentArray<text::TextContentObject>
 public:
     using ContentArray<text::TextContentObject>::ContentArray;
 
-    [[nodiscard]] text::Smufl appendSmufl(const std::vector<std::string>& glyphs)
+    text::Smufl appendSmufl(const std::vector<std::string>& glyphs)
     { return appendWithType<text::Smufl>(glyphs); }
 
-    [[nodiscard]] text::Text appendText(const std::string& text)
+    text::Text appendText(const std::string& text)
     { return appendWithType<text::Text>(text); }
 };
 

@@ -25,8 +25,9 @@
 #include "ContentArray.h"
 
 namespace mnx {
-class DynamicsGroup;
 namespace part {
+
+class DynamicsGroupArray;
 class DynamicAccent;
 class DynamicGradual;
 class DynamicImmediate;
@@ -252,25 +253,24 @@ public:
     inline static constexpr std::string_view ContentTypeValue = "relative";    ///< type value that identifies the type of dynamic
 };
 
-} // namespace part
-
-class DynamicsGroup : public ContentArray<part::DynamicBase>
+class DynamicsGroupArray : public ContentArray<part::DynamicBase>
 {
 public:
     using ContentArray<part::DynamicBase>::ContentArray;
 
-    [[nodiscard]] part::DynamicAccent appendAccent(DynamicValue value, const FractionValue& position)
+    part::DynamicAccent appendAccent(DynamicValue value, const FractionValue& position)
     { return appendWithType<part::DynamicAccent>(value, position); }
 
-    [[nodiscard]] part::DynamicGradual appendGradual(DynamicWedgeType wedgeType, const FractionValue& position,
+    part::DynamicGradual appendGradual(DynamicWedgeType wedgeType, const FractionValue& position,
         const MeasureRhythmicPosition::Required& endPosition)
     { return appendWithType<part::DynamicGradual>(wedgeType, position, endPosition); }
 
-    [[nodiscard]] part::DynamicImmediate appendImmediate(DynamicValue value, const FractionValue& position)
+    part::DynamicImmediate appendImmediate(DynamicValue value, const FractionValue& position)
     { return appendWithType<part::DynamicImmediate>(value, position); }
 
-    [[nodiscard]] part::DynamicRelative appendRelative(DynamicRelativeValue relativeValue, const FractionValue& position)
+    part::DynamicRelative appendRelative(DynamicRelativeValue relativeValue, const FractionValue& position)
     { return appendWithType<part::DynamicRelative>(relativeValue, position); }
 };
 
+} // namespace part
 } // namespace mnx

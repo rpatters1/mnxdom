@@ -112,7 +112,7 @@ private:
     std::optional<ArpeggioSpanEndpoints> resolveArpeggioSpanEndpoints(const part::ArpeggioBase& arpeggioBase);
     std::optional<ArpeggioSpanEndpoints> validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName);
     void validateArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Arpeggio>& arpeggios);
-    void validateDynamics(const mnx::DynamicsGroup& dynamics);
+    void validateDynamics(const mnx::part::DynamicsGroupArray& dynamics);
     void validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
@@ -532,7 +532,7 @@ void SemanticValidator::validateArpeggios(const mnx::part::Measure& measure, con
     }
 }
 
-void SemanticValidator::validateDynamics(const mnx::DynamicsGroup& dynamics)
+void SemanticValidator::validateDynamics(const mnx::part::DynamicsGroupArray& dynamics)
 {
     for (const auto dynamic : dynamics) {
         const auto dynamicType = dynamic.type();

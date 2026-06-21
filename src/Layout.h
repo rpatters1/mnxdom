@@ -26,7 +26,6 @@
 #include "ContentArray.h"
 
 namespace mnx {
-class LayoutContent;
 
 /**
  * @namespace mnx::layout
@@ -48,8 +47,8 @@ class LayoutContent : public ContentArray<LayoutContentObject>
 public:
     using ContentArray<LayoutContentObject>::ContentArray;
 
-    [[nodiscard]] Group appendGroup();
-    [[nodiscard]] Staff appendStaff();
+    Group appendGroup();
+    Staff appendStaff();
 };
 
 /**

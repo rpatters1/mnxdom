@@ -91,7 +91,7 @@ class TextContentObject;
 }
 
 namespace part {
-class DynamicBase;
+class DynamicGroupBase;
 }
 
 namespace validation {
@@ -759,7 +759,7 @@ inline ContainerType ArrayElementObject::container() const
                       || std::is_same_v<ContainerType, sequence::SequenceContentObject>
                       || std::is_same_v<ContainerType, layout::LayoutContentObject>
                       || std::is_same_v<ContainerType, text::TextContentObject>
-                      || std::is_same_v<ContainerType, part::DynamicBase>) {
+                      || std::is_same_v<ContainerType, part::DynamicGroupBase>) {
             return obj;
         } else {
             MNX_ASSERT_IF(obj.type() != ContainerType::ContentTypeValue) {

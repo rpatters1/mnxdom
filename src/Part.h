@@ -382,7 +382,7 @@ public:
     MNX_OPTIONAL_CHILD(Array<Arpeggio>, arpeggios);         ///< the arpeggios in this measure
     MNX_OPTIONAL_CHILD(Array<Beam>, beams);                 ///< the beams in this measure
     MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);       ///< the clef changes in this bar
-    MNX_OPTIONAL_CHILD(DynamicsGroupArray, dynamics);       ///< the dynamics in this measure
+    MNX_OPTIONAL_CHILD(DynamicGroupArray, dynamics);        ///< the dynamics in this measure
     MNX_OPTIONAL_CHILD(Array<NonArpeggio>, nonArpeggios);   ///< the non-arpeggios in this measure
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);             ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);         ///< sequences that contain all the musical details in each measure

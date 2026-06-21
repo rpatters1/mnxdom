@@ -63,6 +63,14 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, suffix);                     ///< Text following the dynamics representation, e.g., "subito"
     MNX_OPTIONAL_PROPERTY(DynamicValue, value);                     ///< The value of the dynamic. Currently the MNX spec allows any string here.
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this dynamic applies to.
+
+    /// @brief Calculates if this dynamic has immediate text.
+    /// If this value returns false, then it should be a hairpin with no preceding dynamic.
+    bool calcHasImmediateText() const
+    {
+        return value() || attackValue() || !prefix_or({}).empty() || !suffix_or({}).empty()
+            || (glyphs() && !glyphs().value().empty());
+    }
 };
 
 /**

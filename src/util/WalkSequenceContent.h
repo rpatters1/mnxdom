@@ -96,7 +96,7 @@ inline bool walkSequenceContent(Sequence sequence,
         c.elapsedTime += fullMeasureDuration;
     }
 
-    auto walkImpl = [&](ContentArray current,
+    auto walkImpl = [&](ContentArray<sequence::SequenceContentObject> current,
                         SequenceWalkContext& ctxRef,
                         auto&& self) -> bool
     {

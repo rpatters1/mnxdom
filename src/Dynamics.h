@@ -22,6 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
+#include "ContentArray.h"
 
 namespace mnx {
 namespace part {
@@ -33,6 +34,7 @@ namespace part {
 class DynamicGroup : public ContentObject
 {
 public:
+    std::string_view defaultType() const override { return ""; }
     /// @brief Constructor for existing Space objects
     DynamicGroup(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)

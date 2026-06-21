@@ -70,6 +70,7 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 class Object;
 class Document;
 class Base;
+class ContentObject;
 template <typename T> class Array;
 template <typename T> class Dictionary;
 
@@ -77,8 +78,21 @@ namespace sequence {
 class Event;
 class Space;
 class MultiNoteTremolo;
+class SequenceContentObject;
 class Tuplet;
 } // namespace sequence
+
+namespace layout {
+class LayoutContentObject;
+}
+
+namespace text {
+class TextContentObject;
+}
+
+namespace part {
+class DynamicGroup;
+}
 
 namespace validation {
 class SemanticValidator;
@@ -709,14 +723,13 @@ public:
     ContainerType container() const;
 };
 
+template <typename BaseContentT>
 class ContentArray;
 /// @brief Base class for objects that are elements of content arrays
 class ContentObject : public ArrayElementObject
 {
-protected:
-    virtual std::string_view defaultType() const;
-
 public:
+    virtual std::string_view defaultType() const { return ""; };
     using ArrayElementObject::ArrayElementObject;
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(std::string, type, std::string(defaultType()));   ///< determines our type in the JSON
@@ -740,15 +753,20 @@ public:
         return T(root(), pointer());
     }
 
+    template <typename BaseContentT>
     friend class ContentArray;
 };
 
 template <typename ContainerType>
 inline ContainerType ArrayElementObject::container() const
 {
-    if constexpr (std::is_base_of_v<ContainerType, ContentObject>) {
-        const auto obj = parent<Array<ArrayElementObject>>().template parent<ContentObject>();
-        if constexpr (std::is_same_v<ContainerType, ContentObject>) {
+    if constexpr (std::is_base_of_v<ContentObject, ContainerType>) {
+        const auto obj = parent<Array<ArrayElementObject>>().template parent<ContainerType>();
+        if constexpr (std::is_same_v<ContainerType, ContentObject>
+                      || std::is_same_v<ContainerType, sequence::SequenceContentObject>
+                      || std::is_same_v<ContainerType, layout::LayoutContentObject>
+                      || std::is_same_v<ContainerType, text::TextContentObject>
+                      || std::is_same_v<ContainerType, part::DynamicGroup>) {
             return obj;
         } else {
             MNX_ASSERT_IF(obj.type() != ContainerType::ContentTypeValue) {
@@ -761,101 +779,6 @@ inline ContainerType ArrayElementObject::container() const
         return parent<Array<ArrayElementObject>>().template parent<ContainerType>();
     }
 }
-
-/**
- * @class ContentArray
- * @brief Class for content arrays.
- *
- * Allows arrays of any type that derives from @ref ContentObject. An exampled of how
- * to get type instances is:
- * 
- * @code{.cpp}
- * auto next = content[index]; // gets the base ContentObject instance.
- * if (next.type() == layout::Group::ContentTypeValue) {
- *     auto group = next.get<layout::Group>(); // gets the instance typed as a layout::Group.
- *     // process group
- * } else if (next.type() == layout::Staff::ContentTypeValue) {
- *     auto staff = next.get<layout::Staff>(); // gets the instance typed as a layout::Staff.
- *     // process staff
- * }
- * @endcode
- *
- * To add instances to the array, use the template paramter to specify the type to add.
- *
- * @code{.cpp}
- * auto newElement = content.append<layout::Staff>();
- * @endcode
- *
- * The `append` method automatically gives the instance the correct `type` value.
- *
-*/
-class ContentArray : public Array<ContentObject>
-{
-public:
-    using BaseArray = Array<ContentObject>;     ///< The base array type
-    using BaseArray::BaseArray;  // Inherit constructors
-
-    /// @brief Retrieve an element from the array as a specific type
-    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    [[nodiscard]] T get(size_t index) const
-    {
-        this->checkIndex(index);
-        return operator[](index).get<T>();
-    }
-
-    /// @brief Append an element of the specified type (default overload for no-arg content types).
-    template <typename T,
-              std::enable_if_t<std::is_base_of_v<ContentObject, T> &&
-                               !std::is_same_v<T, sequence::Event> &&
-                               !std::is_same_v<T, sequence::Space> &&
-                               !std::is_same_v<T, sequence::MultiNoteTremolo> &&
-                               !std::is_same_v<T, sequence::Tuplet>, int> = 0>
-    T append()
-    {
-        return appendWithType<T>();
-    }
-
-    /// @brief Append overload entry point for explicitly specialized argful content types.
-    template <typename T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<ContentObject, T> && (sizeof...(Args) > 0), int> = 0>
-    T append(const Args&... args)
-    {
-        static_assert(!std::is_same_v<T, T>,
-                      "ContentArray::append requires explicit specialization for each content type.");
-        return appendWithType<T>(args...);
-    }
-
-    // Prevent untemplated append() calls; callers must use append<T>(...).
-    ContentObject append(...) = delete;
-
-private:
-    template <typename T, typename... Args>
-    T appendWithType(Args&&... args)
-    {
-        static_assert(std::is_base_of_v<ContentObject, T>,
-                      "ContentArray::appendWithType requires a ContentObject-derived type.");
-        auto result = BaseArray::append<T>(std::forward<Args>(args)...);
-        const ContentObject& contentObject = result;
-        if (T::ContentTypeValue != contentObject.defaultType()) {
-            result.set_type(std::string(T::ContentTypeValue));
-        }
-        return result;
-    }
-
-    /// @brief Constructs an object of type `T` if its type matches the JSON type
-    /// @throws std::invalid_argument if there is a type mismatch
-    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    [[nodiscard]] T getTypedObject(size_t index) const
-    {
-        this->checkIndex(index);
-        auto element = (*this)[index];
-        if (element.type() != T::ContentTypeValue) {
-            throw std::invalid_argument("Type mismatch: expected " + std::string(T::ContentTypeValue) +
-                                        ", got " + element.type());
-        }
-        return T(root(), pointer() / std::to_string(index));
-    }
-};
 
 /**
  * @class EnumStringMapping

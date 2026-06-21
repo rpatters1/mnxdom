@@ -58,10 +58,10 @@ struct EnclosingKey<Sequence, scope::Default> {
 template std::optional<Sequence> Base::getEnclosingElement<Sequence>() const;
 
 template <>
-struct EnclosingKey<ContentObject, scope::SequenceContent> {
+struct EnclosingKey<sequence::SequenceContentObject, scope::SequenceContent> {
     static constexpr std::array<std::string_view, 7> value = { "parts", "*", "measures", "*", "sequences", "*", "content" };
 };
-template std::optional<ContentObject> Base::getEnclosingElement<ContentObject, scope::SequenceContent>() const;
+template std::optional<sequence::SequenceContentObject> Base::getEnclosingElement<sequence::SequenceContentObject, scope::SequenceContent>() const;
 
 #endif // DOXYGEN_SHOULD_IGNORE_THIS
 
@@ -120,15 +120,6 @@ std::optional<T> Base::getEnclosingElement() const
 Document Base::document() const
 {
     return Document(root());
-}
-
-// *************************
-// ***** ContentObject *****
-// *************************
-
-std::string_view ContentObject::defaultType() const
-{
-    return sequence::Event::ContentTypeValue;
 }
 
 // ********************
@@ -607,7 +598,7 @@ bool layout::Group::calcIsPartGroup() const
 {
     std::set<std::string> partIds;
     bool hasEmptyPartId = false;
-    const auto collectPartIds = [&](const auto& self, const ContentArray& groupContent) -> void {
+    const auto collectPartIds = [&](const auto& self, const ContentArray<layout::LayoutContentObject>& groupContent) -> void {
         for (auto element : groupContent) {
             if (element.type() == layout::Group::ContentTypeValue) {
                 self(self, element.get<layout::Group>().content());
@@ -710,7 +701,7 @@ bool sequence::Event::isGrace() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "grace" in that case, which is all
     // that matters here.
-    auto container = this->container<ContentObject>();
+    auto container = this->container<sequence::SequenceContentObject>();
     return container.type() == sequence::Grace::ContentTypeValue;
 }
 
@@ -720,7 +711,7 @@ bool sequence::Event::isTremolo() const
     // but it does not matter for the purposes of this function. The type()
     // function returns a value other than "tremolo" in that case, which is all
     // that matters here.
-    auto container = this->container<ContentObject>();
+    auto container = this->container<sequence::SequenceContentObject>();
     return container.type() == sequence::MultiNoteTremolo::ContentTypeValue;
 }
 

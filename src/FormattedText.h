@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "BaseTypes.h"
+#include "ContentArray.h"
 
 namespace mnx {
 
@@ -46,11 +47,9 @@ namespace text {
  */
 class TextContentObject : public ContentObject
 {
-protected:
-    std::string_view defaultType() const override { return "text"; }
-
 public:
     using ContentObject::ContentObject;
+    std::string_view defaultType() const override { return "text"; }
 };
 
 /**
@@ -158,20 +157,22 @@ public:
  * @class FormattedText
  * @brief Container for formatted-text content objects.
  */
-class FormattedText : public ContentArray
+class FormattedText : public ContentArray<text::TextContentObject>
 {
 public:
-    using ContentArray::ContentArray;
+    using ContentArray<text::TextContentObject>::ContentArray;
 };
 
 template <>
-inline text::Text ContentArray::append<text::Text, std::string>(const std::string& text)
+template <>
+inline text::Text ContentArray<text::TextContentObject>::append<text::Text, std::string>(const std::string& text)
 {
     return appendWithType<text::Text>(text);
 }
 
 template <>
-inline text::Smufl ContentArray::append<text::Smufl, std::vector<std::string>>(const std::vector<std::string>& glyphs)
+template <>
+inline text::Smufl ContentArray<text::TextContentObject>::append<text::Smufl, std::vector<std::string>>(const std::vector<std::string>& glyphs)
 {
     return appendWithType<text::Smufl>(glyphs);
 }

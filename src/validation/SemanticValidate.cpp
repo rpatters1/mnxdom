@@ -107,12 +107,12 @@ public:
     }
 
 private:
-    void validateSequenceContent(const mnx::ContentArray& contentArray, const Base& location,
+    void validateSequenceContent(const mnx::ContentArray<mnx::sequence::SequenceContentObject>& contentArray, const Base& location,
         FractionValue expectedDuration, bool allowEventsOnly = false, bool requireExactDuration = false, FractionValue* actualElapsedOut = nullptr);
     std::optional<ArpeggioSpanEndpoints> resolveArpeggioSpanEndpoints(const part::ArpeggioBase& arpeggioBase);
     std::optional<ArpeggioSpanEndpoints> validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName);
     void validateArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Arpeggio>& arpeggios);
-    void validateDynamics(const mnx::ContentArray& dynamics);
+    void validateDynamics(const mnx::ContentArray<mnx::part::DynamicGroup>& dynamics);
     void validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
@@ -301,7 +301,7 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
     }
 }
 
-void SemanticValidator::validateSequenceContent(const mnx::ContentArray& contentArray, const Base& location,
+void SemanticValidator::validateSequenceContent(const mnx::ContentArray<mnx::sequence::SequenceContentObject>& contentArray, const Base& location,
     FractionValue expectedDuration, bool allowEventsOnly, bool requireExactDuration, FractionValue* actualElapsedOut)
 {
     if (actualElapsedOut) {
@@ -532,7 +532,7 @@ void SemanticValidator::validateArpeggios(const mnx::part::Measure& measure, con
     }
 }
 
-void SemanticValidator::validateDynamics(const mnx::ContentArray& dynamics)
+void SemanticValidator::validateDynamics(const mnx::ContentArray<mnx::part::DynamicGroup>& dynamics)
 {
     for (const auto dynamic : dynamics) {
         const auto dynamicType = dynamic.type();
@@ -708,7 +708,7 @@ void SemanticValidator::validateLayouts()
 {
     if (auto layouts = document.layouts()) {  // layouts are *not* required in MNX
         for (const auto layout : layouts.value()) {
-            auto validateContent = [&](auto&& self, const mnx::ContentArray& content) -> void {
+            auto validateContent = [&](auto&& self, const mnx::ContentArray<mnx::layout::LayoutContentObject>& content) -> void {
                 for (const auto element : content) {
                     if (element.type() == mnx::layout::Group::ContentTypeValue) {
                         auto group = element.get<mnx::layout::Group>();

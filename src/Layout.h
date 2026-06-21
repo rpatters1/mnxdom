@@ -23,6 +23,7 @@
 
 #include "Enumerations.h"
 #include "BaseTypes.h"
+#include "ContentArray.h"
 
 namespace mnx {
 
@@ -31,6 +32,13 @@ namespace mnx {
  * @brief classes related to the root layouts array
  */
 namespace layout {
+
+class LayoutContentObject : public ContentObject
+{
+public:
+    using ContentObject::ContentObject;
+    std::string_view defaultType() const override { return ""; }
+};
 
 /**
  * @class StaffSource
@@ -79,16 +87,16 @@ public:
  * @class Staff
  * @brief Represents a single staff instance within an MNX layout.
  */
-class Staff : public ContentObject
+class Staff : public LayoutContentObject
 {
 public:
-    using ContentObject::ContentObject;
+    using LayoutContentObject::LayoutContentObject;
 
     /// @brief Creates a new Staff class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     Staff(Base& parent, std::string_view key)
-        : ContentObject(parent, key)
+        : LayoutContentObject(parent, key)
     {
         // required children
         create_sources();
@@ -106,23 +114,23 @@ public:
  * @class Group
  * @brief Represents a groups of staves within an MNX layout.
  */
-class Group : public ContentObject
+class Group : public LayoutContentObject
 {
 public:
-    using ContentObject::ContentObject;
+    using LayoutContentObject::LayoutContentObject;
 
     /// @brief Creates a new Group class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     Group(Base& parent, std::string_view key)
-        : ContentObject(parent, key)
+        : LayoutContentObject(parent, key)
     {
         // required children
         create_content();
     }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(StaffGroupBarlineStyle, barlineStyle, StaffGroupBarlineStyle::Instrument); ///< barline override settings
-    MNX_REQUIRED_CHILD(ContentArray, content);      ///< Required child containing the layout content (groups and staves).
+    MNX_REQUIRED_CHILD(ContentArray<LayoutContentObject>, content);      ///< Required child containing the layout content (groups and staves).
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< Label to be rendered to the left of the group
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);    ///< The symbol down the left side.
 
@@ -156,7 +164,7 @@ public:
         create_content();
     }
 
-    MNX_REQUIRED_CHILD(ContentArray, content);      ///< Required child containing the layout content (groups and staves).
+    MNX_REQUIRED_CHILD(ContentArray<layout::LayoutContentObject>, content);      ///< Required child containing the layout content (groups and staves).
 
     inline static constexpr std::string_view JsonSchemaTypeName = "system-layout";     ///< required for mapping
 };

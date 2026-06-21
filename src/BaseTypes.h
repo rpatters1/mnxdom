@@ -70,7 +70,7 @@ using json_pointer = json::json_pointer;    ///< JSON pointer class for MNX
 class Object;
 class Document;
 class Base;
-class ContentObject;
+template <typename T> class ContentObject;
 template <typename T> class Array;
 template <typename T> class Dictionary;
 
@@ -91,7 +91,7 @@ class TextContentObject;
 }
 
 namespace part {
-class DynamicGroup;
+class DynamicBase;
 }
 
 namespace validation {
@@ -726,6 +726,7 @@ public:
 template <typename BaseContentT>
 class ContentArray;
 /// @brief Base class for objects that are elements of content arrays
+template <typename BaseContentT>
 class ContentObject : public ArrayElementObject
 {
 public:
@@ -734,17 +735,10 @@ public:
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(std::string, type, std::string(defaultType()));   ///< determines our type in the JSON
 
-    /// @brief Retrieve an element as a specific type
-    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    [[nodiscard]] T get() const
-    {
-        return getTypedObject<T>();
-    }
-
     /// @brief Constructs an object of type `T` if its type matches the JSON type
     /// @throws std::invalid_argument if there is a type mismatch
-    template <typename T, std::enable_if_t<std::is_base_of_v<ContentObject, T>, int> = 0>
-    [[nodiscard]] T getTypedObject() const
+    template <typename T, std::enable_if_t<std::is_base_of_v<BaseContentT, T>, int> = 0>
+    [[nodiscard]] T get() const
     {
         if (type() != T::ContentTypeValue) {
             throw std::invalid_argument("Type mismatch: expected " + std::string(T::ContentTypeValue) +
@@ -753,20 +747,19 @@ public:
         return T(root(), pointer());
     }
 
-    template <typename BaseContentT>
-    friend class ContentArray;
+    friend class ContentArray<BaseContentT>;
 };
 
 template <typename ContainerType>
 inline ContainerType ArrayElementObject::container() const
 {
-    if constexpr (std::is_base_of_v<ContentObject, ContainerType>) {
+    if constexpr (std::is_base_of_v<ContentObject<ContainerType>, ContainerType>) {
         const auto obj = parent<Array<ArrayElementObject>>().template parent<ContainerType>();
-        if constexpr (std::is_same_v<ContainerType, ContentObject>
+        if constexpr (std::is_same_v<ContainerType, ContentObject<ContainerType>>
                       || std::is_same_v<ContainerType, sequence::SequenceContentObject>
                       || std::is_same_v<ContainerType, layout::LayoutContentObject>
                       || std::is_same_v<ContainerType, text::TextContentObject>
-                      || std::is_same_v<ContainerType, part::DynamicGroup>) {
+                      || std::is_same_v<ContainerType, part::DynamicBase>) {
             return obj;
         } else {
             MNX_ASSERT_IF(obj.type() != ContainerType::ContentTypeValue) {

@@ -45,7 +45,7 @@ namespace text {
  * @class TextContentObject
  * @brief Base class for formatted-text content objects.
  */
-class TextContentObject : public ContentObject
+class TextContentObject : public ContentObject<TextContentObject
 {
 public:
     using ContentObject::ContentObject;
@@ -161,20 +161,12 @@ class FormattedText : public ContentArray<text::TextContentObject>
 {
 public:
     using ContentArray<text::TextContentObject>::ContentArray;
+
+    [[nodiscard]] text::Smufl appendSmufl(const std::vector<std::string>& glyphs)
+    { return appendWithType<text::Smufl>(glyphs); }
+
+    [[nodiscard]] text::Text appendText(const std::string& text)
+    { return appendWithType<text::Text>(text); }
 };
-
-template <>
-template <>
-inline text::Text ContentArray<text::TextContentObject>::append<text::Text, std::string>(const std::string& text)
-{
-    return appendWithType<text::Text>(text);
-}
-
-template <>
-template <>
-inline text::Smufl ContentArray<text::TextContentObject>::append<text::Smufl, std::vector<std::string>>(const std::vector<std::string>& glyphs)
-{
-    return appendWithType<text::Smufl>(glyphs);
-}
 
 } // namespace mnx

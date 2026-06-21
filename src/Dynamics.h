@@ -25,18 +25,23 @@
 #include "ContentArray.h"
 
 namespace mnx {
+class DynamicsGroup;
 namespace part {
+class DynamicAccent;
+class DynamicGradual;
+class DynamicImmediate;
+class DynamicRelative;
 
 /**
- * @class DynamicGroup
+ * @class DynamicBase
  * @brief Base class for dynamics.
  */
-class DynamicGroup : public ContentObject
+class DynamicBase : public ContentObject<DynamicBase>
 {
 public:
     std::string_view defaultType() const override { return ""; }
     /// @brief Constructor for existing Space objects
-    DynamicGroup(const std::shared_ptr<json>& root, json_pointer pointer)
+    DynamicBase(const std::shared_ptr<json>& root, json_pointer pointer)
         : ContentObject(root, pointer)
     {
     }
@@ -46,7 +51,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param value The value of the dynamic
     /// @param position The position within the measure
-    DynamicGroup(Base& parent, std::string_view key, const FractionValue& position)
+    DynamicBase(Base& parent, std::string_view key, const FractionValue& position)
         : ContentObject(parent, key)
     {
         create_position(position);
@@ -79,7 +84,7 @@ public:
  * @class DynamicAccent
  * @brief Immediate dynamics (e.g., ff, ppp)
  */
-class DynamicAccent : public DynamicGroup
+class DynamicAccent : public DynamicBase
 {
 public:
     /// @brief initializer class for #DynamicAccent
@@ -91,7 +96,7 @@ public:
 
     /// @brief Constructor for existing Space objects
     DynamicAccent(const std::shared_ptr<json>& root, json_pointer pointer)
-        : DynamicGroup(root, pointer)
+        : DynamicBase(root, pointer)
     {}
 
     /// @brief Creates a new Space class as a child of a JSON element.
@@ -100,7 +105,7 @@ public:
     /// @param value The value of the dynamic
     /// @param position The position within the measure
     DynamicAccent(Base& parent, std::string_view key, DynamicValue value, const FractionValue& position)
-        : DynamicGroup(parent, key, position)
+        : DynamicBase(parent, key, position)
     {
         set_value(value);
     }
@@ -118,7 +123,7 @@ public:
  * @class DynamicGradual
  * @brief Gradual dynamics (hairpins)
  */
-class DynamicGradual : public DynamicGroup
+class DynamicGradual : public DynamicBase
 {
 public:
     /// @brief initializer class for #DynamicGradual
@@ -132,7 +137,7 @@ public:
 
     /// @brief Constructor for existing Space objects
     DynamicGradual(const std::shared_ptr<json>& root, json_pointer pointer)
-        : DynamicGroup(root, pointer)
+        : DynamicBase(root, pointer)
     {
     }
 
@@ -144,7 +149,7 @@ public:
     /// @param end The end position of the gradual dynamic
     DynamicGradual(Base& parent, std::string_view key, DynamicWedgeType wedgeType, const FractionValue& position,
         const MeasureRhythmicPosition::Required& endPosition)
-        : DynamicGroup(parent, key, position)
+        : DynamicBase(parent, key, position)
     {
         create_end(endPosition.measureId, endPosition.position);
         set_wedgeType(wedgeType);
@@ -171,7 +176,7 @@ public:
  * @class DynamicImmediate
  * @brief Immediate dynamics (e.g., ff, ppp)
  */
-class DynamicImmediate : public DynamicGroup
+class DynamicImmediate : public DynamicBase
 {
 public:
     /// @brief initializer class for #DynamicImmediate
@@ -183,7 +188,7 @@ public:
 
     /// @brief Constructor for existing Space objects
     DynamicImmediate(const std::shared_ptr<json>& root, json_pointer pointer)
-        : DynamicGroup(root, pointer)
+        : DynamicBase(root, pointer)
     {}
 
     /// @brief Creates a new Space class as a child of a JSON element.
@@ -192,7 +197,7 @@ public:
     /// @param value The value of the dynamic
     /// @param position The position within the measure
     DynamicImmediate(Base& parent, std::string_view key, DynamicValue value, const FractionValue& position)
-        : DynamicGroup(parent, key, position)
+        : DynamicBase(parent, key, position)
     {
         set_value(value);
     }
@@ -210,7 +215,7 @@ public:
  * @class DynamicRelative
  * @brief Relative dynamics (e.g., più f)
  */
-class DynamicRelative : public DynamicGroup
+class DynamicRelative : public DynamicBase
 {
 public:
     /// @brief initializer class for #DynamicRelative
@@ -222,7 +227,7 @@ public:
 
     /// @brief Constructor for existing Space objects
     DynamicRelative(const std::shared_ptr<json>& root, json_pointer pointer)
-        : DynamicGroup(root, pointer)
+        : DynamicBase(root, pointer)
     {}
 
     /// @brief Creates a new Space class as a child of a JSON element.
@@ -231,7 +236,7 @@ public:
     /// @param relativeValue The relative change of the dynamic
     /// @param position The position within the measure
     DynamicRelative(Base& parent, std::string_view key, DynamicRelativeValue relativeValue, const FractionValue& position)
-        : DynamicGroup(parent, key, position)
+        : DynamicBase(parent, key, position)
     {
         set_relativeValue(relativeValue);
     }
@@ -248,4 +253,24 @@ public:
 };
 
 } // namespace part
+
+class DynamicsGroup : public ContentArray<part::DynamicBase>
+{
+public:
+    using ContentArray<part::DynamicBase>::ContentArray;
+
+    [[nodiscard]] part::DynamicAccent appendAccent(DynamicValue value, const FractionValue& position)
+    { return appendWithType<part::DynamicAccent>(value, position); }
+
+    [[nodiscard]] part::DynamicGradual appendGradual(DynamicWedgeType wedgeType, const FractionValue& position,
+        const MeasureRhythmicPosition::Required& endPosition)
+    { return appendWithType<part::DynamicGradual>(wedgeType, position, endPosition); }
+
+    [[nodiscard]] part::DynamicImmediate appendImmediate(DynamicValue value, const FractionValue& position)
+    { return appendWithType<part::DynamicImmediate>(value, position); }
+
+    [[nodiscard]] part::DynamicRelative appendRelative(DynamicRelativeValue relativeValue, const FractionValue& position)
+    { return appendWithType<part::DynamicRelative>(relativeValue, position); }
+};
+
 } // namespace mnx

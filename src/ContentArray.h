@@ -43,14 +43,6 @@ namespace mnx {
  * }
  * @endcode
  *
- * To add instances to the array, use the template paramter to specify the type to add.
- *
- * @code{.cpp}
- * auto newElement = content.append<layout::Staff>();
- * @endcode
- *
- * The `append` method automatically gives the instance the correct `type` value.
- *
 */
 template <typename BaseContentT>
 class ContentArray : public Array<BaseContentT>
@@ -67,29 +59,7 @@ public:
         return this->operator[](index).template get<T>();
     }
 
-    /// @brief Append an element of the specified type (default overload for no-arg content types).
-    template <typename T,
-              std::enable_if_t<std::is_base_of_v<BaseContentT, T> &&
-                               !std::is_same_v<T, sequence::Event> &&
-                               !std::is_same_v<T, sequence::Space> &&
-                               !std::is_same_v<T, sequence::MultiNoteTremolo> &&
-                               !std::is_same_v<T, sequence::Tuplet>, int> = 0>
-    T append()
-    {
-        return appendWithType<T>();
-    }
-
-    /// @brief Append overload entry point for explicitly specialized argful content types.
-    template <typename T, typename... Args,
-              std::enable_if_t<std::is_base_of_v<BaseContentT, T> && (sizeof...(Args) > 0), int> = 0>
-    T append(const Args&... args)
-    {
-        static_assert(!std::is_same_v<T, T>,
-                      "ContentArray::append requires explicit specialization for each content type.");
-        return appendWithType<T>(args...);
-    }
-
-    // Prevent untemplated append() calls; callers must use append<T>(...).
+    // Prevent inherited Array::append(...) overloads from being used on content arrays.
     BaseContentT append(...) = delete;
 
 protected:

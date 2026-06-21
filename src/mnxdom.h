@@ -65,8 +65,6 @@
 #include "Part.h"
 #include "Score.h"
 #include "Document.h"
-#include "ContentArrayAppendOverloads.h"
-
 #include "validation/Validation.h"
 #include "util/EntityMap.h"
 #include "util/LayoutHelpers.h"

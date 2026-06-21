@@ -598,7 +598,7 @@ bool layout::Group::calcIsPartGroup() const
 {
     std::set<std::string> partIds;
     bool hasEmptyPartId = false;
-    const auto collectPartIds = [&](const auto& self, const ContentArray<layout::LayoutContentObject>& groupContent) -> void {
+    const auto collectPartIds = [&](const auto& self, const layout::LayoutContent& groupContent) -> void {
         for (auto element : groupContent) {
             if (element.type() == layout::Group::ContentTypeValue) {
                 self(self, element.get<layout::Group>().content());

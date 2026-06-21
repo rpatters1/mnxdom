@@ -107,12 +107,12 @@ public:
     }
 
 private:
-    void validateSequenceContent(const mnx::ContentArray<mnx::sequence::SequenceContentObject>& contentArray, const Base& location,
+    void validateSequenceContent(const mnx::sequence::SequenceContent& contentArray, const Base& location,
         FractionValue expectedDuration, bool allowEventsOnly = false, bool requireExactDuration = false, FractionValue* actualElapsedOut = nullptr);
     std::optional<ArpeggioSpanEndpoints> resolveArpeggioSpanEndpoints(const part::ArpeggioBase& arpeggioBase);
     std::optional<ArpeggioSpanEndpoints> validateArpeggioBase(const mnx::part::Measure& measure, const part::ArpeggioBase& arpeggioBase, std::string_view objectName);
     void validateArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Arpeggio>& arpeggios);
-    void validateDynamics(const mnx::ContentArray<mnx::part::DynamicGroup>& dynamics);
+    void validateDynamics(const mnx::DynamicsGroup& dynamics);
     void validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
@@ -301,7 +301,7 @@ void SemanticValidator::validateTies(const mnx::Array<mnx::sequence::Tie>& ties,
     }
 }
 
-void SemanticValidator::validateSequenceContent(const mnx::ContentArray<mnx::sequence::SequenceContentObject>& contentArray, const Base& location,
+void SemanticValidator::validateSequenceContent(const mnx::sequence::SequenceContent& contentArray, const Base& location,
     FractionValue expectedDuration, bool allowEventsOnly, bool requireExactDuration, FractionValue* actualElapsedOut)
 {
     if (actualElapsedOut) {
@@ -532,7 +532,7 @@ void SemanticValidator::validateArpeggios(const mnx::part::Measure& measure, con
     }
 }
 
-void SemanticValidator::validateDynamics(const mnx::ContentArray<mnx::part::DynamicGroup>& dynamics)
+void SemanticValidator::validateDynamics(const mnx::DynamicsGroup& dynamics)
 {
     for (const auto dynamic : dynamics) {
         const auto dynamicType = dynamic.type();
@@ -552,6 +552,10 @@ void SemanticValidator::validateDynamics(const mnx::ContentArray<mnx::part::Dyna
             requireField(dynamicJson.contains("relativeValue"), "relativeValue");
         } else if (dynamicType == mnx::part::DynamicAccent::ContentTypeValue) {
             requireField(dynamicJson.contains("value"), "value");
+        }
+
+        if (!dynamic.calcHasImmediateText() && dynamicType != mnx::part::DynamicGradual::ContentTypeValue) {
+            addError("Dynamic of type \"" + dynamicType + "\" has none of value, attackValue, prefix, or suffix.", dynamic);
         }
     }
 }

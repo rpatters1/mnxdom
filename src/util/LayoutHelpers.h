@@ -168,7 +168,7 @@ flattenLayoutStaves(const Layout& layout)
     std::vector<layout::Staff> result;
     result.reserve(content.size()); // lower bound; groups may expand further
 
-    const auto walk = [&](auto&& self, const ContentArray<layout::LayoutContentObject>& content) -> std::optional<bool> {
+    const auto walk = [&](auto&& self, const layout::LayoutContent& content) -> std::optional<bool> {
         for (auto elem : content) {
             if (elem.type() == layout::Group::ContentTypeValue) {
                 layout::Group g = elem.get<layout::Group>();
@@ -337,7 +337,7 @@ buildLayoutSpans(const mnx::Layout& layout)
     // - outer std::optional: hard failure (unsupported element) if empty
     // - inner std::optional: no staves in subtree if empty; otherwise first/last staff indices
     const auto walk =
-        [&](auto&& self, const ContentArray<layout::LayoutContentObject>& arr, size_t depth)
+        [&](auto&& self, const layout::LayoutContent& arr, size_t depth)
             -> std::optional<std::optional<std::pair<size_t,size_t>>>
     {
         std::optional<size_t> first;

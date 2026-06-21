@@ -29,18 +29,37 @@
 
 namespace mnx {
 class Sequence; // forward declaration
+class SequenceContent;
 
 /**
  * @namespace mnx::sequence
  * @brief classes related to sequences in the part measure
  */
 namespace sequence {
+class Event;
+class Grace;
+class MultiNoteTremolo;
+class Space;
+class Tuplet;
 
-class SequenceContentObject : public ContentObject
+class SequenceContentObject : public ContentObject<SequenceContentObject>
 {
 public:
     using ContentObject::ContentObject;
     std::string_view defaultType() const override { return "event"; }
+};
+
+class SequenceContent : public ContentArray<SequenceContentObject>
+{
+public:
+    using ContentArray<SequenceContentObject>::ContentArray;
+
+    [[nodiscard]] Event appendEvent(NoteValueBase base, unsigned dots = 0);
+    [[nodiscard]] Grace appendGrace();
+    [[nodiscard]] MultiNoteTremolo appendMultiNoteTremolo(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant);
+    [[nodiscard]] Space appendSpace(const FractionValue& duration);
+    [[nodiscard]] Tuplet appendTuplet(const NoteValueQuantity::Required& innerNoteValueQuant,
+        const NoteValueQuantity::Required& outerNoteValueQuant);
 };
 
 /**
@@ -559,7 +578,7 @@ public:
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                      ///< color to use when rendering the grace note sequence
-    MNX_REQUIRED_CHILD(ContentArray<SequenceContentObject>, content);                      ///< array of events
+    MNX_REQUIRED_CHILD(SequenceContent, content);                      ///< array of events
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(GraceType, graceType, GraceType::StealPrevious); ///< The playback type of the grace note.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, slash, true);          ///< whether to show a slash on the grace note
 
@@ -606,7 +625,7 @@ public:
     static Required make(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
     { return { numberOfMarks, noteValueQuant }; }
 
-    MNX_REQUIRED_CHILD(ContentArray<SequenceContentObject>, content);                      ///< array of events
+    MNX_REQUIRED_CHILD(SequenceContent, content);                      ///< array of events
     MNX_OPTIONAL_CHILD(
         NoteValue, individualDuration,
         (NoteValueBase, base), (unsigned, dots)); ///< optional value that specifies the individual duration of each event in the tremolo.
@@ -658,7 +677,7 @@ public:
     { return { innerNoteValueQuant, outerNoteValueQuant }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style
-    MNX_REQUIRED_CHILD(ContentArray<SequenceContentObject>, content);                      ///< array of events, tuplets, and grace notes
+    MNX_REQUIRED_CHILD(SequenceContent, content);                      ///< array of events, tuplets, and grace notes
     MNX_REQUIRED_CHILD(NoteValueQuantity, inner,
         (unsigned, count), (const NoteValue::Required&, noteValue)); ///< Inner quantity: **3 quarters in the time** of 2 quarters
     MNX_REQUIRED_CHILD(NoteValueQuantity, outer,
@@ -696,6 +715,22 @@ public:
     MNX_OPTIONAL_CHILD(NoteValue, visualDuration,
         (NoteValueBase, base), (unsigned, dots));   ///< the visual duration of the full-measure rest (defaults to importer defaults).
 };
+inline Event SequenceContent::appendEvent(NoteValueBase base, unsigned dots)
+{ return appendWithType<Event>(base, dots); }
+
+inline Grace SequenceContent::appendGrace()
+{ return appendWithType<Grace>(); }
+
+inline MultiNoteTremolo SequenceContent::appendMultiNoteTremolo(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
+{ return appendWithType<MultiNoteTremolo>(numberOfMarks, noteValueQuant); }
+
+inline Space SequenceContent::appendSpace(const FractionValue& duration)
+{ return appendWithType<Space>(duration); }
+
+inline Tuplet SequenceContent::appendTuplet(const NoteValueQuantity::Required& innerNoteValueQuant,
+    const NoteValueQuantity::Required& outerNoteValueQuant)
+{ return appendWithType<Tuplet>(innerNoteValueQuant, outerNoteValueQuant); }
+
 } // namespace sequence
 
 /**
@@ -720,7 +755,7 @@ public:
         create_content();
     }
 
-    MNX_REQUIRED_CHILD(ContentArray<sequence::SequenceContentObject>, content);          ///< the content of the sequence
+    MNX_REQUIRED_CHILD(sequence::SequenceContent, content);          ///< the content of the sequence
     MNX_OPTIONAL_CHILD(sequence::FullMeasureRest, fullMeasure); ///< If present, this sequence is a forced full-measure rest.
     /// @todo `orient` property
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number for this sequence

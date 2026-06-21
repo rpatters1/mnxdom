@@ -26,18 +26,30 @@
 #include "ContentArray.h"
 
 namespace mnx {
+class LayoutContent;
 
 /**
  * @namespace mnx::layout
  * @brief classes related to the root layouts array
  */
 namespace layout {
+class Group;
+class Staff;
 
-class LayoutContentObject : public ContentObject
+class LayoutContentObject : public ContentObject<LayoutContentObject>
 {
 public:
     using ContentObject::ContentObject;
     std::string_view defaultType() const override { return ""; }
+};
+
+class LayoutContent : public ContentArray<LayoutContentObject>
+{
+public:
+    using ContentArray<LayoutContentObject>::ContentArray;
+
+    [[nodiscard]] Group appendGroup();
+    [[nodiscard]] Staff appendStaff();
 };
 
 /**
@@ -130,7 +142,7 @@ public:
     }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(StaffGroupBarlineStyle, barlineStyle, StaffGroupBarlineStyle::Instrument); ///< barline override settings
-    MNX_REQUIRED_CHILD(ContentArray<LayoutContentObject>, content);      ///< Required child containing the layout content (groups and staves).
+    MNX_REQUIRED_CHILD(LayoutContent, content);      ///< Required child containing the layout content (groups and staves).
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< Label to be rendered to the left of the group
     MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);    ///< The symbol down the left side.
 
@@ -142,6 +154,12 @@ public:
 
     inline static constexpr std::string_view ContentTypeValue = "group"; ///< type value that identifies the type within the content array
 };
+
+inline Group LayoutContent::appendGroup()
+{ return appendWithType<Group>(); }
+
+inline Staff LayoutContent::appendStaff()
+{ return appendWithType<Staff>(); }
 
 } // namespace layout
 
@@ -164,7 +182,7 @@ public:
         create_content();
     }
 
-    MNX_REQUIRED_CHILD(ContentArray<layout::LayoutContentObject>, content);      ///< Required child containing the layout content (groups and staves).
+    MNX_REQUIRED_CHILD(layout::LayoutContent, content);      ///< Required child containing the layout content (groups and staves).
 
     inline static constexpr std::string_view JsonSchemaTypeName = "system-layout";     ///< required for mapping
 };

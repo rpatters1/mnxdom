@@ -100,21 +100,20 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param layoutId The id of the layout to use for the layout change
-    /// @param measureId The measure index of the measure of the position
-    /// @param position The position of the LayoutChange within the measure
-    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId, const std::string& measureId, const FractionValue& position)
+    /// @param location The location where the layout change takes effect
+    LayoutChange(Base& parent, std::string_view key, const std::string& layoutId, const MeasureRhythmicPosition::Required& location)
         : ArrayElementObject(parent, key)
     {
         set_layout(layoutId);
-        create_location(measureId, position);
+        create_location(location.measureId, location.position);
     }
 
     /// @brief Implicit conversion back to Required.
     operator Required() const { return { layout(), location().measure(), location().position().fraction() }; }
 
     /// @brief Create a Required instance for #LayoutChange.
-    static Required make(const std::string& layoutId, const std::string& measureId, const FractionValue& position)
-    { return { layoutId, measureId, position }; }
+    static Required make(const std::string& layoutId, const MeasureRhythmicPosition::Required& location)
+    { return { layoutId, location.measureId, location.position }; }
 
     MNX_REQUIRED_PROPERTY(std::string, layout);             ///< Layout id, referring to an element in the root-level layouts array.
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, location,

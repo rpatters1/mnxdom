@@ -163,8 +163,8 @@ public:
     }
 
     /// @brief Create a Required instance for #DynamicGradual.
-    static Required make(DynamicWedgeType wedgeType, const FractionValue& position, const std::string& endMeasureId, const FractionValue& endPosition)
-    { return { wedgeType, position, endMeasureId, endPosition }; }
+    static Required make(DynamicWedgeType wedgeType, const FractionValue& position, const MeasureRhythmicPosition::Required& endPosition)
+    { return { wedgeType, position, endPosition.measureId, endPosition.position }; }
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
         (const std::string&, measureId), (const FractionValue&, position));     ///< the end position of the hairpin dynamic; set graceIndex to 0 to include preceding grace notes at the end boundary

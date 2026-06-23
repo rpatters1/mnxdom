@@ -46,7 +46,7 @@ TEST(Scores, FromScratch)
     EXPECT_EQ(system.measure(), "m1");
     EXPECT_EQ(page.systems().append("m4").measure(), "m4");
     auto layoutChanges = system.ensure_layoutChanges();
-    auto layoutChange = layoutChanges.append("layout1", "m2", FractionValue(3, 8));
+    auto layoutChange = layoutChanges.append("layout1", mnx::MeasureRhythmicPosition::make("m2", FractionValue(3, 8)));
     EXPECT_EQ(layoutChange.layout(), "layout1");
     EXPECT_EQ(layoutChange.location().measure(), "m2");
 

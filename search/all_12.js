@@ -14,7 +14,7 @@ var searchData=
   ['sequencewalkcontext_11',['SequenceWalkContext',['../structmnx_1_1util_1_1SequenceWalkContext.html',1,'mnx::util']]],
   ['sequencewalkhooks_12',['SequenceWalkHooks',['../structmnx_1_1util_1_1SequenceWalkHooks.html',1,'mnx::util']]],
   ['setchild_13',['setChild',['../classmnx_1_1Base.html#a9e9cecbea5088d0c63fb0f92eb71556c',1,'mnx::Base']]],
-  ['setextension_14',['setExtension',['../classmnx_1_1Object.html#a9d7b38d6351e9356034134e01de589e3',1,'mnx::Object']]],
+  ['setextension_14',['setExtension',['../classmnx_1_1Object.html#a4f083c0967954c364a91ee5b748f40cc',1,'mnx::Object']]],
   ['short_15',['short',['../namespacemnx.html#ac47100f45e293be73a048ddd73d529d1a30bb747c98bccdd11b3f89e644c4d0ad',1,'mnx::Short'],['../namespacemnx.html#ae84b6182879de97de8c8d9d891a61bf9a30bb747c98bccdd11b3f89e644c4d0ad',1,'mnx::Short']]],
   ['shortname_16',['ShortName',['../namespacemnx.html#aa6490743c39363c827cdf32264ea5b62ad26b007baa81cc3cd38d8d6c93e6df42',1,'mnx']]],
   ['show_17',['show',['../structmnx_1_1sequence_1_1AccidentalDisplay_1_1Required.html#ac3df25ba57cd33848131068b7a88f144',1,'mnx::sequence::AccidentalDisplay::Required']]],

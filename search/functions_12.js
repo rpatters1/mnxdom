@@ -7,7 +7,7 @@ var searchData=
   ['semanticvalidate_4',['semanticValidate',['../namespacemnx_1_1validation.html#ac8fcada9e8539ae3ce8094a02d2b653a',1,'mnx::validation']]],
   ['sequence_5',['sequence',['../classmnx_1_1Sequence.html#ae906023069134a2caa5b2b5ec8d2295f',1,'mnx::Sequence::Sequence(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1Sequence.html#a5bdaaf20ef9397550c85d441cfd6663c',1,'mnx::Sequence::Sequence(Base &amp;parent, std::string_view key)']]],
   ['setchild_6',['setChild',['../classmnx_1_1Base.html#a9e9cecbea5088d0c63fb0f92eb71556c',1,'mnx::Base']]],
-  ['setextension_7',['setExtension',['../classmnx_1_1Object.html#a9d7b38d6351e9356034134e01de589e3',1,'mnx::Object']]],
+  ['setextension_7',['setExtension',['../classmnx_1_1Object.html#a4f083c0967954c364a91ee5b748f40cc',1,'mnx::Object']]],
   ['sign_8',['sign',['../namespacemusic__theory.html#a6cb3b3e4883819fd7f9acbca09b7cebe',1,'music_theory']]],
   ['signedmodulus_9',['signedModulus',['../namespacemusic__theory.html#a076277364d5ca3414b0f47881669710b',1,'music_theory']]],
   ['simpletype_10',['SimpleType',['../classmnx_1_1SimpleType.html#a3cfb13c93629cb31bda581d9c6c40d1f',1,'mnx::SimpleType']]],

@@ -26,6 +26,10 @@ var namespacemnx =
     [ "KeySignature", "classmnx_1_1KeySignature.html", "classmnx_1_1KeySignature" ],
     [ "Layout", "classmnx_1_1Layout.html", "classmnx_1_1Layout" ],
     [ "MeasureRhythmicPosition", "classmnx_1_1MeasureRhythmicPosition.html", "classmnx_1_1MeasureRhythmicPosition" ],
+    [ "MnxdomClientInfo", "classmnx_1_1MnxdomClientInfo.html", "classmnx_1_1MnxdomClientInfo" ],
+    [ "MnxdomExtensionData", "classmnx_1_1MnxdomExtensionData.html", "classmnx_1_1MnxdomExtensionData" ],
+    [ "MnxdomGeneratorInfo", "classmnx_1_1MnxdomGeneratorInfo.html", "classmnx_1_1MnxdomGeneratorInfo" ],
+    [ "MnxdomSourceInfo", "classmnx_1_1MnxdomSourceInfo.html", "classmnx_1_1MnxdomSourceInfo" ],
     [ "MnxMetaData", "classmnx_1_1MnxMetaData.html", "classmnx_1_1MnxMetaData" ],
     [ "NoteValue", "classmnx_1_1NoteValue.html", "classmnx_1_1NoteValue" ],
     [ "NoteValueQuantity", "classmnx_1_1NoteValueQuantity.html", "classmnx_1_1NoteValueQuantity" ],
@@ -249,5 +253,7 @@ var namespacemnx =
     ] ],
     [ "getMnxSchemaId", "namespacemnx.html#a86e00ac3489b813478b7985b491a9ae9", null ],
     [ "getMnxSchemaVersion", "namespacemnx.html#ac7f15615dff0f6cdcb867af398b32e80", null ],
-    [ "MNX_VERSION", "namespacemnx.html#a7cd0ba846ca3299297f341bc77185832", null ]
+    [ "MNX_VERSION", "namespacemnx.html#a7cd0ba846ca3299297f341bc77185832", null ],
+    [ "MNXDOM_PROVENANCE_KEY", "namespacemnx.html#abff6c2f8ec2f722e37fed827c9193f2b", null ],
+    [ "MNXDOM_PROVENANCE_SCHEMA_VERSION", "namespacemnx.html#a631b49831238b91b69e597c1f467162c", null ]
 ];

@@ -8,7 +8,7 @@ var searchData=
   ['getenclosingelement_5',['getEnclosingElement',['../classmnx_1_1Base.html#a9a73783497762ab5afd1cf04ca4be433',1,'mnx::Base']]],
   ['getentitymap_6',['getEntityMap',['../classmnx_1_1Document.html#a90f5175ea60f1965a03c1a47ffa2f552',1,'mnx::Document']]],
   ['geteventposition_7',['getEventPosition',['../classmnx_1_1util_1_1EntityMap.html#a5fc55190ceb406ff6fdbcb96f1e74d14',1,'mnx::util::EntityMap']]],
-  ['getextension_8',['getExtension',['../classmnx_1_1Object.html#ab4bd74194b906169b98462e49d4cb68a',1,'mnx::Object']]],
+  ['getextension_8',['getExtension',['../classmnx_1_1Object.html#a614e2ddca9f863f5d44f57535cadf6ed',1,'mnx::Object']]],
   ['getglobalmeasure_9',['getGlobalMeasure',['../classmnx_1_1part_1_1Measure.html#ac53cd066f613f01c7a5d914a221022fc',1,'mnx::part::Measure']]],
   ['getindexof_10',['getIndexOf',['../classmnx_1_1util_1_1EntityMap.html#a9328f659f08e856e3a3f15aa7ec4f729',1,'mnx::util::EntityMap']]],
   ['getlyriclineorder_11',['getLyricLineOrder',['../classmnx_1_1util_1_1EntityMap.html#a7e72106b5e3598ba6fdd3236cefac3a9',1,'mnx::util::EntityMap']]],

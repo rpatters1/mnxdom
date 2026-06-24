@@ -25,6 +25,7 @@
 
 #include "mnxdom.h"
 #include "music_theory/music_theory.hpp"
+#include "util/MusicTheoryConversions.h"
 
 namespace mnx {
     
@@ -769,8 +770,8 @@ bool sequence::Pitch::isSamePitch(const Pitch::Required& src) const
         && src.step == step()) {
         return true;
     }
-    music_theory::Transposer t(music_theory::calcDisplacement(int(src.step), src.octave), src.alter);
-    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(int(step()), octave()), alter());
+    music_theory::Transposer t(util::toMusicTheoryPitch(src));
+    return t.isEnharmonicEquivalent(music_theory::calcDisplacement(util::toMusicTheoryPitch(*this)), alter());
 }
 
 sequence::Pitch::Required sequence::Pitch::calcTransposed() const
@@ -787,7 +788,7 @@ sequence::Pitch::Required sequence::Pitch::calcTransposed() const
     }
 
     if (auto partTrans = part->transposition()) {
-        music_theory::Transposer t(music_theory::calcDisplacement(int(step()), octave()), alter());
+        music_theory::Transposer t(util::toMusicTheoryPitch(*this));
         const auto interval = partTrans->interval();
         const int intervalDisp = interval.staffDistance();
         const int intervalAlt = music_theory::calcAlterationFrom12EdoHalfsteps(intervalDisp, interval.halfSteps());
@@ -807,7 +808,7 @@ sequence::Pitch::Required sequence::Pitch::calcTransposed() const
         int newAlter = t.alteration();
         int newOctaves{};
         int newNoteType = music_theory::positiveModulus(t.displacement(), music_theory::STANDARD_DIATONIC_STEPS, &newOctaves);
-        return { NoteStep(newNoteType), newOctaves + 4, newAlter };
+        return { util::toMnxNoteStep(music_theory::noteNames[newNoteType]), newOctaves + 4, newAlter };
     }
     return *this;
 }

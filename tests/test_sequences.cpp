@@ -21,9 +21,39 @@
  */
 #include "gtest/gtest.h"
 #include "mnxdom.h"
+#include "util/MusicTheoryConversions.h"
 #include "test_utils.h"
 
 using namespace mnx;
+
+TEST(TestSequences, MusicTheoryPitchConversions)
+{
+    struct StepMapping {
+        NoteStep step;
+        music_theory::NoteName noteName;
+    };
+
+    const StepMapping mappings[] = {
+        { NoteStep::C, music_theory::NoteName::C },
+        { NoteStep::D, music_theory::NoteName::D },
+        { NoteStep::E, music_theory::NoteName::E },
+        { NoteStep::F, music_theory::NoteName::F },
+        { NoteStep::G, music_theory::NoteName::G },
+        { NoteStep::A, music_theory::NoteName::A },
+        { NoteStep::B, music_theory::NoteName::B }
+    };
+
+    for (const auto& mapping : mappings) {
+        EXPECT_EQ(util::toMusicTheoryNoteName(mapping.step), mapping.noteName);
+        EXPECT_EQ(util::toMnxNoteStep(mapping.noteName), mapping.step);
+    }
+
+    const auto pitch = sequence::Pitch::make(NoteStep::F, 3, -1);
+    const auto theoryPitch = util::toMusicTheoryPitch(pitch);
+    EXPECT_EQ(theoryPitch.noteName, music_theory::NoteName::F);
+    EXPECT_EQ(theoryPitch.octave, 3);
+    EXPECT_EQ(theoryPitch.alteration, -1);
+}
 
 void checkSequence(const part::Measure& measure, size_t contentIdx, int expectedTranKeyFifths,
     const sequence::Pitch::Required& expected1stTransPitch)

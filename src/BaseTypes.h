@@ -453,14 +453,14 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, id);     ///< Uniquely identifies the object
 
     /// @brief Sets a vendor extension value in `_x`, creating `_x` when needed.
-    void setExtension(const std::string& key, const json& value)
+    void setExtension(const std::string_view key, const json& value)
     {
         auto extensions = ensure__x();
         extensions.ref()[key] = value;
     }
 
     /// @brief Gets a vendor extension value from `_x`.
-    [[nodiscard]] std::optional<json> getExtension(const std::string& key) const
+    [[nodiscard]] std::optional<json> getExtension(const std::string_view key) const
     {
         if (auto extensions = _x()) {
             const auto it = extensions->ref().find(key);
@@ -469,6 +469,17 @@ public:
             }
         }
         return std::nullopt;
+    }
+
+    /// @brief Removes a vendor extension value from `_x`, if it exists.
+    void clearExtension(const std::string_view key)
+    {
+        if (auto extensions = _x()) {
+            extensions->ref().erase(key);
+            if (extensions->empty()) {
+                clear__x();
+            }
+        }
     }
 };
 

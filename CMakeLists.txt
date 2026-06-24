@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.14)
-project(mnxdom LANGUAGES CXX VERSION 2.1)
+project(mnxdom LANGUAGES CXX VERSION 3.1.0)
 
 include(GNUInstallDirs)
 
 include(FetchContent)
+find_package(Git QUIET)
 
 # Options for using system libraries instead of fetching from the internet
 option(USE_SYSTEM_NLOHMANN_JSON "Use system-installed nlohmann_json instead of fetching" OFF)
@@ -40,6 +41,20 @@ endif()
 #define other directories
 set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
 set(MNX_SCHEMA_DIR "${CMAKE_CURRENT_LIST_DIR}/schema")
+
+set(MNXDOM_GIT_COMMIT "unknown")
+if(GIT_FOUND)
+    execute_process(
+        COMMAND "${GIT_EXECUTABLE}" rev-parse --short HEAD
+        WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}"
+        OUTPUT_VARIABLE MNXDOM_GIT_COMMIT
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+    )
+    if(NOT MNXDOM_GIT_COMMIT)
+        set(MNXDOM_GIT_COMMIT "unknown")
+    endif()
+endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/MnxW3C.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
@@ -100,6 +115,8 @@ target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
 target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
 # nlohmann/json behavior config
 target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
+target_compile_definitions(mnxdom PUBLIC MNXDOM_VERSION=\"${PROJECT_VERSION}\")
+target_compile_definitions(mnxdom PUBLIC MNXDOM_GIT_COMMIT=\"${MNXDOM_GIT_COMMIT}\")
 # Export fetched mnx_w3c locations to dependents
 mnx_w3c_apply_interface_definitions(mnxdom)
 target_compile_options(mnxdom PUBLIC

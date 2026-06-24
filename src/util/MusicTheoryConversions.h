@@ -28,6 +28,9 @@
 
 namespace mnx::util {
 
+/// @brief Converts an MNX note step to a dependency-free music theory note name.
+/// @param step The MNX note step to convert.
+/// @return The corresponding music theory note name.
 inline music_theory::NoteName toMusicTheoryNoteName(NoteStep step)
 {
     switch (step) {
@@ -42,6 +45,9 @@ inline music_theory::NoteName toMusicTheoryNoteName(NoteStep step)
     throw std::invalid_argument("Unknown NoteStep value.");
 }
 
+/// @brief Converts a dependency-free music theory note name to an MNX note step.
+/// @param noteName The music theory note name to convert.
+/// @return The corresponding MNX note step.
 inline NoteStep toMnxNoteStep(music_theory::NoteName noteName)
 {
     switch (noteName) {
@@ -56,6 +62,9 @@ inline NoteStep toMnxNoteStep(music_theory::NoteName noteName)
     throw std::invalid_argument("Unknown music_theory::NoteName value.");
 }
 
+/// @brief Converts required MNX pitch data to a dependency-free music theory pitch.
+/// @param pitch The required MNX pitch data to convert.
+/// @return The corresponding music theory pitch.
 inline music_theory::Pitch toMusicTheoryPitch(const sequence::Pitch::Required& pitch)
 {
     return {
@@ -65,6 +74,9 @@ inline music_theory::Pitch toMusicTheoryPitch(const sequence::Pitch::Required& p
     };
 }
 
+/// @brief Converts an MNX pitch object to a dependency-free music theory pitch.
+/// @param pitch The MNX pitch object to convert.
+/// @return The corresponding music theory pitch.
 inline music_theory::Pitch toMusicTheoryPitch(const sequence::Pitch& pitch)
 {
     return toMusicTheoryPitch(static_cast<sequence::Pitch::Required>(pitch));

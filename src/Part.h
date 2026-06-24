@@ -22,6 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
+#include "ContentArray.h"
 #include "Dynamics.h"
 #include "Sequence.h"
 
@@ -105,7 +106,7 @@ public:
 
     /// @brief Creates a new Beam class as a child of a JSON element
     /// @param parent The parent class instance
-    /// @param key The JSON key to use for embedding in parent.¥
+    /// @param key The JSON key to use for embedding in parent.
     Beam(Base& parent, std::string_view key)
         : ArrayElementObject(parent, key)
     {
@@ -196,13 +197,12 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param value The value (type) of ottava
     /// @param position The start position of the ottava
-    /// @param endMeasureId The end measure of the ottava
-    /// @param endPosition The position within the end measure
-    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, const std::string& endMeasureId, const FractionValue& endPosition)
+    /// @param endPosition The end position of the ottava
+    Ottava(Base& parent, std::string_view key, OttavaAmount value, const FractionValue& position, const MeasureRhythmicPosition::Required& endPosition)
         : ArrayElementObject(parent, key)
     {
         create_position(position);
-        create_end(endMeasureId, endPosition);
+        create_end(endPosition.measureId, endPosition.position);
         set_value(value);
     }
 
@@ -213,8 +213,8 @@ public:
     }
 
     /// @brief Create a Required instance for #Ottava.
-    static Required make(OttavaAmount value, const FractionValue& position, const std::string& endMeasureId, const FractionValue& endPosition)
-    { return { value, position, endMeasureId, endPosition }; }
+    static Required make(OttavaAmount value, const FractionValue& position, const MeasureRhythmicPosition::Required& endPosition)
+    { return { value, position, endPosition.measureId, endPosition.position }; }
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
         (const std::string&, measureId), (const FractionValue&, position)); ///< The end of the ottava; omit graceIndex at the start to include preceding grace notes, and use graceIndex 0 at the end to include them there
@@ -381,7 +381,7 @@ public:
     MNX_OPTIONAL_CHILD(Array<Arpeggio>, arpeggios);         ///< the arpeggios in this measure
     MNX_OPTIONAL_CHILD(Array<Beam>, beams);                 ///< the beams in this measure
     MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);       ///< the clef changes in this bar
-    MNX_OPTIONAL_CHILD(ContentArray, dynamics);             ///< the dynamics in this measure
+    MNX_OPTIONAL_CHILD(DynamicGroupArray, dynamics);        ///< the dynamics in this measure
     MNX_OPTIONAL_CHILD(Array<NonArpeggio>, nonArpeggios);   ///< the non-arpeggios in this measure
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);             ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);         ///< sequences that contain all the musical details in each measure

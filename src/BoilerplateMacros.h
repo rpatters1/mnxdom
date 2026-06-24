@@ -159,7 +159,7 @@
  */
 #define MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(TYPE, NAME, DEFAULT) \
     [[nodiscard]] TYPE NAME() const { \
-        return ref().contains(#NAME) ? ref()[#NAME].get<TYPE>() : DEFAULT; \
+        return ref().contains(#NAME) ? ref()[#NAME].template get<TYPE>() : DEFAULT; \
     } \
     void set_##NAME(const TYPE& value) { ref()[#NAME] = value; } \
     void clear_##NAME() { ref().erase(#NAME); } \

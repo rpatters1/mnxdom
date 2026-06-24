@@ -25,6 +25,8 @@
 #include <vector>
 
 #include "BaseTypes.h"
+#include "ContentArray.h"
+#include "Enumerations.h"
 
 namespace mnx {
 
@@ -44,13 +46,11 @@ namespace text {
  * @class TextContentObject
  * @brief Base class for formatted-text content objects.
  */
-class TextContentObject : public ContentObject
+class TextContentObject : public ContentObject<TextContentObject>
 {
-protected:
-    std::string_view defaultType() const override { return "text"; }
-
 public:
     using ContentObject::ContentObject;
+    std::string_view defaultType() const override { return "text"; }
 };
 
 /**
@@ -158,22 +158,16 @@ public:
  * @class FormattedText
  * @brief Container for formatted-text content objects.
  */
-class FormattedText : public ContentArray
+class FormattedText : public ContentArray<text::TextContentObject>
 {
 public:
-    using ContentArray::ContentArray;
+    using ContentArray<text::TextContentObject>::ContentArray;
+
+    text::Smufl appendSmufl(const std::vector<std::string>& glyphs)
+    { return appendWithType<text::Smufl>(glyphs); }
+
+    text::Text appendText(const std::string& text)
+    { return appendWithType<text::Text>(text); }
 };
-
-template <>
-inline text::Text ContentArray::append<text::Text, std::string>(const std::string& text)
-{
-    return appendWithType<text::Text>(text);
-}
-
-template <>
-inline text::Smufl ContentArray::append<text::Smufl, std::vector<std::string>>(const std::vector<std::string>& glyphs)
-{
-    return appendWithType<text::Smufl>(glyphs);
-}
 
 } // namespace mnx

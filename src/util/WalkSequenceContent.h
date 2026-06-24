@@ -47,7 +47,7 @@ enum class SequenceWalkControl
 struct SequenceWalkHooks
 {
     /// @brief Called for every content object before recursion or time advancement.
-    std::function<SequenceWalkControl(const ContentObject& item,
+    std::function<SequenceWalkControl(const sequence::SequenceContentObject& item,
                                       SequenceWalkContext& ctx)> onItem;
 
     /// @brief Called for events with computed timing.
@@ -64,7 +64,7 @@ struct SequenceWalkHooks
                        SequenceWalkContext& ctx)> onFullMeasure;
 
     /// @brief Called for every content object after recursion / time advancement.
-    std::function<void(const ContentObject& item,
+    std::function<void(const sequence::SequenceContentObject& item,
                        SequenceWalkContext& ctx)> onAfterItem;
 };
 
@@ -96,7 +96,7 @@ inline bool walkSequenceContent(Sequence sequence,
         c.elapsedTime += fullMeasureDuration;
     }
 
-    auto walkImpl = [&](ContentArray current,
+    auto walkImpl = [&](sequence::SequenceContent current,
                         SequenceWalkContext& ctxRef,
                         auto&& self) -> bool
     {

@@ -22,6 +22,7 @@
 #pragma once
 
 #include "BaseTypes.h"
+#include "ContentArray.h"
 #include "CommonClasses.h"
 #include "Enumerations.h"
 #include "EventMarkings.h"
@@ -34,6 +35,32 @@ class Sequence; // forward declaration
  * @brief classes related to sequences in the part measure
  */
 namespace sequence {
+class Event;
+class Grace;
+class MultiNoteTremolo;
+class Space;
+class Tuplet;
+
+class SequenceContentObject : public ContentObject<SequenceContentObject>
+{
+public:
+    using ContentObject::ContentObject;
+    std::string_view defaultType() const override { return "event"; }
+};
+
+class SequenceContent : public ContentArray<SequenceContentObject>
+{
+public:
+    using ContentArray<SequenceContentObject>::ContentArray;
+
+    Event appendEvent(NoteValueBase base, unsigned dots = 0);
+    Grace appendGrace();
+    MultiNoteTremolo appendMultiNoteTremolo(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant);
+    Space appendSpace(const FractionValue& duration);
+    Tuplet appendTuplet(const NoteValueQuantity::Required& innerNoteValueQuant,
+        const NoteValueQuantity::Required& outerNoteValueQuant);
+};
+
 /**
  * @class AccidentalEnclosure
  * @brief Represents the enclosure on an accidental.
@@ -414,7 +441,7 @@ public:
  * @class Event
  * @brief Represents a musical event within a sequence.
  */
-class Event : public ContentObject
+class Event : public SequenceContentObject
 {
 public:
     /// @brief initializer class for #Event
@@ -425,7 +452,7 @@ public:
 
     /// @brief Constructor for existing Event objects
     Event(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
+        : SequenceContentObject(root, pointer)
     {
     }
 
@@ -435,7 +462,7 @@ public:
     /// @param base The note value base for the event duration.
     /// @param dots Number of dots on the event duration.
     Event(Base& parent, std::string_view key, NoteValueBase base, unsigned dots = 0)
-        : ContentObject(parent, key)
+        : SequenceContentObject(parent, key)
     {
         create_duration(base, dots);
     }
@@ -489,7 +516,7 @@ public:
  * @class Space
  * @brief Occupies metric space without showing anything.
  */
-class Space : public ContentObject
+class Space : public SequenceContentObject
 {
 public:
     /// @brief initializer class for #Space
@@ -500,7 +527,7 @@ public:
 
     /// @brief Constructor for existing Space objects
     Space(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
+        : SequenceContentObject(root, pointer)
     {
     }
 
@@ -509,7 +536,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param duration The duration of the space
     Space(Base& parent, std::string_view key, const FractionValue& duration)
-        : ContentObject(parent, key)
+        : SequenceContentObject(parent, key)
     {
         create_duration(duration);
     }
@@ -531,12 +558,12 @@ public:
  * @class Grace
  * @brief Represents a grace note sequence within a sequence.
  */
-class Grace : public ContentObject
+class Grace : public SequenceContentObject
 {
 public:
     /// @brief Constructor for existing Grace objects
     Grace(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
+        : SequenceContentObject(root, pointer)
     {
     }
 
@@ -544,13 +571,13 @@ public:
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     Grace(Base& parent, std::string_view key)
-        : ContentObject(parent, key)
+        : SequenceContentObject(parent, key)
     {
         create_content();
     }
 
     MNX_OPTIONAL_PROPERTY(std::string, color);                      ///< color to use when rendering the grace note sequence
-    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
+    MNX_REQUIRED_CHILD(SequenceContent, content);                      ///< array of events
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(GraceType, graceType, GraceType::StealPrevious); ///< The playback type of the grace note.
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(bool, slash, true);          ///< whether to show a slash on the grace note
 
@@ -561,7 +588,7 @@ public:
  * @class MultiNoteTremolo
  * @brief Represents a multi-note tremolo sequence within a sequence.
  */
-class MultiNoteTremolo : public ContentObject
+class MultiNoteTremolo : public SequenceContentObject
 {
 public:
     /// @brief initializer class for #MultiNoteTremolo
@@ -573,7 +600,7 @@ public:
 
     /// @brief Constructor for existing Tuplet objects
     MultiNoteTremolo(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
+        : SequenceContentObject(root, pointer)
     {
     }
 
@@ -583,7 +610,7 @@ public:
     /// @param numberOfMarks The number of marks (beams)
     /// @param noteValueQuant The note value quantity
     MultiNoteTremolo(Base& parent, std::string_view key, int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
-        : ContentObject(parent, key)
+        : SequenceContentObject(parent, key)
     {
         create_content();
         set_marks(numberOfMarks);
@@ -597,7 +624,7 @@ public:
     static Required make(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
     { return { numberOfMarks, noteValueQuant }; }
 
-    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events
+    MNX_REQUIRED_CHILD(SequenceContent, content);                      ///< array of events
     MNX_OPTIONAL_CHILD(
         NoteValue, individualDuration,
         (NoteValueBase, base), (unsigned, dots)); ///< optional value that specifies the individual duration of each event in the tremolo.
@@ -612,7 +639,7 @@ public:
  * @class Tuplet
  * @brief Represents a tuplet sequence within a sequence.
  */
-class Tuplet : public ContentObject
+class Tuplet : public SequenceContentObject
 {
 public:
     /// @brief initializer class for #Tuplet
@@ -624,7 +651,7 @@ public:
 
     /// @brief Constructor for existing Tuplet objects
     Tuplet(const std::shared_ptr<json>& root, json_pointer pointer)
-        : ContentObject(root, pointer)
+        : SequenceContentObject(root, pointer)
     {
     }
 
@@ -634,7 +661,7 @@ public:
     /// @param innerNoteValueQuant Inner amount
     /// @param outerNoteValueQuant Outer amount
     Tuplet(Base& parent, std::string_view key, const NoteValueQuantity::Required& innerNoteValueQuant, const NoteValueQuantity::Required& outerNoteValueQuant)
-        : ContentObject(parent, key)
+        : SequenceContentObject(parent, key)
     {
         create_inner(innerNoteValueQuant.count, innerNoteValueQuant.noteValue);
         create_outer(outerNoteValueQuant.count, outerNoteValueQuant.noteValue);
@@ -649,7 +676,7 @@ public:
     { return { innerNoteValueQuant, outerNoteValueQuant }; }
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, bracket, AutoYesNo::Auto); ///< bracket style
-    MNX_REQUIRED_CHILD(ContentArray, content);                      ///< array of events, tuplets, and grace notes
+    MNX_REQUIRED_CHILD(SequenceContent, content);                      ///< array of events, tuplets, and grace notes
     MNX_REQUIRED_CHILD(NoteValueQuantity, inner,
         (unsigned, count), (const NoteValue::Required&, noteValue)); ///< Inner quantity: **3 quarters in the time** of 2 quarters
     MNX_REQUIRED_CHILD(NoteValueQuantity, outer,
@@ -687,6 +714,22 @@ public:
     MNX_OPTIONAL_CHILD(NoteValue, visualDuration,
         (NoteValueBase, base), (unsigned, dots));   ///< the visual duration of the full-measure rest (defaults to importer defaults).
 };
+inline Event SequenceContent::appendEvent(NoteValueBase base, unsigned dots)
+{ return appendWithType<Event>(base, dots); }
+
+inline Grace SequenceContent::appendGrace()
+{ return appendWithType<Grace>(); }
+
+inline MultiNoteTremolo SequenceContent::appendMultiNoteTremolo(int numberOfMarks, const NoteValueQuantity::Required& noteValueQuant)
+{ return appendWithType<MultiNoteTremolo>(numberOfMarks, noteValueQuant); }
+
+inline Space SequenceContent::appendSpace(const FractionValue& duration)
+{ return appendWithType<Space>(duration); }
+
+inline Tuplet SequenceContent::appendTuplet(const NoteValueQuantity::Required& innerNoteValueQuant,
+    const NoteValueQuantity::Required& outerNoteValueQuant)
+{ return appendWithType<Tuplet>(innerNoteValueQuant, outerNoteValueQuant); }
+
 } // namespace sequence
 
 /**
@@ -711,7 +754,7 @@ public:
         create_content();
     }
 
-    MNX_REQUIRED_CHILD(ContentArray, content);          ///< the content of the sequence
+    MNX_REQUIRED_CHILD(sequence::SequenceContent, content);          ///< the content of the sequence
     MNX_OPTIONAL_CHILD(sequence::FullMeasureRest, fullMeasure); ///< If present, this sequence is a forced full-measure rest.
     /// @todo `orient` property
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(int, staff, 1);  ///< the staff number for this sequence

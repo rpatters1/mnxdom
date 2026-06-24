@@ -103,7 +103,7 @@ TEST(Document, MinimalFromScratch)
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a layout, even with no layout id";
     layout.set_id("layout0");
     auto content = layout.content();
-    auto staff = content.append<layout::Staff>();
+    auto staff = content.appendStaff();
     staff.set_symbol(LayoutSymbol::Bracket);
     EXPECT_EQ(staff.symbol(), LayoutSymbol::Bracket);
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a layout";

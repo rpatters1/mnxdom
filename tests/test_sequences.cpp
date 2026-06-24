@@ -117,6 +117,49 @@ TEST(TestSequences, TransposedPitchesNoWrap)
     }
 }
 
+TEST(TestSequences, TransposedPitchesEnharmonics)
+{
+    setupTestDataPaths();
+    const auto inputPath = getInputPath() / "test_cases" / "enharmonics.mnx";
+    auto doc = mnx::Document::create(inputPath);
+    fullValidate(doc, inputPath);
+
+    ASSERT_EQ(doc.parts().size(), 1);
+    const auto part = doc.parts()[0];
+    ASSERT_EQ(part.measures().size(), 8);
+
+    const sequence::Pitch::Required expected[] = {
+        { NoteStep::G, 5, -1 },
+        { NoteStep::A, 5, -3 },
+        { NoteStep::B, 5, -5 },
+        { NoteStep::C, 6, -6 },
+        { NoteStep::E, 4, +1 },
+        { NoteStep::D, 4, +3 },
+        { NoteStep::C, 4, +5 },
+        { NoteStep::B, 3, +6 }
+    };
+
+    for (size_t i = 0; i < 8; ++i) {
+        SCOPED_TRACE(::testing::Message() << "measure " << i);
+        const auto measure = part.measures()[i];
+        ASSERT_EQ(measure.sequences().size(), 1);
+        const auto sequence = measure.sequences()[0];
+        ASSERT_GE(sequence.content().size(), 1);
+
+        const auto item = sequence.content()[0];
+        ASSERT_EQ(item.type(), sequence::Event::ContentTypeValue);
+        const auto event = item.get<sequence::Event>();
+        ASSERT_TRUE(event.notes());
+        ASSERT_FALSE(event.notes()->empty());
+
+        const auto note = event.notes()->at(0);
+        const auto actual = note.pitch().calcTransposed();
+        EXPECT_EQ(actual.step, expected[i].step);
+        EXPECT_EQ(actual.octave, expected[i].octave);
+        EXPECT_EQ(actual.alter, expected[i].alter);
+    }
+}
+
 TEST(TestSequences, WalkFullMeasureRest)
 {
     auto doc = Document();

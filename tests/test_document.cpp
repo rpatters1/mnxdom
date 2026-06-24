@@ -73,9 +73,10 @@ TEST(Document, MinimalFromScratch)
     auto mnx = doc.mnx();
     EXPECT_EQ(mnx.version(), getMnxSchemaVersion());
     ASSERT_TRUE(mnx._x().has_value());
-    const auto schemaVersion = mnx.getExtension("schemaVersion");
-    ASSERT_TRUE(schemaVersion.has_value());
-    EXPECT_EQ(schemaVersion->at("value").get<std::string>(), getMnxSchemaId());
+    const auto provenance = mnx.mnxdom();
+    ASSERT_TRUE(provenance.has_value());
+    const auto schemaVersion = provenance->mnxSchema();
+    EXPECT_EQ(provenance->mnxSchema(), getMnxSchemaId());
     mnx.set_version(getMnxSchemaVersion() + 1);
     EXPECT_EQ(doc.mnx().version(), getMnxSchemaVersion() + 1);
 
@@ -108,6 +109,38 @@ TEST(Document, MinimalFromScratch)
     EXPECT_EQ(staff.symbol(), LayoutSymbol::Bracket);
     EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate after adding a layout";
     //std::cout << doc.dump(4) << std::endl;
+}
+
+TEST(Document, MnxdomProvenance)
+{
+    Document doc;
+
+    auto mnx = doc.mnx();
+    auto provenance = mnx.ensure_mnxdom();
+    EXPECT_EQ(provenance.provenanceSchemaVersion(), 1);
+    EXPECT_EQ(provenance.mnxSchema(), getMnxSchemaId());
+
+    auto generator = provenance.generator();
+    EXPECT_EQ(generator.name(), "mnxdom");
+    EXPECT_EQ(generator.version(), MNXDOM_VERSION);
+    EXPECT_FALSE(generator.commit().value_or("").empty());
+
+    EXPECT_FALSE(provenance.createdAt().empty());
+    provenance.set_documentId("urn:uuid:123e4567-e89b-12d3-a456-426614174000");
+
+    auto client = provenance.ensure_client();
+    client.set_name("MyNotationApp");
+    client.set_version("2.4.1");
+
+    auto source = provenance.ensure_source();
+    source.set_format("musicxml");
+    source.set_version("4.0");
+    source.set_uri("file:///tmp/source.musicxml");
+
+    ASSERT_TRUE(mnx.mnxdom().has_value());
+    EXPECT_FALSE(mnx.mnxdom()->createdAt().empty());
+    EXPECT_EQ(mnx.mnxdom()->client()->name(), "MyNotationApp");
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "schema should validate with mnxdom provenance";
 }
 
 TEST(Document, MissingRequiredFields)

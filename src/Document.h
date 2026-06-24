@@ -25,6 +25,7 @@
 #include <fstream>
 
 #include "BaseTypes.h"
+#include "MnxdomProvenance.h"
 #include "Global.h"
 #include "Layout.h"
 #include "Part.h"
@@ -68,7 +69,8 @@ public:
     {
         // required children
         set_version(getMnxSchemaVersion());
-        setExtension("schemaVersion", json{ { "value", getMnxSchemaId() } });
+        auto extensions = ensure__x();
+        MnxdomExtensionData(extensions, MNXDOM_PROVENANCE_KEY);
     }
 
     /**
@@ -93,6 +95,35 @@ public:
      * @brief Optional child containing support metadata.
      */
     MNX_OPTIONAL_CHILD(Support, support);
+
+    /// @brief Returns the mnxdom vendor extension stored in `_x.mnxdom`.
+    [[nodiscard]] std::optional<MnxdomExtensionData> mnxdom() const
+    {
+        if (const auto value = getExtension(std::string(MNXDOM_PROVENANCE_KEY)); value.has_value() && value->is_object()) {
+            return MnxdomExtensionData(root(), pointer() / "_x" / std::string(MNXDOM_PROVENANCE_KEY));
+        }
+        return std::nullopt;
+    }
+
+    /// @brief Ensures that `_x.mnxdom` exists and returns it.
+    MnxdomExtensionData ensure_mnxdom()
+    {
+        if (auto existing = mnxdom()) {
+            return *existing;
+        }
+
+        auto extensions = ensure__x();
+        return MnxdomExtensionData(extensions, MNXDOM_PROVENANCE_KEY);
+    }
+
+    /// @brief Removes `_x.mnxdom`. If `_x` becomes empty, it is removed too.
+    void clear_mnxdom()
+    {
+        clearExtension(std::string(MNXDOM_PROVENANCE_KEY));
+        if (auto extensions = _x(); extensions && extensions->empty()) {
+            clear__x();
+        }
+    }
 };
 
 /**

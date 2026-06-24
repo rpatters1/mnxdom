@@ -57,14 +57,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
-"classmnx_1_1Global.html#ae4aa510c166bda678d152b7896a3cf59",
-"classmnx_1_1global_1_1Fine.html",
-"classmnx_1_1part_1_1DynamicGroup.html",
-"classmnx_1_1sequence_1_1Event.html#a9f468ca804c633f2cde5aac982dee50d",
-"classmnx_1_1sequence_1_1TransposeWritten.html#a10ed60d12c9f2b7133ca9a066dea6e32",
-"namespacemnx.html#a916529be475b78726237297e7b030329ae59dd8d25c0b6bb6697eac0617ccd412",
-"structmnx_1_1detail_1_1ArrayAppendBase.html",
-"structmnx_1_1validation_1_1ValidationResult_1_1Error.html#a78c424669ed5280e76985b912b18f4ed"
+"classmnx_1_1IdPair.html",
+"classmnx_1_1global_1_1Fine.html#a11fca7a0ecf3be6b3a5f15dd0d2eb468",
+"classmnx_1_1part_1_1DynamicGroupArray.html",
+"classmnx_1_1sequence_1_1Event.html#a8aef381a3e3c2543584b1cc55a041cb0",
+"classmnx_1_1sequence_1_1Tie.html#a7e30be7e53a94ff63baa5652a43945de",
+"namespacemnx.html#a80e8e06e1c1d79c1b9fb8305c2184940a06b9281e396db002010bde1de57262eb",
+"structmnx_1_1Score_1_1Required.html#aa60719e331f42accdb3199cef163e613",
+"structmnx_1_1validation_1_1ValidationResult_1_1Error.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -13,7 +13,8 @@ var searchData=
   ['document_10',['Document',['../classmnx_1_1Document.html',1,'mnx']]],
   ['dynamicaccent_11',['DynamicAccent',['../classmnx_1_1part_1_1DynamicAccent.html',1,'mnx::part']]],
   ['dynamicgradual_12',['DynamicGradual',['../classmnx_1_1part_1_1DynamicGradual.html',1,'mnx::part']]],
-  ['dynamicgroup_13',['DynamicGroup',['../classmnx_1_1part_1_1DynamicGroup.html',1,'mnx::part']]],
-  ['dynamicimmediate_14',['DynamicImmediate',['../classmnx_1_1part_1_1DynamicImmediate.html',1,'mnx::part']]],
-  ['dynamicrelative_15',['DynamicRelative',['../classmnx_1_1part_1_1DynamicRelative.html',1,'mnx::part']]]
+  ['dynamicgrouparray_13',['DynamicGroupArray',['../classmnx_1_1part_1_1DynamicGroupArray.html',1,'mnx::part']]],
+  ['dynamicgroupbase_14',['DynamicGroupBase',['../classmnx_1_1part_1_1DynamicGroupBase.html',1,'mnx::part']]],
+  ['dynamicimmediate_15',['DynamicImmediate',['../classmnx_1_1part_1_1DynamicImmediate.html',1,'mnx::part']]],
+  ['dynamicrelative_16',['DynamicRelative',['../classmnx_1_1part_1_1DynamicRelative.html',1,'mnx::part']]]
 ];

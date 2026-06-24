@@ -18,6 +18,8 @@ var namespacemnx_1_1sequence =
     [ "NoteBase", "classmnx_1_1sequence_1_1NoteBase.html", "classmnx_1_1sequence_1_1NoteBase" ],
     [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
     [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
+    [ "SequenceContent", "classmnx_1_1sequence_1_1SequenceContent.html", null ],
+    [ "SequenceContentObject", "classmnx_1_1sequence_1_1SequenceContentObject.html", null ],
     [ "SingleNoteTremolo", "classmnx_1_1sequence_1_1SingleNoteTremolo.html", "classmnx_1_1sequence_1_1SingleNoteTremolo" ],
     [ "Slur", "classmnx_1_1sequence_1_1Slur.html", "classmnx_1_1sequence_1_1Slur" ],
     [ "SoftAccent", "classmnx_1_1sequence_1_1SoftAccent.html", null ],

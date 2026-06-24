@@ -112,10 +112,11 @@ $(document).ready(function(){initNavTree('classmnx_1_1layout_1_1Staff.html','');
  <div class="center">
   <img src="classmnx_1_1layout_1_1Staff.png" usemap="#mnx::layout::Staff_map" alt=""/>
   <map id="mnx::layout::Staff_map" name="mnx::layout::Staff_map">
-<area href="classmnx_1_1ContentObject.html" title="Base class for objects that are elements of content arrays." alt="mnx::ContentObject" shape="rect" coords="0,168,154,192"/>
-<area href="classmnx_1_1ArrayElementObject.html" title="Represents an MNX object that is included as an array element." alt="mnx::ArrayElementObject" shape="rect" coords="0,112,154,136"/>
-<area href="classmnx_1_1Object.html" title="Represents an MNX object, encapsulating property access." alt="mnx::Object" shape="rect" coords="0,56,154,80"/>
-<area href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes." alt="mnx::Base" shape="rect" coords="0,0,154,24"/>
+<area href="classmnx_1_1layout_1_1LayoutContentObject.html" alt="mnx::layout::LayoutContentObject" shape="rect" coords="0,224,262,248"/>
+<area href="classmnx_1_1ContentObject.html" alt="mnx::ContentObject&lt; LayoutContentObject &gt;" shape="rect" coords="0,168,262,192"/>
+<area href="classmnx_1_1ArrayElementObject.html" title="Represents an MNX object that is included as an array element." alt="mnx::ArrayElementObject" shape="rect" coords="0,112,262,136"/>
+<area href="classmnx_1_1Object.html" title="Represents an MNX object, encapsulating property access." alt="mnx::Object" shape="rect" coords="0,56,262,80"/>
+<area href="classmnx_1_1Base.html" title="Base class wrapper for all MNX JSON nodes." alt="mnx::Base" shape="rect" coords="0,0,262,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -140,20 +141,17 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY</b> (<a class="el" href="namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485">LayoutSymbol</a>, symbol)</td></tr>
 <tr class="memdesc:a4eb034d0ff9a35d4031149411b584575"><td class="mdescLeft">&#160;</td><td class="mdescRight">The symbol down the left side. <br /></td></tr>
 <tr class="separator:a4eb034d0ff9a35d4031149411b584575"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classmnx_1_1ContentObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1ContentObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1ContentObject.html">mnx::ContentObject</a></td></tr>
-<tr class="memitem:a9267eaa005e05d59fc2b82a93eb985d0 inherit pub_methods_classmnx_1_1ContentObject" id="r_a9267eaa005e05d59fc2b82a93eb985d0"><td class="memItemLeft" align="right" valign="top">
+<tr class="inherit_header pub_methods_classmnx_1_1layout_1_1LayoutContentObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1layout_1_1LayoutContentObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1layout_1_1LayoutContentObject.html">mnx::layout::LayoutContentObject</a></td></tr>
+<tr class="memitem:ac528cf4d63056225983d45e1b78b705f inherit pub_methods_classmnx_1_1layout_1_1LayoutContentObject" id="r_ac528cf4d63056225983d45e1b78b705f"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1layout_1_1LayoutContentObject.html#ac528cf4d63056225983d45e1b78b705f">defaultType</a> () const override</td></tr>
+<tr class="separator:ac528cf4d63056225983d45e1b78b705f inherit pub_methods_classmnx_1_1layout_1_1LayoutContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classmnx_1_1ContentObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1ContentObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1ContentObject.html">mnx::ContentObject&lt; LayoutContentObject &gt;</a></td></tr>
+<tr class="memitem:a2b74f5238726eb35385bd5f2e87ee1e1 inherit pub_methods_classmnx_1_1ContentObject" id="r_a2b74f5238726eb35385bd5f2e87ee1e1"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>MNX_OPTIONAL_PROPERTY_WITH_DEFAULT</b> (std::string, type, std::string(defaultType()))</td></tr>
-<tr class="memdesc:a9267eaa005e05d59fc2b82a93eb985d0 inherit pub_methods_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">determines our type in the JSON <br /></td></tr>
-<tr class="separator:a9267eaa005e05d59fc2b82a93eb985d0 inherit pub_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb9adbcff9476efbc56af33463c63cc4 inherit pub_methods_classmnx_1_1ContentObject" id="r_abb9adbcff9476efbc56af33463c63cc4"><td class="memTemplParams" colspan="2">
-template&lt;typename T , std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1ContentObject.html">ContentObject</a>, T &gt;, int &gt;  = 0&gt; </td></tr>
-<tr class="memitem:abb9adbcff9476efbc56af33463c63cc4 inherit pub_methods_classmnx_1_1ContentObject"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="memdesc:abb9adbcff9476efbc56af33463c63cc4 inherit pub_methods_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve an element as a specific type. <br /></td></tr>
-<tr class="separator:abb9adbcff9476efbc56af33463c63cc4 inherit pub_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae69dfb2b381b5744a4b7edeb06bf082f inherit pub_methods_classmnx_1_1ContentObject" id="r_ae69dfb2b381b5744a4b7edeb06bf082f"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; std::is_base_of_v&lt; <a class="el" href="classmnx_1_1ContentObject.html">ContentObject</a>, T &gt;, int &gt;  = 0&gt; </td></tr>
-<tr class="memitem:ae69dfb2b381b5744a4b7edeb06bf082f inherit pub_methods_classmnx_1_1ContentObject"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmnx_1_1ContentObject.html#ae69dfb2b381b5744a4b7edeb06bf082f">getTypedObject</a> () const</td></tr>
-<tr class="memdesc:ae69dfb2b381b5744a4b7edeb06bf082f inherit pub_methods_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an object of type <code>T</code> if its type matches the JSON type.  <br /></td></tr>
-<tr class="separator:ae69dfb2b381b5744a4b7edeb06bf082f inherit pub_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a2b74f5238726eb35385bd5f2e87ee1e1 inherit pub_methods_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">determines our type in the JSON <br /></td></tr>
+<tr class="separator:a2b74f5238726eb35385bd5f2e87ee1e1 inherit pub_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b1e5d8aabd3011aa83ed851c4450ef6 inherit pub_methods_classmnx_1_1ContentObject" id="r_a7b1e5d8aabd3011aa83ed851c4450ef6"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1ContentObject.html#a7b1e5d8aabd3011aa83ed851c4450ef6">get</a> () const</td></tr>
+<tr class="memdesc:a7b1e5d8aabd3011aa83ed851c4450ef6 inherit pub_methods_classmnx_1_1ContentObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an object of type <code>T</code> if its type matches the JSON type.  <br /></td></tr>
+<tr class="separator:a7b1e5d8aabd3011aa83ed851c4450ef6 inherit pub_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmnx_1_1ArrayElementObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmnx_1_1ArrayElementObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmnx_1_1ArrayElementObject.html">mnx::ArrayElementObject</a></td></tr>
 <tr class="memitem:ae81dd1e7adef72bde987ab9c9ae4aa35 inherit pub_methods_classmnx_1_1ArrayElementObject" id="r_ae81dd1e7adef72bde987ab9c9ae4aa35"><td class="memItemLeft" align="right" valign="top">
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>calcArrayIndex</b> () const</td></tr>
@@ -254,10 +252,6 @@ static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bot
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_classmnx_1_1ContentObject"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classmnx_1_1ContentObject')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classmnx_1_1ContentObject.html">mnx::ContentObject</a></td></tr>
-<tr class="memitem:a6420823e9f305c50bb37ad0b24cfa9eb inherit pro_methods_classmnx_1_1ContentObject" id="r_a6420823e9f305c50bb37ad0b24cfa9eb"><td class="memItemLeft" align="right" valign="top">
-virtual std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>defaultType</b> () const</td></tr>
-<tr class="separator:a6420823e9f305c50bb37ad0b24cfa9eb inherit pro_methods_classmnx_1_1ContentObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classmnx_1_1Base"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classmnx_1_1Base')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classmnx_1_1Base.html">mnx::Base</a></td></tr>
 <tr class="memitem:a033e93ec071a36612d1fa26c39ff75e0 inherit pro_methods_classmnx_1_1Base" id="r_a033e93ec071a36612d1fa26c39ff75e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemnx.html#a1c2980125e66d525147bb9c34c8c7d30">json</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmnx_1_1Base.html#a033e93ec071a36612d1fa26c39ff75e0">ref</a> () const</td></tr>
 <tr class="memdesc:a033e93ec071a36612d1fa26c39ff75e0 inherit pro_methods_classmnx_1_1Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this node for retrieval.  <br /></td></tr>

@@ -6,5 +6,5 @@ var classmnx_1_1layout_1_1Group =
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1layout_1_1Group.html#a7ac2f3e6267eb6199bd1993eb6db4ffb", null ],
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1layout_1_1Group.html#ab10d586c0212bae11fac011ada17625c", null ],
     [ "MNX_OPTIONAL_PROPERTY_WITH_DEFAULT", "classmnx_1_1layout_1_1Group.html#ab37712c691319494ecdade7094233c49", null ],
-    [ "MNX_REQUIRED_CHILD", "classmnx_1_1layout_1_1Group.html#a84f9f0d47235c08f9d82cfff5d8739f1", null ]
+    [ "MNX_REQUIRED_CHILD", "classmnx_1_1layout_1_1Group.html#a2188b8203cc1ddce564b5416e4974922", null ]
 ];

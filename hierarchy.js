@@ -2,24 +2,47 @@ var hierarchy =
 [
     [ "mnx::detail::ArrayAppendBase< Derived, T >", "structmnx_1_1detail_1_1ArrayAppendBase.html", [
       [ "mnx::detail::ArrayAppendOverloads< Array< T >, T >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", [
-        [ "mnx::Array< T >", "classmnx_1_1Array.html", null ]
-      ] ],
-      [ "mnx::detail::ArrayAppendOverloads< Array< ContentObject >, ContentObject >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
-      [ "mnx::detail::ArrayAppendOverloads< Array< unsigned >, unsigned >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
-      [ "mnx::detail::ArrayAppendOverloads< Derived, T, typename >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", [
-        [ "mnx::Array< ContentObject >", "classmnx_1_1Array.html", [
-          [ "mnx::ContentArray", "classmnx_1_1ContentArray.html", [
+        [ "mnx::Array< T >", "classmnx_1_1Array.html", [
+          [ "mnx::ContentArray< text::TextContentObject >", "classmnx_1_1ContentArray.html", [
             [ "mnx::FormattedText", "classmnx_1_1FormattedText.html", null ]
+          ] ],
+          [ "mnx::ContentArray< LayoutContentObject >", "classmnx_1_1ContentArray.html", [
+            [ "mnx::layout::LayoutContent", "classmnx_1_1layout_1_1LayoutContent.html", null ]
+          ] ],
+          [ "mnx::ContentArray< part::DynamicGroupBase >", "classmnx_1_1ContentArray.html", [
+            [ "mnx::part::DynamicGroupArray", "classmnx_1_1part_1_1DynamicGroupArray.html", null ]
+          ] ],
+          [ "mnx::ContentArray< SequenceContentObject >", "classmnx_1_1ContentArray.html", [
+            [ "mnx::sequence::SequenceContent", "classmnx_1_1sequence_1_1SequenceContent.html", null ]
           ] ]
+        ] ]
+      ] ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< BaseContentT >, BaseContentT >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< text::TextContentObject >, text::TextContentObject >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< unsigned >, unsigned >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< LayoutContentObject >, LayoutContentObject >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< part::DynamicGroupBase >, part::DynamicGroupBase >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Array< SequenceContentObject >, SequenceContentObject >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", null ],
+      [ "mnx::detail::ArrayAppendOverloads< Derived, T, typename >", "structmnx_1_1detail_1_1ArrayAppendOverloads.html", [
+        [ "mnx::Array< BaseContentT >", "classmnx_1_1Array.html", [
+          [ "mnx::ContentArray< BaseContentT >", "classmnx_1_1ContentArray.html", null ]
         ] ],
+        [ "mnx::Array< text::TextContentObject >", "classmnx_1_1Array.html", null ],
         [ "mnx::Array< unsigned >", "classmnx_1_1Array.html", [
           [ "mnx::Fraction", "classmnx_1_1Fraction.html", null ]
-        ] ]
+        ] ],
+        [ "mnx::Array< LayoutContentObject >", "classmnx_1_1Array.html", null ],
+        [ "mnx::Array< part::DynamicGroupBase >", "classmnx_1_1Array.html", null ],
+        [ "mnx::Array< SequenceContentObject >", "classmnx_1_1Array.html", null ]
       ] ],
       [ "mnx::detail::ArrayAppendOverloads< Derived, T, std::void_t< decltype(&T::make)> >", "structmnx_1_1detail_1_1ArrayAppendOverloads_3_01Derived_00_01T_00_01std_1_1void__t_3_01decltype_07_6T_1_1make_08_4_01_4.html", null ]
     ] ],
-    [ "mnx::detail::ArrayAppendBase< Array< ContentObject >, ContentObject >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendBase< Array< BaseContentT >, BaseContentT >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendBase< Array< LayoutContentObject >, LayoutContentObject >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendBase< Array< part::DynamicGroupBase >, part::DynamicGroupBase >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendBase< Array< SequenceContentObject >, SequenceContentObject >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
     [ "mnx::detail::ArrayAppendBase< Array< T >, T >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
+    [ "mnx::detail::ArrayAppendBase< Array< text::TextContentObject >, text::TextContentObject >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
     [ "mnx::detail::ArrayAppendBase< Array< unsigned >, unsigned >", "structmnx_1_1detail_1_1ArrayAppendBase.html", null ],
     [ "mnx::detail::ArrayAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1ArrayAppendFromMake.html", null ],
     [ "mnx::detail::ArrayAppendFromMake< T, &T::make >", "structmnx_1_1detail_1_1ArrayAppendFromMake.html", [
@@ -27,30 +50,45 @@ var hierarchy =
     ] ],
     [ "mnx::detail::ArrayAppendFromMake< T, MakeFunc >", "structmnx_1_1detail_1_1ArrayAppendFromMake_3_01T_00_01MakeFunc_01_4.html", null ],
     [ "mnx::Base", "classmnx_1_1Base.html", [
-      [ "mnx::Array< ContentObject >", "classmnx_1_1Array.html", null ],
+      [ "mnx::Array< BaseContentT >", "classmnx_1_1Array.html", null ],
+      [ "mnx::Array< text::TextContentObject >", "classmnx_1_1Array.html", null ],
       [ "mnx::Array< unsigned >", "classmnx_1_1Array.html", null ],
+      [ "mnx::Array< LayoutContentObject >", "classmnx_1_1Array.html", null ],
+      [ "mnx::Array< part::DynamicGroupBase >", "classmnx_1_1Array.html", null ],
+      [ "mnx::Array< SequenceContentObject >", "classmnx_1_1Array.html", null ],
       [ "mnx::Array< T >", "classmnx_1_1Array.html", null ],
       [ "mnx::Object", "classmnx_1_1Object.html", [
         [ "mnx::ArrayElementObject", "classmnx_1_1ArrayElementObject.html", [
-          [ "mnx::ContentObject", "classmnx_1_1ContentObject.html", [
-            [ "mnx::layout::Group", "classmnx_1_1layout_1_1Group.html", null ],
-            [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ],
-            [ "mnx::part::DynamicGroup", "classmnx_1_1part_1_1DynamicGroup.html", [
+          [ "mnx::ContentObject< LayoutContentObject >", "classmnx_1_1ContentObject.html", [
+            [ "mnx::layout::LayoutContentObject", "classmnx_1_1layout_1_1LayoutContentObject.html", [
+              [ "mnx::layout::Group", "classmnx_1_1layout_1_1Group.html", null ],
+              [ "mnx::layout::Staff", "classmnx_1_1layout_1_1Staff.html", null ]
+            ] ]
+          ] ],
+          [ "mnx::ContentObject< DynamicGroupBase >", "classmnx_1_1ContentObject.html", [
+            [ "mnx::part::DynamicGroupBase", "classmnx_1_1part_1_1DynamicGroupBase.html", [
               [ "mnx::part::DynamicAccent", "classmnx_1_1part_1_1DynamicAccent.html", null ],
               [ "mnx::part::DynamicGradual", "classmnx_1_1part_1_1DynamicGradual.html", null ],
               [ "mnx::part::DynamicImmediate", "classmnx_1_1part_1_1DynamicImmediate.html", null ],
               [ "mnx::part::DynamicRelative", "classmnx_1_1part_1_1DynamicRelative.html", null ]
-            ] ],
-            [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
-            [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
-            [ "mnx::sequence::MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", null ],
-            [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
-            [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ],
+            ] ]
+          ] ],
+          [ "mnx::ContentObject< SequenceContentObject >", "classmnx_1_1ContentObject.html", [
+            [ "mnx::sequence::SequenceContentObject", "classmnx_1_1sequence_1_1SequenceContentObject.html", [
+              [ "mnx::sequence::Event", "classmnx_1_1sequence_1_1Event.html", null ],
+              [ "mnx::sequence::Grace", "classmnx_1_1sequence_1_1Grace.html", null ],
+              [ "mnx::sequence::MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", null ],
+              [ "mnx::sequence::Space", "classmnx_1_1sequence_1_1Space.html", null ],
+              [ "mnx::sequence::Tuplet", "classmnx_1_1sequence_1_1Tuplet.html", null ]
+            ] ]
+          ] ],
+          [ "mnx::ContentObject< TextContentObject >", "classmnx_1_1ContentObject.html", [
             [ "mnx::text::TextContentObject", "classmnx_1_1text_1_1TextContentObject.html", [
               [ "mnx::text::Smufl", "classmnx_1_1text_1_1Smufl.html", null ],
               [ "mnx::text::Text", "classmnx_1_1text_1_1Text.html", null ]
             ] ]
           ] ],
+          [ "mnx::ContentObject< BaseContentT >", "classmnx_1_1ContentObject.html", null ],
           [ "mnx::Layout", "classmnx_1_1Layout.html", null ],
           [ "mnx::Part", "classmnx_1_1Part.html", null ],
           [ "mnx::Score", "classmnx_1_1Score.html", null ],

@@ -29,6 +29,8 @@ var annotated_dup =
       ] ],
       [ "layout", "namespacemnx_1_1layout.html", [
         [ "Group", "classmnx_1_1layout_1_1Group.html", "classmnx_1_1layout_1_1Group" ],
+        [ "LayoutContent", "classmnx_1_1layout_1_1LayoutContent.html", null ],
+        [ "LayoutContentObject", "classmnx_1_1layout_1_1LayoutContentObject.html", null ],
         [ "Staff", "classmnx_1_1layout_1_1Staff.html", "classmnx_1_1layout_1_1Staff" ],
         [ "StaffSource", "classmnx_1_1layout_1_1StaffSource.html", "classmnx_1_1layout_1_1StaffSource" ]
       ] ],
@@ -39,7 +41,8 @@ var annotated_dup =
         [ "Clef", "classmnx_1_1part_1_1Clef.html", "classmnx_1_1part_1_1Clef" ],
         [ "DynamicAccent", "classmnx_1_1part_1_1DynamicAccent.html", "classmnx_1_1part_1_1DynamicAccent" ],
         [ "DynamicGradual", "classmnx_1_1part_1_1DynamicGradual.html", "classmnx_1_1part_1_1DynamicGradual" ],
-        [ "DynamicGroup", "classmnx_1_1part_1_1DynamicGroup.html", "classmnx_1_1part_1_1DynamicGroup" ],
+        [ "DynamicGroupArray", "classmnx_1_1part_1_1DynamicGroupArray.html", null ],
+        [ "DynamicGroupBase", "classmnx_1_1part_1_1DynamicGroupBase.html", "classmnx_1_1part_1_1DynamicGroupBase" ],
         [ "DynamicImmediate", "classmnx_1_1part_1_1DynamicImmediate.html", "classmnx_1_1part_1_1DynamicImmediate" ],
         [ "DynamicRelative", "classmnx_1_1part_1_1DynamicRelative.html", "classmnx_1_1part_1_1DynamicRelative" ],
         [ "KitComponent", "classmnx_1_1part_1_1KitComponent.html", "classmnx_1_1part_1_1KitComponent" ],
@@ -79,6 +82,8 @@ var annotated_dup =
         [ "NoteBase", "classmnx_1_1sequence_1_1NoteBase.html", "classmnx_1_1sequence_1_1NoteBase" ],
         [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
         [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
+        [ "SequenceContent", "classmnx_1_1sequence_1_1SequenceContent.html", null ],
+        [ "SequenceContentObject", "classmnx_1_1sequence_1_1SequenceContentObject.html", null ],
         [ "SingleNoteTremolo", "classmnx_1_1sequence_1_1SingleNoteTremolo.html", "classmnx_1_1sequence_1_1SingleNoteTremolo" ],
         [ "Slur", "classmnx_1_1sequence_1_1Slur.html", "classmnx_1_1sequence_1_1Slur" ],
         [ "SoftAccent", "classmnx_1_1sequence_1_1SoftAccent.html", null ],

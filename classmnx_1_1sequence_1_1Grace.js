@@ -5,5 +5,5 @@ var classmnx_1_1sequence_1_1Grace =
     [ "MNX_OPTIONAL_PROPERTY", "classmnx_1_1sequence_1_1Grace.html#add00b65d1a8a9257b3932231b2ad6ce7", null ],
     [ "MNX_OPTIONAL_PROPERTY_WITH_DEFAULT", "classmnx_1_1sequence_1_1Grace.html#ac5a5ab3484b126c7637995aaced49cf8", null ],
     [ "MNX_OPTIONAL_PROPERTY_WITH_DEFAULT", "classmnx_1_1sequence_1_1Grace.html#ad5e48d207f4017bee369c349d577a3d2", null ],
-    [ "MNX_REQUIRED_CHILD", "classmnx_1_1sequence_1_1Grace.html#a2ab7a47efab36deef1bf283206c91ada", null ]
+    [ "MNX_REQUIRED_CHILD", "classmnx_1_1sequence_1_1Grace.html#a147c6c2820ac08201026a59ff08fe3bf", null ]
 ];

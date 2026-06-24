@@ -279,13 +279,16 @@ public:
         m_displacement += interval;
     }
 
-    /// @brief Transposes enharmonically relative to the current values
-    /// @param direction negative or non-negative (usually -1 or 1)
-    void enharmonicTranspose(int direction)
+    /// @brief Transposes enharmonically relative to the current values.
+    /// @param diatonicSteps number of diatonic steps to move; may be positive or negative.
+    void enharmonicTranspose(int diatonicSteps)
     {
-        const int keyStepEnharmonic = calcStepsBetweenScaleDegrees(m_displacement, m_displacement + sign(direction));
-        diatonicTranspose(sign(direction));
-        m_alteration -= sign(direction) * keyStepEnharmonic;
+        const int stepSign = sign(diatonicSteps);
+        for (int i = 0; i < std::abs(diatonicSteps); ++i) {
+            const int keyStepEnharmonic = calcStepsBetweenScaleDegrees(m_displacement, m_displacement + stepSign);
+            diatonicTranspose(stepSign);
+            m_alteration -= stepSign * keyStepEnharmonic;
+        }
     }
 
     /**

@@ -68,12 +68,10 @@ public:
     MnxdomGeneratorInfo(Base& parent, std::string_view key)
         : Object(parent, key)
     {
-        set_name(std::string(MNXDOM_PROVENANCE_KEY));
         set_version(MNXDOM_VERSION);
         set_commit(std::string(MNXDOM_GIT_COMMIT));
     }
 
-    MNX_REQUIRED_PROPERTY(std::string, name);        ///< The name of the writing component.
     MNX_REQUIRED_PROPERTY(std::string, version);     ///< The version of the writing component.
     MNX_OPTIONAL_PROPERTY(std::string, build);       ///< Optional build number or build identifier.
     MNX_OPTIONAL_PROPERTY(std::string, commit);      ///< Optional source control revision for the writer.
@@ -103,10 +101,9 @@ class MnxdomSourceInfo : public Object
 public:
     using Object::Object;
 
-    MNX_REQUIRED_PROPERTY(std::string, format);      ///< The source format, such as `musicxml`, `midi`, or `manual`.
-    MNX_OPTIONAL_PROPERTY(std::string, version);     ///< Optional source format version.
-    MNX_OPTIONAL_PROPERTY(std::string, uri);         ///< Optional original source URI or path.
-    MNX_OPTIONAL_PROPERTY(std::string, label);       ///< Optional human-readable source label.
+    MNX_REQUIRED_PROPERTY(std::string, format);     ///< The source format, such as `musicxml`, `midi`, or `manual`.
+    MNX_OPTIONAL_PROPERTY(std::string, version);    ///< Optional source format version.
+    MNX_OPTIONAL_PROPERTY(std::string, filename);   ///< Optional original source URI or path.
 };
 
 /**
@@ -126,15 +123,13 @@ public:
     {
         set_provenanceSchemaVersion(MNXDOM_PROVENANCE_SCHEMA_VERSION);
         set_mnxSchema(getMnxSchemaId());
-        auto generator = create_generator();
-        generator.set_name(std::string(MNXDOM_PROVENANCE_KEY));
-        generator.set_version(MNXDOM_VERSION);
+        create_mnxdom();
         set_createdAt(detail::makeUtcTimestamp());
     }
 
     MNX_REQUIRED_PROPERTY(int, provenanceSchemaVersion);       ///< Schema version for the `_x.mnxdom` payload.
     MNX_REQUIRED_PROPERTY(std::string, mnxSchema);             ///< Full MNX schema identifier used by the document.
-    MNX_REQUIRED_CHILD(MnxdomGeneratorInfo, generator);        ///< The component that wrote the JSON.
+    MNX_REQUIRED_CHILD(MnxdomGeneratorInfo, mnxdom);            ///< The component that wrote the JSON.
     MNX_OPTIONAL_CHILD(MnxdomClientInfo, client);               ///< The client application that requested the export.
     MNX_OPTIONAL_CHILD(MnxdomSourceInfo, source);               ///< The imported or converted source.
     MNX_REQUIRED_PROPERTY(std::string, createdAt);              ///< UTC timestamp when the payload was created.

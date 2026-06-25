@@ -28,6 +28,7 @@
 
 #include "mnxdom.h"
 #include "music_theory/music_theory.hpp"
+#include "util/MusicTheoryConversions.h"
 
 namespace mnx {
 namespace validation {
@@ -79,10 +80,10 @@ struct ArpeggioSpanEndpoints
 
 [[nodiscard]] int calcSoundedPitchSemitones(const sequence::Note& note)
 {
-    const auto pitch = static_cast<sequence::Pitch::Required>(note.pitch());
+    const auto pitch = note.pitch();
     return music_theory::calc12EdoHalfstepsInInterval(
-        music_theory::calcDisplacement(int(pitch.step), pitch.octave),
-        pitch.alter
+        music_theory::calcDisplacement(util::toMusicTheoryPitch(pitch)),
+        pitch.alter()
     );
 }
 

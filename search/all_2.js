@@ -10,7 +10,7 @@ var searchData=
   ['calccurrentkey_7',['calcCurrentKey',['../classmnx_1_1global_1_1Measure.html#ac1b8e0959c5aafd0a23a23c663e2af6c',1,'mnx::global::Measure']]],
   ['calccurrentkeyfields_8',['calcCurrentKeyFields',['../classmnx_1_1global_1_1Measure.html#a397f6b72c24cf4840ed9d79771b03037',1,'mnx::global::Measure']]],
   ['calccurrenttime_9',['calccurrenttime',['../classmnx_1_1global_1_1Measure.html#a1bd736b2c877a7365956670ff363e302',1,'mnx::global::Measure::calcCurrentTime()'],['../classmnx_1_1part_1_1Measure.html#ab3854c5c635345751c873b0429c12f87',1,'mnx::part::Measure::calcCurrentTime()']]],
-  ['calcdisplacement_10',['calcDisplacement',['../namespacemusic__theory.html#a9c6451da69ad76a5cab37f007209c014',1,'music_theory']]],
+  ['calcdisplacement_10',['calcDisplacement',['../namespacemusic__theory.html#a25d2e2ec4727f853dc7cd1448e713a7e',1,'music_theory']]],
   ['calchasimmediatetext_11',['calcHasImmediateText',['../classmnx_1_1part_1_1DynamicGroupBase.html#a9cf11abadfd90532585685051ffc3f47',1,'mnx::part::DynamicGroupBase']]],
   ['calcispartgroup_12',['calcIsPartGroup',['../classmnx_1_1layout_1_1Group.html#a5d8b72be235c8f82376a48afa79d90d8',1,'mnx::layout::Group']]],
   ['calckeysigchangefrominterval_13',['calcKeySigChangeFromInterval',['../namespacemusic__theory.html#aa537406e4ca826927f9dfe4f3c238d52',1,'music_theory']]],

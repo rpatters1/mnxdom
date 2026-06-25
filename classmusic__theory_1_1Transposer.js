@@ -1,5 +1,6 @@
 var classmusic__theory_1_1Transposer =
 [
+    [ "Transposer", "classmusic__theory_1_1Transposer.html#a60afeabd008e8c9d8423b83fdd072405", null ],
     [ "Transposer", "classmusic__theory_1_1Transposer.html#a77f3b85e9a4d9cfc42678c236fbd9ef6", null ],
     [ "alteration", "classmusic__theory_1_1Transposer.html#a550fc30dbc918d850cd12599248b001c", null ],
     [ "chromaticTranspose", "classmusic__theory_1_1Transposer.html#a316564e5ceb34e7aaa072df6677b1ef3", null ],

@@ -153,6 +153,7 @@ var annotated_dup =
       [ "TimeSignature", "classmnx_1_1TimeSignature.html", "classmnx_1_1TimeSignature" ]
     ] ],
     [ "music_theory", "namespacemusic__theory.html", [
+      [ "Pitch", "structmusic__theory_1_1Pitch.html", "structmusic__theory_1_1Pitch" ],
       [ "Transposer", "classmusic__theory_1_1Transposer.html", "classmusic__theory_1_1Transposer" ]
     ] ]
 ];

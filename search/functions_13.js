@@ -7,7 +7,7 @@ var searchData=
   ['to_5fstring_4',['to_string',['../structmnx_1_1validation_1_1ValidationResult_1_1Error.html#ab52c56dcd19296f78c3d76bf200f4133',1,'mnx::validation::ValidationResult::Error']]],
   ['todouble_5',['toDouble',['../structmnx_1_1FractionValue.html#ab4c6120073156d2b7896bba8939dac53',1,'mnx::FractionValue']]],
   ['tostdvector_6',['toStdVector',['../classmnx_1_1Array.html#a71d223145cc464c531193824bb55b955',1,'mnx::Array']]],
-  ['transposer_7',['Transposer',['../classmusic__theory_1_1Transposer.html#a77f3b85e9a4d9cfc42678c236fbd9ef6',1,'music_theory::Transposer']]],
+  ['transposer_7',['transposer',['../classmusic__theory_1_1Transposer.html#a60afeabd008e8c9d8423b83fdd072405',1,'music_theory::Transposer::Transposer(const Pitch &amp;pitch)'],['../classmusic__theory_1_1Transposer.html#a77f3b85e9a4d9cfc42678c236fbd9ef6',1,'music_theory::Transposer::Transposer(int displacement, int alteration, bool isMinor=false, int numberOfEdoDivisions=STANDARD_12EDO_STEPS, const std::optional&lt; std::vector&lt; int &gt; &gt; &amp;keyMap=std::nullopt)']]],
   ['tryget_8',['tryGet',['../classmnx_1_1util_1_1EntityMap.html#ab242841ccae6f8d73450f7191991b42c',1,'mnx::util::EntityMap']]],
   ['trygetbeam_9',['tryGetBeam',['../classmnx_1_1util_1_1EntityMap.html#a08ea07b7caee6b9e1cb8bacac61eda55',1,'mnx::util::EntityMap']]],
   ['trygetbeamstartlevel_10',['tryGetBeamStartLevel',['../classmnx_1_1util_1_1EntityMap.html#a1b200ff8c5af18c0e7432c64593dd1e4',1,'mnx::util::EntityMap']]],

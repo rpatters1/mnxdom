@@ -195,6 +195,7 @@ var hierarchy =
     [ "mnx::scope::LayoutContent", "structmnx_1_1scope_1_1LayoutContent.html", null ],
     [ "mnx::util::LayoutSpan", "structmnx_1_1util_1_1LayoutSpan.html", null ],
     [ "mnx::util::EntityMap::MappedPosition", "structmnx_1_1util_1_1EntityMap_1_1MappedPosition.html", null ],
+    [ "music_theory::Pitch", "structmusic__theory_1_1Pitch.html", null ],
     [ "mnx::global::Barline::Required", "structmnx_1_1global_1_1Barline_1_1Required.html", null ],
     [ "mnx::global::Ending::Required", "structmnx_1_1global_1_1Ending_1_1Required.html", null ],
     [ "mnx::global::Fine::Required", "structmnx_1_1global_1_1Fine_1_1Required.html", null ],

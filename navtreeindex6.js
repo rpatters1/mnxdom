@@ -1,9 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"functions_r.html":[2,3,0,17],
-"functions_s.html":[2,3,0,18],
-"functions_t.html":[2,3,0,19],
-"functions_type.html":[2,3,3],
 "functions_u.html":[2,3,0,20],
 "functions_v.html":[2,3,0,21],
 "functions_vars.html":[2,3,2],
@@ -249,5 +245,9 @@ var NAVTREEINDEX6 =
 "namespacemusic__theory.html#acb68e55d250cfd1ba7a7d5ca0bcbb869adfcf28d0734569a6a693bc8194de62bf":[1,0,1,4,4],
 "namespacemusic__theory.html#acb68e55d250cfd1ba7a7d5ca0bcbb869af623e75af30e62bbd73d6df5b50bb7b5":[1,0,1,4,1],
 "namespacemusic__theory.html#acca84f587bc2b11d1a42cfb98a869ed4":[1,0,1,14],
-"namespacemusic__theory.html#acf8c49a568a6a6043714a796c4de89e4":[1,0,1,5]
+"namespacemusic__theory.html#acf8c49a568a6a6043714a796c4de89e4":[1,0,1,5],
+"namespacemusic__theory.html#ad044685489c9b3d008be12762a490463":[1,0,1,11],
+"namespacemusic__theory.html#af0e72207b9ce2605cdf0bae1e2176ef1":[1,0,1,16],
+"namespaces.html":[1,0],
+"pages.html":[]
 };

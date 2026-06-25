@@ -58,13 +58,13 @@ var NAVTREEINDEX =
 [
 "BaseTypes_8h_source.html",
 "classmnx_1_1Global.html#af41ceaed4575702db1a65964f7ebe0ed",
-"classmnx_1_1Score.html#a1fc5faf70ad89de98781399204422992",
-"classmnx_1_1layout_1_1StaffSource.html#a9ece8ba5181296a745428559accf5546",
-"classmnx_1_1score_1_1Page.html#aea318c90db12dfe763c0812101db187c",
-"classmnx_1_1sequence_1_1Pitch.html#aa36dbd2a0ca336bb5dd57561cf96b971",
-"functions_r.html",
-"namespacemusic__theory.html#ad044685489c9b3d008be12762a490463",
-"structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html#a78ff12a827ce00977348027965ef1fd3"
+"classmnx_1_1Score.html#ad0b2e802742bb78f6babaab0a73138c2",
+"classmnx_1_1layout_1_1StaffSource.html#aa66e75c97d028ec315d3e3b1ed9f1bb2",
+"classmnx_1_1score_1_1System.html",
+"classmnx_1_1sequence_1_1Pitch.html#ae87d052e94a6bd883ae908c5489217e3",
+"functions_u.html",
+"structmnx_1_1EntityMapPolicies.html",
+"structmnx_1_1sequence_1_1Note_1_1Required.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

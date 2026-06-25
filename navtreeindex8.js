@@ -1,9 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html#a78ff12a827ce00977348027965ef1fd3":[1,0,0,4,13,0,0],
-"structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html#a9b86cf7bb679e2702b21e6db0aca97dd":[2,0,0,6,13,0,1],
-"structmnx_1_1sequence_1_1MultiNoteTremolo_1_1Required.html#a9b86cf7bb679e2702b21e6db0aca97dd":[1,0,0,4,13,0,1],
-"structmnx_1_1sequence_1_1Note_1_1Required.html":[2,0,0,6,14,0],
 "structmnx_1_1sequence_1_1Note_1_1Required.html":[1,0,0,4,14,0],
 "structmnx_1_1sequence_1_1Note_1_1Required.html#ab203f33d3ff9a39983a1db063bda1ce5":[2,0,0,6,14,0,0],
 "structmnx_1_1sequence_1_1Note_1_1Required.html#ab203f33d3ff9a39983a1db063bda1ce5":[1,0,0,4,14,0,0],

@@ -120,10 +120,9 @@ TEST(Document, MnxdomProvenance)
     EXPECT_EQ(provenance.provenanceSchemaVersion(), 1);
     EXPECT_EQ(provenance.mnxSchema(), getMnxSchemaId());
 
-    auto generator = provenance.generator();
-    EXPECT_EQ(generator.name(), "mnxdom");
-    EXPECT_EQ(generator.version(), MNXDOM_VERSION);
-    EXPECT_FALSE(generator.commit().value_or("").empty());
+    auto mnxdom = provenance.mnxdom();
+    EXPECT_EQ(mnxdom.version(), MNXDOM_VERSION);
+    EXPECT_FALSE(mnxdom.commit().value_or("").empty());
 
     EXPECT_FALSE(provenance.createdAt().empty());
     provenance.set_documentId("urn:uuid:123e4567-e89b-12d3-a456-426614174000");
@@ -135,7 +134,7 @@ TEST(Document, MnxdomProvenance)
     auto source = provenance.ensure_source();
     source.set_format("musicxml");
     source.set_version("4.0");
-    source.set_uri("file:///tmp/source.musicxml");
+    source.set_filename("source.musicxml");
 
     ASSERT_TRUE(mnx.mnxdom().has_value());
     EXPECT_FALSE(mnx.mnxdom()->createdAt().empty());

@@ -25,6 +25,7 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <string_view>
 
 #include "BaseTypes.h"
 
@@ -69,7 +70,14 @@ public:
         : Object(parent, key)
     {
         set_version(MNXDOM_VERSION);
-        set_commit(std::string(MNXDOM_GIT_COMMIT));
+        constexpr std::string_view commit = MNXDOM_GIT_COMMIT;
+        if constexpr (!commit.empty()) {
+            set_commit(std::string(commit));
+        }
+        constexpr std::string_view build = MNXDOM_BUILD_ID;
+        if constexpr (!build.empty()) {
+            set_build(std::string(build));
+        }
     }
 
     MNX_REQUIRED_PROPERTY(std::string, version);     ///< The version of the writing component.

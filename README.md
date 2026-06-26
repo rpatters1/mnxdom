@@ -100,6 +100,52 @@ The dependencies [pboettch/json-schema-validator](https://github.com/pboettch/js
 -DUSE_SYSTEM_JSON_SCHEMA_VALIDATOR=ON
 ```
 
+mnxdom vendors the W3C MNX schema and example JSON files in `third_party/w3c-mnx`. These files are not fetched during the build. To update them from the current `main` branch of the W3C MNX repository, run:
+
+```sh
+scripts/update-w3c-mnx.sh
+```
+
+To update to a specific upstream commit or ref of the w3c repository, pass it as an argument. The resolved commit is recorded in `third_party/w3c-mnx/UPSTREAM_COMMIT`.
+
+#### Package Builds
+
+Package creators should configure mnxdom so that the build does not download dependencies from the internet. Use system-provided copies of nlohmann/json and json-schema-validator:
+
+```sh
+cmake -S . -B build \
+  -DUSE_SYSTEM_NLOHMANN_JSON=ON \
+  -DUSE_SYSTEM_JSON_SCHEMA_VALIDATOR=ON \
+  -Dmnxdom_BUILD_TESTING=OFF
+```
+
+If package builds run the test suite, also use a system-provided GoogleTest:
+
+```sh
+cmake -S . -B build \
+  -DUSE_SYSTEM_NLOHMANN_JSON=ON \
+  -DUSE_SYSTEM_JSON_SCHEMA_VALIDATOR=ON \
+  -DUSE_SYSTEM_GOOGLETEST=ON
+```
+
+The W3C MNX schema and examples are vendored in `third_party/w3c-mnx`, so CMake does not fetch them. Do not run `scripts/update-w3c-mnx.sh` during a package build; that script is for maintainers updating the vendored snapshot before a release.
+
+mnxdom records its own version and, when available, its source commit in generated MNX provenance. When building from a source tree without `.git`, whoever builds mnxdom may provide the source revision explicitly. This includes package creators and client projects that vendor mnxdom or bring it in with CMake `FetchContent`:
+
+```sh
+-DMNXDOM_GIT_COMMIT=<mnxdom-commit>
+```
+
+If `MNXDOM_GIT_COMMIT` is not supplied and `.git` is unavailable, the commit field is omitted from the provenance rather than filled with a placeholder.
+
+Package builds may also provide a package or build identifier for mnxdom itself:
+
+```sh
+-DMNXDOM_BUILD_ID=<mnxdom-build-id>
+```
+
+This value is recorded as `mnxdom.build` in provenance. Client application build metadata should be recorded separately in the client provenance fields.
+
 ### To Run the Tests
 
 You need `cmake` to build and run the tests. From the directory containing this repository, configure the build directory:

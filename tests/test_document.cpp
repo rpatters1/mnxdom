@@ -122,7 +122,18 @@ TEST(Document, MnxdomProvenance)
 
     auto mnxdom = provenance.mnxdom();
     EXPECT_EQ(mnxdom.version(), MNXDOM_VERSION);
-    EXPECT_FALSE(mnxdom.commit().value_or("").empty());
+    const std::string commit = MNXDOM_GIT_COMMIT;
+    if (commit.empty()) {
+        EXPECT_FALSE(mnxdom.commit().has_value());
+    } else {
+        EXPECT_EQ(mnxdom.commit().value_or(""), commit);
+    }
+    const std::string build = MNXDOM_BUILD_ID;
+    if (build.empty()) {
+        EXPECT_FALSE(mnxdom.build().has_value());
+    } else {
+        EXPECT_EQ(mnxdom.build().value_or(""), build);
+    }
 
     EXPECT_FALSE(provenance.createdAt().empty());
     provenance.set_documentId("urn:uuid:123e4567-e89b-12d3-a456-426614174000");

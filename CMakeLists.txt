@@ -9,8 +9,8 @@ find_package(Git QUIET)
 # Options for using system libraries instead of fetching from the internet
 option(USE_SYSTEM_NLOHMANN_JSON "Use system-installed nlohmann_json instead of fetching" OFF)
 option(USE_SYSTEM_JSON_SCHEMA_VALIDATOR "Use system-installed nlohmann_json_schema_validator instead of fetching" OFF)
-# Set MNX_W3C_SOURCE to a directory path to use local mnx_w3c files instead of fetching
-set(MNX_W3C_SOURCE "" CACHE PATH "Path to local mnx_w3c repository (if empty, will fetch from GitHub)")
+# Set MNX_W3C_SOURCE to a directory path containing a vendored w3c-mnx data snapshot.
+set(MNX_W3C_SOURCE "${CMAKE_CURRENT_LIST_DIR}/third_party/w3c-mnx" CACHE PATH "Path to w3c-mnx data snapshot")
 
 option(BUILD_SHARED_LIBS "Build mnxdom as a shared library" OFF)
 
@@ -42,8 +42,9 @@ endif()
 set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
 set(MNX_SCHEMA_DIR "${CMAKE_CURRENT_LIST_DIR}/schema")
 
-set(MNXDOM_GIT_COMMIT "unknown")
-if(GIT_FOUND)
+set(MNXDOM_GIT_COMMIT "" CACHE STRING "mnxdom source control revision to embed in provenance")
+set(MNXDOM_BUILD_ID "" CACHE STRING "mnxdom package or build identifier to embed in provenance")
+if(NOT MNXDOM_GIT_COMMIT AND GIT_FOUND)
     execute_process(
         COMMAND "${GIT_EXECUTABLE}" rev-parse --short HEAD
         WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}"
@@ -51,9 +52,6 @@ if(GIT_FOUND)
         OUTPUT_STRIP_TRAILING_WHITESPACE
         ERROR_QUIET
     )
-    if(NOT MNXDOM_GIT_COMMIT)
-        set(MNXDOM_GIT_COMMIT "unknown")
-    endif()
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/MnxW3C.cmake")
@@ -117,6 +115,7 @@ target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
 target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 target_compile_definitions(mnxdom PUBLIC MNXDOM_VERSION=\"${PROJECT_VERSION}\")
 target_compile_definitions(mnxdom PUBLIC MNXDOM_GIT_COMMIT=\"${MNXDOM_GIT_COMMIT}\")
+target_compile_definitions(mnxdom PUBLIC MNXDOM_BUILD_ID=\"${MNXDOM_BUILD_ID}\")
 # Export fetched mnx_w3c locations to dependents
 mnx_w3c_apply_interface_definitions(mnxdom)
 target_compile_options(mnxdom PUBLIC

@@ -109,8 +109,17 @@ else()
     message(STATUS "Using fetched json_schema_validator")
 endif()
 
+if(TARGET nlohmann_json_schema_validator::validator)
+    set(MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET nlohmann_json_schema_validator::validator)
+elseif(TARGET nlohmann_json_schema_validator)
+    set(MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET nlohmann_json_schema_validator)
+else()
+    message(FATAL_ERROR "nlohmann_json_schema_validator target not found")
+endif()
+message(STATUS "Using nlohmann_json_schema_validator target: ${MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET}")
+
 target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
-target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
+target_link_libraries(mnxdom PUBLIC ${MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET})
 # nlohmann/json behavior config
 target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 target_compile_definitions(mnxdom PUBLIC MNXDOM_VERSION=\"${PROJECT_VERSION}\")

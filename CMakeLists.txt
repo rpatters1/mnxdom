@@ -38,8 +38,6 @@ if (MSVC)
     add_compile_options(/bigobj)
 endif()
 
-#define other directories
-set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
 set(MNX_SCHEMA_DIR "${CMAKE_CURRENT_LIST_DIR}/schema")
 
 set(MNXDOM_GIT_COMMIT "" CACHE STRING "mnxdom source control revision to embed in provenance")
@@ -55,7 +53,6 @@ if(NOT MNXDOM_GIT_COMMIT AND GIT_FOUND)
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/MnxW3C.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 
 # Add library
 add_library(mnxdom
@@ -65,7 +62,13 @@ add_library(mnxdom
     src/validation/SemanticValidate.cpp
 )
 
-target_include_directories(mnxdom PUBLIC src)
+target_include_directories(mnxdom PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/mnxdom>
+)
+target_include_directories(mnxdom PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/third_party/w3c-mnx
+)
 
 # Define the version of nlohmann_json to use
 set(NLOHMANN_JSON_VERSION 3.12.0)
@@ -138,9 +141,6 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     # Extra warnings for MSVC
     target_compile_options(mnxdom PRIVATE /W4 /WX)
 endif()
-
-add_dependencies(mnxdom GenerateMnxSchemaXxd)
-target_include_directories(mnxdom PRIVATE ${GENERATED_DIR})
 
 # Allow users to disable building tests
 option(mnxdom_BUILD_TESTING "Enable testing mnxdom" ON)

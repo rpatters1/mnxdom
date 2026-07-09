@@ -28,7 +28,7 @@
 #else
 #include "nlohmann/json-schema.hpp"
 #endif
-#include "mnx_schema.xxd"
+#include "mnx-schema.xxd"
 
 namespace mnx {
 

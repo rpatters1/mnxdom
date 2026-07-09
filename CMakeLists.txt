@@ -8,8 +8,8 @@ include(FetchContent)
 # Options for using system libraries instead of fetching from the internet
 option(USE_SYSTEM_NLOHMANN_JSON "Use system-installed nlohmann_json instead of fetching" OFF)
 option(USE_SYSTEM_JSON_SCHEMA_VALIDATOR "Use system-installed nlohmann_json_schema_validator instead of fetching" OFF)
-# Set MNX_W3C_SOURCE to a directory path to use local mnx_w3c files instead of fetching
-set(MNX_W3C_SOURCE "" CACHE PATH "Path to local mnx_w3c repository (if empty, will fetch from GitHub)")
+# Set MNX_W3C_SOURCE to a directory path containing a vendored w3c-mnx data snapshot.
+set(MNX_W3C_SOURCE "${CMAKE_CURRENT_LIST_DIR}/third_party/w3c-mnx" CACHE PATH "Path to w3c-mnx data snapshot")
 
 option(BUILD_SHARED_LIBS "Build mnxdom as a shared library" OFF)
 
@@ -37,12 +37,7 @@ if (MSVC)
     add_compile_options(/bigobj)
 endif()
 
-#define other directories
-set(GENERATED_DIR "${CMAKE_BINARY_DIR}/generated")
-set(MNX_SCHEMA_DIR "${CMAKE_CURRENT_LIST_DIR}/schema")
-
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/MnxW3C.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateMnxSchemaXxd.cmake")
 
 # Add library
 add_library(mnxdom
@@ -52,7 +47,13 @@ add_library(mnxdom
     src/validation/SemanticValidate.cpp
 )
 
-target_include_directories(mnxdom PUBLIC src)
+target_include_directories(mnxdom PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/mnxdom>
+)
+target_include_directories(mnxdom PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/third_party/w3c-mnx
+)
 
 # Define the version of nlohmann_json to use
 set(NLOHMANN_JSON_VERSION 3.12.0)
@@ -96,8 +97,17 @@ else()
     message(STATUS "Using fetched json_schema_validator")
 endif()
 
+if(TARGET nlohmann_json_schema_validator::validator)
+    set(MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET nlohmann_json_schema_validator::validator)
+elseif(TARGET nlohmann_json_schema_validator)
+    set(MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET nlohmann_json_schema_validator)
+else()
+    message(FATAL_ERROR "nlohmann_json_schema_validator target not found")
+endif()
+message(STATUS "Using nlohmann_json_schema_validator target: ${MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET}")
+
 target_link_libraries(mnxdom PUBLIC nlohmann_json::nlohmann_json)
-target_link_libraries(mnxdom PUBLIC nlohmann_json_schema_validator)
+target_link_libraries(mnxdom PUBLIC ${MNXDOM_JSON_SCHEMA_VALIDATOR_TARGET})
 # nlohmann/json behavior config
 target_compile_definitions(mnxdom PUBLIC JSON_DISABLE_ENUM_SERIALIZATION=1)
 # Export fetched mnx_w3c locations to dependents
@@ -105,9 +115,6 @@ mnx_w3c_apply_interface_definitions(mnxdom)
 target_compile_options(mnxdom PUBLIC
     $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>
 )
-
-add_dependencies(mnxdom GenerateMnxSchemaXxd)
-target_include_directories(mnxdom PRIVATE ${GENERATED_DIR})
 
 # Allow users to disable building tests
 option(mnxdom_BUILD_TESTING "Enable testing mnxdom" ON)

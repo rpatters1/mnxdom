@@ -81,9 +81,18 @@ var namespacemnx =
       [ "FClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a0945e63d7277b87a5b01102815984c5e", null ],
       [ "GClef", "namespacemnx.html#a2d15170d378fa4c62736de982dfdfe72a9e1beb330f7d6cf5e497773713f81186", null ]
     ] ],
+    [ "DynamicPrefix", "namespacemnx.html#a4e27a0be5614c80a05ffa0c8283ac0fb", [
+      [ "None", "namespacemnx.html#a4e27a0be5614c80a05ffa0c8283ac0fba6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "r", "namespacemnx.html#a4e27a0be5614c80a05ffa0c8283ac0fba4b43b0aee35624cd95b910189b3dc231", null ],
+      [ "s", "namespacemnx.html#a4e27a0be5614c80a05ffa0c8283ac0fba03c7c0ace395d80182db07ae2c30f034", null ]
+    ] ],
     [ "DynamicRelativeValue", "namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3b", [
       [ "Louder", "namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3ba6e8f7e13c0f56cff983d762fb3e519ab", null ],
       [ "Softer", "namespacemnx.html#a78c45e0f146aed99c0e9b5a7e3e1ec3ba50ad8fee75e1601fc44cff875a96b802", null ]
+    ] ],
+    [ "DynamicSuffix", "namespacemnx.html#a6bde9b92bdb7e56a96cce03dfbebbb03", [
+      [ "None", "namespacemnx.html#a6bde9b92bdb7e56a96cce03dfbebbb03a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "z", "namespacemnx.html#a6bde9b92bdb7e56a96cce03dfbebbb03afbade9e36a3f36d3d676c1b808451dd7", null ]
     ] ],
     [ "DynamicWedgeType", "namespacemnx.html#a0c98e62013b01d589b6e4b04f67b12d5", [
       [ "Decreasing", "namespacemnx.html#a0c98e62013b01d589b6e4b04f67b12d5a2e6a9b0375c021e8f650a5eb22012b5b", null ],
@@ -235,6 +244,10 @@ var namespacemnx =
       [ "Arpeggio", "namespacemnx.html#a961d9beb0e598614b7157949964d33efae30c0ef84d87ecf9870662a879a36a46", null ],
       [ "CrossJump", "namespacemnx.html#a961d9beb0e598614b7157949964d33efacc517bad3a0101ca47b6933a5ad22ee0", null ],
       [ "CrossVoice", "namespacemnx.html#a961d9beb0e598614b7157949964d33efac5dc1837e20fc639f037002606f064bd", null ]
+    ] ],
+    [ "TimeSignatureDisplay", "namespacemnx.html#a135331c929c8b377e5866fdbe1b28cc4", [
+      [ "Common", "namespacemnx.html#a135331c929c8b377e5866fdbe1b28cc4ad13bc5b68b2bd9e18f29777db17cc563", null ],
+      [ "Cut", "namespacemnx.html#a135331c929c8b377e5866fdbe1b28cc4aeb334dca00e390e0d3ebf52d205807d7", null ]
     ] ],
     [ "TimeSignatureUnit", "namespacemnx.html#aa17c3a6f2b681e4c8e401dd6691dc8b3", [
       [ "Whole", "namespacemnx.html#aa17c3a6f2b681e4c8e401dd6691dc8b3ac8d2fc8ed10b21e647d7f58d4436b050", null ],

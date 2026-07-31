@@ -9,5 +9,6 @@ var classmnx_1_1part_1_1Measure =
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1part_1_1Measure.html#a6e77fe2aed183b05ee84064168de7e04", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1part_1_1Measure.html#a1043e8ea608ff6a0c77fc3935fcc80ce", null ],
     [ "MNX_OPTIONAL_CHILD", "classmnx_1_1part_1_1Measure.html#a95345cd46f449fc2df294fefd0cddde0", null ],
+    [ "MNX_OPTIONAL_CHILD", "classmnx_1_1part_1_1Measure.html#ac97433f1affa459a8e3107057fe34325", null ],
     [ "MNX_REQUIRED_CHILD", "classmnx_1_1part_1_1Measure.html#aa4b923a5da03595a2cdc9190cc68572b", null ]
 ];

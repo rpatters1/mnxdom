@@ -12,6 +12,8 @@ var namespacemnx_1_1part =
     [ "DynamicRelative", "classmnx_1_1part_1_1DynamicRelative.html", "classmnx_1_1part_1_1DynamicRelative" ],
     [ "KitComponent", "classmnx_1_1part_1_1KitComponent.html", "classmnx_1_1part_1_1KitComponent" ],
     [ "Measure", "classmnx_1_1part_1_1Measure.html", "classmnx_1_1part_1_1Measure" ],
+    [ "MeasureRepeat", "classmnx_1_1part_1_1MeasureRepeat.html", "classmnx_1_1part_1_1MeasureRepeat" ],
+    [ "MeasureRepeatCounter", "classmnx_1_1part_1_1MeasureRepeatCounter.html", "classmnx_1_1part_1_1MeasureRepeatCounter" ],
     [ "NonArpeggio", "classmnx_1_1part_1_1NonArpeggio.html", "classmnx_1_1part_1_1NonArpeggio" ],
     [ "Ottava", "classmnx_1_1part_1_1Ottava.html", "classmnx_1_1part_1_1Ottava" ],
     [ "PartTransposition", "classmnx_1_1part_1_1PartTransposition.html", "classmnx_1_1part_1_1PartTransposition" ],

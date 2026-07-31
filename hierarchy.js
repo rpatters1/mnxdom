@@ -116,7 +116,6 @@ var hierarchy =
             [ "mnx::sequence::KitNote", "classmnx_1_1sequence_1_1KitNote.html", null ],
             [ "mnx::sequence::Note", "classmnx_1_1sequence_1_1Note.html", null ]
           ] ],
-          [ "mnx::sequence::Rest", "classmnx_1_1sequence_1_1Rest.html", null ],
           [ "mnx::sequence::Slur", "classmnx_1_1sequence_1_1Slur.html", null ],
           [ "mnx::sequence::Tie", "classmnx_1_1sequence_1_1Tie.html", null ]
         ] ],
@@ -147,6 +146,8 @@ var hierarchy =
         [ "mnx::global::RepeatStart", "classmnx_1_1global_1_1RepeatStart.html", null ],
         [ "mnx::global::Segno", "classmnx_1_1global_1_1Segno.html", null ],
         [ "mnx::part::Clef", "classmnx_1_1part_1_1Clef.html", null ],
+        [ "mnx::part::MeasureRepeat", "classmnx_1_1part_1_1MeasureRepeat.html", null ],
+        [ "mnx::part::MeasureRepeatCounter", "classmnx_1_1part_1_1MeasureRepeatCounter.html", null ],
         [ "mnx::part::PartTransposition", "classmnx_1_1part_1_1PartTransposition.html", null ],
         [ "mnx::sequence::AccidentalDisplay", "classmnx_1_1sequence_1_1AccidentalDisplay.html", null ],
         [ "mnx::sequence::AccidentalEnclosure", "classmnx_1_1sequence_1_1AccidentalEnclosure.html", null ],
@@ -168,6 +169,7 @@ var hierarchy =
         [ "mnx::sequence::EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", null ],
         [ "mnx::sequence::FullMeasureRest", "classmnx_1_1sequence_1_1FullMeasureRest.html", null ],
         [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ],
+        [ "mnx::sequence::Rest", "classmnx_1_1sequence_1_1Rest.html", null ],
         [ "mnx::sequence::TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", null ],
         [ "mnx::text::Style", "classmnx_1_1text_1_1Style.html", null ]
       ] ],
@@ -215,6 +217,8 @@ var hierarchy =
     [ "mnx::part::DynamicImmediate::Required", "structmnx_1_1part_1_1DynamicImmediate_1_1Required.html", null ],
     [ "mnx::part::DynamicRelative::Required", "structmnx_1_1part_1_1DynamicRelative_1_1Required.html", null ],
     [ "mnx::part::KitComponent::Required", "structmnx_1_1part_1_1KitComponent_1_1Required.html", null ],
+    [ "mnx::part::MeasureRepeat::Required", "structmnx_1_1part_1_1MeasureRepeat_1_1Required.html", null ],
+    [ "mnx::part::MeasureRepeatCounter::Required", "structmnx_1_1part_1_1MeasureRepeatCounter_1_1Required.html", null ],
     [ "mnx::part::Ottava::Required", "structmnx_1_1part_1_1Ottava_1_1Required.html", null ],
     [ "mnx::part::PartTransposition::Required", "structmnx_1_1part_1_1PartTransposition_1_1Required.html", null ],
     [ "mnx::part::PositionedClef::Required", "structmnx_1_1part_1_1PositionedClef_1_1Required.html", null ],

@@ -118,8 +118,9 @@ public:
 
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(DynamicPrefix, accentPrefix, DynamicPrefix::s); ///< defines prefix ("r", "s", or "");
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(DynamicSuffix, accentSuffix, DynamicSuffix::z); ///< defines suffix ("z" or "");
-    MNX_OPTIONAL_PROPERTY(DynamicValue, residualValue);             ///< If a dynamic is a sudden change, this is the first value.
-                                                                    ///< For example, if the dynamic is "fp", this would be "f".
+    MNX_OPTIONAL_PROPERTY(DynamicValue, residualValue);             ///< If a dynamic is a sudden change, this is the value that remains
+                                                                    ///< after the attack. For example, if the dynamic is "fp", #value is
+                                                                    ///< "f" and this would be "p".
 
     bool calcHasImmediateText() const override
     {

@@ -81,21 +81,38 @@ MNX_ENUM_MAPPING(ClefSign, {
     { "G",          ClefSign::GClef }
 });
 
+MNX_ENUM_MAPPING(DynamicPrefix, {
+    { "",           DynamicPrefix::None },
+    { "r",          DynamicPrefix::r },
+    { "s",          DynamicPrefix::s }
+});
+
 MNX_ENUM_MAPPING(DynamicRelativeValue, {
     { "louder",     DynamicRelativeValue::Louder },
     { "softer",     DynamicRelativeValue::Softer }
+});
+
+MNX_ENUM_MAPPING(DynamicSuffix, {
+    { "",           DynamicSuffix::None },
+    { "z",          DynamicSuffix::z }
 });
 
 MNX_ENUM_MAPPING(DynamicValue, {
     { "f",          DynamicValue::f },
     { "ff",         DynamicValue::ff },
     { "fff",        DynamicValue::fff },
+    { "ffff",       DynamicValue::ffff },
+    { "fffff",      DynamicValue::fffff },
+    { "ffffff",     DynamicValue::ffffff },
     { "mf",         DynamicValue::mf },
     { "mp",         DynamicValue::mp },
     { "n",          DynamicValue::n },
     { "p",          DynamicValue::p },
     { "pp",         DynamicValue::pp },
-    { "ppp",        DynamicValue::ppp }
+    { "ppp",        DynamicValue::ppp },
+    { "pppp",       DynamicValue::pppp },
+    { "ppppp",      DynamicValue::ppppp },
+    { "pppppp",     DynamicValue::pppppp },
 });
 
 MNX_ENUM_MAPPING(DynamicWedgeType, {
@@ -246,6 +263,11 @@ MNX_ENUM_MAPPING(TieTargetType, {
     { "crossVoice", TieTargetType::CrossVoice },
     { "arpeggio",   TieTargetType::Arpeggio },
     { "crossJump",  TieTargetType::CrossJump }
+});
+
+MNX_ENUM_MAPPING(TimeSignatureDisplay, {
+    { "common",         TimeSignatureDisplay::Common },
+    { "cut",            TimeSignatureDisplay::Cut }
 });
 
 MNX_ENUM_MAPPING(TupletDisplaySetting, {

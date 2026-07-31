@@ -77,6 +77,14 @@ enum class BeamHookDirection
 /**
  * @enum BreathMarkSymbol
  * @brief The symbols available for a breath mark
+ * @todo The schema currently types `breath-mark-symbol` as an unconstrained string, deferring to
+ * the MusicXML `breath-mark-value` list. Outstanding issue 536 requests that those values be stated
+ * explicitly in the MNX spec and enumerated in the schema. Until then, a breath mark symbol outside
+ * this enum is schema-valid but deserializes to BreathMarkSymbol::Comma.
+ * @note Unlike MusicXML's `breath-mark-value`, this enum has no empty member. MNX is expected to
+ * indicate "no specified symbol" by omitting the property, which the optional property already
+ * carries. (Contrast DynamicPrefix and DynamicSuffix, whose non-empty defaults mean absence is not
+ * the same as "", so they do need an explicit None member.)
  */
 enum class BreathMarkSymbol
 {
@@ -97,14 +105,29 @@ enum class ClefSign
     GClef           ///< G Clef
 };
 
-/**
- * @enum DynamicRelativeValue
- * @brief The possible relative changes in dynamic value
- */
+/// @enum Dynamic Prefix
+/// @brief Dynamic prefix values permitted by MNX
+enum class DynamicPrefix
+{
+    None,           ///< empty string
+    r,              ///< "ren-" as in renforzando (rf)
+    s,              ///< "s-" as in sforzando (sf)
+};
+
+/// @enum DynamicRelativeValue
+/// @brief The possible relative changes in dynamic value
 enum class DynamicRelativeValue
 {
     Louder,             ///< relative increase
     Softer              ///< relative decrease
+};
+
+/// @enum Dynamic Suffix
+/// @brief Dynamic suffix values permitted by MNX
+enum class DynamicSuffix
+{
+    None,           ///< empty string
+    z               ///< "-zado" as in forzado (fz)
 };
 
 /// @enum Dynamic Value
@@ -114,12 +137,18 @@ enum class DynamicValue
     f,
     ff,
     fff,
+    ffff,
+    fffff,
+    ffffff,
     mf,
     mp,
     n,
     p,
     pp,
-    ppp
+    ppp,
+    pppp,
+    ppppp,
+    pppppp,
 };
 
 /**
@@ -443,6 +472,16 @@ enum class TimeSignatureUnit : int
     Value32nd = 32,
     Value64th = 64,
     Value128th = 128
+};
+
+/**
+ * @enum TimeSignatureDisplay
+ * @brief Encodes visual glyphs for a time signature.
+ */
+enum class TimeSignatureDisplay
+{
+    Common,     ///< Use common time glyph instead of numbers
+    Cut         ///< Use cut time glyph instead of numbers
 };
 
 /**

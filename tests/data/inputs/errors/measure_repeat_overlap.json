@@ -1,0 +1,59 @@
+{
+    "mnx": {
+        "version": 1
+    },
+    "global": {
+        "measures": [
+            { "id": "m1", "time": { "count": 4, "unit": 4 } },
+            { "id": "m2" },
+            { "id": "m3" },
+            { "id": "m4" }
+        ]
+    },
+    "parts": [
+        {
+            "id": "P1",
+            "name": "Single Staff Part",
+            "staves": 1,
+            "measures": [
+                {
+                    "clefs": [
+                        { "clef": { "sign": "G", "staffPosition": -2 } }
+                    ],
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "duration": { "base": "whole" },
+                                    "notes": [ { "pitch": { "step": "C", "octave": 5 } } ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sequences": [
+                        {
+                            "content": [
+                                {
+                                    "type": "event",
+                                    "duration": { "base": "whole" },
+                                    "notes": [ { "pitch": { "step": "G", "octave": 4 } } ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "measureRepeat": { "number": 2 },
+                    "sequences": [ { "content": [] } ]
+                },
+                {
+                    "measureRepeat": { "number": 1 },
+                    "sequences": [ { "content": [] } ]
+                }
+            ]
+        }
+    ]
+}

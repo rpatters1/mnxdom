@@ -110,7 +110,7 @@ enum class ClefSign
 enum class DynamicPrefix
 {
     None,           ///< empty string
-    r,              ///< "ren-" as in renforzando (rf)
+    r,              ///< "rin-" as in rinforzando (rf)
     s,              ///< "s-" as in sforzando (sf)
 };
 
@@ -127,7 +127,7 @@ enum class DynamicRelativeValue
 enum class DynamicSuffix
 {
     None,           ///< empty string
-    z               ///< "-zado" as in forzado (fz)
+    z               ///< "-zato" as in forzato (fz)
 };
 
 /// @enum Dynamic Value

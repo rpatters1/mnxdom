@@ -144,10 +144,10 @@ public:
  * @class Rest
  * @brief Represents a rest within a musical event within a sequence.
  */
-class Rest : public ArrayElementObject
+class Rest : public Object
 {
 public:
-    using ArrayElementObject::ArrayElementObject;
+    using Object::Object;
 
     MNX_OPTIONAL_PROPERTY(int, staffPosition);              ///< The staff position of non-floating rests.
 };

@@ -58,8 +58,6 @@ public:
         create_position(position);
     }
 
-    MNX_OPTIONAL_PROPERTY(DynamicValue, attackValue);               ///< If a dynamic is a sudden change, this is the first value.
-                                                                    ///< For example, if the dynamic is "fp", this would be "f".
     MNX_OPTIONAL_CHILD(Array<std::string>, glyphs);                 ///< One or more glyphs that specify the exact representation of the dynamic.
                                                                     ///< If present, they override the default representation derived from `value` (and `attackValue`.)
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(MultiStaffOrientation, orient, MultiStaffOrientation::Auto); ///< positioning of the dynamic relative to its part staves
@@ -69,14 +67,15 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, prefix);                     ///< Text preceding the dynamics representation, e.g., "più"
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< The staff (within the part) this dynamic applies to
     MNX_OPTIONAL_PROPERTY(std::string, suffix);                     ///< Text following the dynamics representation, e.g., "subito"
-    MNX_OPTIONAL_PROPERTY(DynamicValue, value);                     ///< The value of the dynamic. Currently the MNX spec allows any string here.
+    MNX_OPTIONAL_PROPERTY(DynamicValue, value);                     ///< The value of the dynamic.
+    MNX_OPTIONAL_PROPERTY(std::string, visuallyContinues);          ///< Points to the ID of the directly previous dynamic group.
     MNX_OPTIONAL_PROPERTY(std::string, voice);                      ///< Optionally specify the voice this dynamic applies to.
 
     /// @brief Calculates if this dynamic has immediate text.
     /// If this value returns false, then it should be a hairpin with no preceding dynamic.
-    bool calcHasImmediateText() const
+    virtual bool calcHasImmediateText() const
     {
-        return value() || attackValue() || !prefix_or({}).empty() || !suffix_or({}).empty()
+        return value() || !prefix_or({}).empty() || !suffix_or({}).empty()
             || (glyphs() && !glyphs().value().empty());
     }
 };
@@ -116,6 +115,20 @@ public:
 
     /// @brief Create a Required instance for #DynamicAccent.
     static Required make(DynamicValue value, const FractionValue& position) { return { value, position }; }
+
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(DynamicPrefix, accentPrefix, DynamicPrefix::s); ///< defines prefix ("r", "s", or "");
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(DynamicSuffix, accentSuffix, DynamicSuffix::z); ///< defines suffix ("z" or "");
+    MNX_OPTIONAL_PROPERTY(DynamicValue, residualValue);             ///< If a dynamic is a sudden change, this is the value that remains
+                                                                    ///< after the attack. For example, if the dynamic is "fp", #value is
+                                                                    ///< "f" and this would be "p".
+
+    bool calcHasImmediateText() const override
+    {
+        return DynamicGroupBase::calcHasImmediateText()
+            || accentPrefix() != DynamicPrefix::None
+            || accentSuffix() != DynamicSuffix::None
+            || residualValue();
+    }
 
     inline static constexpr std::string_view ContentTypeValue = "accent";    ///< type value that identifies the type of dynamic
 };
@@ -168,6 +181,7 @@ public:
 
     MNX_REQUIRED_CHILD(MeasureRhythmicPosition, end,
         (const std::string&, measureId), (const FractionValue&, position));     ///< the end position of the hairpin dynamic; set graceIndex to 0 to include preceding grace notes at the end boundary
+    MNX_OPTIONAL_PROPERTY(int, staffEnd);                                       ///< the staff (within the part) on which the hairpin ends
     MNX_REQUIRED_PROPERTY(DynamicWedgeType, wedgeType);                         ///< the type of hairpin dynamic
 
     inline static constexpr std::string_view ContentTypeValue = "gradual";      ///< type value that identifies the type of dynamic

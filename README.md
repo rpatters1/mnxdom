@@ -21,20 +21,22 @@ auto doc = mnx::Document(); // automatically creates required child nodes
 // global
 auto globalMeasure = doc.global().measures().append();
 // required fields are supplied when objects are created
-globalMeasure.create_barline(mnx::BarlineType::Regular);
-globalMeasure.create_time(4, mnx::TimeSignatureUnit::Quarter);
+globalMeasure.ensure_barline(mnx::BarlineType::Regular);
+globalMeasure.ensure_time(4, mnx::TimeSignatureUnit::Quarter);
 // parts
 auto part = doc.parts().append();
-auto measure = part.create_measures().append();
-measure.create_clefs().append(mnx::ClefSign::GClef, -2, std::nullopt);
+auto measure = part.measures().append();
+measure.ensure_clefs().append(mnx::ClefSign::GClef, -2, mnx::OttavaAmountOrZero::NoTransposition);
 auto event = measure.sequences()
     .append()
     .content()
-    .append<mnx::sequence::Event>(mnx::NoteValueBase::Whole);
-event.create_notes().append(mnx::sequence::Pitch::make(mnx::NoteStep::C, 4));
+    .appendEvent(mnx::NoteValueBase::Whole);
+event.ensure_notes().append(mnx::sequence::Pitch::make(mnx::NoteStep::C, 4));
 // save to file
 doc.save("hello-world.json", 4); // indent with 4 spaces
 ```
+
+Note the naming conventions above. Children that MNX requires get a `create_NAME(...)` method, but a parent's constructor creates them for you, so you can normally just access them (`part.measures()`). Optional children get `ensure_NAME(...)`, which creates the child on first use and returns the existing one thereafter. Content arrays, such as a sequence's content or a layout's content, are heterogeneous and so provide typed helpers (`appendEvent`, `appendTuplet`, `appendStaff`, and so on) in place of a generic `append`.
 
 Note that this code never uses references. Since every MNX class in the model is a lightweight wrapper around a root JSON object and a pointer to its location, copying them is extremely cheap. The class instance returned by any method is a temporary instance. Using references on return values can result in undefined behavior.
 

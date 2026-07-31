@@ -32,7 +32,7 @@ TEST(Parts, DuplicateId)
     setupTestDataPaths();
     std::filesystem::path inputPath = getInputPath() / "errors" / "duplicate_parts.json";
     auto doc = mnx::Document::create(inputPath);
-    expectSemanticError(doc, inputPath, "ID \"P1\" already exists for type \"measure-global\" at /parts/0");
+    expectSemanticError(doc, inputPath, "ID \"P1\" already exists for type \"part\" at /parts/0");
 }
 
 TEST(Parts, MeasuresMismatch)
@@ -49,6 +49,33 @@ TEST(Parts, MissingInitialClefs)
     std::filesystem::path inputPath = getInputPath() / "errors" / "missing_initial_clef.json";
     auto doc = mnx::Document::create(inputPath);
     expectSemanticError(doc, inputPath, "Missing clef at the beginning of staff 1 in part P1 (first measure).");
+}
+
+TEST(Parts, MeasureRepeatOverlap)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "measure_repeat_overlap.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath,
+        "Measure repeat in part P1 occurs at measure index 3, which is already covered by the measure repeat at index 2.");
+}
+
+TEST(Parts, MeasureRepeatUnderflow)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "measure_repeat_underflow.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath,
+        "Measure repeat in part P1 at measure index 0 has a repeat count of 1, which reaches back before the start of the part.");
+}
+
+TEST(Parts, MeasureRepeatOverrun)
+{
+    setupTestDataPaths();
+    std::filesystem::path inputPath = getInputPath() / "errors" / "measure_repeat_overrun.json";
+    auto doc = mnx::Document::create(inputPath);
+    expectSemanticError(doc, inputPath,
+        "Measure repeat in part P1 at measure index 2 spans 2 measures, which extends past the end of the part (3 measures).");
 }
 
 TEST(Parts, ClefInvalidStaff)

@@ -116,6 +116,7 @@ private:
     void validateDynamics(const mnx::part::DynamicGroupArray& dynamics);
     void validateNonArpeggios(const mnx::part::Measure& measure, const mnx::Array<mnx::part::NonArpeggio>& nonArpeggios);
     void validateBeams(const mnx::Array<mnx::part::Beam>& beams, unsigned depth);
+    void validateMeasureRepeats(const mnx::Part& part, const mnx::Array<mnx::part::Measure>& measures);
     void validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas);
 
     template <typename NoteType>
@@ -577,6 +578,46 @@ void SemanticValidator::validateNonArpeggios(const mnx::part::Measure& measure, 
     }
 }
 
+void SemanticValidator::validateMeasureRepeats(const mnx::Part& part, const mnx::Array<mnx::part::Measure>& measures)
+{
+    // A measure repeat of N measures occupies the N measures beginning with the one that carries it,
+    // so only that first measure may declare it. The measures it covers are continuations.
+    size_t blockStart = 0;      // index of the measure declaring the enclosing multi-measure block
+    size_t blockEnd = 0;        // one past the last measure that block covers
+    for (size_t index = 0; index < measures.size(); index++) {
+        const auto measureRepeat = measures[index].measureRepeat();
+        if (!measureRepeat) {
+            continue;
+        }
+        if (index < blockEnd) {
+            addError("Measure repeat in part " + part.id_or("<no-id>") + " occurs at measure index "
+                + std::to_string(index) + ", which is already covered by the measure repeat at index "
+                + std::to_string(blockStart) + ". Only the first measure of a repeated group may declare one.",
+                measureRepeat.value());
+            continue;
+        }
+        const int number = measureRepeat.value().number();
+        if (number < 1) {
+            // Enforcing positivity belongs in the schema, which does not yet bound any integer type.
+            // Treat a non-positive count as covering nothing rather than duplicating that check here.
+            continue;
+        }
+        blockStart = index;
+        blockEnd = index + static_cast<size_t>(number);
+        if (static_cast<size_t>(number) > index) {
+            addError("Measure repeat in part " + part.id_or("<no-id>") + " at measure index "
+                + std::to_string(index) + " has a repeat count of " + std::to_string(number)
+                + ", which reaches back before the start of the part.", measureRepeat.value());
+        }
+        if (blockEnd > measures.size()) {
+            addError("Measure repeat in part " + part.id_or("<no-id>") + " at measure index "
+                + std::to_string(index) + " spans " + std::to_string(number)
+                + " measures, which extends past the end of the part (" + std::to_string(measures.size())
+                + " measures).", measureRepeat.value());
+        }
+    }
+}
+
 void SemanticValidator::validateOttavas(const mnx::part::Measure& measure, const mnx::Array<mnx::part::Ottava>& ottavas)
 {    
     for (const auto ottava : ottavas) {
@@ -651,6 +692,7 @@ void SemanticValidator::validateParts()
                 }
             }
         }
+        validateMeasureRepeats(part, measures);
         // first pass: validateSequenceContent creates the eventList and the noteList
         for (const auto measure : measures) {
             std::unordered_map<std::string, std::string> measureVoices;

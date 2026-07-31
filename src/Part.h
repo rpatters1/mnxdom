@@ -239,13 +239,13 @@ public:
         int staffPosition{}; ///< the staff position of the kit component
     };
 
-    /// @brief Constructor for existing Clef instances
+    /// @brief Constructor for existing KitComponent instances
     KitComponent(const std::shared_ptr<json>& root, json_pointer pointer)
         : ArrayElementObject(root, pointer)
     {
     }
 
-    /// @brief Creates a new Clef class as a child of a JSON element
+    /// @brief Creates a new KitComponent class as a child of a JSON element
     /// @param parent The parent class instance
     /// @param key The JSON key to use for embedding in parent.
     /// @param staffPosition The staff position of the kit component
@@ -264,6 +264,87 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, name);       ///< Human-readable name of the kit component
     MNX_OPTIONAL_PROPERTY(std::string, sound);      ///< The sound ID in `global.sounds`.
     MNX_REQUIRED_PROPERTY(int, staffPosition);      ///< The staff position of the kit component, where 0 is the middle line.
+};
+
+/**
+ * @class MeasureRepeatCounter
+ * @brief Describes a counter over a @ref MeasureRepeat
+ */
+class MeasureRepeatCounter : public Object
+{
+public:
+    /// @brief initializer class for #PartTransposition
+    struct Required
+    {
+        int count{}; ///< The count value to display.
+    };
+
+    /// @brief Constructor for existing MeasureRepeatCounter instances
+    MeasureRepeatCounter(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new MeasureRepeatCounter class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param count The count to display.
+    MeasureRepeatCounter(Base& parent, std::string_view key, int count)
+        : Object(parent, key)
+    {
+        set_count(count);
+    }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { count() }; }
+
+    /// @brief Create a Required instance for #MeasureRepeatCounter.
+    static Required make(int count) { return { count }; }
+
+    MNX_REQUIRED_PROPERTY(int, count);  ///< The count to display.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(MultiStaffOrientation, orient, MultiStaffOrientation::Auto); ///< Where to display the count.
+};
+
+/**
+ * @class MeasureRepeat
+ * @brief Encodes a simile marking, which means "repeat all music in the previous X measures."
+ */
+class MeasureRepeat : public Object
+{
+public:
+    /// @brief initializer class for #PartTransposition
+    struct Required
+    {
+        int number{}; ///< The number of measures to repeat.
+    };
+
+    /// @brief Constructor for existing MeasureRepeat instances
+    MeasureRepeat(const std::shared_ptr<json>& root, json_pointer pointer)
+        : Object(root, pointer)
+    {
+    }
+
+    /// @brief Creates a new MeasureRepeat class as a child of a JSON element
+    /// @param parent The parent class instance
+    /// @param key The JSON key to use for embedding in parent.
+    /// @param number The number of measures to repeat.
+    MeasureRepeat(Base& parent, std::string_view key, int number)
+        : Object(parent, key)
+    {
+        set_number(number);
+    }
+
+    /// @brief Implicit conversion back to Required.
+    operator Required() const { return { number() }; }
+
+    /// @brief Create a Required instance for #MeasureRepeat.
+    static Required make(int number) { return { number }; }
+
+    MNX_OPTIONAL_CHILD(MeasureRepeatCounter, counter,
+        (int, count));                              ///< Encodes a counter that should be displayed with the measure repeat glyph.
+    MNX_OPTIONAL_PROPERTY(bool, displayNumber);     ///< Whether a number is displayed above the measure repeat glyph.
+    MNX_REQUIRED_PROPERTY(int, number);             ///< The number of measures to repeat.
+    MNX_OPTIONAL_PROPERTY(int, staffPosition);      ///< THe staff position on which to display the glyph.
 };
 
 /**
@@ -382,6 +463,8 @@ public:
     MNX_OPTIONAL_CHILD(Array<Beam>, beams);                 ///< the beams in this measure
     MNX_OPTIONAL_CHILD(Array<PositionedClef>, clefs);       ///< the clef changes in this bar
     MNX_OPTIONAL_CHILD(DynamicGroupArray, dynamics);        ///< the dynamics in this measure
+    MNX_OPTIONAL_CHILD(MeasureRepeat, measureRepeat,
+        (int, number));                                     ///< If this part measure is a measure repeat, this includes data about that repeat.
     MNX_OPTIONAL_CHILD(Array<NonArpeggio>, nonArpeggios);   ///< the non-arpeggios in this measure
     MNX_OPTIONAL_CHILD(Array<Ottava>, ottavas);             ///< the ottavas in this measure
     MNX_REQUIRED_CHILD(Array<Sequence>, sequences);         ///< sequences that contain all the musical details in each measure
@@ -427,7 +510,7 @@ public:
     MNX_OPTIONAL_CHILD(part::PartTransposition, transposition,
         (const Interval::Required&, interval)); ///< the instrument transposition for the part
 
-    inline static constexpr std::string_view JsonSchemaTypeName = "measure-global";     ///< required for mapping
+    inline static constexpr std::string_view JsonSchemaTypeName = "part";     ///< required for mapping
 };
 
 } // namespace mnx

@@ -817,8 +817,9 @@ public:
     [[nodiscard]] operator FractionValue() const
     { return FractionValue(static_cast<FractionValue::NumType>(count()), static_cast<FractionValue::NumType>(unit())); }
 
-    MNX_REQUIRED_PROPERTY(int, count);                ///< the number of beats (top number)
-    MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);   ///< the unit value (bottom number)
+    MNX_REQUIRED_PROPERTY(int, count);                      ///< the number of beats (top number)
+    MNX_OPTIONAL_PROPERTY(TimeSignatureDisplay, display);   ///< A special time signature glyph to use, e.g. for common time or cut time.
+    MNX_REQUIRED_PROPERTY(TimeSignatureUnit, unit);         ///< the unit value (bottom number)
 };
 
 } // namespace mnx

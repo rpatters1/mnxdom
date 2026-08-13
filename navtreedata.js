@@ -62,9 +62,9 @@ var NAVTREEINDEX =
 "classmnx_1_1layout_1_1StaffSource.html#aa25b891efb653676d256ec81177543fb",
 "classmnx_1_1part_1_1PositionedClef.html#a4f14ef8451f270f0ef79569fe3a8c01b",
 "classmnx_1_1sequence_1_1MultiNoteTremolo.html#a4aa6b66de3fdca3a3a48df6042108e9e",
-"dir_68267d1309a1af8e8297ef4c3efbcdba.html",
-"namespacemnx.html#aef9fb8ab9a62640138018b7387b578aaa258f49887ef8d14ac268c92b02503aaa",
-"structmnx_1_1part_1_1Ottava_1_1Required.html#ac18aaedb983e7337754aab264ce52556"
+"classmusic__theory_1_1Transposer.html#a68c73dcb6666ee81d28f3dce979e186f",
+"namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79ab25cde1e74f3d27f678c2e309e06102e",
+"structmnx_1_1part_1_1MeasureRepeat_1_1Required.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

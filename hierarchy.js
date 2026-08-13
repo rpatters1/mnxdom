@@ -168,6 +168,7 @@ var hierarchy =
         ] ],
         [ "mnx::sequence::EventMarkings", "classmnx_1_1sequence_1_1EventMarkings.html", null ],
         [ "mnx::sequence::FullMeasureRest", "classmnx_1_1sequence_1_1FullMeasureRest.html", null ],
+        [ "mnx::sequence::PerformOptions", "classmnx_1_1sequence_1_1PerformOptions.html", null ],
         [ "mnx::sequence::Pitch", "classmnx_1_1sequence_1_1Pitch.html", null ],
         [ "mnx::sequence::Rest", "classmnx_1_1sequence_1_1Rest.html", null ],
         [ "mnx::sequence::TransposeWritten", "classmnx_1_1sequence_1_1TransposeWritten.html", null ],

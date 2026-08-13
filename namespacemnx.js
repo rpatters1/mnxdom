@@ -71,6 +71,7 @@ var namespacemnx =
       [ "Right", "namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391a92b09c7c48c520c3c55e497875da437c", null ]
     ] ],
     [ "BreathMarkSymbol", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26", [
+      [ "Auto", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a06b9281e396db002010bde1de57262eb", null ],
       [ "Comma", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6", null ],
       [ "Tick", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a0b3516a5bbb77566f904f9d3877f4710", null ],
       [ "Upbow", "namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26ac1a7ead3faffd1eafe2791fddca0dcd2", null ],

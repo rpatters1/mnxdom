@@ -82,6 +82,7 @@ var annotated_dup =
         [ "MultiNoteTremolo", "classmnx_1_1sequence_1_1MultiNoteTremolo.html", "classmnx_1_1sequence_1_1MultiNoteTremolo" ],
         [ "Note", "classmnx_1_1sequence_1_1Note.html", "classmnx_1_1sequence_1_1Note" ],
         [ "NoteBase", "classmnx_1_1sequence_1_1NoteBase.html", "classmnx_1_1sequence_1_1NoteBase" ],
+        [ "PerformOptions", "classmnx_1_1sequence_1_1PerformOptions.html", "classmnx_1_1sequence_1_1PerformOptions" ],
         [ "Pitch", "classmnx_1_1sequence_1_1Pitch.html", "classmnx_1_1sequence_1_1Pitch" ],
         [ "Rest", "classmnx_1_1sequence_1_1Rest.html", "classmnx_1_1sequence_1_1Rest" ],
         [ "SequenceContent", "classmnx_1_1sequence_1_1SequenceContent.html", null ],

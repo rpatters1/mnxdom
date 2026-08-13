@@ -284,10 +284,14 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab1fbd0e4479390784ce5ffd4fad0c391"><td class="mdescLeft">&#160;</td><td class="mdescRight">The types of jumps.  <a href="namespacemnx.html#ab1fbd0e4479390784ce5ffd4fad0c391">More...</a><br /></td></tr>
 <tr class="separator:ab1fbd0e4479390784ce5ffd4fad0c391"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a987a8a31243b5d666217aa67e56fdc26" id="r_a987a8a31243b5d666217aa67e56fdc26"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26">BreathMarkSymbol</a> { <a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6">Comma</a>
+<tr class="memitem:a987a8a31243b5d666217aa67e56fdc26" id="r_a987a8a31243b5d666217aa67e56fdc26"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26">BreathMarkSymbol</a> { <br />
+&#160;&#160;<a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a06b9281e396db002010bde1de57262eb">Auto</a>
+, <a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6">Comma</a>
 , <a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a0b3516a5bbb77566f904f9d3877f4710">Tick</a>
 , <a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26ac1a7ead3faffd1eafe2791fddca0dcd2">Upbow</a>
-, <a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a750acd2375abfdf959a7a368e0727285">Salzedo</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a750acd2375abfdf959a7a368e0727285">Salzedo</a>
+<br />
  }</td></tr>
 <tr class="memdesc:a987a8a31243b5d666217aa67e56fdc26"><td class="mdescLeft">&#160;</td><td class="mdescRight">The symbols available for a breath mark.  <a href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26">More...</a><br /></td></tr>
 <tr class="separator:a987a8a31243b5d666217aa67e56fdc26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -716,10 +720,11 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MNXDOM_PROVE
 </div><div class="memdoc">
 
 <p>The symbols available for a breath mark. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>The schema currently types <code>breath-mark-symbol</code> as an unconstrained string, deferring to the MusicXML <code>breath-mark-value</code> list. Outstanding issue 536 requests that those values be stated explicitly in the MNX spec and enumerated in the schema. Until then, a breath mark symbol outside this enum is schema-valid but deserializes to <a class="el" href="namespacemnx.html#a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6" title="comma symbol">BreathMarkSymbol::Comma</a>. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Unlike MusicXML's <code>breath-mark-value</code>, this enum has no empty member. MNX is expected to indicate "no specified symbol" by omitting the property, which the optional property already carries. (Contrast DynamicPrefix and DynamicSuffix, whose non-empty defaults mean absence is not the same as "", so they do need an explicit None member.) </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The first value is the MNX default: automatic choice by the consuming application. </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6" name="a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6"></a>Comma&#160;</td><td class="fielddoc"><p>comma symbol </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a987a8a31243b5d666217aa67e56fdc26a06b9281e396db002010bde1de57262eb" name="a987a8a31243b5d666217aa67e56fdc26a06b9281e396db002010bde1de57262eb"></a>Auto&#160;</td><td class="fielddoc"><p>automatically choose the breath mark symbol </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6" name="a987a8a31243b5d666217aa67e56fdc26a58be47db9455679e6a44df2eff9c9fa6"></a>Comma&#160;</td><td class="fielddoc"><p>comma symbol </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a987a8a31243b5d666217aa67e56fdc26a0b3516a5bbb77566f904f9d3877f4710" name="a987a8a31243b5d666217aa67e56fdc26a0b3516a5bbb77566f904f9d3877f4710"></a>Tick&#160;</td><td class="fielddoc"><p>tick symbol </p>
 </td></tr>
@@ -1531,7 +1536,7 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MNXDOM_PROVE
 </div><div class="memdoc">
 
 <p>The types of barline overrides for staff groups in layouts. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>This appears to be a misnomer, and there is an outstanding issue 495 to clarify it. Currently mnxdom treats these as override options. Of particular concern is the <code>instrument</code> option, which adds useless complexity in the context of staff groups. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>This appears to be a misnomer, and there is an outstanding issue 495 to clarify it. Currently mnxdom treats these as override options. Of particular concern is the <code>instrument</code> option, which adds useless complexity in the context of staff groups. </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad48565fded88559edcaeec446b9e1d8fa2dd4472245a696bc0b4b944db2a8b519" name="ad48565fded88559edcaeec446b9e1d8fa2dd4472245a696bc0b4b944db2a8b519"></a>Individual&#160;</td><td class="fielddoc"><p>currently interpreted as no override </p>
 </td></tr>

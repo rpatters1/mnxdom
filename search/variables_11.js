@@ -14,5 +14,5 @@ var searchData=
   ['startmeasure_11',['startmeasure',['../structmnx_1_1score_1_1System_1_1Required.html#a65291c3ae91e8979ed34658d6fc9420f',1,'mnx::score::System::Required::startMeasure'],['../structmnx_1_1score_1_1MultimeasureRest_1_1Required.html#a9ec6f2aebe9a3912f1f22dc576ce0772',1,'mnx::score::MultimeasureRest::Required::startMeasure']]],
   ['step_12',['step',['../structmnx_1_1sequence_1_1Pitch_1_1Required.html#a1ec809463a7728ce2dc260d9fe7fcd29',1,'mnx::sequence::Pitch::Required']]],
   ['syllabletext_13',['syllableText',['../structmnx_1_1sequence_1_1EventLyricLine_1_1Required.html#a3c848acb704f0daff8c474968851857a',1,'mnx::sequence::EventLyricLine::Required']]],
-  ['symbol_14',['symbol',['../structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html#ab40115748fd246d0b9007cf36f6318c1',1,'mnx::sequence::AccidentalEnclosure::Required::symbol'],['../structmnx_1_1util_1_1LayoutSpan.html#a8673fff04fbdfca5cd03bddae8b8c0f3',1,'mnx::util::LayoutSpan::symbol']]]
+  ['symbol_14',['symbol',['../structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html#ab40115748fd246d0b9007cf36f6318c1',1,'mnx::sequence::AccidentalEnclosure::Required::symbol'],['../structmnx_1_1util_1_1LayoutSpan.html#a46bd3ffb9bb468f29dbc27c06280d01f',1,'mnx::util::LayoutSpan::symbol']]]
 ];

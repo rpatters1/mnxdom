@@ -65,6 +65,6 @@ var searchData=
   ['style_62',['Style',['../classmnx_1_1text_1_1Style.html',1,'mnx::text']]],
   ['support_63',['Support',['../classmnx_1_1MnxMetaData_1_1Support.html',1,'mnx::MnxMetaData']]],
   ['syllabletext_64',['syllableText',['../structmnx_1_1sequence_1_1EventLyricLine_1_1Required.html#a3c848acb704f0daff8c474968851857a',1,'mnx::sequence::EventLyricLine::Required']]],
-  ['symbol_65',['symbol',['../structmnx_1_1util_1_1LayoutSpan.html#a8673fff04fbdfca5cd03bddae8b8c0f3',1,'mnx::util::LayoutSpan::symbol'],['../structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html#ab40115748fd246d0b9007cf36f6318c1',1,'mnx::sequence::AccidentalEnclosure::Required::symbol']]],
+  ['symbol_65',['symbol',['../structmnx_1_1util_1_1LayoutSpan.html#a46bd3ffb9bb468f29dbc27c06280d01f',1,'mnx::util::LayoutSpan::symbol'],['../structmnx_1_1sequence_1_1AccidentalEnclosure_1_1Required.html#ab40115748fd246d0b9007cf36f6318c1',1,'mnx::sequence::AccidentalEnclosure::Required::symbol']]],
   ['system_66',['system',['../classmnx_1_1score_1_1System.html#a88762829c08b05392c7c47323f91ba7d',1,'mnx::score::System::System(Base &amp;parent, std::string_view key, const std::string &amp;startMeasure)'],['../classmnx_1_1score_1_1System.html#a3515d557224e24ae4f8e3b06ac047789',1,'mnx::score::System::System(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1score_1_1System.html',1,'mnx::score::System']]]
 ];

@@ -142,21 +142,20 @@ jq '.. | objects | select(has("default"))' third_party/w3c-mnx/mnx-schema.json
 Then search the upstream MNX API/reference sources available in the checkout
 or fetched source for normative default statements, including phrases such as
 `default`, `if omitted`, `if not provided`, `assumed`, and `automatically`. For
-each default, record the JSON path/property, specified value, source wording
-or source location, schema `default` value if present, and mnxdom accessor or
-constructor behavior.
+each default that could affect mnxdom, record the JSON path/property, specified
+value, source wording or source location, schema `default` value if present,
+and mnxdom accessor or constructor behavior. Do not report a missing schema
+`default` annotation by itself: it is not actionable unless its absence creates
+a concrete mnxdom behavior, serialization, deserialization, or validation
+mismatch.
 
 Classify every case:
 
 - **Consistent**: schema annotation, MNX specification/API, and mnxdom behavior
   agree.
-- **Schema annotation missing**: the MNX API specifies a default but the
-  schema has no `default`; report it without adding one automatically.
 - **mnxdom behavior missing or inconsistent**: the API default is not exposed
   by the corresponding accessor or constructor, or serialization semantics do
   not match the project convention.
-- **Schema-only annotation**: the schema has a `default` with no normative MNX
-  basis; flag it for specification review.
 - **Ambiguous/conflicting**: sources disagree or the wording describes
   implementation-defined automatic behavior rather than a fixed value.
 
@@ -164,9 +163,9 @@ Check both enum defaults and scalar defaults. For enum defaults, verify enum
 declaration order, `EnumerationMaps.cpp`, and
 `MNX_OPTIONAL_PROPERTY_WITH_DEFAULT`. For scalar defaults, inspect the
 corresponding property macro and whether the default should be omitted from
-serialized JSON. If upstream currently has no schema `default` keywords,
-explicitly report that fact and still record prose/API defaults as a baseline
-for future updates.
+serialized JSON. If upstream currently has no schema `default` keywords, do
+not report that absence; inspect prose/API defaults only to identify actionable
+mnxdom mismatches.
 
 Trace each relevant schema change into `src/` with searches for the JSON key,
 enum, property macro, constructor, enum mapping, and validator logic. Check

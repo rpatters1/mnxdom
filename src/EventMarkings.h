@@ -103,7 +103,7 @@ class BreathMark : public EventMarkingBase
 public:
     using EventMarkingBase::EventMarkingBase;
 
-    MNX_OPTIONAL_PROPERTY(BreathMarkSymbol, symbol);    ///< The symbol for the breath mark.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(BreathMarkSymbol, symbol, BreathMarkSymbol::Auto); ///< The symbol for the breath mark.
 };
 
 /**

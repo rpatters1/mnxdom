@@ -77,17 +77,11 @@ enum class BeamHookDirection
 /**
  * @enum BreathMarkSymbol
  * @brief The symbols available for a breath mark
- * @todo The schema currently types `breath-mark-symbol` as an unconstrained string, deferring to
- * the MusicXML `breath-mark-value` list. Outstanding issue 536 requests that those values be stated
- * explicitly in the MNX spec and enumerated in the schema. Until then, a breath mark symbol outside
- * this enum is schema-valid but deserializes to BreathMarkSymbol::Comma.
- * @note Unlike MusicXML's `breath-mark-value`, this enum has no empty member. MNX is expected to
- * indicate "no specified symbol" by omitting the property, which the optional property already
- * carries. (Contrast DynamicPrefix and DynamicSuffix, whose non-empty defaults mean absence is not
- * the same as "", so they do need an explicit None member.)
+ * @note The first value is the MNX default: automatic choice by the consuming application.
  */
 enum class BreathMarkSymbol
 {
+    Auto,    ///< automatically choose the breath mark symbol
     Comma,   ///< comma symbol
     Tick,    ///< tick symbol
     Upbow,   ///< upbow symbol

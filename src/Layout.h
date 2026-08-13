@@ -116,7 +116,7 @@ public:
     MNX_OPTIONAL_PROPERTY(std::string, label);                  ///< Label to be rendered to the left of the staff
     MNX_OPTIONAL_PROPERTY(LabelRef, labelref);                  ///< The labelref to use (rather than label)
     MNX_REQUIRED_CHILD(Array<StaffSource>, sources);            ///< The sources for this staff.
-    MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);                ///< The symbol down the left side.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(LayoutSymbol, symbol, LayoutSymbol::NoSymbol); ///< The symbol down the left side.
 
     inline static constexpr std::string_view ContentTypeValue = "staff"; ///< type value that identifies the type within the content array
 };
@@ -143,7 +143,7 @@ public:
     MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(StaffGroupBarlineStyle, barlineStyle, StaffGroupBarlineStyle::Instrument); ///< barline override settings
     MNX_REQUIRED_CHILD(LayoutContent, content);      ///< Required child containing the layout content (groups and staves).
     MNX_OPTIONAL_PROPERTY(std::string, label);      ///< Label to be rendered to the left of the group
-    MNX_OPTIONAL_PROPERTY(LayoutSymbol, symbol);    ///< The symbol down the left side.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(LayoutSymbol, symbol, LayoutSymbol::NoSymbol); ///< The symbol down the left side.
 
     /// @brief Calculates whether all staves in this group subtree use the same part id.
     [[nodiscard]] bool calcIsPartGroup() const;

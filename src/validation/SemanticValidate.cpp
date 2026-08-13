@@ -507,7 +507,7 @@ void SemanticValidator::validateBeams(const mnx::Array<mnx::part::Beam>& beams, 
                 }
             }
         }
-        if (beam.direction().has_value() && beam.events().size() != 1) {
+        if (beam.direction() != BeamHookDirection::Auto && beam.events().size() != 1) {
             addError("Beam specifies a hook direction but contains more than one event.", beam);
         }
         if (auto singleBeam = beam.beams()) {

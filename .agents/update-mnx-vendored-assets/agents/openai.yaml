@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update MNX Vendored Assets"
+  short_description: "Update and audit the vendored W3C MNX schema and examples."
+  default_prompt: "Use $update-mnx-vendored-assets to run the MNX vendoring workflow, audit example changes and semantic compatibility, and report findings before proposing code changes."

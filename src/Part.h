@@ -342,7 +342,7 @@ public:
 
     MNX_OPTIONAL_CHILD(MeasureRepeatCounter, counter,
         (int, count));                              ///< Encodes a counter that should be displayed with the measure repeat glyph.
-    MNX_OPTIONAL_PROPERTY(bool, displayNumber);     ///< Whether a number is displayed above the measure repeat glyph.
+    MNX_OPTIONAL_PROPERTY_WITH_DEFAULT(AutoYesNo, displayNumber, AutoYesNo::Auto); ///< Whether a number is displayed above the measure repeat glyph.
     MNX_REQUIRED_PROPERTY(int, number);             ///< The number of measures to repeat.
     MNX_OPTIONAL_PROPERTY(int, staffPosition);      ///< THe staff position on which to display the glyph.
 };

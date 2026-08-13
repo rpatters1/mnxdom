@@ -268,12 +268,13 @@ struct LayoutSpan
     std::optional<LabelRef> labelref;
 
     /**
-     * @brief Optional layout symbol associated with this span.
+     * @brief Layout symbol associated with this span.
      *
      * For staff spans, this corresponds to Staff::symbol. For group
-     * spans, it corresponds to Group::symbol.
+     * spans, it corresponds to Group::symbol. The MNX default is
+     * LayoutSymbol::NoSymbol.
      */
-    std::optional<LayoutSymbol> symbol;
+    LayoutSymbol symbol = LayoutSymbol::NoSymbol;
 
     /**
      * @brief Resolved barline override associated with this span.
@@ -467,6 +468,7 @@ buildDefaultLayoutSpans(const Array<Part>& parts)
             staffSpan.kind = LayoutSpan::Kind::Staff;
             staffSpan.startIndex = staffIdx;
             staffSpan.endIndex = staffIdx;
+            staffSpan.symbol = LayoutSymbol::NoSymbol;
             staffSpan.barlineOverride = StaffGroupBarlineOverride::None;
             if (staffNameNeeded) {
                 staffSpan.label = part.name();

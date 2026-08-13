@@ -22,7 +22,7 @@ json-schema-validator, and (when tests are enabled) GoogleTest.
   W3C MNX snapshot.
 - `.agents/update-mnx-vendored-assets/SKILL.md` — reusable workflow for
   updating and auditing vendored MNX assets, examples, and schema compatibility.
-- `docs/MNX_GAPS.md` — known MNX/mnxdom integration gaps awaiting API or
+- `MNX_GAPS.md` — known MNX/mnxdom integration gaps awaiting API or
   specification decisions.
 - `docs/` — Doxygen configuration and documentation assets.
 

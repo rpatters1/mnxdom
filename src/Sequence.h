@@ -289,6 +289,19 @@ public:
 };
 
 /**
+ * @class PerformOptions
+ * @brief Controls whether a note is performed by consuming software.
+ *
+ * The MNX schema currently defines this as an empty object, with support for
+ * the standard MNX global attributes inherited from @ref Object.
+ */
+class PerformOptions : public Object
+{
+public:
+    using Object::Object;
+};
+
+/**
  * @class NoteBase
  * @brief Represents common elements between @ref Note and @ref KitNote
  */
@@ -297,7 +310,7 @@ class NoteBase : public ArrayElementObject
 public:
     using ArrayElementObject::ArrayElementObject;
 
-    /// @todo `perform`
+    MNX_OPTIONAL_CHILD(PerformOptions, perform);                    ///< Controls whether this note is performed by consuming software.
     MNX_OPTIONAL_PROPERTY(int, staff);                              ///< Staff number override (e.g., for cross-staff notes.)
     MNX_OPTIONAL_CHILD(Array<Tie>, ties);                           ///< The (forward) ties, if any.
 };

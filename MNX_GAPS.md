@@ -18,9 +18,11 @@ without deciding how a default wrapper for a child that is absent from the
 JSON should behave. Until that API design is settled, callers must interpret
 an absent default child according to the MNX specification.
 
-## `Sequence::orient`
+## `Sequence::orient`, `Event::orient`, and `Tuplet::orient`
 
-The MNX specification describes `Sequence::orient` and its automatic default,
-but mnxdom does not currently expose the property. Its implementation is
-awaiting explanation and clarification from the MNX committee before the API
-is extended.
+The MNX specification describes these orientation properties and their
+automatic defaults, but mnxdom does not currently expose them. Their
+implementation is blocked on clarification from the MNX committee about how
+orientation values cascade through nested elements and what a cascaded or
+overridden value means when it is applied. The API should be extended after
+those semantics are settled.

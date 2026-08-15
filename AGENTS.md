@@ -24,6 +24,7 @@ json-schema-validator, and (when tests are enabled) GoogleTest.
   updating and auditing vendored MNX assets, examples, and schema compatibility.
 - `MNX_GAPS.md` — known MNX/mnxdom integration gaps awaiting API or
   specification decisions.
+- `.agents/music-theory-sync/SKILL.md` — changes to `src/music_theory/music_theory.hpp` must be synchronized with musxdom.
 - `docs/` — Doxygen configuration and documentation assets.
 
 ## Building and testing

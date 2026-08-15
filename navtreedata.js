@@ -64,7 +64,7 @@ var NAVTREEINDEX =
 "classmnx_1_1sequence_1_1MultiNoteTremolo.html#a4aa6b66de3fdca3a3a48df6042108e9e",
 "classmusic__theory_1_1Transposer.html#a68c73dcb6666ee81d28f3dce979e186f",
 "namespacemnx.html#aedcf62c90c7ec3ac99e89b55a70d7b79ab25cde1e74f3d27f678c2e309e06102e",
-"structmnx_1_1part_1_1MeasureRepeat_1_1Required.html"
+"structmnx_1_1part_1_1MeasureRepeatCounter_1_1Required.html#aac1dfdef7d0d1457b2d497a63f2599e9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

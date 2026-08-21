@@ -223,7 +223,7 @@ public:
     {}
 
     /// @brief Copy assignment operator
-    Base& operator=(const Base& src)
+    Base& operator=(const Base& src) noexcept(false)
     {
         if (this != &src) {
             if (m_root != src.m_root) {
@@ -235,7 +235,7 @@ public:
     }
 
     /// @brief Move assignment operator
-    Base& operator=(Base&& src)
+    Base& operator=(Base&& src) noexcept(false)
     {
         if (this != &src) {
             if (m_root != src.m_root) {

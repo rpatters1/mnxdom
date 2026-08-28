@@ -13,7 +13,7 @@ var searchData=
   ['between_10',['Between',['../namespacemnx.html#a916529be475b78726237297e7b030329a5ccb72b3b258508dc7918070eaeb214c',1,'mnx']]],
   ['bold_11',['Bold',['../namespacemnx.html#a7f6bc6c3cc455de994f7fb502fb67d50a114c3050111d8b8ddd830b99ccebd246',1,'mnx']]],
   ['bowdirection_12',['bowdirection',['../classmnx_1_1sequence_1_1BowDirection.html',1,'mnx::sequence::BowDirection'],['../classmnx_1_1sequence_1_1BowDirection.html#ade999348e92473aab49a416c3c8e9e27',1,'mnx::sequence::BowDirection::BowDirection(Base &amp;parent, std::string_view key, MarkingUpDown direction)'],['../classmnx_1_1sequence_1_1BowDirection.html#a1252637e6891333eb44aa541f8b89bc8',1,'mnx::sequence::BowDirection::BowDirection(const std::shared_ptr&lt; json &gt; &amp;root, json_pointer pointer)'],['../classmnx_1_1sequence_1_1BowDirection.html#a477d5c1efdb10febd00375db64955c5b',1,'mnx::sequence::BowDirection::BowDirection(MarkingUpDown direction)']]],
-  ['bpm_13',['bpm',['../structmnx_1_1global_1_1Tempo_1_1Required.html#aac4563d59899e56a60b9b6879ff0ad0f',1,'mnx::global::Tempo::Required']]],
+  ['bpm_13',['bpm',['../structmnx_1_1global_1_1Tempo_1_1Required.html#a8c182a063149bb42cd68af091d78e7fa',1,'mnx::global::Tempo::Required']]],
   ['brace_14',['Brace',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485a7d55ac077f11ad55a67924103d450612',1,'mnx']]],
   ['bracket_15',['Bracket',['../namespacemnx.html#a9c22ef7bf22146e15d2d10c0bf3da485ab5c644787d66a37b2d0e7eefaf11506b',1,'mnx']]],
   ['brackets_16',['Brackets',['../namespacemnx.html#a6c27feb239f38438c6ac35e32c716b7da16e127072878e35f572b8f19bdb4b686',1,'mnx']]],

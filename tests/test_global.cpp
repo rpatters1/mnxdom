@@ -173,3 +173,39 @@ TEST(Global, VisibleMeasureNumberBasic)
         EXPECT_EQ(measure.calcVisibleNumber(), 1);
     }
 }
+
+TEST(Global, TempoFractionalBpm)
+{
+    Document doc;
+    auto measures = doc.global().measures();
+    auto measure = measures.append();
+    auto tempos = measure.ensure_tempos();
+    auto tempo = tempos.append(84.5, NoteValue::make(NoteValueBase::Quarter, 0));
+
+    EXPECT_DOUBLE_EQ(tempo.bpm(), 84.5);
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "fractional bpm should validate against the MNX schema";
+
+    tempo.set_bpm(120.0);
+    EXPECT_DOUBLE_EQ(tempo.bpm(), 120.0);
+    EXPECT_TRUE(validation::schemaValidate(doc)) << "whole-number bpm should validate against the MNX schema";
+
+    // integer-encoded bpm from an existing document still reads back as a double
+    std::istringstream jsonString(R"(
+        {
+            "mnx": { "version": 1 },
+            "global": {
+                "measures": [
+                    {
+                        "tempos": [
+                            { "bpm": 132, "value": { "base": "quarter" } }
+                        ]
+                    }
+                ]
+            },
+            "parts": []
+        }
+    )");
+    Document parsed(jsonString);
+    auto parsedTempo = parsed.global().measures()[0].tempos().value()[0];
+    EXPECT_DOUBLE_EQ(parsedTempo.bpm(), 132.0);
+}

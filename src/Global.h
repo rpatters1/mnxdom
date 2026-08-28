@@ -281,7 +281,7 @@ public:
     /// @brief initializer class for #Tempo
     struct Required
     {
-        int bpm{};                       ///< the beats per minute
+        double bpm{};                    ///< the beats per minute
         NoteValue::Required noteValue{};   ///< the note value for the tempo
     };
 
@@ -296,7 +296,7 @@ public:
     /// @param key The JSON key to use for embedding in parent.
     /// @param bpm The beats per minute
     /// @param noteValue The note value for the tempo
-    Tempo(Base& parent, std::string_view key, int bpm, const NoteValue::Required& noteValue)
+    Tempo(Base& parent, std::string_view key, double bpm, const NoteValue::Required& noteValue)
         : ArrayElementObject(parent, key)
     {
         set_bpm(bpm);
@@ -307,9 +307,9 @@ public:
     operator Required() const { return { bpm(), value() }; }
 
     /// @brief Create a Required instance for #Tempo.
-    static Required make(int bpm, const NoteValue::Required& noteValue) { return { bpm, noteValue }; }
+    static Required make(double bpm, const NoteValue::Required& noteValue) { return { bpm, noteValue }; }
 
-    MNX_REQUIRED_PROPERTY(int, bpm);                ///< the beats per minute of this tempo marking
+    MNX_REQUIRED_PROPERTY(double, bpm);             ///< the beats per minute of this tempo marking
     MNX_OPTIONAL_CHILD(RhythmicPosition, location,
         (const FractionValue&, position)); ///< location within the measure of the tempo marking
     MNX_REQUIRED_CHILD(NoteValue, value,

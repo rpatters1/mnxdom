@@ -11,7 +11,7 @@ Document object model for the MNX music interchange format. It is compatible wit
 
 ### Documentation
 
-[MNX Document Model for C++17](https://rpatters1.github.io/mnxdom/)
+[MNX Document Model for C++17](https://mnx-works.github.io/mnxdom/)
 
 Here is a simple example of code that creates the [Hello World](https://w3c.github.io/mnx/docs/mnx-reference/examples/hello-world/) MNX JSON file.
 
@@ -50,17 +50,17 @@ Include the top header in your source file.
 #include "mnxdom.h"
 ```
 
-Add the libary to your project with `FetchContent`:
+Add the library to your project with `FetchContent`:
 
 ```cmake
 include(FetchContent)
 
 FetchContent_Declare(
-  musx
-  GIT_REPOSITORY https://github.com/rpatters1/mnxdom
+  mnxdom
+  GIT_REPOSITORY https://github.com/mnx-works/mnxdom
   GIT_TAG main # Replace with the desired commit hash, tag, or branch
 )
-FetchContent_MakeAvailable(musx)
+FetchContent_MakeAvailable(mnxdom)
 
 # Also add somewhere:
 target_link_libraries(project PRIVATE mnxdom) # replace "project" with your actual project name
